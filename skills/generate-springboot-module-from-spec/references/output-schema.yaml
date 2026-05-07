@@ -1,0 +1,56 @@
+module_plan:
+  module_name: string
+  bounded_context: string
+  responsibility: string
+  package_root: string
+  route_prefix: string
+  persistence_style: mybatis-flex | jpa | mybatis | unknown
+  security_style: preauthorize | request-matcher | unknown
+  response_style: response-wrapper | raw-response | unknown
+  logging_style:
+    access_log: enabled | disabled | unknown
+    operate_log: enabled | disabled | unknown
+  dependencies:
+    inbound:
+      - string
+    outbound:
+      - string
+  entities:
+    - name: string
+      purpose: string
+      base_type: string
+  artifacts:
+    resource:
+      - string
+    manager:
+      - string
+    service:
+      - string
+    service_impl:
+      - string
+    mapper:
+      - string
+    entity:
+      - string
+    dto:
+      - string
+    vo:
+      - string
+    bo:
+      - string
+  capabilities:
+    - name: string
+      pattern: create | update | delete | batch-delete | details | page | list | tree | unique-check | custom-action
+      route: string
+      authority: string
+      transaction: read-only | read-write | none
+      inputs:
+        - string
+      outputs:
+        - string
+      touches:
+        - string
+  contract_requirements:
+    - string
+  compatibility_notes:
+    - string

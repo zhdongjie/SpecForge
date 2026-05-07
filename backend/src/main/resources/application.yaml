@@ -1,0 +1,47 @@
+# 服务器配置
+server:
+  port: 8080  # 服务器端口
+  servlet:
+    context-path: /api  # 上下文路径
+
+# Spring框架配置
+spring:
+  application:
+    name: backend  # 应用名称
+  jackson:
+    time-zone: Asia/Shanghai  # 时区设置
+    date-format: yyyy-MM-dd HH:mm:ss  # 日期格式
+  messages:
+    basename: i18n/messages  # 国际化消息文件基础名称
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver  # 数据库驱动
+    url: jdbc:mysql://localhost:13306/originalkeen_auth_center?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai  # 数据库连接URL
+    username: root  # 数据库用户名
+    password: root  # 数据库密码
+  data:
+    redis:
+      host: localhost  # Redis主机
+      port: 6379  # Redis端口
+      password: root  # Redis密码
+      database: 0  # Redis数据库索引
+
+# MyBatis-Flex配置
+mybatis-flex:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # SQL日志实现
+
+# 自定义配置
+original:
+  authorize:
+    header: Authorization  # 认证请求头
+    prefix: 'Bearer '  # Token前缀
+    access-token-expire-time: 30  # 访问令牌过期时间（分钟）
+    refresh-token-expire-time: 10080  # 刷新令牌过期时间（分钟）
+    jwk-directory: .jwk  # JWK密钥文件目录
+    access-token-public-key-name: access-token-public-key.json  # 访问令牌公钥文件名
+    access-token-private-key-name: access-token-private-key.json  # 访问令牌私钥文件名
+    refresh-token-public-key-name: refresh-token-public-key.json  # 刷新令牌公钥文件名
+    refresh-token-private-key-name: refresh-token-private-key.json  # 刷新令牌私钥文件名
+    # 白名单路径
+    white-list: # 不需要认证的路径列表
+      - /v1/authorize/**  # 授权相关路径

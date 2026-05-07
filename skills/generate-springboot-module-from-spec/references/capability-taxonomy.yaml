@@ -1,0 +1,106 @@
+capability_taxonomy:
+  create:
+    purpose: Create a new business record.
+    required_artifacts:
+      - Create*Dto
+      - *Resource create endpoint
+      - *Manager create method
+      - *Service create support
+      - *Entity
+      - *Mapper when persistence is mapper-based
+    defaults:
+      http_method: POST
+      transaction: read-write
+      logging: operate-log
+  update:
+    purpose: Update an existing business record.
+    required_artifacts:
+      - Update*Dto
+      - *Resource update endpoint
+      - *Manager update method
+      - *Service update support
+    defaults:
+      http_method: PUT
+      transaction: read-write
+      logging: operate-log
+  delete:
+    purpose: Delete one business record or one logical node.
+    required_artifacts:
+      - *Resource delete endpoint
+      - *Manager delete method
+      - *Service delete support
+    defaults:
+      http_method: DELETE
+      transaction: read-write
+      logging: operate-log
+  batch-delete:
+    purpose: Delete multiple records in one request.
+    required_artifacts:
+      - batch delete endpoint
+      - collection validation
+      - manager delete-many method
+    defaults:
+      http_method: DELETE
+      transaction: read-write
+      logging: operate-log
+  details:
+    purpose: Fetch one record with detail fields.
+    required_artifacts:
+      - details endpoint
+      - detail view object
+      - manager read method
+    defaults:
+      http_method: GET
+      transaction: read-only
+      logging: none
+  page:
+    purpose: Fetch paginated records with filtering.
+    required_artifacts:
+      - Enquiry*PageDto or repo-equivalent query dto
+      - page endpoint
+      - PageVo or repo-equivalent page wrapper
+      - page result vo
+    defaults:
+      http_method: GET
+      transaction: read-only
+      logging: none
+  list:
+    purpose: Fetch a lightweight list for selection or simple display.
+    required_artifacts:
+      - list endpoint
+      - list view object
+      - manager read method
+    defaults:
+      http_method: GET
+      transaction: read-only
+      logging: none
+  tree:
+    purpose: Fetch hierarchical nodes for navigation or permission structures.
+    required_artifacts:
+      - tree endpoint
+      - node view object
+      - hierarchy assembly logic
+    defaults:
+      http_method: GET
+      transaction: read-only
+      logging: none
+  unique-check:
+    purpose: Validate uniqueness before mutation.
+    required_artifacts:
+      - validation dto
+      - lightweight read endpoint
+      - manager uniqueness method
+    defaults:
+      http_method: GET
+      transaction: read-only
+      logging: none
+  custom-action:
+    purpose: Execute a domain-specific action that is not plain CRUD.
+    required_artifacts:
+      - action-specific dto when input is needed
+      - dedicated manager method
+      - explicit contract note in module plan
+    defaults:
+      http_method: PATCH
+      transaction: read-write
+      logging: conditional

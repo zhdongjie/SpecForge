@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Spring Boot Module From Spec"
+  short_description: "Generate one Spring Boot module from a spec"
+  default_prompt: "Generate one bounded Spring Boot business module from this structured project specification while preserving architecture conventions and generation contracts."

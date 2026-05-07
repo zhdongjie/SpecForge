@@ -1,0 +1,50 @@
+project:
+  name: string
+  type: springboot-vue3
+
+architecture:
+  style: monolith | modular-monolith
+  description: string
+
+modules:
+  - name: string
+    responsibility: string
+    boundaries: string
+    apis:
+      - string
+    entities:
+      - string
+
+features:
+  - string
+
+auth:
+  type: jwt | session | none
+  roles:
+    - string
+
+database:
+  type: mysql | postgres | unknown
+  tables:
+    - name: string
+      purpose: string
+
+frontend:
+  pages:
+    - name: string
+      purpose: string
+
+business_rules:
+  - string
+
+dependencies:
+  backend:
+    - string
+  frontend:
+    - string
+
+generation_contract:
+  - rules that must be followed when regenerating this project
+  - module boundaries must be preserved
+  - CRUD patterns must remain consistent
+  - auth must remain centralized
