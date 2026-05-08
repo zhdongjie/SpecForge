@@ -25,10 +25,14 @@ class IRLoweringPipeline:
         self.output_root = output_root
         self.specs_dir = specs_dir
 
-    def run(self, module_schema_name: str = "module-schema.resolved.yaml") -> dict[str, Any]:
+    def run(
+        self,
+        module_schema_name: str = "module-schema.resolved.yaml",
+        module_spec_name: str = "module-spec.yaml",
+    ) -> dict[str, Any]:
         module_schema_path = self._resolve_input(module_schema_name)
         module_schema = safe_load_yaml(module_schema_path)
-        module_spec = safe_load_yaml(self.specs_dir / "module-spec.yaml")
+        module_spec = safe_load_yaml(self._resolve_input(module_spec_name))
         enriched_schema = self._merge_with_module_spec(module_schema, module_spec)
 
         naming = NamingResolution()

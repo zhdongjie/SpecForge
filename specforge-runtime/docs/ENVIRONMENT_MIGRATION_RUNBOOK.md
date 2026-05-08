@@ -2,6 +2,10 @@
 
 This runbook defines the portable execution contract for moving SpecForge to a new machine or handing it to another Codex session.
 
+Repository-level directory roles are summarized in:
+
+- `WORKSPACE_LAYOUT.md`
+
 ## Goals
 
 - Reproduce backend generation on a clean machine
@@ -21,6 +25,12 @@ Canonical runtime entrypoint:
 Canonical final backend export location:
 
 - `specforge-runtime/outputs/<plan-id-or-custom-output>/`
+
+Local-only verification area:
+
+- `sandbox/`
+
+Do not treat `sandbox/` as canonical source or final deliverable output.
 
 ## Toolchain Discovery Contract
 

@@ -24,6 +24,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-id", default="run-001")
     parser.add_argument("--auto-build", action="store_true")
     parser.add_argument("--build-plan", default="build-plan.yaml")
+    parser.add_argument("--project-assembly-plan", default="")
     parser.add_argument("--replay-source-run")
     parser.add_argument("--partial-replay", default="")
     parser.add_argument("--inject-failure", action="append", default=[])
@@ -80,6 +81,8 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
 
     plan_id = build_plan.get("plan_id", build_plan_path.stem)
     module_schema_name = build_plan.get("module_schema", args.module_schema)
+    module_spec_name = build_plan.get("module_spec", "module-spec.yaml")
+    project_assembly_plan_name = build_plan.get("project_assembly_plan", args.project_assembly_plan)
     backend_root_arg = build_plan.get("backend_root", args.backend_root)
     auto_repair = bool(build_plan.get("auto_repair", True))
     verify_boot = bool(build_plan.get("verify_boot", True))
@@ -106,6 +109,8 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
         specs_dir=specs_dir,
     ).run(
         module_schema_name=str(module_schema_name),
+        module_spec_name=str(module_spec_name),
+        project_assembly_plan_name=str(project_assembly_plan_name) if project_assembly_plan_name else None,
         auto_repair=auto_repair,
         verify_boot=verify_boot,
         repair_max_passes=max(1, repair_max_passes),
@@ -120,6 +125,8 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
         "build_plan": str(build_plan_path),
         "run_id": run_id,
         "module_schema": str(module_schema_name),
+        "module_spec": str(module_spec_name),
+        "project_assembly_plan": str(project_assembly_plan_name) if project_assembly_plan_name else None,
         "backend_root": str(backend_root),
         "auto_repair": auto_repair,
         "verify_boot": verify_boot,
@@ -232,6 +239,8 @@ def main() -> None:
             specs_dir=specs_dir,
         ).run(
             module_schema_name=args.module_schema,
+            module_spec_name="module-spec.yaml",
+            project_assembly_plan_name=args.project_assembly_plan or None,
             run_compile=True,
             run_boot=not args.skip_boot_verify,
         )
@@ -249,6 +258,8 @@ def main() -> None:
             specs_dir=specs_dir,
         ).run(
             module_schema_name=args.module_schema,
+            module_spec_name="module-spec.yaml",
+            project_assembly_plan_name=args.project_assembly_plan or None,
             auto_repair=args.auto_repair,
             verify_boot=args.verify_boot,
             repair_max_passes=max(1, args.repair_max_passes),

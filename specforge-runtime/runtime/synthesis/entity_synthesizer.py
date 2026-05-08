@@ -57,8 +57,8 @@ class EntitySynthesizer:
         for java_type, field_name in audit_fields:
             field_lines.append(f"    private {java_type} {field_name};")
 
-        create_method_args = ",\n                ".join(f"createDto.get{field['name'][:1].upper() + field['name'][1:]}()" for field in entity_spec.get("fields", []) if not field.get("primary_key"))
-        update_method_args = ",\n                ".join(f"updateDto.get{field['name'][:1].upper() + field['name'][1:]}()" for field in entity_spec.get("fields", []) if not field.get("primary_key"))
+        create_setters = self._dto_setters("createDto", entity_spec)
+        update_setters = self._dto_setters("updateDto", entity_spec)
         imports_text = "\n".join(f"import {value};" for value in sorted(imports))
         field_text = "\n\n".join(field_lines)
         return (
@@ -74,26 +74,26 @@ class EntitySynthesizer:
             f"    private static final long serialVersionUID = 1L;\n\n"
             f"{field_text}\n\n"
             f"    public static {entity_name} of(Create{entity_name}Dto createDto) {{\n"
-            f"        return new {entity_name}(\n"
-            f"                {create_method_args},\n"
-            f"                null,\n"
-            f"                null,\n"
-            f"                null,\n"
-            f"                null,\n"
-            f"                Boolean.FALSE\n"
-            f"        );\n"
+            f"        {entity_name} entity = new {entity_name}();\n"
+            f"{create_setters}"
+            f"        entity.setDeleted(Boolean.FALSE);\n"
+            f"        return entity;\n"
             f"    }}\n\n"
             f"    public static {entity_name} of(Update{entity_name}Dto updateDto) {{\n"
-            f"        {entity_name} entity = new {entity_name}(\n"
-            f"                {update_method_args},\n"
-            f"                null,\n"
-            f"                null,\n"
-            f"                null,\n"
-            f"                null,\n"
-            f"                Boolean.FALSE\n"
-            f"        );\n"
+            f"        {entity_name} entity = new {entity_name}();\n"
             f"        entity.setId(updateDto.getId());\n"
+            f"{update_setters}"
+            f"        entity.setDeleted(Boolean.FALSE);\n"
             f"        return entity;\n"
             f"    }}\n"
             f"}}\n"
         )
+
+    def _dto_setters(self, dto_name: str, entity_spec: dict[str, Any]) -> str:
+        setters: list[str] = []
+        for field in entity_spec.get("fields", []):
+            if field.get("primary_key"):
+                continue
+            suffix = field["name"][:1].upper() + field["name"][1:]
+            setters.append(f"        entity.set{suffix}({dto_name}.get{suffix}());")
+        return "\n".join(setters) + ("\n" if setters else "")

@@ -1,0 +1,80 @@
+domains:
+  laboratory-reservation:
+    project:
+      name: Laboratory Reservation Platform
+      bounded_context: laboratory-operations
+      primary_roles:
+        - Administrator
+        - Teacher
+        - Student
+      business_rules:
+        - reservation slots must not conflict within the same laboratory
+        - reservation requests must reference an existing laboratory
+        - business actions must remain behind centralized JWT authorization
+    modules:
+      - module: laboratory-reservation-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: laboratory-operations
+        package_root: org.eu.originalkeen.business.labreservation
+        route_roots:
+          - /v1/business/laboratory
+          - /v1/business/laboratory-reservation
+        authorities:
+          - business:laboratory:*
+          - business:laboratory-reservation:*
+        entities:
+          - Laboratory
+          - LaboratoryReservation
+        tables:
+          - system_laboratory
+          - system_laboratory_reservation
+        purpose: laboratory resource and reservation lifecycle management
+      - module: reservation-approval-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: reservation-governance
+        package_root: org.eu.originalkeen.business.reservationapproval
+        route_roots:
+          - /v1/business/reservation-approval
+        authorities:
+          - business:reservation-approval:*
+        entities:
+          - ReservationApproval
+          - ReservationApprovalRecord
+        tables:
+          - reservation_approval
+          - reservation_approval_record
+        purpose: reservation approval decisions and audit trail
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/notification
+        authorities:
+          - business:notification:*
+        entities:
+          - NotificationMessage
+          - NotificationDeliveryRecord
+        tables:
+          - notification_message
+          - notification_delivery_record
+        purpose: reservation and approval notifications
+      - module: laboratory-access-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: laboratory-access-control
+        package_root: org.eu.originalkeen.business.labaccess
+        route_roots:
+          - /v1/business/laboratory-access
+        authorities:
+          - business:laboratory-access:*
+        entities:
+          - LaboratoryAccessPolicy
+          - LaboratoryAccessScope
+        tables:
+          - laboratory_access_policy
+          - laboratory_access_scope
+        purpose: laboratory access scope and reservable policy management

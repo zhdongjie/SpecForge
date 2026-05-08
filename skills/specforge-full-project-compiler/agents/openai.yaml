@@ -1,0 +1,4 @@
+interface:
+  display_name: "SpecForge Project Compiler"
+  short_description: "Generate full backends with SpecForge."
+  default_prompt: "Use $specforge-full-project-compiler to compile this requirement into a bootable backend."

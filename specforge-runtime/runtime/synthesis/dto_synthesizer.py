@@ -27,7 +27,6 @@ class DtoSynthesizer:
         type_system = context["field_type_system"]
         validator = context["validation_synthesizer"]
         imports = {
-            "lombok.AllArgsConstructor",
             "lombok.Data",
             "lombok.NoArgsConstructor",
             "java.io.Serial",
@@ -49,14 +48,16 @@ class DtoSynthesizer:
             for annotation in validator.field_annotations(field):
                 fields.append(f"    {annotation}")
             fields.append(f"    private {definition.java_type} {field['name']};")
+        all_args_import = '\nimport lombok.AllArgsConstructor;' if fields else ""
+        all_args_annotation = "@AllArgsConstructor\n" if fields else ""
         imports_text = "\n".join(f"import {value};" for value in sorted(imports))
         field_text = "\n\n".join(fields)
         return (
             f"package {context['package_root']}.domain.dto;\n\n"
-            f"{imports_text}\n\n"
+            f"{imports_text}{all_args_import}\n\n"
             f"@Data\n"
             f"@NoArgsConstructor\n"
-            f"@AllArgsConstructor\n"
+            f"{all_args_annotation}"
             f"public class {source_name} implements Serializable {{\n\n"
             f"    @Serial\n"
             f"    private static final long serialVersionUID = 1L;\n\n"
@@ -68,7 +69,6 @@ class DtoSynthesizer:
         type_system = context["field_type_system"]
         imports = {
             "org.eu.originalkeen.core.domain.dto.EnquiryPageDto",
-            "lombok.AllArgsConstructor",
             "lombok.Data",
             "lombok.EqualsAndHashCode",
             "lombok.NoArgsConstructor",
@@ -83,14 +83,16 @@ class DtoSynthesizer:
                 definition = type_system.resolve(field)
                 imports.update(definition.imports)
                 fields.append(f"    private {definition.java_type} {field['name']};")
+        all_args_import = '\nimport lombok.AllArgsConstructor;' if fields else ""
+        all_args_annotation = "@AllArgsConstructor\n" if fields else ""
         imports_text = "\n".join(f"import {value};" for value in sorted(imports))
         field_text = "\n\n".join(fields)
         return (
             f"package {context['package_root']}.domain.dto;\n\n"
-            f"{imports_text}\n\n"
+            f"{imports_text}{all_args_import}\n\n"
             f"@Data\n"
             f"@NoArgsConstructor\n"
-            f"@AllArgsConstructor\n"
+            f"{all_args_annotation}"
             f"@EqualsAndHashCode(callSuper = true)\n"
             f"public class Enquiry{entity_name}PageDto extends EnquiryPageDto implements Serializable {{\n\n"
             f"    @Serial\n"
@@ -103,7 +105,6 @@ class DtoSynthesizer:
         type_system = context["field_type_system"]
         imports = {
             f"{context['package_root']}.domain.entity.{entity_name}",
-            "lombok.AllArgsConstructor",
             "lombok.Data",
             "lombok.NoArgsConstructor",
             "java.io.Serial",
@@ -118,16 +119,18 @@ class DtoSynthesizer:
         imports_text = "\n".join(f"import {value};" for value in sorted(imports))
         field_text = "\n\n".join(fields)
         class_name = f"{entity_name}{suffix}"
+        all_args_import = '\nimport lombok.AllArgsConstructor;' if fields else ""
+        all_args_annotation = "@AllArgsConstructor\n" if fields else ""
         for field in entity_spec.get("fields", []):
             setter_name = field["name"][:1].upper() + field["name"][1:]
             setters.append(f"        vo.set{setter_name}(entity.get{setter_name}());")
         setters_text = "\n".join(setters)
         return (
             f"package {context['package_root']}.domain.vo;\n\n"
-            f"{imports_text}\n\n"
+            f"{imports_text}{all_args_import}\n\n"
             f"@Data\n"
             f"@NoArgsConstructor\n"
-            f"@AllArgsConstructor\n"
+            f"{all_args_annotation}"
             f"public class {class_name} implements Serializable {{\n\n"
             f"    @Serial\n"
             f"    private static final long serialVersionUID = 1L;\n\n"
@@ -147,7 +150,6 @@ class DtoSynthesizer:
         type_system = context["field_type_system"]
         imports = {
             f"{context['package_root']}.domain.entity.{entity_name}",
-            "lombok.AllArgsConstructor",
             "lombok.Data",
             "lombok.NoArgsConstructor",
             "java.io.Serial",
@@ -192,12 +194,14 @@ class DtoSynthesizer:
         imports_text = "\n".join(f"import {value};" for value in sorted(relation_imports))
         fields_text = "\n\n".join(field_lines + relation_lines)
         setters_text = "\n".join(setter_lines)
+        all_args_import = '\nimport lombok.AllArgsConstructor;' if (field_lines or relation_lines) else ""
+        all_args_annotation = "@AllArgsConstructor\n" if (field_lines or relation_lines) else ""
         return (
             f"package {context['package_root']}.domain.vo;\n\n"
-            f"{imports_text}\n\n"
+            f"{imports_text}{all_args_import}\n\n"
             f"@Data\n"
             f"@NoArgsConstructor\n"
-            f"@AllArgsConstructor\n"
+            f"{all_args_annotation}"
             f"public class {entity_name}DetailsVo implements Serializable {{\n\n"
             f"    @Serial\n"
             f"    private static final long serialVersionUID = 1L;\n\n"

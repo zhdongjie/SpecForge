@@ -27,6 +27,8 @@ class HardeningPipeline:
     def run(
         self,
         module_schema_name: str = "module-schema.resolved.yaml",
+        module_spec_name: str = "module-spec.yaml",
+        project_assembly_plan_name: str | None = None,
         auto_repair: bool = False,
         verify_boot: bool = False,
         repair_max_passes: int = 5,
@@ -36,7 +38,13 @@ class HardeningPipeline:
             backend_root=self.backend_root,
             run_root=self.run_root,
             specs_dir=self.specs_dir,
-        ).run(module_schema_name=module_schema_name, run_compile=False, run_boot=False)
+        ).run(
+            module_schema_name=module_schema_name,
+            module_spec_name=module_spec_name,
+            project_assembly_plan_name=project_assembly_plan_name,
+            run_compile=False,
+            run_boot=False,
+        )
 
         initial_compile_diagnostics = CompileDiagnostics(self.generated_project_root, self.logs_root).run()
         compile_diagnostics = initial_compile_diagnostics

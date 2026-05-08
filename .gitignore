@@ -143,6 +143,10 @@ specforge-runtime/regression-summary.yaml
 specforge-runtime/.mypy_cache/
 specforge-runtime/.ruff_cache/
 
+# SpecForge local verification workspaces
+/sandbox/
+/logs/
+
 # Canonical SpecForge IR lives under specforge-runtime/specs/
 /module-spec.yaml
 /module-schema.resolved.yaml

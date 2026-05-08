@@ -15,12 +15,13 @@ platform_contract:
   business_domain_rule:
     package_root_prefix: org.eu.originalkeen.business.
     route_prefix: /v1/business/
-    authority_prefix: business:
+    authority_prefix: "business:"
 
 module_sequence:
   - module: laboratory-reservation-management
     semantic_role: business-domain
     bounded_context: laboratory-operations
+    module_spec: module-spec.yaml
     module_schema: module-schema.resolved.yaml
     field_schema: field-schema.resolved.yaml
     generation_mode: synthesize-and-assemble

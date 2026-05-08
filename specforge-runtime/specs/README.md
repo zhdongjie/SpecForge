@@ -19,6 +19,7 @@ Working rule:
 - Use `python main.py --auto-build --build-plan build-plan.yaml` for the canonical end-to-end backend compilation run.
 - Treat `specforge-runtime/outputs/` as the stable home for final exported backend code after a successful auto-build.
 - Use `project-assembly-plan.yaml` to describe the project-level module sequence and platform contracts for multi-module growth.
+- Multi-module auto-build reads `project_assembly_plan` from `build-plan.yaml` and assembles enabled modules into one bootable backend.
 
 Portability rule:
 - Do not hardcode local JDK or Maven paths in runtime components.
