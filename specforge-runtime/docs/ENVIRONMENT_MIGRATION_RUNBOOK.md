@@ -11,6 +11,7 @@ Repository-level directory roles are summarized in:
 - Reproduce backend generation on a clean machine
 - Avoid local hardcoded JDK or Maven assumptions
 - Preserve deterministic build, compile, and boot verification
+- Let another Codex session succeed from a short requirement without inheriting chat history
 
 ## Required Layout
 
@@ -62,12 +63,35 @@ SpecForge now resolves Java and Maven in this order.
 4. Verify commands:
    - `java -version`
    - `mvn -version`
-5. Open the repo root:
-   - `E:\Project\Generate\SpecForge`
-6. Run from:
-   - `E:\Project\Generate\SpecForge\specforge-runtime`
+5. Open the repo root.
+6. Read:
+   - `README.md`
+   - `WORKSPACE_LAYOUT.md`
+   - `specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md`
+   - `specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md`
+   - `specforge-runtime/docs/CODEX_STARTER_PROMPTS.md`
 
 ## Canonical Commands
+
+### Zero-context full-project path
+
+This is the preferred path when a new machine or a new Codex session starts from almost no prior context.
+
+1. Check workspace readiness.
+2. Scaffold project specs from one sentence or one requirements file.
+3. Run the canonical auto-build command.
+4. Accept only `compile_status: PASS` and `boot_status: PASS`.
+5. Take the final backend only from `specforge-runtime/outputs/`.
+
+Preferred wrapper commands from the repo root:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/check_specforge_workspace.py --repo-root .
+python skills/specforge-full-project-compiler/scripts/scaffold_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --force
+python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id <run-id>
+```
+
+### Runtime component commands
 
 IR lowering:
 
@@ -104,7 +128,7 @@ python main.py --auto-build --build-plan build-plan.yaml --run-id laboratory-res
 Successful end-to-end runs must produce:
 
 - `runs/<run-id>/logs/auto-build-report.yaml`
-- `outputs/<target>/logs/final-output-report.yaml`
+- `outputs/<target>/`
 
 The final backend for handoff or deployment review is always the exported backend under:
 
@@ -123,11 +147,17 @@ Do not treat temporary generated directories inside `runs/` as final deliverable
 
 When another Codex session resumes this repository, it should:
 
-1. Read `specforge-runtime/specs/README.md`.
-2. Read `specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md`.
-3. Read `specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md`.
-4. Use `specforge-runtime/specs/build-plan.yaml` as the canonical entry spec.
-5. Export final deliverables only into `specforge-runtime/outputs/`.
+1. Read `README.md`.
+2. Read `WORKSPACE_LAYOUT.md`.
+3. Read `specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md`.
+4. Read `specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md`.
+5. Read `specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md`.
+6. Read `specforge-runtime/docs/CODEX_STARTER_PROMPTS.md`.
+7. If the task begins from a new requirement, run the scaffold command before auto-build.
+8. Use `specforge-runtime/specs/build-plan.yaml` as the canonical execution entry spec.
+9. Export final deliverables only into `specforge-runtime/outputs/`.
+
+The resumed agent must not rely on prior conversational context as part of the execution contract.
 
 ## Failure Report Contract
 

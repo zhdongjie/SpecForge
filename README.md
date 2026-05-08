@@ -14,10 +14,13 @@ Its goal is:
 
 - `backend/`
   - baseline backend template
+  - compiler assembly input
+  - not the final generated deliverable
 
 - `specforge-runtime/`
   - compiler runtime
   - canonical specs live in `specforge-runtime/specs/`
+  - per-run execution traces live in `specforge-runtime/runs/`
   - final generated projects export into `specforge-runtime/outputs/`
 
 - `skills/`
@@ -104,12 +107,29 @@ Treat only this as the final generated project:
 
 - `specforge-runtime/outputs/<project-backend>/`
 
+Meaning of each frequently-seen directory:
+
+- `backend/`
+  - reusable template input
+- `specforge-runtime/runs/<run-id>/`
+  - one build attempt
+  - contains logs, diagnostics, intermediate IR, and a transient assembled project for validation
+- `specforge-runtime/outputs/<project-backend>/`
+  - latest handoff-ready generated backend
+- `sandbox/`
+  - local-only experimentation or migration rehearsal area
+
 Do not treat these as final deliverables:
 
 - `sandbox/...`
 - `specforge-runtime/runs/<run-id>/generated-project/`
 
 Those are validation and intermediate directories.
+
+If you feel "the output directories are too many", the practical rule is simple:
+
+- look at `specforge-runtime/outputs/` for the product
+- look at `specforge-runtime/runs/` only when you need logs or failure diagnosis
 
 ## Canonical End-to-End Commands
 
@@ -138,6 +158,21 @@ cd specforge-runtime
 python main.py --auto-build --build-plan build-plan.yaml --run-id <run-id>
 ```
 
+## One-Line Requirement Mode
+
+For a new domain, the most portable workflow is:
+
+1. Put the repository on the new machine.
+2. Ensure JDK and Maven resolve.
+3. Give Codex one project sentence or one requirements document.
+4. Let the skill scaffold specs into `specforge-runtime/specs/`.
+5. Run the canonical auto-build.
+6. Accept success only if `compile` and `boot` both pass.
+7. Take the final backend only from `specforge-runtime/outputs/`.
+
+See [ONE_LINE_REQUIREMENT_PLAYBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md).
+See [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md) for copy-paste prompts for a fresh Codex session.
+
 ## Handoff Rule
 
 When moving to another machine or another Codex session:
@@ -146,7 +181,8 @@ When moving to another machine or another Codex session:
 2. Read [WORKSPACE_LAYOUT.md](WORKSPACE_LAYOUT.md)
 3. Read [PROJECT_COMPILER_PROTOCOL.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md)
 4. Read [ENVIRONMENT_MIGRATION_RUNBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md)
-5. Use `specforge-runtime/specs/build-plan.yaml` as the canonical execution entry
+5. Read [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md)
+6. Use `specforge-runtime/specs/build-plan.yaml` as the canonical execution entry
 
 ## Current Proven Flow
 

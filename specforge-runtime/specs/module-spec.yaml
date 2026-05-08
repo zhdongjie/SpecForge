@@ -1,28 +1,28 @@
 compiler_context:
-  source_spec_id: insurance-policy-platform-v1
-  target_module_id: insurance-policy-management
+  source_spec_id: laboratory-resource-platform-v1
+  target_module_id: laboratory-resource-management
   regeneration_mode: create
   stability_goal: deterministic
   planner_tags:
     - bounded-module
-    - insurance-policy-domain
+    - laboratory-resource-center
     - dag-node
 
 module_identity:
-  module_name: insurance-policy-management
-  bounded_context: insurance-policy-operations
+  module_name: laboratory-resource-management
+  bounded_context: laboratory-resource-center
   semantic_role: business-domain
-  responsibility_code: insurance-policy-operations
-  package_root: org.eu.originalkeen.business.insurancepolicy
+  responsibility_code: laboratory-resource-operations
+  package_root: org.eu.originalkeen.business.labresource
   route_namespace:
-    insurance_product: /v1/business/insurance-product
-    insurance_policy: /v1/business/insurance-policy
+    laboratory_building: /v1/business/laboratory-building
+    laboratory_room: /v1/business/laboratory-room
 
 generation_boundaries:
   single_module_only: true
   owns_aggregates:
-    - InsuranceProduct
-    - InsurancePolicy
+    - LaboratoryBuilding
+    - LaboratoryRoom
   may_reference:
     - ResponseVo
     - PageVo
@@ -34,342 +34,246 @@ generation_boundaries:
     - user management
     - role management
     - permission tree management
-    - access log storage
   allowed_external_dependencies:
     inbound:
       - centralized-jwt-security
       - global-response-wrapper
       - global-exception-handling
     outbound:
-      - mysql-insurance-tables
+      - mysql-laboratory-resource-tables
       - operation-audit-aspect
 
-architecture_discovery_hints:
-  nearest_sibling_modules:
-    - org.eu.originalkeen.business.personal
-    - org.eu.originalkeen.system.user
-    - org.eu.originalkeen.system.dictionary
-  expected_layering:
-    - resource
-    - manager
-    - service
-    - service.impl
-    - mapper
-    - domain.entity
-    - domain.dto
-    - domain.vo
-  expected_controller_suffix: Resource
-  expected_business_orchestrator_suffix: Manager
-  expected_query_dto_prefix: Enquiry
-  expected_response_wrapper: ResponseVo
-  expected_page_wrapper: PageVo
-  expected_security_style: "@PreAuthorize(hasAuthority(...))"
-  expected_mutation_logging: "@OperateLog"
-  expected_persistence_style: mybatis-flex
-
 api_groups:
-  - group_id: insurance-product-admin
-    route_prefix: /v1/business/insurance-product
-    aggregate: InsuranceProduct
+  - group_id: laboratory-building-admin
+    route_prefix: /v1/business/laboratory-building
+    aggregate: LaboratoryBuilding
     capability_ids:
-      - create-insurance-product
-      - update-insurance-product
-      - batch-delete-insurance-product
-      - enquiry-insurance-product-page
-      - enquiry-insurance-product-details
-      - enquiry-insurance-product-list
-  - group_id: insurance-policy-admin
-    route_prefix: /v1/business/insurance-policy
-    aggregate: InsurancePolicy
+      - create-laboratory-building
+      - update-laboratory-building
+      - batch-delete-laboratory-building
+      - enquiry-laboratory-building-page
+      - enquiry-laboratory-building-details
+      - enquiry-laboratory-building-list
+  - group_id: laboratory-room-admin
+    route_prefix: /v1/business/laboratory-room
+    aggregate: LaboratoryRoom
     capability_ids:
-      - create-insurance-policy
-      - update-insurance-policy
-      - batch-delete-insurance-policy
-      - enquiry-insurance-policy-page
-      - enquiry-insurance-policy-details
-      - enquiry-insurance-policy-list
+      - create-laboratory-room
+      - update-laboratory-room
+      - batch-delete-laboratory-room
+      - enquiry-laboratory-room-page
+      - enquiry-laboratory-room-details
+      - enquiry-laboratory-room-list
 
 capabilities:
-  - capability_id: create-insurance-product
+  - capability_id: create-laboratory-building
     semantic_intent: create-record
     deterministic_pattern: create
     stability_class: stable
-    api_group: insurance-product-admin
+    api_group: laboratory-building-admin
     http_method: POST
     route: /
-    authority: business:insurance-product:create
+    authority: business:laboratory-building:create
     transaction: read-write
-    input_dto: CreateInsuranceProductDto
+    input_dto: CreateLaboratoryBuildingDto
     output_vo: Void
     touched_entities:
-      - InsuranceProduct
-    invariants:
-      - insurance_product_code_unique
-      - insurance_product_name_unique
-  - capability_id: update-insurance-product
+      - LaboratoryBuilding
+  - capability_id: update-laboratory-building
     semantic_intent: update-record
     deterministic_pattern: update
     stability_class: stable
-    api_group: insurance-product-admin
+    api_group: laboratory-building-admin
     http_method: PUT
     route: /
-    authority: business:insurance-product:update
+    authority: business:laboratory-building:update
     transaction: read-write
-    input_dto: UpdateInsuranceProductDto
+    input_dto: UpdateLaboratoryBuildingDto
     output_vo: Void
     touched_entities:
-      - InsuranceProduct
-    invariants:
-      - insurance_product_code_unique
-      - insurance_product_name_unique
-  - capability_id: batch-delete-insurance-product
+      - LaboratoryBuilding
+  - capability_id: batch-delete-laboratory-building
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     stability_class: stable
-    api_group: insurance-product-admin
+    api_group: laboratory-building-admin
     http_method: DELETE
     route: /
-    authority: business:insurance-product:delete
+    authority: business:laboratory-building:delete
     transaction: read-write
-    input_dto: InsuranceProductIdSet
+    input_dto: LaboratoryBuildingIdSet
     output_vo: Void
     touched_entities:
-      - InsuranceProduct
-  - capability_id: enquiry-insurance-product-page
+      - LaboratoryBuilding
+  - capability_id: enquiry-laboratory-building-page
     semantic_intent: query-page
     deterministic_pattern: page
     stability_class: stable
-    api_group: insurance-product-admin
+    api_group: laboratory-building-admin
     http_method: GET
     route: /page
-    authority: business:insurance-product:page
+    authority: business:laboratory-building:page
     transaction: read-only
-    input_dto: EnquiryInsuranceProductPageDto
-    output_vo: PageVo<InsuranceProductPageVo>
+    input_dto: EnquiryLaboratoryBuildingPageDto
+    output_vo: PageVo<LaboratoryBuildingPageVo>
     touched_entities:
-      - InsuranceProduct
-  - capability_id: enquiry-insurance-product-details
+      - LaboratoryBuilding
+  - capability_id: enquiry-laboratory-building-details
     semantic_intent: query-details
     deterministic_pattern: details
     stability_class: stable
-    api_group: insurance-product-admin
+    api_group: laboratory-building-admin
     http_method: GET
     route: /{id}
-    authority: business:insurance-product:details
+    authority: business:laboratory-building:details
     transaction: read-only
-    input_dto: InsuranceProductIdPath
-    output_vo: InsuranceProductDetailsVo
+    input_dto: LaboratoryBuildingIdPath
+    output_vo: LaboratoryBuildingDetailsVo
     touched_entities:
-      - InsuranceProduct
-  - capability_id: enquiry-insurance-product-list
+      - LaboratoryBuilding
+  - capability_id: enquiry-laboratory-building-list
     semantic_intent: query-list
     deterministic_pattern: list
     stability_class: stable
-    api_group: insurance-product-admin
+    api_group: laboratory-building-admin
     http_method: GET
     route: /list
-    authority: business:insurance-product:list
+    authority: business:laboratory-building:list
     transaction: read-only
     input_dto: None
-    output_vo: List<InsuranceProductListVo>
+    output_vo: List<LaboratoryBuildingListVo>
     touched_entities:
-      - InsuranceProduct
-  - capability_id: create-insurance-policy
+      - LaboratoryBuilding
+  - capability_id: create-laboratory-room
     semantic_intent: create-record
     deterministic_pattern: create
     stability_class: stable
-    api_group: insurance-policy-admin
+    api_group: laboratory-room-admin
     http_method: POST
     route: /
-    authority: business:insurance-policy:create
+    authority: business:laboratory-room:create
     transaction: read-write
-    input_dto: CreateInsurancePolicyDto
+    input_dto: CreateLaboratoryRoomDto
     output_vo: Void
     touched_entities:
-      - InsurancePolicy
-      - InsuranceProduct
-    invariants:
-      - insurance_policy_number_unique
-      - insurance_policy_product_must_exist
-  - capability_id: update-insurance-policy
+      - LaboratoryRoom
+      - LaboratoryBuilding
+  - capability_id: update-laboratory-room
     semantic_intent: update-record
     deterministic_pattern: update
     stability_class: stable
-    api_group: insurance-policy-admin
+    api_group: laboratory-room-admin
     http_method: PUT
     route: /
-    authority: business:insurance-policy:update
+    authority: business:laboratory-room:update
     transaction: read-write
-    input_dto: UpdateInsurancePolicyDto
+    input_dto: UpdateLaboratoryRoomDto
     output_vo: Void
     touched_entities:
-      - InsurancePolicy
-      - InsuranceProduct
-    invariants:
-      - insurance_policy_number_unique
-      - insurance_policy_product_must_exist
-  - capability_id: batch-delete-insurance-policy
+      - LaboratoryRoom
+      - LaboratoryBuilding
+  - capability_id: batch-delete-laboratory-room
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     stability_class: stable
-    api_group: insurance-policy-admin
+    api_group: laboratory-room-admin
     http_method: DELETE
     route: /
-    authority: business:insurance-policy:delete
+    authority: business:laboratory-room:delete
     transaction: read-write
-    input_dto: InsurancePolicyIdSet
+    input_dto: LaboratoryRoomIdSet
     output_vo: Void
     touched_entities:
-      - InsurancePolicy
-  - capability_id: enquiry-insurance-policy-page
+      - LaboratoryRoom
+  - capability_id: enquiry-laboratory-room-page
     semantic_intent: query-page
     deterministic_pattern: page
     stability_class: stable
-    api_group: insurance-policy-admin
+    api_group: laboratory-room-admin
     http_method: GET
     route: /page
-    authority: business:insurance-policy:page
+    authority: business:laboratory-room:page
     transaction: read-only
-    input_dto: EnquiryInsurancePolicyPageDto
-    output_vo: PageVo<InsurancePolicyPageVo>
+    input_dto: EnquiryLaboratoryRoomPageDto
+    output_vo: PageVo<LaboratoryRoomPageVo>
     touched_entities:
-      - InsurancePolicy
-      - InsuranceProduct
-  - capability_id: enquiry-insurance-policy-details
+      - LaboratoryRoom
+      - LaboratoryBuilding
+  - capability_id: enquiry-laboratory-room-details
     semantic_intent: query-details
     deterministic_pattern: details
     stability_class: stable
-    api_group: insurance-policy-admin
+    api_group: laboratory-room-admin
     http_method: GET
     route: /{id}
-    authority: business:insurance-policy:details
+    authority: business:laboratory-room:details
     transaction: read-only
-    input_dto: InsurancePolicyIdPath
-    output_vo: InsurancePolicyDetailsVo
+    input_dto: LaboratoryRoomIdPath
+    output_vo: LaboratoryRoomDetailsVo
     touched_entities:
-      - InsurancePolicy
-      - InsuranceProduct
-  - capability_id: enquiry-insurance-policy-list
+      - LaboratoryRoom
+      - LaboratoryBuilding
+  - capability_id: enquiry-laboratory-room-list
     semantic_intent: query-list
     deterministic_pattern: list
     stability_class: stable
-    api_group: insurance-policy-admin
+    api_group: laboratory-room-admin
     http_method: GET
     route: /list
-    authority: business:insurance-policy:list
+    authority: business:laboratory-room:list
     transaction: read-only
     input_dto: None
-    output_vo: List<InsurancePolicyListVo>
+    output_vo: List<LaboratoryRoomListVo>
     touched_entities:
-      - InsurancePolicy
-      - InsuranceProduct
+      - LaboratoryRoom
+      - LaboratoryBuilding
 
 entity_graph:
   entities:
-    - entity_id: InsuranceProduct
-      table: insurance_product
+    - entity_id: LaboratoryBuilding
+      table: laboratory_building
       ownership: owned
       base_type: PrimaryKeyEntity
       aggregate_role: root
       relations:
         - relation: one-to-many
-          target: InsurancePolicy
-          relation_name: policies
-    - entity_id: InsurancePolicy
-      table: insurance_policy
+          target: LaboratoryRoom
+          relation_name: rooms
+    - entity_id: LaboratoryRoom
+      table: laboratory_room
       ownership: owned
       base_type: PrimaryKeyEntity
       aggregate_role: child-root
       relations:
         - relation: many-to-one
-          target: InsuranceProduct
-          relation_name: insuranceProduct
-
-artifact_contract:
-  resource:
-    - InsuranceProductResource
-    - InsurancePolicyResource
-  manager:
-    - InsuranceProductManager
-    - InsurancePolicyManager
-  service:
-    - InsuranceProductService
-    - InsurancePolicyService
-  service_impl:
-    - InsuranceProductServiceImpl
-    - InsurancePolicyServiceImpl
-  mapper:
-    - InsuranceProductMapper
-    - InsurancePolicyMapper
-  entity:
-    - InsuranceProduct
-    - InsurancePolicy
-  dto:
-    - CreateInsuranceProductDto
-    - UpdateInsuranceProductDto
-    - EnquiryInsuranceProductPageDto
-    - CreateInsurancePolicyDto
-    - UpdateInsurancePolicyDto
-    - EnquiryInsurancePolicyPageDto
-  vo:
-    - InsuranceProductDetailsVo
-    - InsuranceProductPageVo
-    - InsuranceProductListVo
-    - InsurancePolicyDetailsVo
-    - InsurancePolicyPageVo
-    - InsurancePolicyListVo
-  bo: []
+          target: LaboratoryBuilding
+          relation_name: laboratoryBuilding
 
 validation_rules:
   uniqueness:
-    - rule_id: insurance_product_code_unique
-      scope: insurance_product.insurance_product_code
-    - rule_id: insurance_product_name_unique
-      scope: insurance_product.insurance_product_name
-    - rule_id: insurance_policy_number_unique
-      scope: insurance_policy.insurance_policy_number
+    - rule_id: laboratory_building_code_unique
+      scope: laboratory_building.laboratory_building_code
+    - rule_id: laboratory_room_code_unique
+      scope: laboratory_room.laboratory_room_code
   referential:
-    - rule_id: insurance_policy_product_must_exist
-      source: InsurancePolicy.insurance_product_id
-      target: InsuranceProduct.id
+    - rule_id: laboratory_room_building_must_exist
+      source: LaboratoryRoom.laboratory_building_id
+      target: LaboratoryBuilding.id
   shape:
     - rule_id: repository_pagination_pattern_preserved
       target_capability:
-        - enquiry-insurance-product-page
-        - enquiry-insurance-policy-page
+        - enquiry-laboratory-building-page
+        - enquiry-laboratory-room-page
 
 architecture_constraints:
   modular_monolith_mode: true
-  package_layout_must_match_siblings: true
   response_wrapper_must_be: ResponseVo
   page_wrapper_must_be: PageVo
-  mutation_logging_required_for:
-    - create-insurance-product
-    - update-insurance-product
-    - batch-delete-insurance-product
-    - create-insurance-policy
-    - update-insurance-policy
-    - batch-delete-insurance-policy
   security_annotation_required: true
-  security_style:
-    type: preauthorize-authority
-    authority_prefixes:
-      - business:insurance-product:
-      - business:insurance-policy:
-  transaction_boundary: manager-boundary
-  controller_suffix: Resource
-  manager_suffix: Manager
 
 persistence_conventions:
   framework: mybatis-flex
   database: mysql
-  query_style:
-    page_queries_use_enquiry_dto: true
-    detail_queries_use_path_id: true
-    list_queries_use_simple_collection_read: true
-  ownership_model:
-    insurance_product_as_parent_reference: true
-    insurance_policy_belongs_to_product: true
 
 localization_requirements:
   mandatory: false
@@ -383,29 +287,15 @@ audit_behavior:
   operate_log:
     enabled: true
     target_capabilities:
-      - create-insurance-product
-      - update-insurance-product
-      - batch-delete-insurance-product
-      - create-insurance-policy
-      - update-insurance-policy
-      - batch-delete-insurance-policy
-    titles:
-      create-insurance-product: Create Insurance Product
-      update-insurance-product: Update Insurance Product
-      batch-delete-insurance-product: Batch Delete Insurance Products
-      create-insurance-policy: Create Insurance Policy
-      update-insurance-policy: Update Insurance Policy
-      batch-delete-insurance-policy: Batch Delete Insurance Policies
+      - create-laboratory-building
+      - update-laboratory-building
+      - batch-delete-laboratory-building
+      - create-laboratory-room
+      - update-laboratory-room
+      - batch-delete-laboratory-room
 
 generation_contract:
   deterministic_output_required: true
-  sibling_pattern_priority: business.personal,system.user,system.dictionary
   preserve_project_contracts:
-    - administrative-crud-consistency
-    - centralized-authority-based-security
     - modular-monolith-boundaries
-    - insurance-policy-product-referential-integrity
-  dag_compatibility:
-    isolated_node: true
-    explicit_dependencies_only: true
-    no_hidden_cross_module_coupling: true
+    - centralized-authority-based-security

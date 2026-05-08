@@ -1,102 +1,21 @@
-resolution_context:
-  source_module_spec: module-spec.yaml
-  resolved_schema_id: notification_management-resolved-v1
-  target_module_id: notification-management
-  bounded_context: insurance-notification-center
-  regeneration_mode: create
-  stability_goal: deterministic
-  compiler_stage: resolved-generation-plan
-  dag_compatible: true
-  multi_agent_safe: true
-module_identity:
-  module_name: notification-management
-  semantic_role: business-domain
-  responsibility_code: notification_management
-  package_root: org.eu.originalkeen.business.notification
-  route_roots:
-    - /v1/business/notification
+resolution_context: {source_module_spec: module-spec.yaml, resolved_schema_id: notification_management-resolved-v1, target_module_id: notification-management, bounded_context: notification-center, regeneration_mode: create, stability_goal: deterministic, compiler_stage: resolved-generation-plan, dag_compatible: true, multi_agent_safe: true}
+module_identity: {module_name: notification-management, semantic_role: business-domain, responsibility_code: notification_management, package_root: org.eu.originalkeen.business.notification, route_roots: [/v1/business/notification]}
 api_groups:
   - group_id: notification_management
     route_prefix: /v1/business/notification
-    aggregate: NotificationMessage
-    capability_ids:
-      - create-notification_management
-      - update-notification_management
-      - batch-delete-notification_management
-      - enquiry-notification_management-page
-      - enquiry-notification_management-details
-      - enquiry-notification_management-list
+    aggregate: NotificationTemplate
+    capability_ids: [create-notification_management, update-notification_management, batch-delete-notification_management, enquiry-notification_management-page, enquiry-notification_management-details, enquiry-notification_management-list]
 capabilities: []
 entity_graph:
   entities:
-    - entity_id: NotificationMessage
-      table: notification_message
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: NotificationDispatchRecord
-      table: notification_dispatch_record
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-validation_rules:
-  uniqueness: []
-  referential: []
-  shape: []
-architectural_bindings:
-  code_conventions:
-    resource_suffix: Resource
-    manager_suffix: Manager
-    service_suffix: Service
-    service_impl_suffix: ServiceImpl
-    mapper_suffix: Mapper
-  response_bindings:
-    wrapper_type: ResponseVo
-    page_type: PageVo
-    mutation_payload: Void
-  persistence_bindings:
-    framework: mybatis-flex
-    aggregate_identity_style: primary-key-entity
-persistence_conventions:
-  framework: mybatis-flex
-  database: mysql
-localization_requirements:
-  mandatory: false
-  languages: []
-  localized_aggregates: []
-  localized_fields: {}
-  fallback_policy: none
-audit_behavior:
-  access_log: none
-  operate_log:
-    enabled: true
-    target_capabilities:
-      - create-notification_management
-      - update-notification_management
-      - batch-delete-notification_management
-integration_points:
-  security:
-    mode: centralized-method-security
-    authority_families:
-      - business:notification:*
-  persistence:
-    database: mysql
-    required_tables:
-      - notification_message
-      - notification_dispatch_record
-code_conventions:
-  naming_stability: strict
-  route_style: business-domain-aligned
-  transaction_style: manager-boundary
-validation_hooks:
-  pre_generation:
-    - hook-discovery-baseline-complete
-  post_unit:
-    - hook-artifact-name-convention
-    - hook-package-placement-check
-  final:
-    - hook-module-boundary-check
-    - hook-deterministic-layout-check
+    - {entity_id: NotificationTemplate, table: notification_template, ownership: owned, base_type: PrimaryKeyEntity, aggregate_role: root, relations: []}
+    - {entity_id: NotificationDispatchTask, table: notification_dispatch_task, ownership: owned, base_type: PrimaryKeyEntity, aggregate_role: root, relations: []}
+validation_rules: {uniqueness: [], referential: [], shape: []}
+architectural_bindings: {code_conventions: {resource_suffix: Resource, manager_suffix: Manager, service_suffix: Service, service_impl_suffix: ServiceImpl, mapper_suffix: Mapper}, response_bindings: {wrapper_type: ResponseVo, page_type: PageVo, mutation_payload: Void}, persistence_bindings: {framework: mybatis-flex, aggregate_identity_style: primary-key-entity}}
+persistence_conventions: {framework: mybatis-flex, database: mysql}
+localization_requirements: {mandatory: false, languages: [], localized_aggregates: [], localized_fields: {}, fallback_policy: none}
+audit_behavior: {access_log: none, operate_log: {enabled: true, target_capabilities: [create-notification_management, update-notification_management, batch-delete-notification_management]}}
+integration_points: {security: {mode: centralized-method-security, authority_families: [business:notification:*]}, persistence: {database: mysql, required_tables: [notification_template, notification_dispatch_task]}}
+code_conventions: {naming_stability: strict, route_style: business-domain-aligned, transaction_style: manager-boundary}
+validation_hooks: {pre_generation: [hook-discovery-baseline-complete], post_unit: [hook-artifact-name-convention, hook-package-placement-check], final: [hook-module-boundary-check, hook-deterministic-layout-check]}
 blueprint_status: default-enabled-validated-blueprint-for-NotificationManagement

@@ -13,6 +13,8 @@ Read [references/default-project-inference.md](references/default-project-infere
 Read [references/failure-bundle-contract.md](references/failure-bundle-contract.md) before reporting failure.
 Read [references/starter-bundle-contract.md](references/starter-bundle-contract.md) when the workspace may need bootstrap or cross-machine handoff.
 Read [references/module-blueprints.yaml](references/module-blueprints.yaml) when scaffolding a first-pass project from minimal requirements.
+Read [references/portable-one-line-project-protocol.md](references/portable-one-line-project-protocol.md) when the user wants a one-sentence or one-document portable generation workflow that another Codex session can execute without prior chat context.
+Read [references/zero-context-handoff-checklist.md](references/zero-context-handoff-checklist.md) when the user explicitly wants migration, handoff, portability, or a copy-paste starter prompt for a fresh Codex session.
 
 ## Execution Mode
 
@@ -26,6 +28,13 @@ The target outcome is one of:
 
 - a bootable generated backend under `specforge-runtime/outputs/`
 - or a reproducible failure bundle under `specforge-runtime/runs/<run-id>/logs/`
+
+Treat these directory roles as fixed:
+
+- `backend/` = assembly baseline
+- `specforge-runtime/runs/<run-id>/` = execution trace for one attempt
+- `specforge-runtime/outputs/<target>/` = final deliverable
+- `sandbox/` = local scratch or migration rehearsal area
 
 ## Phase Order
 
@@ -96,6 +105,13 @@ If the input is short, infer:
 If the user asks for a full platform, do not stop at a thin CRUD skeleton.
 Infer a business-center level project shape and carry user/role/menu linkage plus database initialization SQL organization as project-level deliverable expectations.
 
+If the user wants a workflow that can be repeated on another machine or by another Codex instance, optimize for:
+
+- zero reliance on prior conversation state
+- explicit scaffold command plus explicit auto-build command
+- final artifact only under `specforge-runtime/outputs/`
+- reproducible failure bundle under `specforge-runtime/runs/<run-id>/logs/`
+
 Use pragmatic graduation-project defaults.
 Do not wait for the user to provide exhaustive detail before authoring a first pass.
 
@@ -137,6 +153,8 @@ This scaffold step should:
 - write project assembly plan
 - preserve the current proven enabled module where available
 - create the full validated module set required by the project assembly plan
+
+When the requirement is only one sentence, still author a complete first-pass project scope rather than asking the user to expand it manually unless the domain is genuinely ambiguous.
 
 ## Module Planning Rules
 
@@ -191,6 +209,14 @@ Always inspect:
 - `runs/<run-id>/generated-project/logs/project-assembly-report.yaml` when project assembly is used
 
 Prefer unique run ids for every iteration so replay and failure analysis remain reproducible.
+
+When reporting success, point the user first to:
+
+- `specforge-runtime/outputs/<target>/`
+
+When reporting failure, point the user first to:
+
+- `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
 
 ## Repair Loop
 

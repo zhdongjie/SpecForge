@@ -23,6 +23,18 @@ This file defines the repository-level directory contract.
   - not part of the canonical source tree
   - ignored by git
 
+## Human Shortcut
+
+When operating the repo, treat the directories like this:
+
+- "template input" = `backend/`
+- "compiler source" = `specforge-runtime/`
+- "this run's evidence" = `specforge-runtime/runs/<run-id>/`
+- "final product" = `specforge-runtime/outputs/<project-backend>/`
+- "scratchpad" = `sandbox/`
+
+If you are only looking for the generated deliverable, skip everything else and open `specforge-runtime/outputs/`.
+
 ## Final Deliverable Rule
 
 Treat only this location as the final generated backend:
@@ -51,3 +63,6 @@ Those directories are temporary verification artifacts.
 - Keep reproducible failure evidence under `specforge-runtime/runs/`
 - Keep handoff-ready generated backends under `specforge-runtime/outputs/`
 - Do not scatter generated artifacts into the repository root
+- Do not treat `backend/` and `outputs/` as duplicates:
+  - `backend/` is the stable assembly baseline
+  - `outputs/` is the compiled result

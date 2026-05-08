@@ -1,7 +1,7 @@
-plan_id: insurance-management-platform
-default_run_id: insurance-management-platform
+plan_id: laboratory-management-platform
+default_run_id: laboratory-management-platform
 backend_root: ../backend
-final_output_dir: outputs/insurance-management-platform-backend
+final_output_dir: outputs/laboratory-management-platform-backend
 project_assembly_plan: project-assembly-plan.yaml
 module_spec: module-spec.yaml
 module_schema: module-schema.resolved.yaml
