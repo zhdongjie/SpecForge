@@ -12,6 +12,8 @@ class InfrastructureValidator:
 
     def validate(self, field_schema: dict[str, Any], platform_schema: dict[str, Any]) -> dict[str, Any]:
         findings: list[dict[str, Any]] = []
+        package_root = field_schema["module"]["package_root"]
+        semantic_role = field_schema["module"].get("semantic_role", "")
         application_config_candidates = [
             self.output_root / "src" / "main" / "resources" / "application.yml",
             self.output_root / "src" / "main" / "resources" / "application.yaml",
@@ -24,6 +26,14 @@ class InfrastructureValidator:
         for path in required_paths:
             if not path.exists():
                 findings.append({"code": "missing_required_artifact", "status": "FAIL", "details": str(path)})
+        if semantic_role == "business-domain" and not package_root.startswith("org.eu.originalkeen.business."):
+            findings.append(
+                {
+                    "code": "business_domain_package_root_violation",
+                    "status": "FAIL",
+                    "details": f"Business-domain backend assembly must target org.eu.originalkeen.business.*, got {package_root}",
+                }
+            )
         if not any(candidate.exists() for candidate in application_config_candidates):
             findings.append(
                 {

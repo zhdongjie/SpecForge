@@ -20,6 +20,16 @@ class SynthesisValidator:
         route_values: list[str] = []
         permission_values: list[str] = []
         package_root = self.context["package_root"]
+        semantic_role = self.context["schema"].get("module", {}).get("semantic_role", "")
+
+        if semantic_role == "business-domain" and not package_root.startswith("org.eu.originalkeen.business."):
+            findings.append(
+                {
+                    "code": "business_domain_package_root_violation",
+                    "status": "FAIL",
+                    "details": f"Business-domain synthesis package root must stay under org.eu.originalkeen.business.*, got {package_root}",
+                }
+            )
 
         for source_file in sorted(self.generated_java_root.rglob("*.java")):
             source = read_text(source_file)

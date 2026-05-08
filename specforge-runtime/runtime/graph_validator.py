@@ -264,6 +264,17 @@ class GraphValidator:
                     "Architecture boundary enforcement should declare enforcement hooks",
                 )
             )
+        if any(root.startswith("org.eu.originalkeen.business.") for root in allowed_roots):
+            forbidden_roots = set(boundary.get("forbidden_package_roots", []))
+            for required_forbidden in ("org.eu.originalkeen.core", "org.eu.originalkeen.system"):
+                if required_forbidden not in forbidden_roots:
+                    findings.append(
+                        self._finding(
+                            "ERROR",
+                            "incomplete-business-boundary-guard",
+                            f"Business module boundaries must explicitly forbid {required_forbidden} package roots",
+                        )
+                    )
 
     def _check_dag_validity(self, task_graph: dict[str, Any], findings: list[dict[str, str]]) -> None:
         try:

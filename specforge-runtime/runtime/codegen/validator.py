@@ -119,6 +119,20 @@ class CodegenValidator:
 
     def _validate_packages(self) -> list[dict[str, Any]]:
         findings: list[dict[str, Any]] = []
+        semantic_role = self.context.resolved_schema.get("module_identity", {}).get("semantic_role", "")
+        if semantic_role == "business-domain" and not self.context.package_root.startswith(
+            "org.eu.originalkeen.business."
+        ):
+            findings.append(
+                {
+                    "code": "business_domain_package_root_violation",
+                    "status": "FAIL",
+                    "details": (
+                        "Business-domain modules must generate under org.eu.originalkeen.business.*, "
+                        f"got {self.context.package_root}"
+                    ),
+                }
+            )
         for source_file in sorted((self.context.output_root / "src" / "main" / "java").rglob("*.java")):
             source = read_text(source_file)
             package_name = parse_package_name(source)

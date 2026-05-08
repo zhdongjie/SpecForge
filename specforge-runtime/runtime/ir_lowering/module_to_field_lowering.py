@@ -49,6 +49,7 @@ class ModuleToFieldLowering:
                     "bounded_context",
                     module_schema.get("resolution_context", {}).get("bounded_context"),
                 ),
+                "semantic_role": module_schema["module_identity"].get("semantic_role", ""),
                 "package_root": module_schema["module_identity"]["package_root"],
                 "route_base": route_base,
                 "database": database,

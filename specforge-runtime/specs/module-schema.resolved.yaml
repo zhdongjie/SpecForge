@@ -11,16 +11,16 @@ resolution_context:
 
 module_identity:
   module_name: laboratory-reservation-management
-  semantic_role: admin-domain
-  responsibility_code: laboratory-reservation-administration
-  package_root: org.eu.originalkeen.system.labreservation
+  semantic_role: business-domain
+  responsibility_code: laboratory-reservation-operations
+  package_root: org.eu.originalkeen.business.labreservation
   route_roots:
-    - /v1/system/laboratory
-    - /v1/system/laboratory-reservation
+    - /v1/business/laboratory
+    - /v1/business/laboratory-reservation
   repository_binding:
     nearest_siblings:
+      - org.eu.originalkeen.business.personal
       - org.eu.originalkeen.system.user
-      - org.eu.originalkeen.system.role
       - org.eu.originalkeen.system.dictionary
     layering_model: resource-manager-service-mapper
     response_wrapper: ResponseVo
@@ -32,7 +32,7 @@ module_identity:
 
 api_groups:
   - group_id: laboratory-admin
-    route_prefix: /v1/system/laboratory
+    route_prefix: /v1/business/laboratory
     aggregate: Laboratory
     capability_ids:
       - create-laboratory
@@ -42,7 +42,7 @@ api_groups:
       - enquiry-laboratory-details
       - enquiry-laboratory-list
   - group_id: laboratory-reservation-admin
-    route_prefix: /v1/system/laboratory-reservation
+    route_prefix: /v1/business/laboratory-reservation
     aggregate: LaboratoryReservation
     capability_ids:
       - create-laboratory-reservation
@@ -64,9 +64,9 @@ capabilities:
       resource: LaboratoryResource
       method: create
       http_method: POST
-      path: /v1/system/laboratory
-    authority: system:laboratory:create
-    authority_binding: system:laboratory:create
+      path: /v1/business/laboratory
+    authority: business:laboratory:create
+    authority_binding: business:laboratory:create
     transaction_mode: read-write
     input_contract:
       dto: CreateLaboratoryDto
@@ -89,9 +89,9 @@ capabilities:
       resource: LaboratoryResource
       method: update
       http_method: PUT
-      path: /v1/system/laboratory
-    authority: system:laboratory:update
-    authority_binding: system:laboratory:update
+      path: /v1/business/laboratory
+    authority: business:laboratory:update
+    authority_binding: business:laboratory:update
     transaction_mode: read-write
     input_contract:
       dto: UpdateLaboratoryDto
@@ -114,9 +114,9 @@ capabilities:
       resource: LaboratoryResource
       method: batchDelete
       http_method: DELETE
-      path: /v1/system/laboratory
-    authority: system:laboratory:delete
-    authority_binding: system:laboratory:delete
+      path: /v1/business/laboratory
+    authority: business:laboratory:delete
+    authority_binding: business:laboratory:delete
     transaction_mode: read-write
     input_contract:
       dto: LaboratoryIdSet
@@ -137,9 +137,9 @@ capabilities:
       resource: LaboratoryResource
       method: enquiryPage
       http_method: GET
-      path: /v1/system/laboratory/page
-    authority: system:laboratory:page
-    authority_binding: system:laboratory:page
+      path: /v1/business/laboratory/page
+    authority: business:laboratory:page
+    authority_binding: business:laboratory:page
     transaction_mode: read-only
     input_contract:
       dto: EnquiryLaboratoryPageDto
@@ -161,9 +161,9 @@ capabilities:
       resource: LaboratoryResource
       method: enquiryDetails
       http_method: GET
-      path: /v1/system/laboratory/{id}
-    authority: system:laboratory:details
-    authority_binding: system:laboratory:details
+      path: /v1/business/laboratory/{id}
+    authority: business:laboratory:details
+    authority_binding: business:laboratory:details
     transaction_mode: read-only
     input_contract:
       dto: LaboratoryIdPath
@@ -184,9 +184,9 @@ capabilities:
       resource: LaboratoryResource
       method: enquiryList
       http_method: GET
-      path: /v1/system/laboratory/list
-    authority: system:laboratory:list
-    authority_binding: system:laboratory:list
+      path: /v1/business/laboratory/list
+    authority: business:laboratory:list
+    authority_binding: business:laboratory:list
     transaction_mode: read-only
     input_contract:
       dto: None
@@ -207,9 +207,9 @@ capabilities:
       resource: LaboratoryReservationResource
       method: create
       http_method: POST
-      path: /v1/system/laboratory-reservation
-    authority: system:laboratory-reservation:create
-    authority_binding: system:laboratory-reservation:create
+      path: /v1/business/laboratory-reservation
+    authority: business:laboratory-reservation:create
+    authority_binding: business:laboratory-reservation:create
     transaction_mode: read-write
     input_contract:
       dto: CreateLaboratoryReservationDto
@@ -234,9 +234,9 @@ capabilities:
       resource: LaboratoryReservationResource
       method: update
       http_method: PUT
-      path: /v1/system/laboratory-reservation
-    authority: system:laboratory-reservation:update
-    authority_binding: system:laboratory-reservation:update
+      path: /v1/business/laboratory-reservation
+    authority: business:laboratory-reservation:update
+    authority_binding: business:laboratory-reservation:update
     transaction_mode: read-write
     input_contract:
       dto: UpdateLaboratoryReservationDto
@@ -261,9 +261,9 @@ capabilities:
       resource: LaboratoryReservationResource
       method: batchDelete
       http_method: DELETE
-      path: /v1/system/laboratory-reservation
-    authority: system:laboratory-reservation:delete
-    authority_binding: system:laboratory-reservation:delete
+      path: /v1/business/laboratory-reservation
+    authority: business:laboratory-reservation:delete
+    authority_binding: business:laboratory-reservation:delete
     transaction_mode: read-write
     input_contract:
       dto: LaboratoryReservationIdSet
@@ -284,9 +284,9 @@ capabilities:
       resource: LaboratoryReservationResource
       method: enquiryPage
       http_method: GET
-      path: /v1/system/laboratory-reservation/page
-    authority: system:laboratory-reservation:page
-    authority_binding: system:laboratory-reservation:page
+      path: /v1/business/laboratory-reservation/page
+    authority: business:laboratory-reservation:page
+    authority_binding: business:laboratory-reservation:page
     transaction_mode: read-only
     input_contract:
       dto: EnquiryLaboratoryReservationPageDto
@@ -309,9 +309,9 @@ capabilities:
       resource: LaboratoryReservationResource
       method: enquiryDetails
       http_method: GET
-      path: /v1/system/laboratory-reservation/{id}
-    authority: system:laboratory-reservation:details
-    authority_binding: system:laboratory-reservation:details
+      path: /v1/business/laboratory-reservation/{id}
+    authority: business:laboratory-reservation:details
+    authority_binding: business:laboratory-reservation:details
     transaction_mode: read-only
     input_contract:
       dto: LaboratoryReservationIdPath
@@ -333,9 +333,9 @@ capabilities:
       resource: LaboratoryReservationResource
       method: enquiryList
       http_method: GET
-      path: /v1/system/laboratory-reservation/list
-    authority: system:laboratory-reservation:list
-    authority_binding: system:laboratory-reservation:list
+      path: /v1/business/laboratory-reservation/list
+    authority: business:laboratory-reservation:list
+    authority_binding: business:laboratory-reservation:list
     transaction_mode: read-only
     input_contract:
       dto: None
@@ -458,8 +458,8 @@ integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - system:laboratory:*
-      - system:laboratory-reservation:*
+      - business:laboratory:*
+      - business:laboratory-reservation:*
   logging:
     mode: operate-log-aspect
     mutation_only: true

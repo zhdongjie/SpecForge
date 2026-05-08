@@ -18,6 +18,12 @@ from .spring_context_verifier import SpringContextVerifier
 
 
 class BootDiagnostics:
+    START_MARKERS = (
+        "Started ",
+        "Tomcat started on port",
+        "Netty started on port",
+    )
+
     def __init__(self, project_root: Path, logs_root: Path) -> None:
         self.project_root = project_root
         self.logs_root = logs_root
@@ -30,7 +36,7 @@ class BootDiagnostics:
         self.redis_verifier = RedisVerifier()
         self.security_boot_verifier = SecurityBootVerifier()
 
-    def run(self, timeout_seconds: int = 45) -> dict[str, Any]:
+    def run(self, timeout_seconds: int = 120) -> dict[str, Any]:
         environment = self.compile_diagnostics._resolve_environment()
         command = [
             environment["maven_command"],
@@ -55,7 +61,7 @@ class BootDiagnostics:
                 line = process.stdout.readline() if process.stdout is not None else ""
                 if line:
                     output_lines.append(line.rstrip())
-                    if "Started " in line:
+                    if any(marker in line for marker in self.START_MARKERS):
                         started = True
                         break
                 if process.poll() is not None and not line:

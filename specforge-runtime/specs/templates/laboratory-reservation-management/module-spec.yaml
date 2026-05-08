@@ -13,12 +13,12 @@ compiler_context:
 module_identity:
   module_name: laboratory-reservation-management
   bounded_context: laboratory-operations
-  semantic_role: admin-domain
-  responsibility_code: laboratory-reservation-administration
-  package_root: org.eu.originalkeen.system.labreservation
+  semantic_role: business-domain
+  responsibility_code: laboratory-reservation-operations
+  package_root: org.eu.originalkeen.business.labreservation
   route_namespace:
-    laboratory: /v1/system/laboratory
-    laboratory_reservation: /v1/system/laboratory-reservation
+    laboratory: /v1/business/laboratory
+    laboratory_reservation: /v1/business/laboratory-reservation
 
 # regeneration_constraint: hard generation boundary
 generation_boundaries:
@@ -49,8 +49,8 @@ generation_boundaries:
 
 architecture_discovery_hints:
   nearest_sibling_modules:
+    - org.eu.originalkeen.business.personal
     - org.eu.originalkeen.system.user
-    - org.eu.originalkeen.system.role
     - org.eu.originalkeen.system.dictionary
   expected_layering:
     - resource
@@ -72,7 +72,7 @@ architecture_discovery_hints:
 
 api_groups:
   - group_id: laboratory-admin
-    route_prefix: /v1/system/laboratory
+    route_prefix: /v1/business/laboratory
     aggregate: Laboratory
     capability_ids:
       - create-laboratory
@@ -82,7 +82,7 @@ api_groups:
       - enquiry-laboratory-details
       - enquiry-laboratory-list
   - group_id: laboratory-reservation-admin
-    route_prefix: /v1/system/laboratory-reservation
+    route_prefix: /v1/business/laboratory-reservation
     aggregate: LaboratoryReservation
     capability_ids:
       - create-laboratory-reservation
@@ -100,7 +100,7 @@ capabilities:
     api_group: laboratory-admin
     http_method: POST
     route: /
-    authority: system:laboratory:create
+    authority: business:laboratory:create
     transaction: read-write
     input_dto: CreateLaboratoryDto
     output_vo: Void
@@ -116,7 +116,7 @@ capabilities:
     api_group: laboratory-admin
     http_method: PUT
     route: /
-    authority: system:laboratory:update
+    authority: business:laboratory:update
     transaction: read-write
     input_dto: UpdateLaboratoryDto
     output_vo: Void
@@ -132,7 +132,7 @@ capabilities:
     api_group: laboratory-admin
     http_method: DELETE
     route: /
-    authority: system:laboratory:delete
+    authority: business:laboratory:delete
     transaction: read-write
     input_dto: LaboratoryIdSet
     output_vo: Void
@@ -145,7 +145,7 @@ capabilities:
     api_group: laboratory-admin
     http_method: GET
     route: /page
-    authority: system:laboratory:page
+    authority: business:laboratory:page
     transaction: read-only
     input_dto: EnquiryLaboratoryPageDto
     output_vo: PageVo<LaboratoryPageVo>
@@ -158,7 +158,7 @@ capabilities:
     api_group: laboratory-admin
     http_method: GET
     route: /{id}
-    authority: system:laboratory:details
+    authority: business:laboratory:details
     transaction: read-only
     input_dto: LaboratoryIdPath
     output_vo: LaboratoryDetailsVo
@@ -171,7 +171,7 @@ capabilities:
     api_group: laboratory-admin
     http_method: GET
     route: /list
-    authority: system:laboratory:list
+    authority: business:laboratory:list
     transaction: read-only
     input_dto: None
     output_vo: List<LaboratoryListVo>
@@ -184,7 +184,7 @@ capabilities:
     api_group: laboratory-reservation-admin
     http_method: POST
     route: /
-    authority: system:laboratory-reservation:create
+    authority: business:laboratory-reservation:create
     transaction: read-write
     input_dto: CreateLaboratoryReservationDto
     output_vo: Void
@@ -202,7 +202,7 @@ capabilities:
     api_group: laboratory-reservation-admin
     http_method: PUT
     route: /
-    authority: system:laboratory-reservation:update
+    authority: business:laboratory-reservation:update
     transaction: read-write
     input_dto: UpdateLaboratoryReservationDto
     output_vo: Void
@@ -220,7 +220,7 @@ capabilities:
     api_group: laboratory-reservation-admin
     http_method: DELETE
     route: /
-    authority: system:laboratory-reservation:delete
+    authority: business:laboratory-reservation:delete
     transaction: read-write
     input_dto: LaboratoryReservationIdSet
     output_vo: Void
@@ -233,7 +233,7 @@ capabilities:
     api_group: laboratory-reservation-admin
     http_method: GET
     route: /page
-    authority: system:laboratory-reservation:page
+    authority: business:laboratory-reservation:page
     transaction: read-only
     input_dto: EnquiryLaboratoryReservationPageDto
     output_vo: PageVo<LaboratoryReservationPageVo>
@@ -247,7 +247,7 @@ capabilities:
     api_group: laboratory-reservation-admin
     http_method: GET
     route: /{id}
-    authority: system:laboratory-reservation:details
+    authority: business:laboratory-reservation:details
     transaction: read-only
     input_dto: LaboratoryReservationIdPath
     output_vo: LaboratoryReservationDetailsVo
@@ -261,7 +261,7 @@ capabilities:
     api_group: laboratory-reservation-admin
     http_method: GET
     route: /list
-    authority: system:laboratory-reservation:list
+    authority: business:laboratory-reservation:list
     transaction: read-only
     input_dto: None
     output_vo: List<LaboratoryReservationListVo>
@@ -361,8 +361,8 @@ architecture_constraints:
   security_style:
     type: preauthorize-authority
     authority_prefixes:
-      - system:laboratory:
-      - system:laboratory-reservation:
+      - business:laboratory:
+      - business:laboratory-reservation:
   transaction_boundary: manager-boundary
   controller_suffix: Resource
   manager_suffix: Manager
@@ -406,7 +406,7 @@ audit_behavior:
 
 generation_contract:
   deterministic_output_required: true
-  sibling_pattern_priority: system.user,system.role,system.dictionary
+  sibling_pattern_priority: business.personal,system.user,system.dictionary
   preserve_project_contracts:
     - administrative-crud-consistency
     - centralized-authority-based-security

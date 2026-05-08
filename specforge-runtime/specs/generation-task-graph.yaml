@@ -13,9 +13,10 @@ graph_context:
 architecture_boundary_enforcement:
   single_module_scope: true
   allowed_package_roots:
-    - org.eu.originalkeen.system.labreservation
+    - org.eu.originalkeen.business.labreservation
   forbidden_package_roots:
     - org.eu.originalkeen.authorize
+    - org.eu.originalkeen.core
     - org.eu.originalkeen.system.user
     - org.eu.originalkeen.system.role
     - org.eu.originalkeen.system.permission

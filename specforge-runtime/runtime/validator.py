@@ -10,6 +10,7 @@ class Validator:
         self.allowed_package_roots = task_graph.get("architecture_boundary_enforcement", {}).get(
             "allowed_package_roots", []
         )
+        self.module_identity = resolved_schema.get("module_identity", {})
         self.code_conventions = (
             resolved_schema.get("architectural_bindings", {}).get("code_conventions", {})
         )
@@ -23,6 +24,7 @@ class Validator:
         hooks = []
         hooks.append(self._dependency_check(dependency_status_ok))
         hooks.append(self._naming_check(planned_artifacts))
+        hooks.append(self._business_domain_check())
         hooks.append(self._architecture_boundary_check(planned_artifacts))
         overall = "PASS" if all(hook["status"] == "PASS" for hook in hooks) else "FAIL"
         return {"overall_status": overall, "hooks": hooks}
@@ -71,4 +73,25 @@ class Validator:
             "details": "Artifact package roots stayed within allowed module boundary"
             if not invalid
             else f"Artifacts escaped boundary: {', '.join(sorted(set(invalid)))}",
+        }
+
+    def _business_domain_check(self) -> dict[str, Any]:
+        semantic_role = self.module_identity.get("semantic_role", "")
+        package_root = self.module_identity.get("package_root", "")
+        if semantic_role != "business-domain":
+            return {
+                "hook": "business_domain_check",
+                "status": "PASS",
+                "details": "Module is not a business-domain module",
+            }
+        if package_root.startswith("org.eu.originalkeen.business."):
+            return {
+                "hook": "business_domain_check",
+                "status": "PASS",
+                "details": "Business-domain module package root is constrained to business/*",
+            }
+        return {
+            "hook": "business_domain_check",
+            "status": "FAIL",
+            "details": f"Business-domain module must use org.eu.originalkeen.business.* package root, got {package_root}",
         }

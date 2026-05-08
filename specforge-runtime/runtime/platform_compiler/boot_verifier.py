@@ -10,6 +10,12 @@ from runtime.codegen.common import dump_yaml
 
 
 class BootVerifier:
+    START_MARKERS = (
+        "Started ",
+        "Tomcat started on port",
+        "Netty started on port",
+    )
+
     def __init__(self, project_root: Path) -> None:
         self.project_root = project_root
 
@@ -47,7 +53,7 @@ class BootVerifier:
             result["reason"] = "maven-local-repository-permission"
         return result
 
-    def boot_check(self, timeout_seconds: int = 45) -> dict[str, Any]:
+    def boot_check(self, timeout_seconds: int = 120) -> dict[str, Any]:
         mvn_command = self._find_maven()
         if mvn_command is None:
             return {"status": "SKIPPED", "reason": "maven-not-found"}
@@ -67,7 +73,7 @@ class BootVerifier:
                 line = process.stdout.readline() if process.stdout is not None else ""
                 if line:
                     output_lines.append(line.rstrip())
-                    if "Started " in line:
+                    if any(marker in line for marker in self.START_MARKERS):
                         started = True
                         break
                 if process.poll() is not None and not line:
