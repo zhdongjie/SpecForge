@@ -1,33 +1,31 @@
 # semantic_ir: compiler input identity and regeneration mode
 compiler_context:
-  source_spec_id: original-keen-auth-center-v1
-  target_module_id: dictionary-management
+  source_spec_id: laboratory-reservation-center-v1
+  target_module_id: laboratory-reservation-management
   regeneration_mode: create
   stability_goal: deterministic
   planner_tags:
     - bounded-module
-    - admin-domain
+    - reservation-domain
     - dag-node
 
 # semantic_ir: bounded module identity
 module_identity:
-  module_name: dictionary-management
-  bounded_context: system-administration
+  module_name: laboratory-reservation-management
+  bounded_context: laboratory-operations
   semantic_role: admin-domain
-  responsibility_code: reference-data-localization
-  package_root: org.eu.originalkeen.system.dictionary
+  responsibility_code: laboratory-reservation-administration
+  package_root: org.eu.originalkeen.system.labreservation
   route_namespace:
-    dictionary_type: /v1/system/dictionary-type
-    dictionary_data: /v1/system/dictionary-data
+    laboratory: /v1/system/laboratory
+    laboratory_reservation: /v1/system/laboratory-reservation
 
 # regeneration_constraint: hard generation boundary
 generation_boundaries:
   single_module_only: true
   owns_aggregates:
-    - DictionaryType
-    - DictionaryTypeTranslation
-    - DictionaryData
-    - DictionaryDataTranslation
+    - Laboratory
+    - LaboratoryReservation
   may_reference:
     - ResponseVo
     - PageVo
@@ -40,23 +38,20 @@ generation_boundaries:
     - role management
     - permission tree management
     - access log storage
-    - operate log storage
   allowed_external_dependencies:
     inbound:
       - centralized-jwt-security
       - global-response-wrapper
       - global-exception-handling
-      - i18n-message-resolution
     outbound:
-      - mysql-dictionary-tables
+      - mysql-laboratory-tables
       - operation-audit-aspect
 
-# architecture_discovery_hint: conventions to discover and preserve
 architecture_discovery_hints:
   nearest_sibling_modules:
     - org.eu.originalkeen.system.user
     - org.eu.originalkeen.system.role
-    - org.eu.originalkeen.system.permission
+    - org.eu.originalkeen.system.dictionary
   expected_layering:
     - resource
     - manager
@@ -75,502 +70,348 @@ architecture_discovery_hints:
   expected_mutation_logging: "@OperateLog"
   expected_persistence_style: mybatis-flex
 
-# semantic_ir: capability groups for planners and generators
 api_groups:
-  - group_id: dictionary-type-admin
-    route_prefix: /v1/system/dictionary-type
-    aggregate: DictionaryType
+  - group_id: laboratory-admin
+    route_prefix: /v1/system/laboratory
+    aggregate: Laboratory
     capability_ids:
-      - create-dictionary-type
-      - update-dictionary-type
-      - batch-delete-dictionary-type
-      - enquiry-dictionary-type-page
-      - enquiry-dictionary-type-details
-      - enquiry-dictionary-type-list
-      - validate-dictionary-type-name
-      - validate-dictionary-type-code
-  - group_id: dictionary-data-admin
-    route_prefix: /v1/system/dictionary-data
-    aggregate: DictionaryData
+      - create-laboratory
+      - update-laboratory
+      - batch-delete-laboratory
+      - enquiry-laboratory-page
+      - enquiry-laboratory-details
+      - enquiry-laboratory-list
+  - group_id: laboratory-reservation-admin
+    route_prefix: /v1/system/laboratory-reservation
+    aggregate: LaboratoryReservation
     capability_ids:
-      - create-dictionary-data
-      - update-dictionary-data
-      - batch-delete-dictionary-data
-      - enquiry-dictionary-data-page
-      - enquiry-dictionary-data-details
-      - enquiry-dictionary-data-list-by-type
-      - validate-dictionary-data-label
-      - validate-dictionary-data-value
+      - create-laboratory-reservation
+      - update-laboratory-reservation
+      - batch-delete-laboratory-reservation
+      - enquiry-laboratory-reservation-page
+      - enquiry-laboratory-reservation-details
+      - enquiry-laboratory-reservation-list
 
-# semantic_ir: deterministic capability mapping
 capabilities:
-  - capability_id: create-dictionary-type
+  - capability_id: create-laboratory
     semantic_intent: create-record
     deterministic_pattern: create
     stability_class: stable
-    api_group: dictionary-type-admin
+    api_group: laboratory-admin
     http_method: POST
     route: /
-    authority: system:dictionary-type:create
+    authority: system:laboratory:create
     transaction: read-write
-    input_dto: CreateDictionaryTypeDto
+    input_dto: CreateLaboratoryDto
     output_vo: Void
     touched_entities:
-      - DictionaryType
-      - DictionaryTypeTranslation
+      - Laboratory
     invariants:
-      - dictionary_type_code_unique
-      - dictionary_type_name_unique_per_language
-    generation_notes:
-      - create root aggregate and localized fields in one write workflow
-  - capability_id: update-dictionary-type
+      - laboratory_code_unique
+      - laboratory_name_unique
+  - capability_id: update-laboratory
     semantic_intent: update-record
     deterministic_pattern: update
     stability_class: stable
-    api_group: dictionary-type-admin
+    api_group: laboratory-admin
     http_method: PUT
     route: /
-    authority: system:dictionary-type:update
+    authority: system:laboratory:update
     transaction: read-write
-    input_dto: UpdateDictionaryTypeDto
+    input_dto: UpdateLaboratoryDto
     output_vo: Void
     touched_entities:
-      - DictionaryType
-      - DictionaryTypeTranslation
+      - Laboratory
     invariants:
-      - dictionary_type_identity_preserved
-      - dictionary_type_code_unique
-      - dictionary_type_name_unique_per_language
-  - capability_id: batch-delete-dictionary-type
+      - laboratory_code_unique
+      - laboratory_name_unique
+  - capability_id: batch-delete-laboratory
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     stability_class: stable
-    api_group: dictionary-type-admin
+    api_group: laboratory-admin
     http_method: DELETE
     route: /
-    authority: system:dictionary-type:delete
+    authority: system:laboratory:delete
     transaction: read-write
-    input_dto: DictionaryTypeIdSet
+    input_dto: LaboratoryIdSet
     output_vo: Void
     touched_entities:
-      - DictionaryType
-      - DictionaryTypeTranslation
-    invariants:
-      - batch_admin_delete_supported
-  - capability_id: enquiry-dictionary-type-page
+      - Laboratory
+  - capability_id: enquiry-laboratory-page
     semantic_intent: query-page
     deterministic_pattern: page
     stability_class: stable
-    api_group: dictionary-type-admin
+    api_group: laboratory-admin
     http_method: GET
     route: /page
-    authority: system:dictionary-type:page
+    authority: system:laboratory:page
     transaction: read-only
-    input_dto: EnquiryDictionaryTypePageDto
-    output_vo: PageVo<DictionaryTypePageVo>
+    input_dto: EnquiryLaboratoryPageDto
+    output_vo: PageVo<LaboratoryPageVo>
     touched_entities:
-      - DictionaryType
-      - DictionaryTypeTranslation
-    invariants:
-      - repository_pagination_pattern_preserved
-  - capability_id: enquiry-dictionary-type-details
+      - Laboratory
+  - capability_id: enquiry-laboratory-details
     semantic_intent: query-details
     deterministic_pattern: details
     stability_class: stable
-    api_group: dictionary-type-admin
+    api_group: laboratory-admin
     http_method: GET
     route: /{id}
-    authority: system:dictionary-type:details
+    authority: system:laboratory:details
     transaction: read-only
-    input_dto: DictionaryTypeIdPath
-    output_vo: DictionaryTypeDetailsVo
+    input_dto: LaboratoryIdPath
+    output_vo: LaboratoryDetailsVo
     touched_entities:
-      - DictionaryType
-      - DictionaryTypeTranslation
-  - capability_id: enquiry-dictionary-type-list
+      - Laboratory
+  - capability_id: enquiry-laboratory-list
     semantic_intent: query-list
     deterministic_pattern: list
     stability_class: stable
-    api_group: dictionary-type-admin
+    api_group: laboratory-admin
     http_method: GET
     route: /list
-    authority: system:dictionary-type:list
+    authority: system:laboratory:list
     transaction: read-only
     input_dto: None
-    output_vo: List<DictionaryTypeListVo>
+    output_vo: List<LaboratoryListVo>
     touched_entities:
-      - DictionaryType
-      - DictionaryTypeTranslation
-  - capability_id: validate-dictionary-type-name
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    stability_class: stable
-    api_group: dictionary-type-admin
-    http_method: GET
-    route: /dictionary-type-name/unique
-    authority: system:dictionary-type:validate-dictionary-type-name
-    transaction: read-only
-    input_dto: ValidateDictionaryTypeNameUniqueDto
-    output_vo: Boolean
-    touched_entities:
-      - DictionaryTypeTranslation
-    invariants:
-      - dictionary_type_name_unique_per_language
-  - capability_id: validate-dictionary-type-code
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    stability_class: stable
-    api_group: dictionary-type-admin
-    http_method: GET
-    route: /dictionary-type-code/unique
-    authority: system:dictionary-type:validate-dictionary-type-code
-    transaction: read-only
-    input_dto: ValidateDictionaryTypeCodeUniqueDto
-    output_vo: Boolean
-    touched_entities:
-      - DictionaryType
-    invariants:
-      - dictionary_type_code_unique
-  - capability_id: create-dictionary-data
+      - Laboratory
+  - capability_id: create-laboratory-reservation
     semantic_intent: create-record
     deterministic_pattern: create
     stability_class: stable
-    api_group: dictionary-data-admin
+    api_group: laboratory-reservation-admin
     http_method: POST
     route: /
-    authority: system:dictionary-data:create
+    authority: system:laboratory-reservation:create
     transaction: read-write
-    input_dto: CreateDictionaryDataDto
+    input_dto: CreateLaboratoryReservationDto
     output_vo: Void
     touched_entities:
-      - DictionaryData
-      - DictionaryDataTranslation
-      - DictionaryType
+      - LaboratoryReservation
+      - Laboratory
     invariants:
-      - parent_dictionary_type_must_exist
-      - dictionary_data_label_unique_per_language_and_type
-      - dictionary_data_value_unique_per_type
-  - capability_id: update-dictionary-data
+      - reservation_code_unique
+      - reservation_slot_unique_per_laboratory
+      - reservation_laboratory_must_exist
+  - capability_id: update-laboratory-reservation
     semantic_intent: update-record
     deterministic_pattern: update
     stability_class: stable
-    api_group: dictionary-data-admin
+    api_group: laboratory-reservation-admin
     http_method: PUT
     route: /
-    authority: system:dictionary-data:update
+    authority: system:laboratory-reservation:update
     transaction: read-write
-    input_dto: UpdateDictionaryDataDto
+    input_dto: UpdateLaboratoryReservationDto
     output_vo: Void
     touched_entities:
-      - DictionaryData
-      - DictionaryDataTranslation
-      - DictionaryType
+      - LaboratoryReservation
+      - Laboratory
     invariants:
-      - dictionary_data_identity_preserved
-      - parent_dictionary_type_must_exist
-      - dictionary_data_label_unique_per_language_and_type
-      - dictionary_data_value_unique_per_type
-  - capability_id: batch-delete-dictionary-data
+      - reservation_code_unique
+      - reservation_slot_unique_per_laboratory
+      - reservation_laboratory_must_exist
+  - capability_id: batch-delete-laboratory-reservation
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     stability_class: stable
-    api_group: dictionary-data-admin
+    api_group: laboratory-reservation-admin
     http_method: DELETE
     route: /
-    authority: system:dictionary-data:delete
+    authority: system:laboratory-reservation:delete
     transaction: read-write
-    input_dto: DictionaryDataIdSet
+    input_dto: LaboratoryReservationIdSet
     output_vo: Void
     touched_entities:
-      - DictionaryData
-      - DictionaryDataTranslation
-    invariants:
-      - batch_admin_delete_supported
-  - capability_id: enquiry-dictionary-data-page
+      - LaboratoryReservation
+  - capability_id: enquiry-laboratory-reservation-page
     semantic_intent: query-page
     deterministic_pattern: page
     stability_class: stable
-    api_group: dictionary-data-admin
+    api_group: laboratory-reservation-admin
     http_method: GET
     route: /page
-    authority: system:dictionary-data:page
+    authority: system:laboratory-reservation:page
     transaction: read-only
-    input_dto: EnquiryDictionaryDataPageDto
-    output_vo: PageVo<DictionaryDataPageVo>
+    input_dto: EnquiryLaboratoryReservationPageDto
+    output_vo: PageVo<LaboratoryReservationPageVo>
     touched_entities:
-      - DictionaryData
-      - DictionaryDataTranslation
-      - DictionaryType
-    invariants:
-      - repository_pagination_pattern_preserved
-  - capability_id: enquiry-dictionary-data-details
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: enquiry-laboratory-reservation-details
     semantic_intent: query-details
     deterministic_pattern: details
     stability_class: stable
-    api_group: dictionary-data-admin
+    api_group: laboratory-reservation-admin
     http_method: GET
     route: /{id}
-    authority: system:dictionary-data:details
+    authority: system:laboratory-reservation:details
     transaction: read-only
-    input_dto: DictionaryDataIdPath
-    output_vo: DictionaryDataDetailsVo
+    input_dto: LaboratoryReservationIdPath
+    output_vo: LaboratoryReservationDetailsVo
     touched_entities:
-      - DictionaryData
-      - DictionaryDataTranslation
-      - DictionaryType
-  - capability_id: enquiry-dictionary-data-list-by-type
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: enquiry-laboratory-reservation-list
     semantic_intent: query-list
     deterministic_pattern: list
     stability_class: stable
-    api_group: dictionary-data-admin
+    api_group: laboratory-reservation-admin
     http_method: GET
-    route: /list/{dictionaryTypeCode}
-    authority: system:dictionary-data:list
+    route: /list
+    authority: system:laboratory-reservation:list
     transaction: read-only
-    input_dto: DictionaryTypeCodePath
-    output_vo: List<DictionaryDataListVo>
+    input_dto: None
+    output_vo: List<LaboratoryReservationListVo>
     touched_entities:
-      - DictionaryData
-      - DictionaryDataTranslation
-      - DictionaryType
-    invariants:
-      - lightweight_option_output_only
-      - parent_dictionary_type_resolved_by_code
-  - capability_id: validate-dictionary-data-label
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    stability_class: stable
-    api_group: dictionary-data-admin
-    http_method: GET
-    route: /label/unique
-    authority: system:dictionary-data:validate-label
-    transaction: read-only
-    input_dto: ValidateDictionaryDataLabelUniqueDto
-    output_vo: Boolean
-    touched_entities:
-      - DictionaryDataTranslation
-      - DictionaryType
-    invariants:
-      - dictionary_data_label_unique_per_language_and_type
-  - capability_id: validate-dictionary-data-value
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    stability_class: stable
-    api_group: dictionary-data-admin
-    http_method: GET
-    route: /value/unique
-    authority: system:dictionary-data:validate-value
-    transaction: read-only
-    input_dto: ValidateDictionaryDataValueUniqueDto
-    output_vo: Boolean
-    touched_entities:
-      - DictionaryData
-      - DictionaryType
-    invariants:
-      - dictionary_data_value_unique_per_type
+      - LaboratoryReservation
+      - Laboratory
 
-# semantic_ir: entity ownership and relation graph
 entity_graph:
   entities:
-    - entity_id: DictionaryType
-      table: system_dictionary_type
+    - entity_id: Laboratory
+      table: system_laboratory
       ownership: owned
       base_type: PrimaryKeyEntity
       aggregate_role: root
       relations:
         - relation: one-to-many
-          target: DictionaryTypeTranslation
-          relation_name: translations
-        - relation: one-to-many
-          target: DictionaryData
-          relation_name: data_items
-    - entity_id: DictionaryTypeTranslation
-      table: system_dictionary_type_translation
-      ownership: owned
-      base_type: none
-      aggregate_role: translation-child
-      relations:
-        - relation: many-to-one
-          target: DictionaryType
-          relation_name: parent_type
-    - entity_id: DictionaryData
-      table: system_dictionary_data
+          target: LaboratoryReservation
+          relation_name: reservations
+    - entity_id: LaboratoryReservation
+      table: system_laboratory_reservation
       ownership: owned
       base_type: PrimaryKeyEntity
       aggregate_role: child-root
       relations:
         - relation: many-to-one
-          target: DictionaryType
-          relation_name: parent_type
-        - relation: one-to-many
-          target: DictionaryDataTranslation
-          relation_name: translations
-    - entity_id: DictionaryDataTranslation
-      table: system_dictionary_data_translation
-      ownership: owned
-      base_type: none
-      aggregate_role: translation-child
-      relations:
-        - relation: many-to-one
-          target: DictionaryData
-          relation_name: parent_data
+          target: Laboratory
+          relation_name: laboratory
 
-# regeneration_constraint: generated artifact family
 artifact_contract:
   resource:
-    - DictionaryTypeResource
-    - DictionaryDataResource
+    - LaboratoryResource
+    - LaboratoryReservationResource
   manager:
-    - DictionaryTypeManager
-    - DictionaryDataManager
+    - LaboratoryManager
+    - LaboratoryReservationManager
   service:
-    - DictionaryTypeService
-    - DictionaryTypeTranslationService
-    - DictionaryDataService
-    - DictionaryDataTranslationService
+    - LaboratoryService
+    - LaboratoryReservationService
   service_impl:
-    - DictionaryTypeServiceImpl
-    - DictionaryTypeTranslationServiceImpl
-    - DictionaryDataServiceImpl
-    - DictionaryDataTranslationServiceImpl
+    - LaboratoryServiceImpl
+    - LaboratoryReservationServiceImpl
   mapper:
-    - DictionaryTypeMapper
-    - DictionaryTypeTranslationMapper
-    - DictionaryDataMapper
-    - DictionaryDataTranslationMapper
+    - LaboratoryMapper
+    - LaboratoryReservationMapper
   entity:
-    - DictionaryTypeEntity
-    - DictionaryTypeTranslationEntity
-    - DictionaryDataEntity
-    - DictionaryDataTranslationEntity
+    - Laboratory
+    - LaboratoryReservation
   dto:
-    - CreateDictionaryTypeDto
-    - UpdateDictionaryTypeDto
-    - EnquiryDictionaryTypePageDto
-    - ValidateDictionaryTypeNameUniqueDto
-    - ValidateDictionaryTypeCodeUniqueDto
-    - CreateDictionaryDataDto
-    - UpdateDictionaryDataDto
-    - EnquiryDictionaryDataPageDto
-    - ValidateDictionaryDataLabelUniqueDto
-    - ValidateDictionaryDataValueUniqueDto
+    - CreateLaboratoryDto
+    - UpdateLaboratoryDto
+    - EnquiryLaboratoryPageDto
+    - CreateLaboratoryReservationDto
+    - UpdateLaboratoryReservationDto
+    - EnquiryLaboratoryReservationPageDto
   vo:
-    - DictionaryTypeDetailsVo
-    - DictionaryTypePageVo
-    - DictionaryTypeListVo
-    - DictionaryDataDetailsVo
-    - DictionaryDataPageVo
-    - DictionaryDataListVo
+    - LaboratoryDetailsVo
+    - LaboratoryPageVo
+    - LaboratoryListVo
+    - LaboratoryReservationDetailsVo
+    - LaboratoryReservationPageVo
+    - LaboratoryReservationListVo
   bo: []
 
-# regeneration_constraint: compile-time validation targets
 validation_rules:
   uniqueness:
-    - rule_id: dictionary_type_code_unique
-      scope: system_dictionary_type.dictionary_type_code
-    - rule_id: dictionary_type_name_unique_per_language
-      scope: system_dictionary_type_translation.(language_code, dictionary_type_name)
-    - rule_id: dictionary_data_label_unique_per_language_and_type
-      scope: system_dictionary_data_translation.(language_code, label, dictionary_type_code)
-    - rule_id: dictionary_data_value_unique_per_type
-      scope: system_dictionary_data.(dictionary_type_code, value)
+    - rule_id: laboratory_code_unique
+      scope: system_laboratory.laboratory_code
+    - rule_id: laboratory_name_unique
+      scope: system_laboratory.laboratory_name
+    - rule_id: reservation_code_unique
+      scope: system_laboratory_reservation.reservation_code
+    - rule_id: reservation_slot_unique_per_laboratory
+      scope: system_laboratory_reservation.(laboratory_id, reservation_start_time, reservation_end_time)
   referential:
-    - rule_id: parent_dictionary_type_must_exist
-      source: DictionaryData.dictionary_type_code
-      target: DictionaryType.dictionary_type_code
+    - rule_id: reservation_laboratory_must_exist
+      source: LaboratoryReservation.laboratory_id
+      target: Laboratory.id
   shape:
-    - rule_id: lightweight_option_output_only
-      target_capability: enquiry-dictionary-data-list-by-type
     - rule_id: repository_pagination_pattern_preserved
       target_capability:
-        - enquiry-dictionary-type-page
-        - enquiry-dictionary-data-page
+        - enquiry-laboratory-page
+        - enquiry-laboratory-reservation-page
 
-# regeneration_constraint: repository architecture preservation
 architecture_constraints:
   modular_monolith_mode: true
   package_layout_must_match_siblings: true
   response_wrapper_must_be: ResponseVo
   page_wrapper_must_be: PageVo
   mutation_logging_required_for:
-    - create-dictionary-type
-    - update-dictionary-type
-    - batch-delete-dictionary-type
-    - create-dictionary-data
-    - update-dictionary-data
-    - batch-delete-dictionary-data
+    - create-laboratory
+    - update-laboratory
+    - batch-delete-laboratory
+    - create-laboratory-reservation
+    - update-laboratory-reservation
+    - batch-delete-laboratory-reservation
   security_annotation_required: true
   security_style:
     type: preauthorize-authority
     authority_prefixes:
-      - system:dictionary-type:
-      - system:dictionary-data:
+      - system:laboratory:
+      - system:laboratory-reservation:
   transaction_boundary: manager-boundary
   controller_suffix: Resource
   manager_suffix: Manager
 
-# architecture_discovery_hint: persistence and query conventions
 persistence_conventions:
   framework: mybatis-flex
   database: mysql
   query_style:
     page_queries_use_enquiry_dto: true
     detail_queries_use_path_id: true
-    list_queries_may_use_path_code: true
-  translation_model:
-    separate_translation_tables: true
-    localized_reads_required: true
+    list_queries_use_simple_collection_read: true
   ownership_model:
-    root_and_translation_split: true
-    child_data_bound_to_type: true
+    laboratory_as_parent_reference: true
+    reservation_belongs_to_laboratory: true
 
-# semantic_ir: localization behavior required by generators and validators
 localization_requirements:
-  mandatory: true
-  languages:
-    - zh-CN
-    - en-US
-  localized_aggregates:
-    - DictionaryType
-    - DictionaryData
-  localized_fields:
-    DictionaryType:
-      - dictionary_type_name
-      - remark
-    DictionaryData:
-      - label
-      - remark
-  fallback_policy: repository-locale-resolution
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
 
-# semantic_ir: audit behavior for integration agents
 audit_behavior:
   access_log: none
   operate_log:
     enabled: true
     target_capabilities:
-      - create-dictionary-type
-      - update-dictionary-type
-      - batch-delete-dictionary-type
-      - create-dictionary-data
-      - update-dictionary-data
-      - batch-delete-dictionary-data
+      - create-laboratory
+      - update-laboratory
+      - batch-delete-laboratory
+      - create-laboratory-reservation
+      - update-laboratory-reservation
+      - batch-delete-laboratory-reservation
     titles:
-      create-dictionary-type: Create Dictionary Type
-      update-dictionary-type: Update Dictionary Type
-      batch-delete-dictionary-type: Batch Delete Dictionary Types
-      create-dictionary-data: Create Dictionary Data
-      update-dictionary-data: Update Dictionary Data
-      batch-delete-dictionary-data: Batch Delete Dictionary Data
+      create-laboratory: Create Laboratory
+      update-laboratory: Update Laboratory
+      batch-delete-laboratory: Batch Delete Laboratories
+      create-laboratory-reservation: Create Laboratory Reservation
+      update-laboratory-reservation: Update Laboratory Reservation
+      batch-delete-laboratory-reservation: Batch Delete Laboratory Reservations
 
-# regeneration_constraint: final hard constraints for planners, generators, validators
 generation_contract:
   deterministic_output_required: true
-  sibling_pattern_priority: system.user,system.role,system.permission
+  sibling_pattern_priority: system.user,system.role,system.dictionary
   preserve_project_contracts:
-    - multilingual-translation-model
     - administrative-crud-consistency
     - centralized-authority-based-security
     - modular-monolith-boundaries
+    - reservation-laboratory-referential-integrity
   dag_compatibility:
     isolated_node: true
     explicit_dependencies_only: true

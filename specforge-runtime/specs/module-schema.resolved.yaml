@@ -1,29 +1,27 @@
-# semantic_ir: compiler resolution context
 resolution_context:
   source_module_spec: module-spec.yaml
-  resolved_schema_id: dictionary-management-resolved-v1
-  target_module_id: dictionary-management
-  bounded_context: system-administration
+  resolved_schema_id: laboratory-reservation-management-resolved-v1
+  target_module_id: laboratory-reservation-management
+  bounded_context: laboratory-operations
   regeneration_mode: create
   stability_goal: deterministic
   compiler_stage: resolved-generation-plan
   dag_compatible: true
   multi_agent_safe: true
 
-# semantic_ir: normalized module identity after binding to repository conventions
 module_identity:
-  module_name: dictionary-management
+  module_name: laboratory-reservation-management
   semantic_role: admin-domain
-  responsibility_code: reference-data-localization
-  package_root: org.eu.originalkeen.system.dictionary
+  responsibility_code: laboratory-reservation-administration
+  package_root: org.eu.originalkeen.system.labreservation
   route_roots:
-    - /v1/system/dictionary-type
-    - /v1/system/dictionary-data
+    - /v1/system/laboratory
+    - /v1/system/laboratory-reservation
   repository_binding:
     nearest_siblings:
       - org.eu.originalkeen.system.user
       - org.eu.originalkeen.system.role
-      - org.eu.originalkeen.system.permission
+      - org.eu.originalkeen.system.dictionary
     layering_model: resource-manager-service-mapper
     response_wrapper: ResponseVo
     page_wrapper: PageVo
@@ -32,760 +30,364 @@ module_identity:
     mutation_logging_binding: operate-log
     transaction_binding: manager-boundary
 
-# semantic_ir: normalized capability expansion used by planners and generators
-normalized_capabilities:
-  - capability_id: create-dictionary-type
-    normalized_group: dictionary-type-write
+api_groups:
+  - group_id: laboratory-admin
+    route_prefix: /v1/system/laboratory
+    aggregate: Laboratory
+    capability_ids:
+      - create-laboratory
+      - update-laboratory
+      - batch-delete-laboratory
+      - enquiry-laboratory-page
+      - enquiry-laboratory-details
+      - enquiry-laboratory-list
+  - group_id: laboratory-reservation-admin
+    route_prefix: /v1/system/laboratory-reservation
+    aggregate: LaboratoryReservation
+    capability_ids:
+      - create-laboratory-reservation
+      - update-laboratory-reservation
+      - batch-delete-laboratory-reservation
+      - enquiry-laboratory-reservation-page
+      - enquiry-laboratory-reservation-details
+      - enquiry-laboratory-reservation-list
+
+capabilities:
+  - capability_id: create-laboratory
+    normalized_group: laboratory-write
     semantic_intent: create-record
     deterministic_pattern: create
     execution_kind: mutation
-    aggregate_scope: DictionaryType
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
     route_binding:
-      resource: DictionaryTypeResource
+      resource: LaboratoryResource
       method: create
       http_method: POST
-      path: /v1/system/dictionary-type
-    authority_binding: system:dictionary-type:create
+      path: /v1/system/laboratory
+    authority: system:laboratory:create
+    authority_binding: system:laboratory:create
     transaction_mode: read-write
     input_contract:
-      dto: CreateDictionaryTypeDto
+      dto: CreateLaboratoryDto
       validation_rules:
-        - dictionary_type_code_unique
-        - dictionary_type_name_unique_per_language
+        - laboratory_code_unique
+        - laboratory_name_unique
     output_contract:
       wrapper: ResponseVo
       payload: Void
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-      - DictionaryTypeMapper
-      - DictionaryTypeTranslationMapper
-      - DictionaryTypeEntity
-      - DictionaryTypeTranslationEntity
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-capability-route-match
-      - hook-uniqueness-prewrite
-      - hook-operate-log-binding
-  - capability_id: update-dictionary-type
-    normalized_group: dictionary-type-write
+    touched_entities:
+      - Laboratory
+  - capability_id: update-laboratory
+    normalized_group: laboratory-write
     semantic_intent: update-record
     deterministic_pattern: update
     execution_kind: mutation
-    aggregate_scope: DictionaryType
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
     route_binding:
-      resource: DictionaryTypeResource
+      resource: LaboratoryResource
       method: update
       http_method: PUT
-      path: /v1/system/dictionary-type
-    authority_binding: system:dictionary-type:update
+      path: /v1/system/laboratory
+    authority: system:laboratory:update
+    authority_binding: system:laboratory:update
     transaction_mode: read-write
     input_contract:
-      dto: UpdateDictionaryTypeDto
+      dto: UpdateLaboratoryDto
       validation_rules:
-        - dictionary_type_identity_preserved
-        - dictionary_type_code_unique
-        - dictionary_type_name_unique_per_language
+        - laboratory_code_unique
+        - laboratory_name_unique
     output_contract:
       wrapper: ResponseVo
       payload: Void
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-capability-route-match
-      - hook-uniqueness-prewrite
-      - hook-operate-log-binding
-  - capability_id: batch-delete-dictionary-type
-    normalized_group: dictionary-type-write
+    touched_entities:
+      - Laboratory
+  - capability_id: batch-delete-laboratory
+    normalized_group: laboratory-write
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     execution_kind: mutation
-    aggregate_scope: DictionaryType
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
     route_binding:
-      resource: DictionaryTypeResource
+      resource: LaboratoryResource
       method: batchDelete
       http_method: DELETE
-      path: /v1/system/dictionary-type
-    authority_binding: system:dictionary-type:delete
+      path: /v1/system/laboratory
+    authority: system:laboratory:delete
+    authority_binding: system:laboratory:delete
     transaction_mode: read-write
     input_contract:
-      dto: DictionaryTypeIdSet
-      validation_rules:
-        - batch_admin_delete_supported
+      dto: LaboratoryIdSet
+      validation_rules: []
     output_contract:
       wrapper: ResponseVo
       payload: Void
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-capability-route-match
-      - hook-operate-log-binding
-  - capability_id: enquiry-dictionary-type-page
-    normalized_group: dictionary-type-read
+    touched_entities:
+      - Laboratory
+  - capability_id: enquiry-laboratory-page
+    normalized_group: laboratory-read
     semantic_intent: query-page
     deterministic_pattern: page
     execution_kind: query
-    aggregate_scope: DictionaryType
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
     route_binding:
-      resource: DictionaryTypeResource
+      resource: LaboratoryResource
       method: enquiryPage
       http_method: GET
-      path: /v1/system/dictionary-type/page
-    authority_binding: system:dictionary-type:page
+      path: /v1/system/laboratory/page
+    authority: system:laboratory:page
+    authority_binding: system:laboratory:page
     transaction_mode: read-only
     input_contract:
-      dto: EnquiryDictionaryTypePageDto
+      dto: EnquiryLaboratoryPageDto
       validation_rules:
         - repository_pagination_pattern_preserved
     output_contract:
       wrapper: ResponseVo
-      payload: PageVo<DictionaryTypePageVo>
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-page-wrapper-match
-  - capability_id: enquiry-dictionary-type-details
-    normalized_group: dictionary-type-read
+      payload: PageVo<LaboratoryPageVo>
+    touched_entities:
+      - Laboratory
+  - capability_id: enquiry-laboratory-details
+    normalized_group: laboratory-read
     semantic_intent: query-details
     deterministic_pattern: details
     execution_kind: query
-    aggregate_scope: DictionaryType
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
     route_binding:
-      resource: DictionaryTypeResource
+      resource: LaboratoryResource
       method: enquiryDetails
       http_method: GET
-      path: /v1/system/dictionary-type/{id}
-    authority_binding: system:dictionary-type:details
+      path: /v1/system/laboratory/{id}
+    authority: system:laboratory:details
+    authority_binding: system:laboratory:details
     transaction_mode: read-only
     input_contract:
-      dto: DictionaryTypeIdPath
+      dto: LaboratoryIdPath
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: DictionaryTypeDetailsVo
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-details-shape-match
-  - capability_id: enquiry-dictionary-type-list
-    normalized_group: dictionary-type-read
+      payload: LaboratoryDetailsVo
+    touched_entities:
+      - Laboratory
+  - capability_id: enquiry-laboratory-list
+    normalized_group: laboratory-read
     semantic_intent: query-list
     deterministic_pattern: list
     execution_kind: query
-    aggregate_scope: DictionaryType
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
     route_binding:
-      resource: DictionaryTypeResource
+      resource: LaboratoryResource
       method: enquiryList
       http_method: GET
-      path: /v1/system/dictionary-type/list
-    authority_binding: system:dictionary-type:list
+      path: /v1/system/laboratory/list
+    authority: system:laboratory:list
+    authority_binding: system:laboratory:list
     transaction_mode: read-only
     input_contract:
       dto: None
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: List<DictionaryTypeListVo>
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-list-shape-match
-  - capability_id: validate-dictionary-type-name
-    normalized_group: dictionary-type-validation
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    execution_kind: validation-query
-    aggregate_scope: DictionaryTypeTranslation
-    route_binding:
-      resource: DictionaryTypeResource
-      method: validateDictionaryTypeNameUnique
-      http_method: GET
-      path: /v1/system/dictionary-type/dictionary-type-name/unique
-    authority_binding: system:dictionary-type:validate-dictionary-type-name
-    transaction_mode: read-only
-    input_contract:
-      dto: ValidateDictionaryTypeNameUniqueDto
-      validation_rules:
-        - dictionary_type_name_unique_per_language
-    output_contract:
-      wrapper: ResponseVo
-      payload: Boolean
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeTranslationService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-unique-check-route-match
-  - capability_id: validate-dictionary-type-code
-    normalized_group: dictionary-type-validation
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    execution_kind: validation-query
-    aggregate_scope: DictionaryType
-    route_binding:
-      resource: DictionaryTypeResource
-      method: validateDictionaryTypeCodeUnique
-      http_method: GET
-      path: /v1/system/dictionary-type/dictionary-type-code/unique
-    authority_binding: system:dictionary-type:validate-dictionary-type-code
-    transaction_mode: read-only
-    input_contract:
-      dto: ValidateDictionaryTypeCodeUniqueDto
-      validation_rules:
-        - dictionary_type_code_unique
-    output_contract:
-      wrapper: ResponseVo
-      payload: Boolean
-    touched_artifacts:
-      - DictionaryTypeManager
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-unique-check-route-match
-  - capability_id: create-dictionary-data
-    normalized_group: dictionary-data-write
+      payload: List<LaboratoryListVo>
+    touched_entities:
+      - Laboratory
+  - capability_id: create-laboratory-reservation
+    normalized_group: laboratory-reservation-write
     semantic_intent: create-record
     deterministic_pattern: create
     execution_kind: mutation
-    aggregate_scope: DictionaryData
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
     route_binding:
-      resource: DictionaryDataResource
+      resource: LaboratoryReservationResource
       method: create
       http_method: POST
-      path: /v1/system/dictionary-data
-    authority_binding: system:dictionary-data:create
+      path: /v1/system/laboratory-reservation
+    authority: system:laboratory-reservation:create
+    authority_binding: system:laboratory-reservation:create
     transaction_mode: read-write
     input_contract:
-      dto: CreateDictionaryDataDto
+      dto: CreateLaboratoryReservationDto
       validation_rules:
-        - parent_dictionary_type_must_exist
-        - dictionary_data_label_unique_per_language_and_type
-        - dictionary_data_value_unique_per_type
+        - reservation_code_unique
+        - reservation_slot_unique_per_laboratory
+        - reservation_laboratory_must_exist
     output_contract:
       wrapper: ResponseVo
       payload: Void
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-      - DictionaryTypeService
-      - DictionaryDataMapper
-      - DictionaryDataTranslationMapper
-      - DictionaryDataEntity
-      - DictionaryDataTranslationEntity
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-capability-route-match
-      - hook-foreign-reference-check
-      - hook-uniqueness-prewrite
-      - hook-operate-log-binding
-  - capability_id: update-dictionary-data
-    normalized_group: dictionary-data-write
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: update-laboratory-reservation
+    normalized_group: laboratory-reservation-write
     semantic_intent: update-record
     deterministic_pattern: update
     execution_kind: mutation
-    aggregate_scope: DictionaryData
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
     route_binding:
-      resource: DictionaryDataResource
+      resource: LaboratoryReservationResource
       method: update
       http_method: PUT
-      path: /v1/system/dictionary-data
-    authority_binding: system:dictionary-data:update
+      path: /v1/system/laboratory-reservation
+    authority: system:laboratory-reservation:update
+    authority_binding: system:laboratory-reservation:update
     transaction_mode: read-write
     input_contract:
-      dto: UpdateDictionaryDataDto
+      dto: UpdateLaboratoryReservationDto
       validation_rules:
-        - dictionary_data_identity_preserved
-        - parent_dictionary_type_must_exist
-        - dictionary_data_label_unique_per_language_and_type
-        - dictionary_data_value_unique_per_type
+        - reservation_code_unique
+        - reservation_slot_unique_per_laboratory
+        - reservation_laboratory_must_exist
     output_contract:
       wrapper: ResponseVo
       payload: Void
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-capability-route-match
-      - hook-foreign-reference-check
-      - hook-uniqueness-prewrite
-      - hook-operate-log-binding
-  - capability_id: batch-delete-dictionary-data
-    normalized_group: dictionary-data-write
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: batch-delete-laboratory-reservation
+    normalized_group: laboratory-reservation-write
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     execution_kind: mutation
-    aggregate_scope: DictionaryData
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
     route_binding:
-      resource: DictionaryDataResource
+      resource: LaboratoryReservationResource
       method: batchDelete
       http_method: DELETE
-      path: /v1/system/dictionary-data
-    authority_binding: system:dictionary-data:delete
+      path: /v1/system/laboratory-reservation
+    authority: system:laboratory-reservation:delete
+    authority_binding: system:laboratory-reservation:delete
     transaction_mode: read-write
     input_contract:
-      dto: DictionaryDataIdSet
-      validation_rules:
-        - batch_admin_delete_supported
+      dto: LaboratoryReservationIdSet
+      validation_rules: []
     output_contract:
       wrapper: ResponseVo
       payload: Void
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-    validation_hooks:
-      - hook-capability-route-match
-      - hook-operate-log-binding
-  - capability_id: enquiry-dictionary-data-page
-    normalized_group: dictionary-data-read
+    touched_entities:
+      - LaboratoryReservation
+  - capability_id: enquiry-laboratory-reservation-page
+    normalized_group: laboratory-reservation-read
     semantic_intent: query-page
     deterministic_pattern: page
     execution_kind: query
-    aggregate_scope: DictionaryData
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
     route_binding:
-      resource: DictionaryDataResource
+      resource: LaboratoryReservationResource
       method: enquiryPage
       http_method: GET
-      path: /v1/system/dictionary-data/page
-    authority_binding: system:dictionary-data:page
+      path: /v1/system/laboratory-reservation/page
+    authority: system:laboratory-reservation:page
+    authority_binding: system:laboratory-reservation:page
     transaction_mode: read-only
     input_contract:
-      dto: EnquiryDictionaryDataPageDto
+      dto: EnquiryLaboratoryReservationPageDto
       validation_rules:
         - repository_pagination_pattern_preserved
     output_contract:
       wrapper: ResponseVo
-      payload: PageVo<DictionaryDataPageVo>
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-page-wrapper-match
-  - capability_id: enquiry-dictionary-data-details
-    normalized_group: dictionary-data-read
+      payload: PageVo<LaboratoryReservationPageVo>
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: enquiry-laboratory-reservation-details
+    normalized_group: laboratory-reservation-read
     semantic_intent: query-details
     deterministic_pattern: details
     execution_kind: query
-    aggregate_scope: DictionaryData
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
     route_binding:
-      resource: DictionaryDataResource
+      resource: LaboratoryReservationResource
       method: enquiryDetails
       http_method: GET
-      path: /v1/system/dictionary-data/{id}
-    authority_binding: system:dictionary-data:details
+      path: /v1/system/laboratory-reservation/{id}
+    authority: system:laboratory-reservation:details
+    authority_binding: system:laboratory-reservation:details
     transaction_mode: read-only
     input_contract:
-      dto: DictionaryDataIdPath
+      dto: LaboratoryReservationIdPath
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: DictionaryDataDetailsVo
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-details-shape-match
-  - capability_id: enquiry-dictionary-data-list-by-type
-    normalized_group: dictionary-data-read
+      payload: LaboratoryReservationDetailsVo
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: enquiry-laboratory-reservation-list
+    normalized_group: laboratory-reservation-read
     semantic_intent: query-list
     deterministic_pattern: list
     execution_kind: query
-    aggregate_scope: DictionaryData
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
     route_binding:
-      resource: DictionaryDataResource
+      resource: LaboratoryReservationResource
       method: enquiryList
       http_method: GET
-      path: /v1/system/dictionary-data/list/{dictionaryTypeCode}
-    authority_binding: system:dictionary-data:list
+      path: /v1/system/laboratory-reservation/list
+    authority: system:laboratory-reservation:list
+    authority_binding: system:laboratory-reservation:list
     transaction_mode: read-only
     input_contract:
-      dto: DictionaryTypeCodePath
-      validation_rules:
-        - lightweight_option_output_only
-        - parent_dictionary_type_resolved_by_code
+      dto: None
+      validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: List<DictionaryDataListVo>
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-list-shape-match
-      - hook-lightweight-output-check
-  - capability_id: validate-dictionary-data-label
-    normalized_group: dictionary-data-validation
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    execution_kind: validation-query
-    aggregate_scope: DictionaryDataTranslation
-    route_binding:
-      resource: DictionaryDataResource
-      method: validateDictionaryDataLabelUnique
-      http_method: GET
-      path: /v1/system/dictionary-data/label/unique
-    authority_binding: system:dictionary-data:validate-label
-    transaction_mode: read-only
-    input_contract:
-      dto: ValidateDictionaryDataLabelUniqueDto
-      validation_rules:
-        - dictionary_data_label_unique_per_language_and_type
-    output_contract:
-      wrapper: ResponseVo
-      payload: Boolean
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataTranslationService
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-unique-check-route-match
-  - capability_id: validate-dictionary-data-value
-    normalized_group: dictionary-data-validation
-    semantic_intent: unique-validation
-    deterministic_pattern: uniqueness-check
-    execution_kind: validation-query
-    aggregate_scope: DictionaryData
-    route_binding:
-      resource: DictionaryDataResource
-      method: validateDictionaryDataValueUnique
-      http_method: GET
-      path: /v1/system/dictionary-data/value/unique
-    authority_binding: system:dictionary-data:validate-value
-    transaction_mode: read-only
-    input_contract:
-      dto: ValidateDictionaryDataValueUniqueDto
-      validation_rules:
-        - dictionary_data_value_unique_per_type
-    output_contract:
-      wrapper: ResponseVo
-      payload: Boolean
-    touched_artifacts:
-      - DictionaryDataManager
-      - DictionaryDataService
-      - DictionaryTypeService
-    prerequisite_units:
-      - shared-dictionary-data-domain
-      - shared-dictionary-data-persistence
-      - shared-dictionary-data-service
-      - shared-dictionary-type-domain
-      - shared-dictionary-type-persistence
-      - shared-dictionary-type-service
-    validation_hooks:
-      - hook-unique-check-route-match
+      payload: List<LaboratoryReservationListVo>
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
 
-# semantic_ir: resolved artifact inventory with implementation-aware binding
-resolved_artifacts:
-  shared_units:
-    - unit_id: shared-dictionary-type-domain
-      artifacts:
-        dto:
-          - CreateDictionaryTypeDto
-          - UpdateDictionaryTypeDto
-          - EnquiryDictionaryTypePageDto
-          - ValidateDictionaryTypeNameUniqueDto
-          - ValidateDictionaryTypeCodeUniqueDto
-        vo:
-          - DictionaryTypeDetailsVo
-          - DictionaryTypePageVo
-          - DictionaryTypeListVo
-        entity:
-          - DictionaryTypeEntity
-          - DictionaryTypeTranslationEntity
-    - unit_id: shared-dictionary-type-persistence
-      artifacts:
-        mapper:
-          - DictionaryTypeMapper
-          - DictionaryTypeTranslationMapper
-    - unit_id: shared-dictionary-type-service
-      artifacts:
-        service:
-          - DictionaryTypeService
-          - DictionaryTypeTranslationService
-        service_impl:
-          - DictionaryTypeServiceImpl
-          - DictionaryTypeTranslationServiceImpl
-        manager:
-          - DictionaryTypeManager
-        resource:
-          - DictionaryTypeResource
-    - unit_id: shared-dictionary-data-domain
-      artifacts:
-        dto:
-          - CreateDictionaryDataDto
-          - UpdateDictionaryDataDto
-          - EnquiryDictionaryDataPageDto
-          - ValidateDictionaryDataLabelUniqueDto
-          - ValidateDictionaryDataValueUniqueDto
-        vo:
-          - DictionaryDataDetailsVo
-          - DictionaryDataPageVo
-          - DictionaryDataListVo
-        entity:
-          - DictionaryDataEntity
-          - DictionaryDataTranslationEntity
-    - unit_id: shared-dictionary-data-persistence
-      artifacts:
-        mapper:
-          - DictionaryDataMapper
-          - DictionaryDataTranslationMapper
-    - unit_id: shared-dictionary-data-service
-      artifacts:
-        service:
-          - DictionaryDataService
-          - DictionaryDataTranslationService
-        service_impl:
-          - DictionaryDataServiceImpl
-          - DictionaryDataTranslationServiceImpl
-        manager:
-          - DictionaryDataManager
-        resource:
-          - DictionaryDataResource
+entity_graph:
+  entities:
+    - entity_id: Laboratory
+      table: system_laboratory
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: root
+      relations:
+        - relation: one-to-many
+          target: LaboratoryReservation
+          relation_name: reservations
+    - entity_id: LaboratoryReservation
+      table: system_laboratory_reservation
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: child-root
+      relations:
+        - relation: many-to-one
+          target: Laboratory
+          relation_name: laboratory
 
-# semantic_ir: executable generation units for DAG or multi-agent scheduling
-generation_units:
-  - unit_id: U1-dictionary-type-domain
-    kind: domain
-    scope: DictionaryType
-    produces:
-      - CreateDictionaryTypeDto
-      - UpdateDictionaryTypeDto
-      - EnquiryDictionaryTypePageDto
-      - ValidateDictionaryTypeNameUniqueDto
-      - ValidateDictionaryTypeCodeUniqueDto
-      - DictionaryTypeDetailsVo
-      - DictionaryTypePageVo
-      - DictionaryTypeListVo
-      - DictionaryTypeEntity
-      - DictionaryTypeTranslationEntity
-    depends_on: []
-  - unit_id: U2-dictionary-type-persistence
-    kind: persistence
-    scope: DictionaryType
-    produces:
-      - DictionaryTypeMapper
-      - DictionaryTypeTranslationMapper
-    depends_on:
-      - U1-dictionary-type-domain
-  - unit_id: U3-dictionary-type-services
-    kind: service-layer
-    scope: DictionaryType
-    produces:
-      - DictionaryTypeService
-      - DictionaryTypeTranslationService
-      - DictionaryTypeServiceImpl
-      - DictionaryTypeTranslationServiceImpl
-      - DictionaryTypeManager
-    depends_on:
-      - U1-dictionary-type-domain
-      - U2-dictionary-type-persistence
-  - unit_id: U4-dictionary-type-resource
-    kind: resource-layer
-    scope: DictionaryType
-    produces:
-      - DictionaryTypeResource
-    depends_on:
-      - U3-dictionary-type-services
-  - unit_id: U5-dictionary-data-domain
-    kind: domain
-    scope: DictionaryData
-    produces:
-      - CreateDictionaryDataDto
-      - UpdateDictionaryDataDto
-      - EnquiryDictionaryDataPageDto
-      - ValidateDictionaryDataLabelUniqueDto
-      - ValidateDictionaryDataValueUniqueDto
-      - DictionaryDataDetailsVo
-      - DictionaryDataPageVo
-      - DictionaryDataListVo
-      - DictionaryDataEntity
-      - DictionaryDataTranslationEntity
-    depends_on:
-      - U1-dictionary-type-domain
-  - unit_id: U6-dictionary-data-persistence
-    kind: persistence
-    scope: DictionaryData
-    produces:
-      - DictionaryDataMapper
-      - DictionaryDataTranslationMapper
-    depends_on:
-      - U5-dictionary-data-domain
-  - unit_id: U7-dictionary-data-services
-    kind: service-layer
-    scope: DictionaryData
-    produces:
-      - DictionaryDataService
-      - DictionaryDataTranslationService
-      - DictionaryDataServiceImpl
-      - DictionaryDataTranslationServiceImpl
-      - DictionaryDataManager
-    depends_on:
-      - U3-dictionary-type-services
-      - U5-dictionary-data-domain
-      - U6-dictionary-data-persistence
-  - unit_id: U8-dictionary-data-resource
-    kind: resource-layer
-    scope: DictionaryData
-    produces:
-      - DictionaryDataResource
-    depends_on:
-      - U7-dictionary-data-services
+validation_rules:
+  uniqueness:
+    - rule_id: laboratory_code_unique
+      scope: system_laboratory.laboratory_code
+    - rule_id: laboratory_name_unique
+      scope: system_laboratory.laboratory_name
+    - rule_id: reservation_code_unique
+      scope: system_laboratory_reservation.reservation_code
+    - rule_id: reservation_slot_unique_per_laboratory
+      scope: system_laboratory_reservation.(laboratory_id, reservation_start_time, reservation_end_time)
+  referential:
+    - rule_id: reservation_laboratory_must_exist
+      source: LaboratoryReservation.laboratory_id
+      target: Laboratory.id
+  shape:
+    - rule_id: repository_pagination_pattern_preserved
+      target_capability:
+        - enquiry-laboratory-page
+        - enquiry-laboratory-reservation-page
 
-# semantic_ir: graph for planners and orchestration engines
-dependency_graph:
-  nodes:
-    - U1-dictionary-type-domain
-    - U2-dictionary-type-persistence
-    - U3-dictionary-type-services
-    - U4-dictionary-type-resource
-    - U5-dictionary-data-domain
-    - U6-dictionary-data-persistence
-    - U7-dictionary-data-services
-    - U8-dictionary-data-resource
-  edges:
-    - from: U1-dictionary-type-domain
-      to: U2-dictionary-type-persistence
-    - from: U1-dictionary-type-domain
-      to: U3-dictionary-type-services
-    - from: U3-dictionary-type-services
-      to: U4-dictionary-type-resource
-    - from: U1-dictionary-type-domain
-      to: U5-dictionary-data-domain
-    - from: U5-dictionary-data-domain
-      to: U6-dictionary-data-persistence
-    - from: U3-dictionary-type-services
-      to: U7-dictionary-data-services
-    - from: U5-dictionary-data-domain
-      to: U7-dictionary-data-services
-    - from: U6-dictionary-data-persistence
-      to: U7-dictionary-data-services
-    - from: U7-dictionary-data-services
-      to: U8-dictionary-data-resource
-
-# semantic_ir: deterministic topological order
-generation_order:
-  sequential:
-    - U1-dictionary-type-domain
-    - U2-dictionary-type-persistence
-    - U3-dictionary-type-services
-    - U4-dictionary-type-resource
-    - U5-dictionary-data-domain
-    - U6-dictionary-data-persistence
-    - U7-dictionary-data-services
-    - U8-dictionary-data-resource
-  parallel_batches:
-    - batch_id: B1
-      units:
-        - U1-dictionary-type-domain
-    - batch_id: B2
-      units:
-        - U2-dictionary-type-persistence
-        - U5-dictionary-data-domain
-    - batch_id: B3
-      units:
-        - U3-dictionary-type-services
-        - U6-dictionary-data-persistence
-    - batch_id: B4
-      units:
-        - U4-dictionary-type-resource
-        - U7-dictionary-data-services
-    - batch_id: B5
-      units:
-        - U8-dictionary-data-resource
-
-# implementation_aware: resolved architecture and code-level bindings
 architectural_bindings:
   code_conventions:
     resource_suffix: Resource
@@ -798,7 +400,6 @@ architectural_bindings:
       create: Create
       update: Update
       enquiry_page: Enquiry
-      validate_unique: Validate
     vo_suffixes:
       details: DetailsVo
       page: PageVo
@@ -806,7 +407,7 @@ architectural_bindings:
   annotation_bindings:
     resource_annotations:
       - "@CrossOrigin"
-      - "@Validated when parameter validation exists"
+      - "@Validated"
       - "@RestController"
       - "@RequestMapping"
     mutation_annotations:
@@ -819,74 +420,68 @@ architectural_bindings:
     wrapper_type: ResponseVo
     page_type: PageVo
     mutation_payload: Void
-    unique_check_payload: Boolean
   persistence_bindings:
     framework: mybatis-flex
-    translation_tables: separate
     aggregate_identity_style: primary-key-entity
 
-# implementation_aware: explicit integration touchpoints
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+  query_style:
+    page_queries_use_enquiry_dto: true
+    detail_queries_use_path_id: true
+    list_queries_use_simple_collection_read: true
+  ownership_model:
+    laboratory_as_parent_reference: true
+    reservation_belongs_to_laboratory: true
+
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+      - create-laboratory
+      - update-laboratory
+      - batch-delete-laboratory
+      - create-laboratory-reservation
+      - update-laboratory-reservation
+      - batch-delete-laboratory-reservation
+
 integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - system:dictionary-type:*
-      - system:dictionary-data:*
+      - system:laboratory:*
+      - system:laboratory-reservation:*
   logging:
     mode: operate-log-aspect
     mutation_only: true
-  localization:
-    mode: translation-table-plus-locale-resolution
-    required_languages:
-      - zh-CN
-      - en-US
   persistence:
     database: mysql
     required_tables:
-      - system_dictionary_type
-      - system_dictionary_type_translation
-      - system_dictionary_data
-      - system_dictionary_data_translation
-  shared_kernel_dependencies:
-    - ResponseVo
-    - PageVo
-    - OperateLog
-    - PreAuthorize
-    - global exception advice
+      - system_laboratory
+      - system_laboratory_reservation
 
-# implementation_aware: code convention block for generators
 code_conventions:
   naming_stability: strict
   route_style: sibling-module-aligned
   transaction_style: manager-boundary
-  uniqueness_validation_style: dedicated-endpoint-plus-dto
+  uniqueness_validation_style: service-guard
   list_vs_page_distinction: mandatory
-  translation_handling_style: aggregate-plus-translation-service
-  batch_delete_style: collection-validated-delete-endpoint
 
-# semantic_ir: validation hooks for validators and integration agents
 validation_hooks:
   pre_generation:
     - hook-discovery-baseline-complete
-    - hook-capability-taxonomy-resolved
-    - hook-generation-boundary-single-module
   post_unit:
     - hook-artifact-name-convention
     - hook-package-placement-check
-    - hook-annotation-binding-check
-  post_capability:
-    - hook-capability-route-match
-    - hook-capability-authority-match
-    - hook-capability-transaction-match
-    - hook-output-wrapper-match
-  post_integration:
-    - hook-operate-log-binding
-    - hook-localization-linkage-check
-    - hook-foreign-reference-check
-    - hook-page-wrapper-match
-    - hook-lightweight-output-check
   final:
     - hook-module-boundary-check
     - hook-deterministic-layout-check
-    - hook-dag-node-isolation-check
-    - hook-generation-contract-check

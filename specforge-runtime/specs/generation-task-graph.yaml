@@ -1,124 +1,91 @@
-# orchestration_ir: executable DAG identity and compiler lineage
 graph_context:
-  graph_id: dictionary-management-generation-dag-v1
+  graph_id: laboratory-reservation-management-generation-dag-v1
   graph_kind: semantic-module-generation
   source_module_spec: module-spec.yaml
   source_resolved_schema: module-schema.resolved.yaml
-  target_module_id: dictionary-management
-  bounded_context: system-administration
+  target_module_id: laboratory-reservation-management
+  bounded_context: laboratory-operations
   stability_goal: deterministic
   orchestration_mode: multi-agent-compatible
   retry_safe: true
   rollback_safe: true
 
-# orchestration_ir: global boundary and architecture enforcement
 architecture_boundary_enforcement:
   single_module_scope: true
   allowed_package_roots:
-    - org.eu.originalkeen.system.dictionary
+    - org.eu.originalkeen.system.labreservation
   forbidden_package_roots:
     - org.eu.originalkeen.authorize
-    - org.eu.originalkeen.business.personal
     - org.eu.originalkeen.system.user
     - org.eu.originalkeen.system.role
     - org.eu.originalkeen.system.permission
-    - org.eu.originalkeen.system.log
   allowed_shared_kernel_dependencies:
     - ResponseVo
     - PageVo
     - OperateLog
     - PreAuthorize
     - MyBatis-Flex
-    - global exception advice
-  forbidden_semantic_expansions:
-    - authentication-flow-generation
-    - user-role-assignment-generation
-    - permission-tree-generation
-    - unrelated-module-refactor
   enforcement_hooks:
     - hook-module-boundary-check
     - hook-package-placement-check
-    - hook-generation-contract-check
 
-# orchestration_ir: semantic task units, not raw file lists
 task_units:
   - task_id: T1-discover-architecture-baseline
     semantic_operation: architecture-discovery
-    purpose: Bind repository conventions for dictionary-management generation.
+    purpose: Bind repository conventions for laboratory reservation generation.
     stage: discovery
     preferred_agent_affinity: explorer
     execution_mode: serial
     inputs:
       - module-spec.yaml
       - project-spec.md
-      - sibling-modules
     outputs:
       - architecture-baseline
-      - stability-anchors
     dependency_policy:
       requires: []
       blocks:
-        - T5-generate-dictionary-type-domain
-        - T6-generate-dictionary-type-persistence
-        - T7-generate-dictionary-type-services
-        - T8-generate-dictionary-type-resource
-        - T9-generate-dictionary-data-domain
-        - T10-generate-dictionary-data-persistence
-        - T11-generate-dictionary-data-services
-        - T12-generate-dictionary-data-resource
+        - T5-generate-laboratory-domain
+        - T9-generate-reservation-domain
     validation_hooks:
       - hook-discovery-baseline-complete
     retry_policy:
       strategy: retry-on-ambiguity
       max_attempts: 2
     rollback_safe: true
-
   - task_id: T2-resolve-capability-schema
     semantic_operation: capability-normalization
-    purpose: Expand semantic capabilities into deterministic patterns and bindings.
+    purpose: Expand semantic capabilities into deterministic bindings.
     stage: planning
     preferred_agent_affinity: explorer
     execution_mode: serial
     inputs:
       - module-spec.yaml
-      - capability-taxonomy.yaml
       - architecture-baseline
     outputs:
       - normalized-capability-set
-      - capability-bindings
     dependency_policy:
       requires:
         - T1-discover-architecture-baseline
       blocks:
-        - T5-generate-dictionary-type-domain
-        - T6-generate-dictionary-type-persistence
-        - T7-generate-dictionary-type-services
-        - T8-generate-dictionary-type-resource
-        - T9-generate-dictionary-data-domain
-        - T10-generate-dictionary-data-persistence
-        - T11-generate-dictionary-data-services
-        - T12-generate-dictionary-data-resource
+        - T5-generate-laboratory-domain
+        - T9-generate-reservation-domain
     validation_hooks:
-      - hook-capability-taxonomy-resolved
       - hook-capability-route-match
     retry_policy:
       strategy: retry-on-unmapped-capability
       max_attempts: 2
     rollback_safe: true
-
   - task_id: T3-build-resolved-schema
     semantic_operation: resolved-ir-construction
-    purpose: Produce the authoritative resolved generation plan for orchestration.
+    purpose: Produce the authoritative resolved generation plan.
     stage: planning
     preferred_agent_affinity: worker
     execution_mode: serial
     inputs:
       - module-spec.yaml
       - normalized-capability-set
-      - architecture-baseline
     outputs:
       - module-schema.resolved.yaml
-      - generation-unit-bindings
     dependency_policy:
       requires:
         - T1-discover-architecture-baseline
@@ -131,7 +98,6 @@ task_units:
       strategy: retry-on-schema-conflict
       max_attempts: 2
     rollback_safe: true
-
   - task_id: T4-validate-resolved-schema
     semantic_operation: resolved-ir-validation
     purpose: Validate the resolved schema before code-producing stages begin.
@@ -140,33 +106,23 @@ task_units:
     execution_mode: serial
     inputs:
       - module-schema.resolved.yaml
-      - generation-contract.md
-      - validation-checklist.md
     outputs:
       - resolved-schema-approval
     dependency_policy:
       requires:
         - T3-build-resolved-schema
       blocks:
-        - T5-generate-dictionary-type-domain
-        - T6-generate-dictionary-type-persistence
-        - T7-generate-dictionary-type-services
-        - T8-generate-dictionary-type-resource
-        - T9-generate-dictionary-data-domain
-        - T10-generate-dictionary-data-persistence
-        - T11-generate-dictionary-data-services
-        - T12-generate-dictionary-data-resource
+        - T5-generate-laboratory-domain
+        - T9-generate-reservation-domain
     validation_hooks:
-      - hook-generation-boundary-single-module
-      - hook-dag-node-isolation-check
+      - hook-module-boundary-check
     retry_policy:
       strategy: retry-after-schema-fix
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T5-generate-dictionary-type-domain
+  - task_id: T5-generate-laboratory-domain
     semantic_operation: domain-artifact-generation
-    purpose: Generate dictionary-type DTO, VO, and entity layer.
+    purpose: Generate laboratory DTO, VO, and entity layer.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
@@ -174,238 +130,220 @@ task_units:
       - resolved-schema-approval
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-type-domain-artifacts
+      - laboratory-domain-artifacts
     dependency_policy:
       requires:
         - T4-validate-resolved-schema
       blocks:
-        - T6-generate-dictionary-type-persistence
-        - T7-generate-dictionary-type-services
+        - T6-generate-laboratory-persistence
+        - T7-generate-laboratory-services
     validation_hooks:
       - hook-artifact-name-convention
-      - hook-package-placement-check
     retry_policy:
       strategy: retry-on-convention-mismatch
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T6-generate-dictionary-type-persistence
+  - task_id: T6-generate-laboratory-persistence
     semantic_operation: persistence-binding-generation
-    purpose: Generate dictionary-type mapper and persistence contracts.
+    purpose: Generate laboratory mapper and persistence contracts.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
-      - dictionary-type-domain-artifacts
+      - laboratory-domain-artifacts
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-type-persistence-artifacts
+      - laboratory-persistence-artifacts
     dependency_policy:
       requires:
-        - T5-generate-dictionary-type-domain
+        - T5-generate-laboratory-domain
       blocks:
-        - T7-generate-dictionary-type-services
+        - T7-generate-laboratory-services
     validation_hooks:
       - hook-package-placement-check
     retry_policy:
       strategy: retry-on-persistence-binding-failure
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T7-generate-dictionary-type-services
+  - task_id: T7-generate-laboratory-services
     semantic_operation: service-orchestration-generation
-    purpose: Generate dictionary-type service, translation service, and manager orchestration.
+    purpose: Generate laboratory service and manager orchestration.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
-      - dictionary-type-domain-artifacts
-      - dictionary-type-persistence-artifacts
+      - laboratory-domain-artifacts
+      - laboratory-persistence-artifacts
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-type-service-artifacts
+      - laboratory-service-artifacts
     dependency_policy:
       requires:
-        - T5-generate-dictionary-type-domain
-        - T6-generate-dictionary-type-persistence
+        - T5-generate-laboratory-domain
+        - T6-generate-laboratory-persistence
       blocks:
-        - T8-generate-dictionary-type-resource
-        - T11-generate-dictionary-data-services
+        - T8-generate-laboratory-resource
+        - T11-generate-reservation-services
     validation_hooks:
       - hook-capability-transaction-match
-      - hook-output-wrapper-match
     retry_policy:
       strategy: retry-on-service-contract-mismatch
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T8-generate-dictionary-type-resource
+  - task_id: T8-generate-laboratory-resource
     semantic_operation: resource-layer-generation
-    purpose: Generate dictionary-type administrative endpoints and authority bindings.
+    purpose: Generate laboratory administrative endpoints.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
-      - dictionary-type-service-artifacts
+      - laboratory-service-artifacts
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-type-resource-artifacts
+      - laboratory-resource-artifacts
     dependency_policy:
       requires:
-        - T7-generate-dictionary-type-services
+        - T7-generate-laboratory-services
       blocks:
         - T13-integration-checkpoint-alpha
     validation_hooks:
       - hook-capability-route-match
       - hook-capability-authority-match
-      - hook-operate-log-binding
     retry_policy:
       strategy: retry-on-route-binding-failure
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T9-generate-dictionary-data-domain
+  - task_id: T9-generate-reservation-domain
     semantic_operation: domain-artifact-generation
-    purpose: Generate dictionary-data DTO, VO, and entity layer with parent-type linkage.
+    purpose: Generate reservation DTO, VO, and entity layer.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
       - resolved-schema-approval
       - module-schema.resolved.yaml
-      - dictionary-type-domain-artifacts
+      - laboratory-domain-artifacts
     outputs:
-      - dictionary-data-domain-artifacts
+      - reservation-domain-artifacts
     dependency_policy:
       requires:
         - T4-validate-resolved-schema
-        - T5-generate-dictionary-type-domain
+        - T5-generate-laboratory-domain
       blocks:
-        - T10-generate-dictionary-data-persistence
-        - T11-generate-dictionary-data-services
+        - T10-generate-reservation-persistence
+        - T11-generate-reservation-services
     validation_hooks:
       - hook-artifact-name-convention
-      - hook-package-placement-check
     retry_policy:
       strategy: retry-on-convention-mismatch
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T10-generate-dictionary-data-persistence
+  - task_id: T10-generate-reservation-persistence
     semantic_operation: persistence-binding-generation
-    purpose: Generate dictionary-data mapper and translation persistence contracts.
+    purpose: Generate reservation mapper and persistence contracts.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
-      - dictionary-data-domain-artifacts
+      - reservation-domain-artifacts
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-data-persistence-artifacts
+      - reservation-persistence-artifacts
     dependency_policy:
       requires:
-        - T9-generate-dictionary-data-domain
+        - T9-generate-reservation-domain
       blocks:
-        - T11-generate-dictionary-data-services
+        - T11-generate-reservation-services
     validation_hooks:
       - hook-package-placement-check
     retry_policy:
       strategy: retry-on-persistence-binding-failure
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T11-generate-dictionary-data-services
+  - task_id: T11-generate-reservation-services
     semantic_operation: service-orchestration-generation
-    purpose: Generate dictionary-data service, translation service, and manager orchestration.
+    purpose: Generate reservation service and manager orchestration.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
-      - dictionary-type-service-artifacts
-      - dictionary-data-domain-artifacts
-      - dictionary-data-persistence-artifacts
+      - laboratory-service-artifacts
+      - reservation-domain-artifacts
+      - reservation-persistence-artifacts
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-data-service-artifacts
+      - reservation-service-artifacts
     dependency_policy:
       requires:
-        - T7-generate-dictionary-type-services
-        - T9-generate-dictionary-data-domain
-        - T10-generate-dictionary-data-persistence
+        - T7-generate-laboratory-services
+        - T9-generate-reservation-domain
+        - T10-generate-reservation-persistence
       blocks:
-        - T12-generate-dictionary-data-resource
+        - T12-generate-reservation-resource
     validation_hooks:
       - hook-capability-transaction-match
       - hook-foreign-reference-check
-      - hook-localization-linkage-check
     retry_policy:
       strategy: retry-on-service-contract-mismatch
       max_attempts: 2
     rollback_safe: true
-
-  - task_id: T12-generate-dictionary-data-resource
+  - task_id: T12-generate-reservation-resource
     semantic_operation: resource-layer-generation
-    purpose: Generate dictionary-data administrative endpoints including lightweight list lookup by type code.
+    purpose: Generate reservation administrative endpoints.
     stage: generation
     preferred_agent_affinity: worker
     execution_mode: parallel
     inputs:
-      - dictionary-data-service-artifacts
+      - reservation-service-artifacts
       - module-schema.resolved.yaml
     outputs:
-      - dictionary-data-resource-artifacts
+      - reservation-resource-artifacts
     dependency_policy:
       requires:
-        - T11-generate-dictionary-data-services
+        - T11-generate-reservation-services
       blocks:
         - T13-integration-checkpoint-alpha
     validation_hooks:
       - hook-capability-route-match
       - hook-capability-authority-match
-      - hook-lightweight-output-check
-      - hook-operate-log-binding
     retry_policy:
       strategy: retry-on-route-binding-failure
       max_attempts: 2
     rollback_safe: true
-
   - task_id: T13-integration-checkpoint-alpha
     semantic_operation: intra-module-integration-validation
-    purpose: Validate that dictionary-type and dictionary-data layers integrate consistently before final checks.
+    purpose: Validate laboratory and reservation layers before final checks.
     stage: integration-checkpoint
     preferred_agent_affinity: explorer
     execution_mode: serial
     inputs:
-      - dictionary-type-resource-artifacts
-      - dictionary-data-resource-artifacts
+      - laboratory-resource-artifacts
+      - reservation-resource-artifacts
       - module-schema.resolved.yaml
     outputs:
       - module-integration-approval
     dependency_policy:
       requires:
-        - T8-generate-dictionary-type-resource
-        - T12-generate-dictionary-data-resource
+        - T8-generate-laboratory-resource
+        - T12-generate-reservation-resource
       blocks:
         - T14-run-validation-hooks
     validation_hooks:
       - hook-module-boundary-check
-      - hook-localization-linkage-check
       - hook-foreign-reference-check
     retry_policy:
       strategy: retry-after-targeted-fix
       max_attempts: 2
     rollback_safe: true
-
   - task_id: T14-run-validation-hooks
     semantic_operation: final-validation-pass
-    purpose: Run final compiler and architecture validation hooks across the module.
+    purpose: Run final compiler and architecture validation hooks.
     stage: validation
     preferred_agent_affinity: explorer
     execution_mode: serial
     inputs:
       - module-integration-approval
       - module-schema.resolved.yaml
-      - validation-checklist.md
     outputs:
       - final-validation-approval
     dependency_policy:
@@ -415,17 +353,14 @@ task_units:
         - T15-finalize-generation-bundle
     validation_hooks:
       - hook-deterministic-layout-check
-      - hook-dag-node-isolation-check
-      - hook-generation-contract-check
-      - hook-output-wrapper-match
+      - hook-module-boundary-check
     retry_policy:
       strategy: retry-after-fix
       max_attempts: 2
     rollback_safe: true
-
   - task_id: T15-finalize-generation-bundle
     semantic_operation: generation-finalization
-    purpose: Seal the module generation result as a valid bounded DAG node output.
+    purpose: Seal the module generation result as a bounded DAG node output.
     stage: finalize
     preferred_agent_affinity: worker
     execution_mode: serial
@@ -434,19 +369,17 @@ task_units:
       - all-generated-artifacts
     outputs:
       - finalized-module-bundle
-      - generation-manifest
     dependency_policy:
       requires:
         - T14-run-validation-hooks
       blocks: []
     validation_hooks:
-      - hook-generation-contract-check
+      - hook-module-boundary-check
     retry_policy:
       strategy: no-retry-without-upstream-fix
       max_attempts: 1
     rollback_safe: true
 
-# orchestration_ir: dependency edges for schedulers
 dependency_edges:
   - from: T1-discover-architecture-baseline
     to: T2-resolve-capability-schema
@@ -457,122 +390,52 @@ dependency_edges:
   - from: T3-build-resolved-schema
     to: T4-validate-resolved-schema
   - from: T4-validate-resolved-schema
-    to: T5-generate-dictionary-type-domain
+    to: T5-generate-laboratory-domain
   - from: T4-validate-resolved-schema
-    to: T9-generate-dictionary-data-domain
-  - from: T5-generate-dictionary-type-domain
-    to: T6-generate-dictionary-type-persistence
-  - from: T5-generate-dictionary-type-domain
-    to: T7-generate-dictionary-type-services
-  - from: T6-generate-dictionary-type-persistence
-    to: T7-generate-dictionary-type-services
-  - from: T7-generate-dictionary-type-services
-    to: T8-generate-dictionary-type-resource
-  - from: T5-generate-dictionary-type-domain
-    to: T9-generate-dictionary-data-domain
-  - from: T9-generate-dictionary-data-domain
-    to: T10-generate-dictionary-data-persistence
-  - from: T7-generate-dictionary-type-services
-    to: T11-generate-dictionary-data-services
-  - from: T9-generate-dictionary-data-domain
-    to: T11-generate-dictionary-data-services
-  - from: T10-generate-dictionary-data-persistence
-    to: T11-generate-dictionary-data-services
-  - from: T11-generate-dictionary-data-services
-    to: T12-generate-dictionary-data-resource
-  - from: T8-generate-dictionary-type-resource
+    to: T9-generate-reservation-domain
+  - from: T5-generate-laboratory-domain
+    to: T6-generate-laboratory-persistence
+  - from: T5-generate-laboratory-domain
+    to: T7-generate-laboratory-services
+  - from: T6-generate-laboratory-persistence
+    to: T7-generate-laboratory-services
+  - from: T7-generate-laboratory-services
+    to: T8-generate-laboratory-resource
+  - from: T5-generate-laboratory-domain
+    to: T9-generate-reservation-domain
+  - from: T9-generate-reservation-domain
+    to: T10-generate-reservation-persistence
+  - from: T7-generate-laboratory-services
+    to: T11-generate-reservation-services
+  - from: T9-generate-reservation-domain
+    to: T11-generate-reservation-services
+  - from: T10-generate-reservation-persistence
+    to: T11-generate-reservation-services
+  - from: T11-generate-reservation-services
+    to: T12-generate-reservation-resource
+  - from: T8-generate-laboratory-resource
     to: T13-integration-checkpoint-alpha
-  - from: T12-generate-dictionary-data-resource
+  - from: T12-generate-reservation-resource
     to: T13-integration-checkpoint-alpha
   - from: T13-integration-checkpoint-alpha
     to: T14-run-validation-hooks
   - from: T14-run-validation-hooks
     to: T15-finalize-generation-bundle
 
-# orchestration_ir: deterministic execution order
 execution_order:
   serial_order:
     - T1-discover-architecture-baseline
     - T2-resolve-capability-schema
     - T3-build-resolved-schema
     - T4-validate-resolved-schema
-    - T5-generate-dictionary-type-domain
-    - T6-generate-dictionary-type-persistence
-    - T7-generate-dictionary-type-services
-    - T8-generate-dictionary-type-resource
-    - T9-generate-dictionary-data-domain
-    - T10-generate-dictionary-data-persistence
-    - T11-generate-dictionary-data-services
-    - T12-generate-dictionary-data-resource
+    - T5-generate-laboratory-domain
+    - T6-generate-laboratory-persistence
+    - T7-generate-laboratory-services
+    - T8-generate-laboratory-resource
+    - T9-generate-reservation-domain
+    - T10-generate-reservation-persistence
+    - T11-generate-reservation-services
+    - T12-generate-reservation-resource
     - T13-integration-checkpoint-alpha
     - T14-run-validation-hooks
     - T15-finalize-generation-bundle
-
-# orchestration_ir: safe parallelization windows
-parallel_batches:
-  - batch_id: P1-discovery-and-planning
-    tasks:
-      - T1-discover-architecture-baseline
-      - T2-resolve-capability-schema
-      - T3-build-resolved-schema
-      - T4-validate-resolved-schema
-    mode: serial-gated
-  - batch_id: P2-domain-expansion
-    tasks:
-      - T5-generate-dictionary-type-domain
-      - T9-generate-dictionary-data-domain
-    mode: partially-parallel
-    coordination_note: dictionary-data-domain waits for dictionary-type-domain output binding
-  - batch_id: P3-persistence-expansion
-    tasks:
-      - T6-generate-dictionary-type-persistence
-      - T10-generate-dictionary-data-persistence
-    mode: parallel
-  - batch_id: P4-service-expansion
-    tasks:
-      - T7-generate-dictionary-type-services
-      - T11-generate-dictionary-data-services
-    mode: dependency-aware
-  - batch_id: P5-resource-expansion
-    tasks:
-      - T8-generate-dictionary-type-resource
-      - T12-generate-dictionary-data-resource
-    mode: parallel
-  - batch_id: P6-validation-and-finalize
-    tasks:
-      - T13-integration-checkpoint-alpha
-      - T14-run-validation-hooks
-      - T15-finalize-generation-bundle
-    mode: serial-gated
-
-# orchestration_ir: integration checkpoints for coordination-safe generation
-integration_checkpoints:
-  - checkpoint_id: C1-resolved-schema-approved
-    produced_by: T4-validate-resolved-schema
-    required_for:
-      - T5-generate-dictionary-type-domain
-      - T9-generate-dictionary-data-domain
-  - checkpoint_id: C2-type-and-data-integrated
-    produced_by: T13-integration-checkpoint-alpha
-    required_for:
-      - T14-run-validation-hooks
-  - checkpoint_id: C3-final-validation-approved
-    produced_by: T14-run-validation-hooks
-    required_for:
-      - T15-finalize-generation-bundle
-
-# orchestration_ir: retry and rollback policy profile
-execution_policies:
-  retry_defaults:
-    idempotent_tasks_retryable: true
-    generation_tasks_retryable: true
-    finalize_tasks_retryable: false
-  rollback_defaults:
-    stage_boundary_cleanup_required: true
-    partial_output_reconciliation_required: true
-    unrelated_module_revert_allowed: false
-  failure_escalation:
-    schema_conflict: return-to-planning-stage
-    convention_mismatch: return-to-generation-unit
-    integration_failure: return-to-dependent-generation-units
-    boundary_violation: halt-and-escalate

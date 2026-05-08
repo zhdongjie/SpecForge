@@ -1,0 +1,487 @@
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: laboratory-reservation-management-resolved-v1
+  target_module_id: laboratory-reservation-management
+  bounded_context: laboratory-operations
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+
+module_identity:
+  module_name: laboratory-reservation-management
+  semantic_role: admin-domain
+  responsibility_code: laboratory-reservation-administration
+  package_root: org.eu.originalkeen.system.labreservation
+  route_roots:
+    - /v1/system/laboratory
+    - /v1/system/laboratory-reservation
+  repository_binding:
+    nearest_siblings:
+      - org.eu.originalkeen.system.user
+      - org.eu.originalkeen.system.role
+      - org.eu.originalkeen.system.dictionary
+    layering_model: resource-manager-service-mapper
+    response_wrapper: ResponseVo
+    page_wrapper: PageVo
+    persistence_framework: mybatis-flex
+    security_binding: preauthorize-authority
+    mutation_logging_binding: operate-log
+    transaction_binding: manager-boundary
+
+api_groups:
+  - group_id: laboratory-admin
+    route_prefix: /v1/system/laboratory
+    aggregate: Laboratory
+    capability_ids:
+      - create-laboratory
+      - update-laboratory
+      - batch-delete-laboratory
+      - enquiry-laboratory-page
+      - enquiry-laboratory-details
+      - enquiry-laboratory-list
+  - group_id: laboratory-reservation-admin
+    route_prefix: /v1/system/laboratory-reservation
+    aggregate: LaboratoryReservation
+    capability_ids:
+      - create-laboratory-reservation
+      - update-laboratory-reservation
+      - batch-delete-laboratory-reservation
+      - enquiry-laboratory-reservation-page
+      - enquiry-laboratory-reservation-details
+      - enquiry-laboratory-reservation-list
+
+capabilities:
+  - capability_id: create-laboratory
+    normalized_group: laboratory-write
+    semantic_intent: create-record
+    deterministic_pattern: create
+    execution_kind: mutation
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
+    route_binding:
+      resource: LaboratoryResource
+      method: create
+      http_method: POST
+      path: /v1/system/laboratory
+    authority: system:laboratory:create
+    authority_binding: system:laboratory:create
+    transaction_mode: read-write
+    input_contract:
+      dto: CreateLaboratoryDto
+      validation_rules:
+        - laboratory_code_unique
+        - laboratory_name_unique
+    output_contract:
+      wrapper: ResponseVo
+      payload: Void
+    touched_entities:
+      - Laboratory
+  - capability_id: update-laboratory
+    normalized_group: laboratory-write
+    semantic_intent: update-record
+    deterministic_pattern: update
+    execution_kind: mutation
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
+    route_binding:
+      resource: LaboratoryResource
+      method: update
+      http_method: PUT
+      path: /v1/system/laboratory
+    authority: system:laboratory:update
+    authority_binding: system:laboratory:update
+    transaction_mode: read-write
+    input_contract:
+      dto: UpdateLaboratoryDto
+      validation_rules:
+        - laboratory_code_unique
+        - laboratory_name_unique
+    output_contract:
+      wrapper: ResponseVo
+      payload: Void
+    touched_entities:
+      - Laboratory
+  - capability_id: batch-delete-laboratory
+    normalized_group: laboratory-write
+    semantic_intent: delete-record
+    deterministic_pattern: batch-delete
+    execution_kind: mutation
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
+    route_binding:
+      resource: LaboratoryResource
+      method: batchDelete
+      http_method: DELETE
+      path: /v1/system/laboratory
+    authority: system:laboratory:delete
+    authority_binding: system:laboratory:delete
+    transaction_mode: read-write
+    input_contract:
+      dto: LaboratoryIdSet
+      validation_rules: []
+    output_contract:
+      wrapper: ResponseVo
+      payload: Void
+    touched_entities:
+      - Laboratory
+  - capability_id: enquiry-laboratory-page
+    normalized_group: laboratory-read
+    semantic_intent: query-page
+    deterministic_pattern: page
+    execution_kind: query
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
+    route_binding:
+      resource: LaboratoryResource
+      method: enquiryPage
+      http_method: GET
+      path: /v1/system/laboratory/page
+    authority: system:laboratory:page
+    authority_binding: system:laboratory:page
+    transaction_mode: read-only
+    input_contract:
+      dto: EnquiryLaboratoryPageDto
+      validation_rules:
+        - repository_pagination_pattern_preserved
+    output_contract:
+      wrapper: ResponseVo
+      payload: PageVo<LaboratoryPageVo>
+    touched_entities:
+      - Laboratory
+  - capability_id: enquiry-laboratory-details
+    normalized_group: laboratory-read
+    semantic_intent: query-details
+    deterministic_pattern: details
+    execution_kind: query
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
+    route_binding:
+      resource: LaboratoryResource
+      method: enquiryDetails
+      http_method: GET
+      path: /v1/system/laboratory/{id}
+    authority: system:laboratory:details
+    authority_binding: system:laboratory:details
+    transaction_mode: read-only
+    input_contract:
+      dto: LaboratoryIdPath
+      validation_rules: []
+    output_contract:
+      wrapper: ResponseVo
+      payload: LaboratoryDetailsVo
+    touched_entities:
+      - Laboratory
+  - capability_id: enquiry-laboratory-list
+    normalized_group: laboratory-read
+    semantic_intent: query-list
+    deterministic_pattern: list
+    execution_kind: query
+    aggregate_scope: Laboratory
+    api_group: laboratory-admin
+    route_binding:
+      resource: LaboratoryResource
+      method: enquiryList
+      http_method: GET
+      path: /v1/system/laboratory/list
+    authority: system:laboratory:list
+    authority_binding: system:laboratory:list
+    transaction_mode: read-only
+    input_contract:
+      dto: None
+      validation_rules: []
+    output_contract:
+      wrapper: ResponseVo
+      payload: List<LaboratoryListVo>
+    touched_entities:
+      - Laboratory
+  - capability_id: create-laboratory-reservation
+    normalized_group: laboratory-reservation-write
+    semantic_intent: create-record
+    deterministic_pattern: create
+    execution_kind: mutation
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
+    route_binding:
+      resource: LaboratoryReservationResource
+      method: create
+      http_method: POST
+      path: /v1/system/laboratory-reservation
+    authority: system:laboratory-reservation:create
+    authority_binding: system:laboratory-reservation:create
+    transaction_mode: read-write
+    input_contract:
+      dto: CreateLaboratoryReservationDto
+      validation_rules:
+        - reservation_code_unique
+        - reservation_slot_unique_per_laboratory
+        - reservation_laboratory_must_exist
+    output_contract:
+      wrapper: ResponseVo
+      payload: Void
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: update-laboratory-reservation
+    normalized_group: laboratory-reservation-write
+    semantic_intent: update-record
+    deterministic_pattern: update
+    execution_kind: mutation
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
+    route_binding:
+      resource: LaboratoryReservationResource
+      method: update
+      http_method: PUT
+      path: /v1/system/laboratory-reservation
+    authority: system:laboratory-reservation:update
+    authority_binding: system:laboratory-reservation:update
+    transaction_mode: read-write
+    input_contract:
+      dto: UpdateLaboratoryReservationDto
+      validation_rules:
+        - reservation_code_unique
+        - reservation_slot_unique_per_laboratory
+        - reservation_laboratory_must_exist
+    output_contract:
+      wrapper: ResponseVo
+      payload: Void
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: batch-delete-laboratory-reservation
+    normalized_group: laboratory-reservation-write
+    semantic_intent: delete-record
+    deterministic_pattern: batch-delete
+    execution_kind: mutation
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
+    route_binding:
+      resource: LaboratoryReservationResource
+      method: batchDelete
+      http_method: DELETE
+      path: /v1/system/laboratory-reservation
+    authority: system:laboratory-reservation:delete
+    authority_binding: system:laboratory-reservation:delete
+    transaction_mode: read-write
+    input_contract:
+      dto: LaboratoryReservationIdSet
+      validation_rules: []
+    output_contract:
+      wrapper: ResponseVo
+      payload: Void
+    touched_entities:
+      - LaboratoryReservation
+  - capability_id: enquiry-laboratory-reservation-page
+    normalized_group: laboratory-reservation-read
+    semantic_intent: query-page
+    deterministic_pattern: page
+    execution_kind: query
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
+    route_binding:
+      resource: LaboratoryReservationResource
+      method: enquiryPage
+      http_method: GET
+      path: /v1/system/laboratory-reservation/page
+    authority: system:laboratory-reservation:page
+    authority_binding: system:laboratory-reservation:page
+    transaction_mode: read-only
+    input_contract:
+      dto: EnquiryLaboratoryReservationPageDto
+      validation_rules:
+        - repository_pagination_pattern_preserved
+    output_contract:
+      wrapper: ResponseVo
+      payload: PageVo<LaboratoryReservationPageVo>
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: enquiry-laboratory-reservation-details
+    normalized_group: laboratory-reservation-read
+    semantic_intent: query-details
+    deterministic_pattern: details
+    execution_kind: query
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
+    route_binding:
+      resource: LaboratoryReservationResource
+      method: enquiryDetails
+      http_method: GET
+      path: /v1/system/laboratory-reservation/{id}
+    authority: system:laboratory-reservation:details
+    authority_binding: system:laboratory-reservation:details
+    transaction_mode: read-only
+    input_contract:
+      dto: LaboratoryReservationIdPath
+      validation_rules: []
+    output_contract:
+      wrapper: ResponseVo
+      payload: LaboratoryReservationDetailsVo
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+  - capability_id: enquiry-laboratory-reservation-list
+    normalized_group: laboratory-reservation-read
+    semantic_intent: query-list
+    deterministic_pattern: list
+    execution_kind: query
+    aggregate_scope: LaboratoryReservation
+    api_group: laboratory-reservation-admin
+    route_binding:
+      resource: LaboratoryReservationResource
+      method: enquiryList
+      http_method: GET
+      path: /v1/system/laboratory-reservation/list
+    authority: system:laboratory-reservation:list
+    authority_binding: system:laboratory-reservation:list
+    transaction_mode: read-only
+    input_contract:
+      dto: None
+      validation_rules: []
+    output_contract:
+      wrapper: ResponseVo
+      payload: List<LaboratoryReservationListVo>
+    touched_entities:
+      - LaboratoryReservation
+      - Laboratory
+
+entity_graph:
+  entities:
+    - entity_id: Laboratory
+      table: system_laboratory
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: root
+      relations:
+        - relation: one-to-many
+          target: LaboratoryReservation
+          relation_name: reservations
+    - entity_id: LaboratoryReservation
+      table: system_laboratory_reservation
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: child-root
+      relations:
+        - relation: many-to-one
+          target: Laboratory
+          relation_name: laboratory
+
+validation_rules:
+  uniqueness:
+    - rule_id: laboratory_code_unique
+      scope: system_laboratory.laboratory_code
+    - rule_id: laboratory_name_unique
+      scope: system_laboratory.laboratory_name
+    - rule_id: reservation_code_unique
+      scope: system_laboratory_reservation.reservation_code
+    - rule_id: reservation_slot_unique_per_laboratory
+      scope: system_laboratory_reservation.(laboratory_id, reservation_start_time, reservation_end_time)
+  referential:
+    - rule_id: reservation_laboratory_must_exist
+      source: LaboratoryReservation.laboratory_id
+      target: Laboratory.id
+  shape:
+    - rule_id: repository_pagination_pattern_preserved
+      target_capability:
+        - enquiry-laboratory-page
+        - enquiry-laboratory-reservation-page
+
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+    entity_suffix: Entity
+    dto_prefixes:
+      create: Create
+      update: Update
+      enquiry_page: Enquiry
+    vo_suffixes:
+      details: DetailsVo
+      page: PageVo
+      list: ListVo
+  annotation_bindings:
+    resource_annotations:
+      - "@CrossOrigin"
+      - "@Validated"
+      - "@RestController"
+      - "@RequestMapping"
+    mutation_annotations:
+      - "@PreAuthorize"
+      - "@OperateLog"
+    query_annotations:
+      - "@PreAuthorize"
+    dependency_injection: "@Resource"
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+  query_style:
+    page_queries_use_enquiry_dto: true
+    detail_queries_use_path_id: true
+    list_queries_use_simple_collection_read: true
+  ownership_model:
+    laboratory_as_parent_reference: true
+    reservation_belongs_to_laboratory: true
+
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+      - create-laboratory
+      - update-laboratory
+      - batch-delete-laboratory
+      - create-laboratory-reservation
+      - update-laboratory-reservation
+      - batch-delete-laboratory-reservation
+
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+      - system:laboratory:*
+      - system:laboratory-reservation:*
+  logging:
+    mode: operate-log-aspect
+    mutation_only: true
+  persistence:
+    database: mysql
+    required_tables:
+      - system_laboratory
+      - system_laboratory_reservation
+
+code_conventions:
+  naming_stability: strict
+  route_style: sibling-module-aligned
+  transaction_style: manager-boundary
+  uniqueness_validation_style: service-guard
+  list_vs_page_distinction: mandatory
+
+validation_hooks:
+  pre_generation:
+    - hook-discovery-baseline-complete
+  post_unit:
+    - hook-artifact-name-convention
+    - hook-package-placement-check
+  final:
+    - hook-module-boundary-check
+    - hook-deterministic-layout-check

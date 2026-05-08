@@ -1,0 +1,12 @@
+plan_id: lab-reservation-autobuild
+default_run_id: lab-reservation-autobuild
+backend_root: ../backend
+module_schema: module-schema.resolved.yaml
+auto_repair: true
+verify_boot: true
+repair_max_passes: 5
+goal: bootable-generated-backend
+notes:
+  - use canonical specs in this directory
+  - compile and boot verification are mandatory
+  - deterministic repair is enabled

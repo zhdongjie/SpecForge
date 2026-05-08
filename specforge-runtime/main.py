@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from runtime.codegen.common import dump_yaml, safe_load_yaml
 from runtime.codegen import CodegenPipeline
 from runtime.dag_engine import DagEngine
 from runtime.hardening import HardeningPipeline
@@ -20,6 +21,8 @@ from runtime.verifier import RuntimeVerifier
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="SpecForge compiler runtime simulator")
     parser.add_argument("--run-id", default="run-001")
+    parser.add_argument("--auto-build", action="store_true")
+    parser.add_argument("--build-plan", default="build-plan.yaml")
     parser.add_argument("--replay-source-run")
     parser.add_argument("--partial-replay", default="")
     parser.add_argument("--inject-failure", action="append", default=[])
@@ -42,6 +45,67 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--verify-boot", action="store_true")
     parser.add_argument("--repair-max-passes", type=int, default=5)
     return parser.parse_args()
+
+
+def resolve_build_plan_path(root: Path, build_plan: str) -> Path:
+    candidate = Path(build_plan)
+    if candidate.is_absolute():
+        return candidate
+    root_relative = root / candidate
+    if root_relative.exists():
+        return root_relative
+    return root / "specs" / candidate
+
+
+def run_auto_build(args: argparse.Namespace, root: Path) -> None:
+    build_plan_path = resolve_build_plan_path(root, args.build_plan)
+    build_plan = safe_load_yaml(build_plan_path)
+
+    plan_id = build_plan.get("plan_id", build_plan_path.stem)
+    module_schema_name = build_plan.get("module_schema", args.module_schema)
+    backend_root_arg = build_plan.get("backend_root", args.backend_root)
+    auto_repair = bool(build_plan.get("auto_repair", True))
+    verify_boot = bool(build_plan.get("verify_boot", True))
+    repair_max_passes = int(build_plan.get("repair_max_passes", args.repair_max_passes))
+    run_id = (
+        str(build_plan.get("default_run_id", plan_id))
+        if args.run_id == "run-001"
+        else args.run_id
+    )
+
+    run_root = root / "runs" / run_id
+    specs_dir = root / "specs"
+    backend_root = (root / str(backend_root_arg)).resolve()
+
+    summary = HardeningPipeline(
+        project_root=root.parent,
+        backend_root=backend_root,
+        run_root=run_root,
+        specs_dir=specs_dir,
+    ).run(
+        module_schema_name=str(module_schema_name),
+        auto_repair=auto_repair,
+        verify_boot=verify_boot,
+        repair_max_passes=max(1, repair_max_passes),
+    )
+
+    auto_build_report = {
+        "status": summary["status"],
+        "plan_id": plan_id,
+        "build_plan": str(build_plan_path),
+        "run_id": run_id,
+        "module_schema": str(module_schema_name),
+        "backend_root": str(backend_root),
+        "auto_repair": auto_repair,
+        "verify_boot": verify_boot,
+        "repair_max_passes": repair_max_passes,
+        "generated_project_root": summary.get("generated_project_root"),
+        "compile_status": summary.get("compile_status"),
+        "boot_status": summary.get("boot_status"),
+    }
+    dump_yaml(run_root / "logs" / "auto-build-report.yaml", auto_build_report)
+    if summary["status"] == "FAIL":
+        raise RuntimeError("Auto build failed verification")
 
 
 def build_run_config(args: argparse.Namespace) -> RunConfig:
@@ -76,6 +140,9 @@ def build_run_config(args: argparse.Namespace) -> RunConfig:
 def main() -> None:
     args = parse_args()
     root = Path(__file__).resolve().parent
+    if args.auto_build:
+        run_auto_build(args, root)
+        return
     if args.emit_code:
         output_root = root / "runs" / args.run_id / "generated-module"
         specs_dir = root / "specs"

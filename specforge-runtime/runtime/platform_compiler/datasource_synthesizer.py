@@ -15,10 +15,11 @@ class DatasourceSynthesizer:
     def _source(self, package_name: str, platform_package: str) -> str:
         return (
             f"package {package_name};\n\n"
+            f"import org.apache.ibatis.annotations.Mapper;\n"
             f"import org.mybatis.spring.annotation.MapperScan;\n"
             f"import org.springframework.context.annotation.Configuration;\n\n"
             f"@Configuration\n"
-            f'@MapperScan(basePackages = "{platform_package}")\n'
+            f'@MapperScan(basePackages = "{platform_package}", annotationClass = Mapper.class)\n'
             f"public class MyBatisFlexConfiguration {{\n"
             f"}}\n"
         )
