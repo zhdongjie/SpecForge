@@ -137,6 +137,7 @@ __pycache__/
 
 # SpecForge runtime artifacts
 specforge-runtime/runs/
+specforge-runtime/outputs/
 specforge-runtime/benchmark-summary.yaml
 specforge-runtime/regression-summary.yaml
 specforge-runtime/.mypy_cache/
