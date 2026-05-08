@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import os
-import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
 
 from runtime.codegen.common import dump_yaml
+from runtime.toolchain import resolve_toolchain
 
 from .compile_error_classifier import CompileErrorClassifier
 
@@ -19,6 +18,23 @@ class CompileDiagnostics:
 
     def run(self) -> dict[str, Any]:
         environment = self._resolve_environment()
+        if environment["maven_command"] is None:
+            diagnostics = {
+                "status": "BLOCKED",
+                "return_code": None,
+                "command": None,
+                "environment_binding": environment["binding"],
+                "compile_errors": [
+                    {
+                        "category": "toolchain_unavailable",
+                        "message": "Unable to resolve Maven command for deterministic compilation",
+                    }
+                ],
+                "stdout_tail": "",
+                "stderr_tail": "",
+            }
+            dump_yaml(self.logs_root / "compile-diagnostics.yaml", diagnostics)
+            return diagnostics
         command = [
             environment["maven_command"],
             "-Dmaven.repo.local=.m2/repository",
@@ -55,25 +71,7 @@ class CompileDiagnostics:
         return diagnostics
 
     def _resolve_environment(self) -> dict[str, Any]:
-        mvn = Path(r"E:\Dev\Maven\apache-maven-3.9.6\bin\mvn.cmd")
-        maven_command = str(mvn if mvn.exists() else shutil.which("mvn.cmd") or shutil.which("mvn") or "mvn")
-        jdk_candidates = [
-            Path(r"E:\Dev\JDK\jdk-17.0.10"),
-            Path(r"E:\Dev\JDK\jdk-17"),
-        ]
-        env = os.environ.copy()
-        binding: dict[str, Any] = {
-            "java_home": env.get("JAVA_HOME"),
-            "maven_command": maven_command,
-            "local_repo": ".m2/repository",
-        }
-        for candidate in jdk_candidates:
-            if candidate.exists():
-                env["JAVA_HOME"] = str(candidate)
-                env["Path"] = str(candidate / "bin") + os.pathsep + env.get("Path", "")
-                binding["java_home"] = str(candidate)
-                break
-        return {"env": env, "binding": binding, "maven_command": maven_command}
+        return resolve_toolchain(local_repo=".m2/repository")
 
     def _combine_output(self, stdout: str, stderr: str) -> str:
         return "\n".join(part for part in [stdout, stderr] if part)

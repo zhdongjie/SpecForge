@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import shutil
 import subprocess
 import time
 from pathlib import Path
 from typing import Any
 
 from runtime.codegen.common import dump_yaml
+from runtime.toolchain import resolve_toolchain
 
 
 class BootVerifier:
@@ -30,20 +30,27 @@ class BootVerifier:
         return {"compile_check": compile_check, "boot_check": boot_check}
 
     def compile_check(self) -> dict[str, Any]:
-        mvn_command = self._find_maven()
+        toolchain = resolve_toolchain()
+        mvn_command = toolchain["maven_command"]
         if mvn_command is None:
-            return {"status": "SKIPPED", "reason": "maven-not-found"}
+            return {
+                "status": "SKIPPED",
+                "reason": "maven-not-found",
+                "environment_binding": toolchain["binding"],
+            }
         completed = subprocess.run(
             [mvn_command, "-q", "-DskipTests", "clean", "compile"],
             cwd=self.project_root,
             capture_output=True,
             text=True,
             check=False,
+            env=toolchain["env"],
         )
         result = {
             "status": "PASS" if completed.returncode == 0 else "FAIL",
             "return_code": completed.returncode,
             "command": mvn_command,
+            "environment_binding": toolchain["binding"],
             "stdout": completed.stdout[-4000:],
             "stderr": completed.stderr[-4000:],
         }
@@ -54,9 +61,14 @@ class BootVerifier:
         return result
 
     def boot_check(self, timeout_seconds: int = 120) -> dict[str, Any]:
-        mvn_command = self._find_maven()
+        toolchain = resolve_toolchain()
+        mvn_command = toolchain["maven_command"]
         if mvn_command is None:
-            return {"status": "SKIPPED", "reason": "maven-not-found"}
+            return {
+                "status": "SKIPPED",
+                "reason": "maven-not-found",
+                "environment_binding": toolchain["binding"],
+            }
 
         process = subprocess.Popen(
             [mvn_command, "-q", "-DskipTests", "spring-boot:run", "-Dspring-boot.run.arguments=--server.port=0"],
@@ -64,6 +76,7 @@ class BootVerifier:
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
+            env=toolchain["env"],
         )
         started = False
         output_lines: list[str] = []
@@ -82,18 +95,21 @@ class BootVerifier:
                 return {
                     "status": "PASS",
                     "command": mvn_command,
+                    "environment_binding": toolchain["binding"],
                     "output": "\n".join(output_lines[-200:]),
                 }
             if process.poll() is None:
                 return {
                     "status": "FAIL",
                     "command": mvn_command,
+                    "environment_binding": toolchain["binding"],
                     "reason": "startup-timeout",
                     "output": "\n".join(output_lines[-200:]),
                 }
             return {
                 "status": "FAIL",
                 "command": mvn_command,
+                "environment_binding": toolchain["binding"],
                 "return_code": process.returncode,
                 "output": "\n".join(output_lines[-200:]),
             }
@@ -104,10 +120,3 @@ class BootVerifier:
                     process.wait(timeout=10)
                 except subprocess.TimeoutExpired:
                     process.kill()
-
-    def _find_maven(self) -> str | None:
-        preferred_commands = [Path(r"E:\Dev\Maven\apache-maven-3.9.6\bin\mvn.cmd")]
-        for candidate in preferred_commands:
-            if candidate.exists():
-                return str(candidate)
-        return shutil.which("mvn.cmd") or shutil.which("mvn")

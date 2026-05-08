@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import re
-import shutil
 import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
 
 from runtime.codegen.common import dump_yaml, parse_package_name, read_text
+from runtime.toolchain import resolve_toolchain
 
 
 class SynthesisValidator:
@@ -52,16 +52,14 @@ class SynthesisValidator:
         return report
 
     def compile_check(self) -> dict[str, Any]:
-        preferred_commands = [Path(r"E:\Dev\Maven\apache-maven-3.9.6\bin\mvn.cmd")]
-        mvn_command = None
-        for candidate in preferred_commands:
-            if candidate.exists():
-                mvn_command = str(candidate)
-                break
+        toolchain = resolve_toolchain()
+        mvn_command = toolchain["maven_command"]
         if mvn_command is None:
-            mvn_command = shutil.which("mvn.cmd") or shutil.which("mvn")
-        if mvn_command is None:
-            result = {"status": "SKIPPED", "reason": "maven-not-found"}
+            result = {
+                "status": "SKIPPED",
+                "reason": "maven-not-found",
+                "environment_binding": toolchain["binding"],
+            }
             dump_yaml(self.context["output_root"] / "logs" / "compile-check.yaml", result)
             return result
 
@@ -90,12 +88,14 @@ class SynthesisValidator:
                 capture_output=True,
                 text=True,
                 check=False,
+                env=toolchain["env"],
             )
 
         result = {
             "status": "PASS" if completed.returncode == 0 else "FAIL",
             "return_code": completed.returncode,
             "command": mvn_command,
+            "environment_binding": toolchain["binding"],
             "stdout": completed.stdout[-4000:],
             "stderr": completed.stderr[-4000:],
         }
