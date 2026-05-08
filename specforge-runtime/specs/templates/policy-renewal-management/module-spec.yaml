@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: policy_renewal_management-project-v1
+  target_module_id: policy-renewal-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+    - bounded-module
+    - policy-renewal-center
+    - default-enabled-blueprint
+module_identity:
+  module_name: policy-renewal-management
+  bounded_context: policy-renewal-center
+  semantic_role: business-domain
+  responsibility_code: policy_renewal_management
+  package_root: org.eu.originalkeen.business.policyrenewal
+  route_namespace:
+    policy-renewal-management: /v1/business/policy-renewal
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &renewal_entities
+    - PolicyRenewal
+    - RenewalReminder
+  may_reference:
+    - ResponseVo
+    - PageVo
+    - OperateLog
+    - PreAuthorize
+  must_not_generate:
+    - authentication flows
+    - user management
+    - role management
+api_groups:
+  - group_id: policy_renewal_management
+    route_prefix: /v1/business/policy-renewal
+    aggregate: PolicyRenewal
+    capability_ids:
+      - create-policy_renewal_management
+      - update-policy_renewal_management
+      - batch-delete-policy_renewal_management
+      - enquiry-policy_renewal_management-page
+      - enquiry-policy_renewal_management-details
+      - enquiry-policy_renewal_management-list
+capabilities:
+  - capability_id: create-policy_renewal_management
+    semantic_intent: create-record
+    deterministic_pattern: create
+    stability_class: stable
+    api_group: policy_renewal_management
+    http_method: POST
+    route: /
+    authority: business:policy-renewal:create
+    transaction: read-write
+    input_dto: CreatePolicyRenewalManagementDto
+    output_vo: Void
+    touched_entities: *renewal_entities
+  - capability_id: update-policy_renewal_management
+    semantic_intent: update-record
+    deterministic_pattern: update
+    stability_class: stable
+    api_group: policy_renewal_management
+    http_method: PUT
+    route: /
+    authority: business:policy-renewal:update
+    transaction: read-write
+    input_dto: UpdatePolicyRenewalManagementDto
+    output_vo: Void
+    touched_entities: *renewal_entities
+  - capability_id: batch-delete-policy_renewal_management
+    semantic_intent: delete-record
+    deterministic_pattern: batch-delete
+    stability_class: stable
+    api_group: policy_renewal_management
+    http_method: DELETE
+    route: /
+    authority: business:policy-renewal:delete
+    transaction: read-write
+    input_dto: PolicyRenewalManagementIdSet
+    output_vo: Void
+    touched_entities: *renewal_entities
+  - capability_id: enquiry-policy_renewal_management-page
+    semantic_intent: query-page
+    deterministic_pattern: page
+    stability_class: stable
+    api_group: policy_renewal_management
+    http_method: GET
+    route: /page
+    authority: business:policy-renewal:page
+    transaction: read-only
+    input_dto: EnquiryPolicyRenewalManagementPageDto
+    output_vo: PageVo<PolicyRenewalManagementPageVo>
+    touched_entities: *renewal_entities
+  - capability_id: enquiry-policy_renewal_management-details
+    semantic_intent: query-details
+    deterministic_pattern: details
+    stability_class: stable
+    api_group: policy_renewal_management
+    http_method: GET
+    route: /{id}
+    authority: business:policy-renewal:details
+    transaction: read-only
+    input_dto: PolicyRenewalManagementIdPath
+    output_vo: PolicyRenewalManagementDetailsVo
+    touched_entities: *renewal_entities
+  - capability_id: enquiry-policy_renewal_management-list
+    semantic_intent: query-list
+    deterministic_pattern: list
+    stability_class: stable
+    api_group: policy_renewal_management
+    http_method: GET
+    route: /list
+    authority: business:policy-renewal:list
+    transaction: read-only
+    input_dto: None
+    output_vo: List<PolicyRenewalManagementListVo>
+    touched_entities: *renewal_entities
+entity_graph:
+  entities:
+    - entity_id: PolicyRenewal
+      table: policy_renewal
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: root
+      relations: []
+    - entity_id: RenewalReminder
+      table: renewal_reminder
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: root
+      relations: []
+artifact_contract:
+  resource:
+    - PolicyRenewalManagementResource
+  manager:
+    - PolicyRenewalManagementManager
+  service:
+    - PolicyRenewalManagementService
+  service_impl:
+    - PolicyRenewalManagementServiceImpl
+  mapper:
+    - PolicyRenewalManagementMapper
+  entity: *renewal_entities
+  dto:
+    - CreatePolicyRenewalManagementDto
+    - UpdatePolicyRenewalManagementDto
+    - EnquiryPolicyRenewalManagementPageDto
+  vo:
+    - PolicyRenewalManagementDetailsVo
+    - PolicyRenewalManagementPageVo
+    - PolicyRenewalManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+      - create-policy_renewal_management
+      - update-policy_renewal_management
+      - batch-delete-policy_renewal_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+    - modular-monolith-boundaries
+    - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

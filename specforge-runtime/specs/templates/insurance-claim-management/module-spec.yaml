@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: insurance_claim_management-project-v1
+  target_module_id: insurance-claim-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+    - bounded-module
+    - insurance-claim-operations
+    - default-enabled-blueprint
+module_identity:
+  module_name: insurance-claim-management
+  bounded_context: insurance-claim-operations
+  semantic_role: business-domain
+  responsibility_code: insurance_claim_management
+  package_root: org.eu.originalkeen.business.insuranceclaim
+  route_namespace:
+    insurance-claim-management: /v1/business/insurance-claim
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &claim_entities
+    - InsuranceClaim
+    - ClaimSettlement
+  may_reference:
+    - ResponseVo
+    - PageVo
+    - OperateLog
+    - PreAuthorize
+  must_not_generate:
+    - authentication flows
+    - user management
+    - role management
+api_groups:
+  - group_id: insurance_claim_management
+    route_prefix: /v1/business/insurance-claim
+    aggregate: InsuranceClaim
+    capability_ids:
+      - create-insurance_claim_management
+      - update-insurance_claim_management
+      - batch-delete-insurance_claim_management
+      - enquiry-insurance_claim_management-page
+      - enquiry-insurance_claim_management-details
+      - enquiry-insurance_claim_management-list
+capabilities:
+  - capability_id: create-insurance_claim_management
+    semantic_intent: create-record
+    deterministic_pattern: create
+    stability_class: stable
+    api_group: insurance_claim_management
+    http_method: POST
+    route: /
+    authority: business:insurance-claim:create
+    transaction: read-write
+    input_dto: CreateInsuranceClaimManagementDto
+    output_vo: Void
+    touched_entities: *claim_entities
+  - capability_id: update-insurance_claim_management
+    semantic_intent: update-record
+    deterministic_pattern: update
+    stability_class: stable
+    api_group: insurance_claim_management
+    http_method: PUT
+    route: /
+    authority: business:insurance-claim:update
+    transaction: read-write
+    input_dto: UpdateInsuranceClaimManagementDto
+    output_vo: Void
+    touched_entities: *claim_entities
+  - capability_id: batch-delete-insurance_claim_management
+    semantic_intent: delete-record
+    deterministic_pattern: batch-delete
+    stability_class: stable
+    api_group: insurance_claim_management
+    http_method: DELETE
+    route: /
+    authority: business:insurance-claim:delete
+    transaction: read-write
+    input_dto: InsuranceClaimManagementIdSet
+    output_vo: Void
+    touched_entities: *claim_entities
+  - capability_id: enquiry-insurance_claim_management-page
+    semantic_intent: query-page
+    deterministic_pattern: page
+    stability_class: stable
+    api_group: insurance_claim_management
+    http_method: GET
+    route: /page
+    authority: business:insurance-claim:page
+    transaction: read-only
+    input_dto: EnquiryInsuranceClaimManagementPageDto
+    output_vo: PageVo<InsuranceClaimManagementPageVo>
+    touched_entities: *claim_entities
+  - capability_id: enquiry-insurance_claim_management-details
+    semantic_intent: query-details
+    deterministic_pattern: details
+    stability_class: stable
+    api_group: insurance_claim_management
+    http_method: GET
+    route: /{id}
+    authority: business:insurance-claim:details
+    transaction: read-only
+    input_dto: InsuranceClaimManagementIdPath
+    output_vo: InsuranceClaimManagementDetailsVo
+    touched_entities: *claim_entities
+  - capability_id: enquiry-insurance_claim_management-list
+    semantic_intent: query-list
+    deterministic_pattern: list
+    stability_class: stable
+    api_group: insurance_claim_management
+    http_method: GET
+    route: /list
+    authority: business:insurance-claim:list
+    transaction: read-only
+    input_dto: None
+    output_vo: List<InsuranceClaimManagementListVo>
+    touched_entities: *claim_entities
+entity_graph:
+  entities:
+    - entity_id: InsuranceClaim
+      table: insurance_claim
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: root
+      relations: []
+    - entity_id: ClaimSettlement
+      table: claim_settlement
+      ownership: owned
+      base_type: PrimaryKeyEntity
+      aggregate_role: root
+      relations: []
+artifact_contract:
+  resource:
+    - InsuranceClaimManagementResource
+  manager:
+    - InsuranceClaimManagementManager
+  service:
+    - InsuranceClaimManagementService
+  service_impl:
+    - InsuranceClaimManagementServiceImpl
+  mapper:
+    - InsuranceClaimManagementMapper
+  entity: *claim_entities
+  dto:
+    - CreateInsuranceClaimManagementDto
+    - UpdateInsuranceClaimManagementDto
+    - EnquiryInsuranceClaimManagementPageDto
+  vo:
+    - InsuranceClaimManagementDetailsVo
+    - InsuranceClaimManagementPageVo
+    - InsuranceClaimManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+      - create-insurance_claim_management
+      - update-insurance_claim_management
+      - batch-delete-insurance_claim_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+    - modular-monolith-boundaries
+    - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

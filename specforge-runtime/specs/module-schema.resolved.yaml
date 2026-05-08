@@ -1,8 +1,8 @@
 resolution_context:
   source_module_spec: module-spec.yaml
-  resolved_schema_id: laboratory-reservation-management-resolved-v1
-  target_module_id: laboratory-reservation-management
-  bounded_context: laboratory-operations
+  resolved_schema_id: insurance-policy-management-resolved-v1
+  target_module_id: insurance-policy-management
+  bounded_context: insurance-policy-operations
   regeneration_mode: create
   stability_goal: deterministic
   compiler_stage: resolved-generation-plan
@@ -10,13 +10,13 @@ resolution_context:
   multi_agent_safe: true
 
 module_identity:
-  module_name: laboratory-reservation-management
+  module_name: insurance-policy-management
   semantic_role: business-domain
-  responsibility_code: laboratory-reservation-operations
-  package_root: org.eu.originalkeen.business.labreservation
+  responsibility_code: insurance-policy-operations
+  package_root: org.eu.originalkeen.business.insurancepolicy
   route_roots:
-    - /v1/business/laboratory
-    - /v1/business/laboratory-reservation
+    - /v1/business/insurance-product
+    - /v1/business/insurance-policy
   repository_binding:
     nearest_siblings:
       - org.eu.originalkeen.business.personal
@@ -31,362 +31,358 @@ module_identity:
     transaction_binding: manager-boundary
 
 api_groups:
-  - group_id: laboratory-admin
-    route_prefix: /v1/business/laboratory
-    aggregate: Laboratory
+  - group_id: insurance-product-admin
+    route_prefix: /v1/business/insurance-product
+    aggregate: InsuranceProduct
     capability_ids:
-      - create-laboratory
-      - update-laboratory
-      - batch-delete-laboratory
-      - enquiry-laboratory-page
-      - enquiry-laboratory-details
-      - enquiry-laboratory-list
-  - group_id: laboratory-reservation-admin
-    route_prefix: /v1/business/laboratory-reservation
-    aggregate: LaboratoryReservation
+      - create-insurance-product
+      - update-insurance-product
+      - batch-delete-insurance-product
+      - enquiry-insurance-product-page
+      - enquiry-insurance-product-details
+      - enquiry-insurance-product-list
+  - group_id: insurance-policy-admin
+    route_prefix: /v1/business/insurance-policy
+    aggregate: InsurancePolicy
     capability_ids:
-      - create-laboratory-reservation
-      - update-laboratory-reservation
-      - batch-delete-laboratory-reservation
-      - enquiry-laboratory-reservation-page
-      - enquiry-laboratory-reservation-details
-      - enquiry-laboratory-reservation-list
+      - create-insurance-policy
+      - update-insurance-policy
+      - batch-delete-insurance-policy
+      - enquiry-insurance-policy-page
+      - enquiry-insurance-policy-details
+      - enquiry-insurance-policy-list
 
 capabilities:
-  - capability_id: create-laboratory
-    normalized_group: laboratory-write
+  - capability_id: create-insurance-product
+    normalized_group: insurance-product-write
     semantic_intent: create-record
     deterministic_pattern: create
     execution_kind: mutation
-    aggregate_scope: Laboratory
-    api_group: laboratory-admin
+    aggregate_scope: InsuranceProduct
+    api_group: insurance-product-admin
     route_binding:
-      resource: LaboratoryResource
+      resource: InsuranceProductResource
       method: create
       http_method: POST
-      path: /v1/business/laboratory
-    authority: business:laboratory:create
-    authority_binding: business:laboratory:create
+      path: /v1/business/insurance-product
+    authority: business:insurance-product:create
+    authority_binding: business:insurance-product:create
     transaction_mode: read-write
     input_contract:
-      dto: CreateLaboratoryDto
+      dto: CreateInsuranceProductDto
       validation_rules:
-        - laboratory_code_unique
-        - laboratory_name_unique
+        - insurance_product_code_unique
+        - insurance_product_name_unique
     output_contract:
       wrapper: ResponseVo
       payload: Void
     touched_entities:
-      - Laboratory
-  - capability_id: update-laboratory
-    normalized_group: laboratory-write
+      - InsuranceProduct
+  - capability_id: update-insurance-product
+    normalized_group: insurance-product-write
     semantic_intent: update-record
     deterministic_pattern: update
     execution_kind: mutation
-    aggregate_scope: Laboratory
-    api_group: laboratory-admin
+    aggregate_scope: InsuranceProduct
+    api_group: insurance-product-admin
     route_binding:
-      resource: LaboratoryResource
+      resource: InsuranceProductResource
       method: update
       http_method: PUT
-      path: /v1/business/laboratory
-    authority: business:laboratory:update
-    authority_binding: business:laboratory:update
+      path: /v1/business/insurance-product
+    authority: business:insurance-product:update
+    authority_binding: business:insurance-product:update
     transaction_mode: read-write
     input_contract:
-      dto: UpdateLaboratoryDto
+      dto: UpdateInsuranceProductDto
       validation_rules:
-        - laboratory_code_unique
-        - laboratory_name_unique
+        - insurance_product_code_unique
+        - insurance_product_name_unique
     output_contract:
       wrapper: ResponseVo
       payload: Void
     touched_entities:
-      - Laboratory
-  - capability_id: batch-delete-laboratory
-    normalized_group: laboratory-write
+      - InsuranceProduct
+  - capability_id: batch-delete-insurance-product
+    normalized_group: insurance-product-write
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     execution_kind: mutation
-    aggregate_scope: Laboratory
-    api_group: laboratory-admin
+    aggregate_scope: InsuranceProduct
+    api_group: insurance-product-admin
     route_binding:
-      resource: LaboratoryResource
+      resource: InsuranceProductResource
       method: batchDelete
       http_method: DELETE
-      path: /v1/business/laboratory
-    authority: business:laboratory:delete
-    authority_binding: business:laboratory:delete
+      path: /v1/business/insurance-product
+    authority: business:insurance-product:delete
+    authority_binding: business:insurance-product:delete
     transaction_mode: read-write
     input_contract:
-      dto: LaboratoryIdSet
+      dto: InsuranceProductIdSet
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
       payload: Void
     touched_entities:
-      - Laboratory
-  - capability_id: enquiry-laboratory-page
-    normalized_group: laboratory-read
+      - InsuranceProduct
+  - capability_id: enquiry-insurance-product-page
+    normalized_group: insurance-product-read
     semantic_intent: query-page
     deterministic_pattern: page
     execution_kind: query
-    aggregate_scope: Laboratory
-    api_group: laboratory-admin
+    aggregate_scope: InsuranceProduct
+    api_group: insurance-product-admin
     route_binding:
-      resource: LaboratoryResource
+      resource: InsuranceProductResource
       method: enquiryPage
       http_method: GET
-      path: /v1/business/laboratory/page
-    authority: business:laboratory:page
-    authority_binding: business:laboratory:page
+      path: /v1/business/insurance-product/page
+    authority: business:insurance-product:page
+    authority_binding: business:insurance-product:page
     transaction_mode: read-only
     input_contract:
-      dto: EnquiryLaboratoryPageDto
+      dto: EnquiryInsuranceProductPageDto
       validation_rules:
         - repository_pagination_pattern_preserved
     output_contract:
       wrapper: ResponseVo
-      payload: PageVo<LaboratoryPageVo>
+      payload: PageVo<InsuranceProductPageVo>
     touched_entities:
-      - Laboratory
-  - capability_id: enquiry-laboratory-details
-    normalized_group: laboratory-read
+      - InsuranceProduct
+  - capability_id: enquiry-insurance-product-details
+    normalized_group: insurance-product-read
     semantic_intent: query-details
     deterministic_pattern: details
     execution_kind: query
-    aggregate_scope: Laboratory
-    api_group: laboratory-admin
+    aggregate_scope: InsuranceProduct
+    api_group: insurance-product-admin
     route_binding:
-      resource: LaboratoryResource
+      resource: InsuranceProductResource
       method: enquiryDetails
       http_method: GET
-      path: /v1/business/laboratory/{id}
-    authority: business:laboratory:details
-    authority_binding: business:laboratory:details
+      path: /v1/business/insurance-product/{id}
+    authority: business:insurance-product:details
+    authority_binding: business:insurance-product:details
     transaction_mode: read-only
     input_contract:
-      dto: LaboratoryIdPath
+      dto: InsuranceProductIdPath
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: LaboratoryDetailsVo
+      payload: InsuranceProductDetailsVo
     touched_entities:
-      - Laboratory
-  - capability_id: enquiry-laboratory-list
-    normalized_group: laboratory-read
+      - InsuranceProduct
+  - capability_id: enquiry-insurance-product-list
+    normalized_group: insurance-product-read
     semantic_intent: query-list
     deterministic_pattern: list
     execution_kind: query
-    aggregate_scope: Laboratory
-    api_group: laboratory-admin
+    aggregate_scope: InsuranceProduct
+    api_group: insurance-product-admin
     route_binding:
-      resource: LaboratoryResource
+      resource: InsuranceProductResource
       method: enquiryList
       http_method: GET
-      path: /v1/business/laboratory/list
-    authority: business:laboratory:list
-    authority_binding: business:laboratory:list
+      path: /v1/business/insurance-product/list
+    authority: business:insurance-product:list
+    authority_binding: business:insurance-product:list
     transaction_mode: read-only
     input_contract:
       dto: None
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: List<LaboratoryListVo>
+      payload: List<InsuranceProductListVo>
     touched_entities:
-      - Laboratory
-  - capability_id: create-laboratory-reservation
-    normalized_group: laboratory-reservation-write
+      - InsuranceProduct
+  - capability_id: create-insurance-policy
+    normalized_group: insurance-policy-write
     semantic_intent: create-record
     deterministic_pattern: create
     execution_kind: mutation
-    aggregate_scope: LaboratoryReservation
-    api_group: laboratory-reservation-admin
+    aggregate_scope: InsurancePolicy
+    api_group: insurance-policy-admin
     route_binding:
-      resource: LaboratoryReservationResource
+      resource: InsurancePolicyResource
       method: create
       http_method: POST
-      path: /v1/business/laboratory-reservation
-    authority: business:laboratory-reservation:create
-    authority_binding: business:laboratory-reservation:create
+      path: /v1/business/insurance-policy
+    authority: business:insurance-policy:create
+    authority_binding: business:insurance-policy:create
     transaction_mode: read-write
     input_contract:
-      dto: CreateLaboratoryReservationDto
+      dto: CreateInsurancePolicyDto
       validation_rules:
-        - reservation_code_unique
-        - reservation_slot_unique_per_laboratory
-        - reservation_laboratory_must_exist
+        - insurance_policy_number_unique
+        - insurance_policy_product_must_exist
     output_contract:
       wrapper: ResponseVo
       payload: Void
     touched_entities:
-      - LaboratoryReservation
-      - Laboratory
-  - capability_id: update-laboratory-reservation
-    normalized_group: laboratory-reservation-write
+      - InsurancePolicy
+      - InsuranceProduct
+  - capability_id: update-insurance-policy
+    normalized_group: insurance-policy-write
     semantic_intent: update-record
     deterministic_pattern: update
     execution_kind: mutation
-    aggregate_scope: LaboratoryReservation
-    api_group: laboratory-reservation-admin
+    aggregate_scope: InsurancePolicy
+    api_group: insurance-policy-admin
     route_binding:
-      resource: LaboratoryReservationResource
+      resource: InsurancePolicyResource
       method: update
       http_method: PUT
-      path: /v1/business/laboratory-reservation
-    authority: business:laboratory-reservation:update
-    authority_binding: business:laboratory-reservation:update
+      path: /v1/business/insurance-policy
+    authority: business:insurance-policy:update
+    authority_binding: business:insurance-policy:update
     transaction_mode: read-write
     input_contract:
-      dto: UpdateLaboratoryReservationDto
+      dto: UpdateInsurancePolicyDto
       validation_rules:
-        - reservation_code_unique
-        - reservation_slot_unique_per_laboratory
-        - reservation_laboratory_must_exist
+        - insurance_policy_number_unique
+        - insurance_policy_product_must_exist
     output_contract:
       wrapper: ResponseVo
       payload: Void
     touched_entities:
-      - LaboratoryReservation
-      - Laboratory
-  - capability_id: batch-delete-laboratory-reservation
-    normalized_group: laboratory-reservation-write
+      - InsurancePolicy
+      - InsuranceProduct
+  - capability_id: batch-delete-insurance-policy
+    normalized_group: insurance-policy-write
     semantic_intent: delete-record
     deterministic_pattern: batch-delete
     execution_kind: mutation
-    aggregate_scope: LaboratoryReservation
-    api_group: laboratory-reservation-admin
+    aggregate_scope: InsurancePolicy
+    api_group: insurance-policy-admin
     route_binding:
-      resource: LaboratoryReservationResource
+      resource: InsurancePolicyResource
       method: batchDelete
       http_method: DELETE
-      path: /v1/business/laboratory-reservation
-    authority: business:laboratory-reservation:delete
-    authority_binding: business:laboratory-reservation:delete
+      path: /v1/business/insurance-policy
+    authority: business:insurance-policy:delete
+    authority_binding: business:insurance-policy:delete
     transaction_mode: read-write
     input_contract:
-      dto: LaboratoryReservationIdSet
+      dto: InsurancePolicyIdSet
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
       payload: Void
     touched_entities:
-      - LaboratoryReservation
-  - capability_id: enquiry-laboratory-reservation-page
-    normalized_group: laboratory-reservation-read
+      - InsurancePolicy
+  - capability_id: enquiry-insurance-policy-page
+    normalized_group: insurance-policy-read
     semantic_intent: query-page
     deterministic_pattern: page
     execution_kind: query
-    aggregate_scope: LaboratoryReservation
-    api_group: laboratory-reservation-admin
+    aggregate_scope: InsurancePolicy
+    api_group: insurance-policy-admin
     route_binding:
-      resource: LaboratoryReservationResource
+      resource: InsurancePolicyResource
       method: enquiryPage
       http_method: GET
-      path: /v1/business/laboratory-reservation/page
-    authority: business:laboratory-reservation:page
-    authority_binding: business:laboratory-reservation:page
+      path: /v1/business/insurance-policy/page
+    authority: business:insurance-policy:page
+    authority_binding: business:insurance-policy:page
     transaction_mode: read-only
     input_contract:
-      dto: EnquiryLaboratoryReservationPageDto
+      dto: EnquiryInsurancePolicyPageDto
       validation_rules:
         - repository_pagination_pattern_preserved
     output_contract:
       wrapper: ResponseVo
-      payload: PageVo<LaboratoryReservationPageVo>
+      payload: PageVo<InsurancePolicyPageVo>
     touched_entities:
-      - LaboratoryReservation
-      - Laboratory
-  - capability_id: enquiry-laboratory-reservation-details
-    normalized_group: laboratory-reservation-read
+      - InsurancePolicy
+      - InsuranceProduct
+  - capability_id: enquiry-insurance-policy-details
+    normalized_group: insurance-policy-read
     semantic_intent: query-details
     deterministic_pattern: details
     execution_kind: query
-    aggregate_scope: LaboratoryReservation
-    api_group: laboratory-reservation-admin
+    aggregate_scope: InsurancePolicy
+    api_group: insurance-policy-admin
     route_binding:
-      resource: LaboratoryReservationResource
+      resource: InsurancePolicyResource
       method: enquiryDetails
       http_method: GET
-      path: /v1/business/laboratory-reservation/{id}
-    authority: business:laboratory-reservation:details
-    authority_binding: business:laboratory-reservation:details
+      path: /v1/business/insurance-policy/{id}
+    authority: business:insurance-policy:details
+    authority_binding: business:insurance-policy:details
     transaction_mode: read-only
     input_contract:
-      dto: LaboratoryReservationIdPath
+      dto: InsurancePolicyIdPath
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: LaboratoryReservationDetailsVo
+      payload: InsurancePolicyDetailsVo
     touched_entities:
-      - LaboratoryReservation
-      - Laboratory
-  - capability_id: enquiry-laboratory-reservation-list
-    normalized_group: laboratory-reservation-read
+      - InsurancePolicy
+      - InsuranceProduct
+  - capability_id: enquiry-insurance-policy-list
+    normalized_group: insurance-policy-read
     semantic_intent: query-list
     deterministic_pattern: list
     execution_kind: query
-    aggregate_scope: LaboratoryReservation
-    api_group: laboratory-reservation-admin
+    aggregate_scope: InsurancePolicy
+    api_group: insurance-policy-admin
     route_binding:
-      resource: LaboratoryReservationResource
+      resource: InsurancePolicyResource
       method: enquiryList
       http_method: GET
-      path: /v1/business/laboratory-reservation/list
-    authority: business:laboratory-reservation:list
-    authority_binding: business:laboratory-reservation:list
+      path: /v1/business/insurance-policy/list
+    authority: business:insurance-policy:list
+    authority_binding: business:insurance-policy:list
     transaction_mode: read-only
     input_contract:
       dto: None
       validation_rules: []
     output_contract:
       wrapper: ResponseVo
-      payload: List<LaboratoryReservationListVo>
+      payload: List<InsurancePolicyListVo>
     touched_entities:
-      - LaboratoryReservation
-      - Laboratory
+      - InsurancePolicy
+      - InsuranceProduct
 
 entity_graph:
   entities:
-    - entity_id: Laboratory
-      table: system_laboratory
+    - entity_id: InsuranceProduct
+      table: insurance_product
       ownership: owned
       base_type: PrimaryKeyEntity
       aggregate_role: root
       relations:
         - relation: one-to-many
-          target: LaboratoryReservation
-          relation_name: reservations
-    - entity_id: LaboratoryReservation
-      table: system_laboratory_reservation
+          target: InsurancePolicy
+          relation_name: policies
+    - entity_id: InsurancePolicy
+      table: insurance_policy
       ownership: owned
       base_type: PrimaryKeyEntity
       aggregate_role: child-root
       relations:
         - relation: many-to-one
-          target: Laboratory
-          relation_name: laboratory
+          target: InsuranceProduct
+          relation_name: insuranceProduct
 
 validation_rules:
   uniqueness:
-    - rule_id: laboratory_code_unique
-      scope: system_laboratory.laboratory_code
-    - rule_id: laboratory_name_unique
-      scope: system_laboratory.laboratory_name
-    - rule_id: reservation_code_unique
-      scope: system_laboratory_reservation.reservation_code
-    - rule_id: reservation_slot_unique_per_laboratory
-      scope: system_laboratory_reservation.(laboratory_id, reservation_start_time, reservation_end_time)
+    - rule_id: insurance_product_code_unique
+      scope: insurance_product.insurance_product_code
+    - rule_id: insurance_product_name_unique
+      scope: insurance_product.insurance_product_name
+    - rule_id: insurance_policy_number_unique
+      scope: insurance_policy.insurance_policy_number
   referential:
-    - rule_id: reservation_laboratory_must_exist
-      source: LaboratoryReservation.laboratory_id
-      target: Laboratory.id
+    - rule_id: insurance_policy_product_must_exist
+      source: InsurancePolicy.insurance_product_id
+      target: InsuranceProduct.id
   shape:
     - rule_id: repository_pagination_pattern_preserved
       target_capability:
-        - enquiry-laboratory-page
-        - enquiry-laboratory-reservation-page
+        - enquiry-insurance-product-page
+        - enquiry-insurance-policy-page
 
 architectural_bindings:
   code_conventions:
@@ -432,8 +428,8 @@ persistence_conventions:
     detail_queries_use_path_id: true
     list_queries_use_simple_collection_read: true
   ownership_model:
-    laboratory_as_parent_reference: true
-    reservation_belongs_to_laboratory: true
+    insurance_product_as_parent_reference: true
+    insurance_policy_belongs_to_product: true
 
 localization_requirements:
   mandatory: false
@@ -447,27 +443,27 @@ audit_behavior:
   operate_log:
     enabled: true
     target_capabilities:
-      - create-laboratory
-      - update-laboratory
-      - batch-delete-laboratory
-      - create-laboratory-reservation
-      - update-laboratory-reservation
-      - batch-delete-laboratory-reservation
+      - create-insurance-product
+      - update-insurance-product
+      - batch-delete-insurance-product
+      - create-insurance-policy
+      - update-insurance-policy
+      - batch-delete-insurance-policy
 
 integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - business:laboratory:*
-      - business:laboratory-reservation:*
+      - business:insurance-product:*
+      - business:insurance-policy:*
   logging:
     mode: operate-log-aspect
     mutation_only: true
   persistence:
     database: mysql
     required_tables:
-      - system_laboratory
-      - system_laboratory_reservation
+      - insurance_product
+      - insurance_policy
 
 code_conventions:
   naming_stability: strict

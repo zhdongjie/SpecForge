@@ -38,6 +38,31 @@ For a broad business platform, start from this split and merge only when the dom
 - notification management
 - access or policy management
 
+For a graduation-project platform that sounds like an industry management system, do not stop at the minimal split above.
+Prefer a business-center level design with roughly 8-12 bounded modules when the domain naturally supports it.
+
+Typical complete-platform business centers include:
+
+- product center
+- customer center
+- policy or order center
+- approval or underwriting center
+- claim or after-sales center
+- payment center
+- renewal or lifecycle center
+- channel or agent center
+- notification center
+- statistics or reporting center
+
+Also infer non-module deliverable expectations when the user asks for a "complete" project:
+
+- user/role/menu linkage explanation
+- database initialization SQL organization
+- business module boundary explanation
+- compile and boot verified backend export
+
+Do not reduce a platform requirement to 3-4 modules unless the user explicitly asks for an MVP.
+
 ## Laboratory Reservation Default
 
 For a laboratory reservation platform, prefer:
@@ -62,7 +87,31 @@ Possible supporting system capabilities:
 
 If the user gives only a project title:
 
-1. infer the smallest credible full-system module set
-2. enable validated blueprint modules by default in the assembly plan, and only disable modules that fall outside verified synthesis coverage
-3. fully enable only the modules with sufficient semantic detail to synthesize safely
-4. continue the pipeline for enabled modules rather than stalling
+1. infer a credible full-system module set at business-center granularity
+2. include surrounding support surfaces such as notification, reporting, and lifecycle modules when they are typical for the domain
+3. include user/role/menu linkage and database initialization SQL as expected deliverable surfaces
+4. enable validated blueprint modules by default in the assembly plan, and only disable modules that fall outside verified synthesis coverage
+5. fully enable only the modules with sufficient semantic detail to synthesize safely
+6. continue the pipeline for enabled modules rather than stalling
+
+## Insurance Platform Default
+
+For an insurance management platform, prefer a complete split close to:
+
+- `insurance-product-center`
+- `insurance-customer-center`
+- `insurance-policy-center`
+- `underwriting-approval-center`
+- `insurance-claim-center`
+- `premium-payment-center`
+- `policy-renewal-center`
+- `channel-agent-center`
+- `notification-center`
+- `report-statistics-center`
+
+Expected supporting deliverables:
+
+- user, role, and menu linkage description
+- database initialization SQL organization
+- centralized JWT auth and authority mapping
+- bootable backend export

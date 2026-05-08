@@ -1,7 +1,7 @@
-plan_id: lab-reservation-autobuild
-default_run_id: lab-reservation-autobuild
+plan_id: insurance-management-platform
+default_run_id: insurance-management-platform
 backend_root: ../backend
-final_output_dir: outputs/laboratory-reservation-backend
+final_output_dir: outputs/insurance-management-platform-backend
 project_assembly_plan: project-assembly-plan.yaml
 module_spec: module-spec.yaml
 module_schema: module-schema.resolved.yaml
@@ -11,5 +11,6 @@ repair_max_passes: 5
 goal: bootable-generated-backend
 notes:
   - use canonical specs in this directory
+  - project-level multi-module assembly is enabled
   - compile and boot verification are mandatory
   - deterministic repair is enabled

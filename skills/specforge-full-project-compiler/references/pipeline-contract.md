@@ -46,6 +46,7 @@ requirement
 - Final success means both:
   - compile passes
   - Spring Boot context boots
+- If the request asks for a full platform rather than an MVP, the project spec and assembly plan must reflect business-center level module coverage instead of a thin skeleton.
 
 ## Completion Criteria
 
@@ -54,6 +55,12 @@ Return success only if:
 - `auto-build-report.yaml` says `compile_status: PASS`
 - `auto-build-report.yaml` says `boot_status: PASS`
 - final backend exists under `specforge-runtime/outputs/`
+
+For complete-platform requests, also require the authored spec set to cover:
+
+- the expected business-center modules for the domain
+- user/role/menu linkage as a project-level concern
+- database initialization SQL organization as a project-level concern
 
 Otherwise, preserve the failure bundle:
 

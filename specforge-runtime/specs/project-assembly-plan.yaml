@@ -1,12 +1,10 @@
-plan_id: laboratory-reservation-system
-target_backend_name: laboratory-reservation-backend
-description: deterministic backend assembly plan for a laboratory reservation management system
-
+plan_id: insurance-management-platform
+target_backend_name: insurance-management-platform-backend
+description: deterministic backend assembly plan for Insurance Management Platform
 project_identity:
-  name: laboratory-reservation-system
+  name: Insurance Management Platform
   architecture: modular-monolith
   package_root: org.eu.originalkeen
-
 platform_contract:
   auth_mode: jwt
   response_wrapper: unified
@@ -16,32 +14,91 @@ platform_contract:
     package_root_prefix: org.eu.originalkeen.business.
     route_prefix: /v1/business/
     authority_prefix: "business:"
-
 module_sequence:
-  - module: laboratory-reservation-management
+  - module: insurance-policy-management
+    enabled: true
     semantic_role: business-domain
-    bounded_context: laboratory-operations
+    bounded_context: insurance-policy-operations
     module_spec: module-spec.yaml
     module_schema: module-schema.resolved.yaml
-    field_schema: field-schema.resolved.yaml
     generation_mode: synthesize-and-assemble
     dependencies: []
-    export_package_root: org.eu.originalkeen.business.labreservation
-
+    export_package_root: org.eu.originalkeen.business.insurancepolicy
+  - module: insurance-claim-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: insurance-claim-operations
+    module_spec: templates/insurance-claim-management/module-spec.yaml
+    module_schema: templates/insurance-claim-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.insuranceclaim
+  - module: underwriting-approval-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: underwriting-governance
+    module_spec: templates/underwriting-approval-management/module-spec.yaml
+    module_schema: templates/underwriting-approval-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.underwritingapproval
+  - module: notification-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: insurance-notification-center
+    module_spec: templates/notification-management/module-spec.yaml
+    module_schema: templates/notification-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.notification
+  - module: insurance-customer-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: insurance-customer-center
+    module_spec: templates/insurance-customer-management/module-spec.yaml
+    module_schema: templates/insurance-customer-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.insurancecustomer
+  - module: premium-payment-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: premium-payment-center
+    module_spec: templates/premium-payment-management/module-spec.yaml
+    module_schema: templates/premium-payment-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.premiumpayment
+  - module: policy-renewal-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: policy-renewal-center
+    module_spec: templates/policy-renewal-management/module-spec.yaml
+    module_schema: templates/policy-renewal-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.policyrenewal
+  - module: channel-agent-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: channel-agent-center
+    module_spec: templates/channel-agent-management/module-spec.yaml
+    module_schema: templates/channel-agent-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.channelagent
+  - module: report-statistics-management
+    enabled: true
+    semantic_role: business-domain
+    bounded_context: report-statistics-center
+    module_spec: templates/report-statistics-management/module-spec.yaml
+    module_schema: templates/report-statistics-management/module-schema.resolved.yaml
+    generation_mode: synthesize-and-assemble
+    dependencies: []
+    export_package_root: org.eu.originalkeen.business.reportstatistics
 assembly_contract:
   compile_required: true
   boot_verify_required: true
   auto_repair_enabled: true
-  final_output_dir: outputs/laboratory-reservation-backend
+  final_output_dir: outputs/insurance-management-platform-backend
   failure_bundle_required: true
-
-operator_contract:
-  canonical_build_plan: build-plan.yaml
-  canonical_entry_command: python main.py --auto-build --build-plan build-plan.yaml
-  required_logs:
-    - compile-diagnostics.yaml
-    - compile-repair-report.yaml
-    - boot-diagnostics.yaml
-    - boot-repair-report.yaml
-    - project-health-report.yaml
-    - auto-build-report.yaml

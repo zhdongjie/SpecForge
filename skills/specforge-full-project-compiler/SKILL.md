@@ -91,6 +91,10 @@ If the input is short, infer:
 - notification needs
 - access-control expectations
 - modular split
+- whether the user expects an MVP or a complete business platform
+
+If the user asks for a full platform, do not stop at a thin CRUD skeleton.
+Infer a business-center level project shape and carry user/role/menu linkage plus database initialization SQL organization as project-level deliverable expectations.
 
 Use pragmatic graduation-project defaults.
 Do not wait for the user to provide exhaustive detail before authoring a first pass.
@@ -146,7 +150,21 @@ Good examples:
 - notification management
 - access management
 
+For complete industry platforms, prefer business centers such as:
+
+- product center
+- customer center
+- policy or order center
+- approval center
+- claim center
+- payment center
+- renewal center
+- channel or agent center
+- notification center
+- statistics or reporting center
+
 Do not collapse a clearly multi-module platform into one oversized module just to make generation easier.
+Do not call the result "complete" if it only covers a subset of the expected business centers for that domain.
 
 Do not enable speculative modules unless their specs are concrete enough to synthesize safely.
 
@@ -193,5 +211,7 @@ A task is complete only if:
 - final backend exists under `specforge-runtime/outputs/`
 - auto-build report shows `compile_status: PASS`
 - auto-build report shows `boot_status: PASS`
+
+If the user asked for a complete platform, completion also requires that the authored project spec and assembly plan cover the expected business-center surfaces, along with user/role/menu linkage and initialization SQL organization at the project level.
 
 If that is not achieved, return the failure bundle path and the blocking cause.
