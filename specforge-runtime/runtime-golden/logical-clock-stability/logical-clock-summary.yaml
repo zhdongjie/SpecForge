@@ -1,0 +1,6 @@
+validator: logical-clock-summary
+monotonic: true
+final_tick: 83
+transition_count: 45
+scheduler_event_count: 83
+unique_tick_count: 83

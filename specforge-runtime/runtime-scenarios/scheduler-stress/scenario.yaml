@@ -1,0 +1,9 @@
+scenario_id: scheduler-stress
+scenario_kind: scheduler-stress
+iterations: 5
+max_workers:
+  - 2
+  - 3
+  - 4
+expected:
+  all_match: true

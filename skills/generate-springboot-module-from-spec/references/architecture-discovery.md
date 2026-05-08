@@ -35,8 +35,22 @@ Architecture discovery workflow:
    - which files define the conventions
    - which conventions are mandatory versus inferred
 
+7. Record semantic compiler inputs.
+   - target bounded context
+   - nearby sibling modules to mimic
+   - semantic capabilities that require richer-than-CRUD treatment
+   - declared inbound and outbound dependencies
+
+8. Record stability anchors.
+   - nearest sibling modules with the strongest reusable pattern
+   - conventions that appear mandatory for compile-time consistency
+   - conventions that are optional or ambiguous
+   - likely extension points for future DAG-based generation
+
 Discovery rule:
 
 - Prefer local project evidence over framework defaults.
 - If conventions conflict, follow the most repeated pattern in the nearest sibling modules.
 - If no strong convention exists, choose the smallest deterministic pattern that fits the current repository.
+- Discovery is not optional. No module generation should begin until the convention set and semantic capability set are sufficiently grounded.
+- Discovery should produce a stable convention baseline that can be reused by later module-generation nodes in a DAG.

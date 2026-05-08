@@ -1,0 +1,115 @@
+module:
+  name: inventory-management
+  bounded_context: warehouse-domain
+  package_root: org.eu.originalkeen.system.inventory
+  route_base: /v1/system/inventory
+  database: mysql
+
+entities:
+  InventoryCategory:
+    table: inventory_category
+    description: inventory category aggregate
+    route_segment: category
+    permission_namespace: inventory:category
+    fields:
+      - name: id
+        type: long
+        primary_key: true
+      - name: categoryCode
+        type: string
+        required: true
+        unique: true
+        max_length: 64
+      - name: categoryName
+        type: string
+        required: true
+        max_length: 128
+      - name: status
+        type: enum
+        required: true
+        enum_values:
+          - ENABLED
+          - DISABLED
+      - name: sortOrder
+        type: integer
+        required: true
+      - name: remark
+        type: string
+        max_length: 255
+    relations:
+      - type: one_to_many
+        target: InventoryItem
+        self_field: id
+        target_field: categoryId
+
+  InventoryItem:
+    table: inventory_item
+    description: inventory item aggregate
+    route_segment: item
+    permission_namespace: inventory:item
+    fields:
+      - name: id
+        type: long
+        primary_key: true
+      - name: sku
+        type: string
+        required: true
+        unique: true
+        max_length: 64
+      - name: itemName
+        type: string
+        required: true
+        max_length: 128
+      - name: stock
+        type: integer
+        required: true
+      - name: price
+        type: decimal
+        required: true
+        precision: 18
+        scale: 2
+      - name: categoryId
+        type: long
+        required: true
+      - name: status
+        type: enum
+        required: true
+        enum_values:
+          - ENABLED
+          - DISABLED
+      - name: remark
+        type: string
+        max_length: 255
+    relations:
+      - type: many_to_one
+        target: InventoryCategory
+        self_field: categoryId
+        target_field: id
+
+permissions:
+  - inventory:category:list
+  - inventory:category:page
+  - inventory:category:details
+  - inventory:category:create
+  - inventory:category:update
+  - inventory:category:delete
+  - inventory:item:list
+  - inventory:item:page
+  - inventory:item:details
+  - inventory:item:create
+  - inventory:item:update
+  - inventory:item:delete
+
+validation_contracts:
+  - preserve_uniqueness_validation
+  - preserve_pagination_patterns
+  - preserve_soft_delete_semantics
+  - preserve_audit_columns
+
+architecture_contract:
+  manager_boundary: true
+  response_wrapper: ResponseVo
+  pagination_wrapper: PageVo
+  primary_key_entity: PrimaryKeyEntity
+  service_impl_base: ServiceImpl
+  mapper_base: BaseMapper

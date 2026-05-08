@@ -1,0 +1,50 @@
+source_module: dictionary-management
+
+target_module:
+  name: inventory-management
+  bounded_context: warehouse-domain
+  package_root: org.eu.originalkeen.system.inventory
+
+semantic_mutations:
+  entities:
+    DictionaryType: InventoryCategory
+    DictionaryTypeTranslation: InventoryCategoryTranslation
+    DictionaryData: InventoryItem
+    DictionaryDataTranslation: InventoryItemTranslation
+
+  tables:
+    system_dictionary_type: inventory_category
+    system_dictionary_type_translation: inventory_category_translation
+    system_dictionary_data: inventory_item
+    system_dictionary_data_translation: inventory_item_translation
+
+  routes:
+    /v1/system/dictionary-type: /v1/system/inventory-category
+    /v1/system/dictionary-data: /v1/system/inventory-item
+
+  permissions:
+    system:dictionary-type:create: inventory:category:create
+    system:dictionary-type:update: inventory:category:update
+    system:dictionary-type:delete: inventory:category:delete
+    system:dictionary-type:page: inventory:category:page
+    system:dictionary-type:details: inventory:category:details
+    system:dictionary-type:list: inventory:category:list
+    system:dictionary-type:validate-dictionary-type-name: inventory:category:validate-category-name
+    system:dictionary-type:validate-dictionary-type-code: inventory:category:validate-category-code
+    system:dictionary-data:create: inventory:item:create
+    system:dictionary-data:update: inventory:item:update
+    system:dictionary-data:delete: inventory:item:delete
+    system:dictionary-data:page: inventory:item:page
+    system:dictionary-data:details: inventory:item:details
+    system:dictionary-data:list: inventory:item:list
+    system:dictionary-data:validate-label: inventory:item:validate-label
+    system:dictionary-data:validate-value: inventory:item:validate-value
+
+  dto_suffix_rules:
+    preserve: true
+
+  package_rules:
+    preserve_architecture_layers: true
+
+  validation_rules:
+    preserve_uniqueness_checks: true

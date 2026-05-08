@@ -1,0 +1,872 @@
+run_id: golden-parallel-success
+mode: fresh
+replay_source_run_id: null
+affected_tasks:
+- T1-discover-architecture-baseline
+- T2-resolve-capability-schema
+- T3-build-resolved-schema
+- T4-validate-resolved-schema
+- T5-generate-dictionary-type-domain
+- T6-generate-dictionary-type-persistence
+- T7-generate-dictionary-type-services
+- T8-generate-dictionary-type-resource
+- T9-generate-dictionary-data-domain
+- T10-generate-dictionary-data-persistence
+- T11-generate-dictionary-data-services
+- T12-generate-dictionary-data-resource
+- T13-integration-checkpoint-alpha
+- T14-run-validation-hooks
+- T15-finalize-generation-bundle
+seeded_tasks: []
+executed_tasks:
+- T1-discover-architecture-baseline
+- T2-resolve-capability-schema
+- T3-build-resolved-schema
+- T4-validate-resolved-schema
+- T5-generate-dictionary-type-domain
+- T9-generate-dictionary-data-domain
+- T6-generate-dictionary-type-persistence
+- T10-generate-dictionary-data-persistence
+- T7-generate-dictionary-type-services
+- T11-generate-dictionary-data-services
+- T8-generate-dictionary-type-resource
+- T12-generate-dictionary-data-resource
+- T13-integration-checkpoint-alpha
+- T14-run-validation-hooks
+- T15-finalize-generation-bundle
+halted: false
+halt_reason: null
+scheduler_events:
+- event: batch-start
+  batch_id: P1-discovery-and-planning
+  mode: serial-gated
+  task_ids:
+  - T1-discover-architecture-baseline
+  - T2-resolve-capability-schema
+  - T3-build-resolved-schema
+  - T4-validate-resolved-schema
+  execution_tick: 1
+  logical_order_id: 00001:001:scheduler:P1-discovery-and-planning
+- event: wave-start
+  batch_id: P1-discovery-and-planning
+  wave_index: 0
+  task_ids:
+  - T1-discover-architecture-baseline
+  worker_slots:
+    T1-discover-architecture-baseline: 0
+  execution_tick: 2
+  logical_order_id: 00002:002:scheduler:P1-discovery-and-planning
+- event: task-transition
+  task_id: T1-discover-architecture-baseline
+  state: READY
+  worker_slot: 0
+  execution_tick: 3
+  logical_order_id: 00003:003:transition:T1-discover-architecture-baseline
+- event: task-transition
+  task_id: T1-discover-architecture-baseline
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 4
+  logical_order_id: 00004:004:transition:T1-discover-architecture-baseline
+- event: task-transition
+  task_id: T1-discover-architecture-baseline
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 5
+  logical_order_id: 00005:005:transition:T1-discover-architecture-baseline
+- event: wave-complete
+  batch_id: P1-discovery-and-planning
+  wave_index: 0
+  task_ids:
+  - T1-discover-architecture-baseline
+  completed_states:
+    T1-discover-architecture-baseline: SUCCESS
+  execution_tick: 6
+  logical_order_id: 00006:006:scheduler:P1-discovery-and-planning
+- event: wave-start
+  batch_id: P1-discovery-and-planning
+  wave_index: 1
+  task_ids:
+  - T2-resolve-capability-schema
+  worker_slots:
+    T2-resolve-capability-schema: 0
+  execution_tick: 7
+  logical_order_id: 00007:007:scheduler:P1-discovery-and-planning
+- event: task-transition
+  task_id: T2-resolve-capability-schema
+  state: READY
+  worker_slot: 0
+  execution_tick: 8
+  logical_order_id: 00008:008:transition:T2-resolve-capability-schema
+- event: task-transition
+  task_id: T2-resolve-capability-schema
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 9
+  logical_order_id: 00009:009:transition:T2-resolve-capability-schema
+- event: task-transition
+  task_id: T2-resolve-capability-schema
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 10
+  logical_order_id: 00010:010:transition:T2-resolve-capability-schema
+- event: wave-complete
+  batch_id: P1-discovery-and-planning
+  wave_index: 1
+  task_ids:
+  - T2-resolve-capability-schema
+  completed_states:
+    T2-resolve-capability-schema: SUCCESS
+  execution_tick: 11
+  logical_order_id: 00011:011:scheduler:P1-discovery-and-planning
+- event: wave-start
+  batch_id: P1-discovery-and-planning
+  wave_index: 2
+  task_ids:
+  - T3-build-resolved-schema
+  worker_slots:
+    T3-build-resolved-schema: 0
+  execution_tick: 12
+  logical_order_id: 00012:012:scheduler:P1-discovery-and-planning
+- event: task-transition
+  task_id: T3-build-resolved-schema
+  state: READY
+  worker_slot: 0
+  execution_tick: 13
+  logical_order_id: 00013:013:transition:T3-build-resolved-schema
+- event: task-transition
+  task_id: T3-build-resolved-schema
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 14
+  logical_order_id: 00014:014:transition:T3-build-resolved-schema
+- event: task-transition
+  task_id: T3-build-resolved-schema
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 15
+  logical_order_id: 00015:015:transition:T3-build-resolved-schema
+- event: wave-complete
+  batch_id: P1-discovery-and-planning
+  wave_index: 2
+  task_ids:
+  - T3-build-resolved-schema
+  completed_states:
+    T3-build-resolved-schema: SUCCESS
+  execution_tick: 16
+  logical_order_id: 00016:016:scheduler:P1-discovery-and-planning
+- event: wave-start
+  batch_id: P1-discovery-and-planning
+  wave_index: 3
+  task_ids:
+  - T4-validate-resolved-schema
+  worker_slots:
+    T4-validate-resolved-schema: 0
+  execution_tick: 17
+  logical_order_id: 00017:017:scheduler:P1-discovery-and-planning
+- event: task-transition
+  task_id: T4-validate-resolved-schema
+  state: READY
+  worker_slot: 0
+  execution_tick: 18
+  logical_order_id: 00018:018:transition:T4-validate-resolved-schema
+- event: task-transition
+  task_id: T4-validate-resolved-schema
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 19
+  logical_order_id: 00019:019:transition:T4-validate-resolved-schema
+- event: task-transition
+  task_id: T4-validate-resolved-schema
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 20
+  logical_order_id: 00020:020:transition:T4-validate-resolved-schema
+- event: wave-complete
+  batch_id: P1-discovery-and-planning
+  wave_index: 3
+  task_ids:
+  - T4-validate-resolved-schema
+  completed_states:
+    T4-validate-resolved-schema: SUCCESS
+  execution_tick: 21
+  logical_order_id: 00021:021:scheduler:P1-discovery-and-planning
+- event: batch-complete
+  batch_id: P1-discovery-and-planning
+  mode: serial-gated
+  task_ids:
+  - T1-discover-architecture-baseline
+  - T2-resolve-capability-schema
+  - T3-build-resolved-schema
+  - T4-validate-resolved-schema
+  executed_tasks:
+  - T1-discover-architecture-baseline
+  - T2-resolve-capability-schema
+  - T3-build-resolved-schema
+  - T4-validate-resolved-schema
+  halted: false
+  execution_tick: 22
+  logical_order_id: 00022:022:scheduler:P1-discovery-and-planning
+- event: batch-start
+  batch_id: P2-domain-expansion
+  mode: partially-parallel
+  task_ids:
+  - T5-generate-dictionary-type-domain
+  - T9-generate-dictionary-data-domain
+  execution_tick: 23
+  logical_order_id: 00023:023:scheduler:P2-domain-expansion
+- event: wave-start
+  batch_id: P2-domain-expansion
+  wave_index: 0
+  task_ids:
+  - T5-generate-dictionary-type-domain
+  worker_slots:
+    T5-generate-dictionary-type-domain: 0
+  execution_tick: 24
+  logical_order_id: 00024:024:scheduler:P2-domain-expansion
+- event: task-transition
+  task_id: T5-generate-dictionary-type-domain
+  state: READY
+  worker_slot: 0
+  execution_tick: 25
+  logical_order_id: 00025:025:transition:T5-generate-dictionary-type-domain
+- event: task-transition
+  task_id: T5-generate-dictionary-type-domain
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 26
+  logical_order_id: 00026:026:transition:T5-generate-dictionary-type-domain
+- event: task-transition
+  task_id: T5-generate-dictionary-type-domain
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 27
+  logical_order_id: 00027:027:transition:T5-generate-dictionary-type-domain
+- event: wave-complete
+  batch_id: P2-domain-expansion
+  wave_index: 0
+  task_ids:
+  - T5-generate-dictionary-type-domain
+  completed_states:
+    T5-generate-dictionary-type-domain: SUCCESS
+  execution_tick: 28
+  logical_order_id: 00028:028:scheduler:P2-domain-expansion
+- event: wave-start
+  batch_id: P2-domain-expansion
+  wave_index: 1
+  task_ids:
+  - T9-generate-dictionary-data-domain
+  worker_slots:
+    T9-generate-dictionary-data-domain: 0
+  execution_tick: 29
+  logical_order_id: 00029:029:scheduler:P2-domain-expansion
+- event: task-transition
+  task_id: T9-generate-dictionary-data-domain
+  state: READY
+  worker_slot: 0
+  execution_tick: 30
+  logical_order_id: 00030:030:transition:T9-generate-dictionary-data-domain
+- event: task-transition
+  task_id: T9-generate-dictionary-data-domain
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 31
+  logical_order_id: 00031:031:transition:T9-generate-dictionary-data-domain
+- event: task-transition
+  task_id: T9-generate-dictionary-data-domain
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 32
+  logical_order_id: 00032:032:transition:T9-generate-dictionary-data-domain
+- event: wave-complete
+  batch_id: P2-domain-expansion
+  wave_index: 1
+  task_ids:
+  - T9-generate-dictionary-data-domain
+  completed_states:
+    T9-generate-dictionary-data-domain: SUCCESS
+  execution_tick: 33
+  logical_order_id: 00033:033:scheduler:P2-domain-expansion
+- event: batch-complete
+  batch_id: P2-domain-expansion
+  mode: partially-parallel
+  task_ids:
+  - T5-generate-dictionary-type-domain
+  - T9-generate-dictionary-data-domain
+  executed_tasks:
+  - T5-generate-dictionary-type-domain
+  - T9-generate-dictionary-data-domain
+  halted: false
+  execution_tick: 34
+  logical_order_id: 00034:034:scheduler:P2-domain-expansion
+- event: batch-start
+  batch_id: P3-persistence-expansion
+  mode: parallel
+  task_ids:
+  - T6-generate-dictionary-type-persistence
+  - T10-generate-dictionary-data-persistence
+  execution_tick: 35
+  logical_order_id: 00035:035:scheduler:P3-persistence-expansion
+- event: wave-start
+  batch_id: P3-persistence-expansion
+  wave_index: 0
+  task_ids:
+  - T6-generate-dictionary-type-persistence
+  - T10-generate-dictionary-data-persistence
+  worker_slots:
+    T6-generate-dictionary-type-persistence: 0
+    T10-generate-dictionary-data-persistence: 1
+  execution_tick: 36
+  logical_order_id: 00036:036:scheduler:P3-persistence-expansion
+- event: task-transition
+  task_id: T6-generate-dictionary-type-persistence
+  state: READY
+  worker_slot: 0
+  execution_tick: 37
+  logical_order_id: 00037:037:transition:T6-generate-dictionary-type-persistence
+- event: task-transition
+  task_id: T6-generate-dictionary-type-persistence
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 38
+  logical_order_id: 00038:038:transition:T6-generate-dictionary-type-persistence
+- event: task-transition
+  task_id: T10-generate-dictionary-data-persistence
+  state: READY
+  worker_slot: 1
+  execution_tick: 39
+  logical_order_id: 00039:039:transition:T10-generate-dictionary-data-persistence
+- event: task-transition
+  task_id: T10-generate-dictionary-data-persistence
+  state: RUNNING
+  worker_slot: 1
+  execution_tick: 40
+  logical_order_id: 00040:040:transition:T10-generate-dictionary-data-persistence
+- event: task-transition
+  task_id: T6-generate-dictionary-type-persistence
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 41
+  logical_order_id: 00041:041:transition:T6-generate-dictionary-type-persistence
+- event: task-transition
+  task_id: T10-generate-dictionary-data-persistence
+  state: SUCCESS
+  worker_slot: 1
+  execution_tick: 42
+  logical_order_id: 00042:042:transition:T10-generate-dictionary-data-persistence
+- event: wave-complete
+  batch_id: P3-persistence-expansion
+  wave_index: 0
+  task_ids:
+  - T6-generate-dictionary-type-persistence
+  - T10-generate-dictionary-data-persistence
+  completed_states:
+    T6-generate-dictionary-type-persistence: SUCCESS
+    T10-generate-dictionary-data-persistence: SUCCESS
+  execution_tick: 43
+  logical_order_id: 00043:043:scheduler:P3-persistence-expansion
+- event: batch-complete
+  batch_id: P3-persistence-expansion
+  mode: parallel
+  task_ids:
+  - T6-generate-dictionary-type-persistence
+  - T10-generate-dictionary-data-persistence
+  executed_tasks:
+  - T6-generate-dictionary-type-persistence
+  - T10-generate-dictionary-data-persistence
+  halted: false
+  execution_tick: 44
+  logical_order_id: 00044:044:scheduler:P3-persistence-expansion
+- event: batch-start
+  batch_id: P4-service-expansion
+  mode: dependency-aware
+  task_ids:
+  - T7-generate-dictionary-type-services
+  - T11-generate-dictionary-data-services
+  execution_tick: 45
+  logical_order_id: 00045:045:scheduler:P4-service-expansion
+- event: wave-start
+  batch_id: P4-service-expansion
+  wave_index: 0
+  task_ids:
+  - T7-generate-dictionary-type-services
+  worker_slots:
+    T7-generate-dictionary-type-services: 0
+  execution_tick: 46
+  logical_order_id: 00046:046:scheduler:P4-service-expansion
+- event: task-transition
+  task_id: T7-generate-dictionary-type-services
+  state: READY
+  worker_slot: 0
+  execution_tick: 47
+  logical_order_id: 00047:047:transition:T7-generate-dictionary-type-services
+- event: task-transition
+  task_id: T7-generate-dictionary-type-services
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 48
+  logical_order_id: 00048:048:transition:T7-generate-dictionary-type-services
+- event: task-transition
+  task_id: T7-generate-dictionary-type-services
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 49
+  logical_order_id: 00049:049:transition:T7-generate-dictionary-type-services
+- event: wave-complete
+  batch_id: P4-service-expansion
+  wave_index: 0
+  task_ids:
+  - T7-generate-dictionary-type-services
+  completed_states:
+    T7-generate-dictionary-type-services: SUCCESS
+  execution_tick: 50
+  logical_order_id: 00050:050:scheduler:P4-service-expansion
+- event: wave-start
+  batch_id: P4-service-expansion
+  wave_index: 1
+  task_ids:
+  - T11-generate-dictionary-data-services
+  worker_slots:
+    T11-generate-dictionary-data-services: 0
+  execution_tick: 51
+  logical_order_id: 00051:051:scheduler:P4-service-expansion
+- event: task-transition
+  task_id: T11-generate-dictionary-data-services
+  state: READY
+  worker_slot: 0
+  execution_tick: 52
+  logical_order_id: 00052:052:transition:T11-generate-dictionary-data-services
+- event: task-transition
+  task_id: T11-generate-dictionary-data-services
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 53
+  logical_order_id: 00053:053:transition:T11-generate-dictionary-data-services
+- event: task-transition
+  task_id: T11-generate-dictionary-data-services
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 54
+  logical_order_id: 00054:054:transition:T11-generate-dictionary-data-services
+- event: wave-complete
+  batch_id: P4-service-expansion
+  wave_index: 1
+  task_ids:
+  - T11-generate-dictionary-data-services
+  completed_states:
+    T11-generate-dictionary-data-services: SUCCESS
+  execution_tick: 55
+  logical_order_id: 00055:055:scheduler:P4-service-expansion
+- event: batch-complete
+  batch_id: P4-service-expansion
+  mode: dependency-aware
+  task_ids:
+  - T7-generate-dictionary-type-services
+  - T11-generate-dictionary-data-services
+  executed_tasks:
+  - T7-generate-dictionary-type-services
+  - T11-generate-dictionary-data-services
+  halted: false
+  execution_tick: 56
+  logical_order_id: 00056:056:scheduler:P4-service-expansion
+- event: batch-start
+  batch_id: P5-resource-expansion
+  mode: parallel
+  task_ids:
+  - T8-generate-dictionary-type-resource
+  - T12-generate-dictionary-data-resource
+  execution_tick: 57
+  logical_order_id: 00057:057:scheduler:P5-resource-expansion
+- event: wave-start
+  batch_id: P5-resource-expansion
+  wave_index: 0
+  task_ids:
+  - T8-generate-dictionary-type-resource
+  - T12-generate-dictionary-data-resource
+  worker_slots:
+    T8-generate-dictionary-type-resource: 0
+    T12-generate-dictionary-data-resource: 1
+  execution_tick: 58
+  logical_order_id: 00058:058:scheduler:P5-resource-expansion
+- event: task-transition
+  task_id: T8-generate-dictionary-type-resource
+  state: READY
+  worker_slot: 0
+  execution_tick: 59
+  logical_order_id: 00059:059:transition:T8-generate-dictionary-type-resource
+- event: task-transition
+  task_id: T8-generate-dictionary-type-resource
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 60
+  logical_order_id: 00060:060:transition:T8-generate-dictionary-type-resource
+- event: task-transition
+  task_id: T12-generate-dictionary-data-resource
+  state: READY
+  worker_slot: 1
+  execution_tick: 61
+  logical_order_id: 00061:061:transition:T12-generate-dictionary-data-resource
+- event: task-transition
+  task_id: T12-generate-dictionary-data-resource
+  state: RUNNING
+  worker_slot: 1
+  execution_tick: 62
+  logical_order_id: 00062:062:transition:T12-generate-dictionary-data-resource
+- event: task-transition
+  task_id: T8-generate-dictionary-type-resource
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 63
+  logical_order_id: 00063:063:transition:T8-generate-dictionary-type-resource
+- event: task-transition
+  task_id: T12-generate-dictionary-data-resource
+  state: SUCCESS
+  worker_slot: 1
+  execution_tick: 64
+  logical_order_id: 00064:064:transition:T12-generate-dictionary-data-resource
+- event: wave-complete
+  batch_id: P5-resource-expansion
+  wave_index: 0
+  task_ids:
+  - T8-generate-dictionary-type-resource
+  - T12-generate-dictionary-data-resource
+  completed_states:
+    T8-generate-dictionary-type-resource: SUCCESS
+    T12-generate-dictionary-data-resource: SUCCESS
+  execution_tick: 65
+  logical_order_id: 00065:065:scheduler:P5-resource-expansion
+- event: batch-complete
+  batch_id: P5-resource-expansion
+  mode: parallel
+  task_ids:
+  - T8-generate-dictionary-type-resource
+  - T12-generate-dictionary-data-resource
+  executed_tasks:
+  - T8-generate-dictionary-type-resource
+  - T12-generate-dictionary-data-resource
+  halted: false
+  execution_tick: 66
+  logical_order_id: 00066:066:scheduler:P5-resource-expansion
+- event: batch-start
+  batch_id: P6-validation-and-finalize
+  mode: serial-gated
+  task_ids:
+  - T13-integration-checkpoint-alpha
+  - T14-run-validation-hooks
+  - T15-finalize-generation-bundle
+  execution_tick: 67
+  logical_order_id: 00067:067:scheduler:P6-validation-and-finalize
+- event: wave-start
+  batch_id: P6-validation-and-finalize
+  wave_index: 0
+  task_ids:
+  - T13-integration-checkpoint-alpha
+  worker_slots:
+    T13-integration-checkpoint-alpha: 0
+  execution_tick: 68
+  logical_order_id: 00068:068:scheduler:P6-validation-and-finalize
+- event: task-transition
+  task_id: T13-integration-checkpoint-alpha
+  state: READY
+  worker_slot: 0
+  execution_tick: 69
+  logical_order_id: 00069:069:transition:T13-integration-checkpoint-alpha
+- event: task-transition
+  task_id: T13-integration-checkpoint-alpha
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 70
+  logical_order_id: 00070:070:transition:T13-integration-checkpoint-alpha
+- event: task-transition
+  task_id: T13-integration-checkpoint-alpha
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 71
+  logical_order_id: 00071:071:transition:T13-integration-checkpoint-alpha
+- event: wave-complete
+  batch_id: P6-validation-and-finalize
+  wave_index: 0
+  task_ids:
+  - T13-integration-checkpoint-alpha
+  completed_states:
+    T13-integration-checkpoint-alpha: SUCCESS
+  execution_tick: 72
+  logical_order_id: 00072:072:scheduler:P6-validation-and-finalize
+- event: wave-start
+  batch_id: P6-validation-and-finalize
+  wave_index: 1
+  task_ids:
+  - T14-run-validation-hooks
+  worker_slots:
+    T14-run-validation-hooks: 0
+  execution_tick: 73
+  logical_order_id: 00073:073:scheduler:P6-validation-and-finalize
+- event: task-transition
+  task_id: T14-run-validation-hooks
+  state: READY
+  worker_slot: 0
+  execution_tick: 74
+  logical_order_id: 00074:074:transition:T14-run-validation-hooks
+- event: task-transition
+  task_id: T14-run-validation-hooks
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 75
+  logical_order_id: 00075:075:transition:T14-run-validation-hooks
+- event: task-transition
+  task_id: T14-run-validation-hooks
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 76
+  logical_order_id: 00076:076:transition:T14-run-validation-hooks
+- event: wave-complete
+  batch_id: P6-validation-and-finalize
+  wave_index: 1
+  task_ids:
+  - T14-run-validation-hooks
+  completed_states:
+    T14-run-validation-hooks: SUCCESS
+  execution_tick: 77
+  logical_order_id: 00077:077:scheduler:P6-validation-and-finalize
+- event: wave-start
+  batch_id: P6-validation-and-finalize
+  wave_index: 2
+  task_ids:
+  - T15-finalize-generation-bundle
+  worker_slots:
+    T15-finalize-generation-bundle: 0
+  execution_tick: 78
+  logical_order_id: 00078:078:scheduler:P6-validation-and-finalize
+- event: task-transition
+  task_id: T15-finalize-generation-bundle
+  state: READY
+  worker_slot: 0
+  execution_tick: 79
+  logical_order_id: 00079:079:transition:T15-finalize-generation-bundle
+- event: task-transition
+  task_id: T15-finalize-generation-bundle
+  state: RUNNING
+  worker_slot: 0
+  execution_tick: 80
+  logical_order_id: 00080:080:transition:T15-finalize-generation-bundle
+- event: task-transition
+  task_id: T15-finalize-generation-bundle
+  state: SUCCESS
+  worker_slot: 0
+  execution_tick: 81
+  logical_order_id: 00081:081:transition:T15-finalize-generation-bundle
+- event: wave-complete
+  batch_id: P6-validation-and-finalize
+  wave_index: 2
+  task_ids:
+  - T15-finalize-generation-bundle
+  completed_states:
+    T15-finalize-generation-bundle: SUCCESS
+  execution_tick: 82
+  logical_order_id: 00082:082:scheduler:P6-validation-and-finalize
+- event: batch-complete
+  batch_id: P6-validation-and-finalize
+  mode: serial-gated
+  task_ids:
+  - T13-integration-checkpoint-alpha
+  - T14-run-validation-hooks
+  - T15-finalize-generation-bundle
+  executed_tasks:
+  - T13-integration-checkpoint-alpha
+  - T14-run-validation-hooks
+  - T15-finalize-generation-bundle
+  halted: false
+  execution_tick: 83
+  logical_order_id: 00083:083:scheduler:P6-validation-and-finalize
+logical_clock_summary:
+  final_tick: 83
+  monotonic: true
+  transition_count: 45
+  scheduler_event_count: 83
+task_results:
+- task_id: T1-discover-architecture-baseline
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 3
+  - 4
+  - 5
+  seeded: false
+- task_id: T10-generate-dictionary-data-persistence
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - DictionaryDataMapper.java
+  - DictionaryDataTranslationMapper.java
+  logical_ticks:
+  - 39
+  - 40
+  - 42
+  seeded: false
+- task_id: T11-generate-dictionary-data-services
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - DictionaryDataService.java
+  - DictionaryDataTranslationService.java
+  - DictionaryDataServiceImpl.java
+  - DictionaryDataTranslationServiceImpl.java
+  - DictionaryDataManager.java
+  logical_ticks:
+  - 52
+  - 53
+  - 54
+  seeded: false
+- task_id: T12-generate-dictionary-data-resource
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - DictionaryDataResource.java
+  logical_ticks:
+  - 61
+  - 62
+  - 64
+  seeded: false
+- task_id: T13-integration-checkpoint-alpha
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 69
+  - 70
+  - 71
+  seeded: false
+- task_id: T14-run-validation-hooks
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 74
+  - 75
+  - 76
+  seeded: false
+- task_id: T15-finalize-generation-bundle
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 79
+  - 80
+  - 81
+  seeded: false
+- task_id: T2-resolve-capability-schema
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 8
+  - 9
+  - 10
+  seeded: false
+- task_id: T3-build-resolved-schema
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 13
+  - 14
+  - 15
+  seeded: false
+- task_id: T4-validate-resolved-schema
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files: []
+  logical_ticks:
+  - 18
+  - 19
+  - 20
+  seeded: false
+- task_id: T5-generate-dictionary-type-domain
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - CreateDictionaryTypeDto.java
+  - UpdateDictionaryTypeDto.java
+  - EnquiryDictionaryTypePageDto.java
+  - ValidateDictionaryTypeNameUniqueDto.java
+  - ValidateDictionaryTypeCodeUniqueDto.java
+  - DictionaryTypeDetailsVo.java
+  - DictionaryTypePageVo.java
+  - DictionaryTypeListVo.java
+  - DictionaryTypeEntity.java
+  - DictionaryTypeTranslationEntity.java
+  logical_ticks:
+  - 25
+  - 26
+  - 27
+  seeded: false
+- task_id: T6-generate-dictionary-type-persistence
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - DictionaryTypeMapper.java
+  - DictionaryTypeTranslationMapper.java
+  logical_ticks:
+  - 37
+  - 38
+  - 41
+  seeded: false
+- task_id: T7-generate-dictionary-type-services
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - DictionaryTypeService.java
+  - DictionaryTypeTranslationService.java
+  - DictionaryTypeServiceImpl.java
+  - DictionaryTypeTranslationServiceImpl.java
+  - DictionaryTypeManager.java
+  logical_ticks:
+  - 47
+  - 48
+  - 49
+  seeded: false
+- task_id: T8-generate-dictionary-type-resource
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - DictionaryTypeResource.java
+  logical_ticks:
+  - 59
+  - 60
+  - 63
+  seeded: false
+- task_id: T9-generate-dictionary-data-domain
+  final_state: SUCCESS
+  attempts: 1
+  validation_status: PASS
+  artifact_files:
+  - CreateDictionaryDataDto.java
+  - UpdateDictionaryDataDto.java
+  - EnquiryDictionaryDataPageDto.java
+  - ValidateDictionaryDataLabelUniqueDto.java
+  - ValidateDictionaryDataValueUniqueDto.java
+  - DictionaryDataDetailsVo.java
+  - DictionaryDataPageVo.java
+  - DictionaryDataListVo.java
+  - DictionaryDataEntity.java
+  - DictionaryDataTranslationEntity.java
+  logical_ticks:
+  - 30
+  - 31
+  - 32
+  seeded: false

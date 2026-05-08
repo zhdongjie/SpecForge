@@ -1,0 +1,31 @@
+graph_context:
+  graph_id: dictionary-management-generation-dag-v1
+  graph_kind: semantic-module-generation
+architecture_boundary_enforcement:
+  allowed_package_roots:
+    - org.eu.originalkeen.system.dictionary
+  enforcement_hooks:
+    - hook-module-boundary-check
+task_units:
+  - task_id: T1-generate-dictionary-type-domain-a
+    semantic_operation: domain-artifact-generation
+    stage: generation
+    retry_policy:
+      max_attempts: 1
+  - task_id: T2-generate-dictionary-type-domain-b
+    semantic_operation: domain-artifact-generation
+    stage: generation
+    retry_policy:
+      max_attempts: 1
+dependency_edges: []
+execution_order:
+  serial_order:
+    - T1-generate-dictionary-type-domain-a
+    - T2-generate-dictionary-type-domain-b
+parallel_batches:
+  - batch_id: P1-conflict-wave
+    tasks:
+      - T1-generate-dictionary-type-domain-a
+      - T2-generate-dictionary-type-domain-b
+    mode: parallel
+integration_checkpoints: []

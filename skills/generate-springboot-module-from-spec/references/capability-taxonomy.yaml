@@ -104,3 +104,42 @@ capability_taxonomy:
       http_method: PATCH
       transaction: read-write
       logging: conditional
+  assign:
+    purpose: Bind one domain object to another, such as user-role or role-permission relationships.
+    required_artifacts:
+      - assignment dto or collection input
+      - dedicated manager assignment method
+      - explicit dependency note when crossing module boundaries
+    defaults:
+      http_method: PUT
+      transaction: read-write
+      logging: operate-log
+  translate:
+    purpose: Manage localized labels or descriptions linked to a primary entity.
+    required_artifacts:
+      - translation dto or nested translation input
+      - translation entity or translation persistence contract
+      - read path that returns localized values
+    defaults:
+      http_method: PUT
+      transaction: read-write
+      logging: operate-log
+  state-transition:
+    purpose: Move a domain object between explicit business states under policy control.
+    required_artifacts:
+      - action-specific dto when transition input is required
+      - invariant validation
+      - explicit contract note describing allowed transitions
+    defaults:
+      http_method: PATCH
+      transaction: read-write
+      logging: operate-log
+semantic_rules:
+  - Start from business meaning, then map to the nearest deterministic pattern.
+  - Do not downgrade assignment, translation, hierarchy, or policy capabilities into generic update actions when the specification expresses richer semantics.
+  - Use custom-action only when no existing deterministic pattern fits without semantic loss.
+  - Prefer stable taxonomy mappings that already exist in sibling modules over newly invented action shapes.
+stability_rules:
+  - The same semantic intent should map to the same deterministic pattern across sibling modules unless repository evidence requires a different shape.
+  - Mark repo-dependent capability mappings explicitly in the internal module schema when repository evidence is mixed or incomplete.
+  - Avoid expanding one capability into multiple endpoints unless the repository already models that split consistently.

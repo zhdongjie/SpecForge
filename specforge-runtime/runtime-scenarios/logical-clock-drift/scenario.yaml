@@ -1,0 +1,5 @@
+scenario_id: logical-clock-drift
+scenario_kind: semantic-drift
+expected:
+  passed: false
+  finding_code: logical-clock-non-monotonic

@@ -129,3 +129,21 @@ coverage/
 
 # Project
 .jwk/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# SpecForge runtime artifacts
+specforge-runtime/runs/
+specforge-runtime/benchmark-summary.yaml
+specforge-runtime/regression-summary.yaml
+specforge-runtime/.mypy_cache/
+specforge-runtime/.ruff_cache/
+
+# Canonical SpecForge IR lives under specforge-runtime/specs/
+/module-spec.yaml
+/module-schema.resolved.yaml
+/generation-task-graph.yaml
+/task-run-record.yaml

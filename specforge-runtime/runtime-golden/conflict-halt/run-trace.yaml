@@ -1,0 +1,65 @@
+run_id: golden-conflict-halt
+mode: fresh
+replay_source_run_id: null
+affected_tasks:
+- T1-generate-dictionary-type-domain-a
+- T2-generate-dictionary-type-domain-b
+seeded_tasks: []
+executed_tasks: []
+halted: true
+halt_reason: P1-conflict-wave:artifact-conflict
+scheduler_events:
+- event: batch-start
+  batch_id: P1-conflict-wave
+  mode: parallel
+  task_ids:
+  - T1-generate-dictionary-type-domain-a
+  - T2-generate-dictionary-type-domain-b
+  execution_tick: 1
+  logical_order_id: 00001:001:scheduler:P1-conflict-wave
+- event: task-transition
+  task_id: T1-generate-dictionary-type-domain-a
+  state: INVALIDATED
+  worker_slot: 0
+  execution_tick: 2
+  logical_order_id: 00002:002:transition:T1-generate-dictionary-type-domain-a
+- event: task-transition
+  task_id: T2-generate-dictionary-type-domain-b
+  state: INVALIDATED
+  worker_slot: 1
+  execution_tick: 3
+  logical_order_id: 00003:003:transition:T2-generate-dictionary-type-domain-b
+- event: batch-complete
+  batch_id: P1-conflict-wave
+  mode: parallel
+  task_ids:
+  - T1-generate-dictionary-type-domain-a
+  - T2-generate-dictionary-type-domain-b
+  executed_tasks:
+  - T1-generate-dictionary-type-domain-a
+  - T2-generate-dictionary-type-domain-b
+  halted: true
+  execution_tick: 4
+  logical_order_id: 00004:004:scheduler:P1-conflict-wave
+logical_clock_summary:
+  final_tick: 4
+  monotonic: true
+  transition_count: 2
+  scheduler_event_count: 4
+task_results:
+- task_id: T1-generate-dictionary-type-domain-a
+  final_state: INVALIDATED
+  attempts: 0
+  validation_status: FAIL
+  artifact_files: []
+  logical_ticks:
+  - 2
+  seeded: false
+- task_id: T2-generate-dictionary-type-domain-b
+  final_state: INVALIDATED
+  attempts: 0
+  validation_status: FAIL
+  artifact_files: []
+  logical_ticks:
+  - 3
+  seeded: false

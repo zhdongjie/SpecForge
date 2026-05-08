@@ -1,0 +1,13 @@
+scenario_id: parallel-failure
+scenario_kind: runtime-execution
+expected:
+  runtime_error: true
+  failed_tasks:
+    - T8-generate-dictionary-type-resource
+  invalidated_tasks:
+    - T13-integration-checkpoint-alpha
+    - T14-run-validation-hooks
+    - T15-finalize-generation-bundle
+inject_failure:
+  - T8-generate-dictionary-type-resource:validation:1:parallel_halt
+  - T8-generate-dictionary-type-resource:validation:2:parallel_halt

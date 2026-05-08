@@ -1,0 +1,4 @@
+scenario_id: logical-clock-stability
+execution_kind: fresh
+expected_success: true
+max_workers: 3

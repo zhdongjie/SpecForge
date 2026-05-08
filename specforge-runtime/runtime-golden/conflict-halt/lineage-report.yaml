@@ -1,0 +1,7 @@
+validator: lineage-validator
+passed: true
+finding_count: 0
+findings: []
+artifact_lineage:
+  T1-generate-dictionary-type-domain-a: []
+  T2-generate-dictionary-type-domain-b: []

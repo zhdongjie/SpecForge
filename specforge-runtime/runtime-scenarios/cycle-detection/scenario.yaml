@@ -1,0 +1,6 @@
+scenario_id: cycle-detection
+scenario_kind: static-graph
+graph_file: generation-task-graph.yaml
+expected:
+  passed: false
+  finding_code: dag-validation-failed

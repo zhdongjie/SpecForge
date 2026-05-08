@@ -1,0 +1,6 @@
+run_id: golden-retry-recovery
+recorded_at: '2026-05-07T15:12:52+08:00'
+events:
+- reason: failed-attempt
+  task_id: T8-generate-dictionary-type-resource
+  invalidated_artifacts: []

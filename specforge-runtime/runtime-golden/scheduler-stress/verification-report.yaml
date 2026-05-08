@@ -1,0 +1,133 @@
+phase: runtime
+recorded_at: '2026-05-07T15:12:59+08:00'
+run_dir: E:\Project\Generate\SpecForge\specforge-runtime\runs\golden-scheduler-stress
+semantic_validation:
+  validator: semantic-validator
+  passed: true
+  finding_count: 0
+  findings: []
+lineage_validation:
+  validator: lineage-validator
+  passed: true
+  finding_count: 0
+  findings: []
+checkpoint_validation:
+  validator: checkpoint-validator
+  passed: true
+  finding_count: 0
+  findings: []
+replay_validation:
+  validator: replay-validator
+  passed: true
+  finding_count: 0
+  findings: []
+  comparison_checked: false
+semantic_equivalence_status: true
+semantic_equivalence: null
+replay_stability_score: 1.0
+scheduler_determinism_score: 1.0
+invalidation_integrity: true
+lineage_integrity: true
+checkpoint_consistency: true
+replay_divergence_count: 0
+logical_clock_summary:
+  validator: logical-clock-summary
+  monotonic: true
+  final_tick: 83
+  transition_count: 45
+  scheduler_event_count: 83
+  unique_tick_count: 83
+lineage_snapshot:
+  T1-discover-architecture-baseline: []
+  T10-generate-dictionary-data-persistence:
+  - - DictionaryDataMapper.java
+    - dd51aa6f848d46a3a8a75457f1a2cf7c47e4bd8432b2fbf47cfaa40ef7a851c9
+  - - DictionaryDataTranslationMapper.java
+    - 91bb9cb0d1beb8e486263feadc9acff67ea555969c7a23760102d06c5c2ab53d
+  T11-generate-dictionary-data-services:
+  - - DictionaryDataManager.java
+    - e351cd1f0ec64cba71474394cbc70c92552b02f07cd2e7de15e67f6c63d4dcad
+  - - DictionaryDataService.java
+    - e9681bbbc84b9b611a396c38493eb0bc12b985b8eb30b55e88fe5539dc723452
+  - - DictionaryDataServiceImpl.java
+    - 71b4134010303b448be22b829b779feaa7dc7b327e92d33e627b53aa2472ab66
+  - - DictionaryDataTranslationService.java
+    - 3373772aaa9ad6e9a82d5f405016c1a23bbd738ac6f79b5b4a0b7ca6cf96ccb5
+  - - DictionaryDataTranslationServiceImpl.java
+    - bd88569b9cc94cbcfcd1608a786342f15bbc5586f01e951a096271c10186976a
+  T12-generate-dictionary-data-resource:
+  - - DictionaryDataResource.java
+    - 16f94aea939f5b8952791acb62358dc24caec9f40ac2d94d9fce21027eab2a28
+  T13-integration-checkpoint-alpha: []
+  T14-run-validation-hooks: []
+  T15-finalize-generation-bundle: []
+  T2-resolve-capability-schema: []
+  T3-build-resolved-schema: []
+  T4-validate-resolved-schema: []
+  T5-generate-dictionary-type-domain:
+  - - CreateDictionaryTypeDto.java
+    - 880ad5d87cbf75984bfa162ce6896c6ef2bf9890eabc787d0a35d691739d9822
+  - - DictionaryTypeDetailsVo.java
+    - afd3e999c97a7ecc6e5c666916946ff5be4d2ec64b9c7b1ca384e2bb2b9e72cd
+  - - DictionaryTypeEntity.java
+    - 2612bc10913efe4882b05ba48718c41e92a7f521de39b69813c153fa5703774f
+  - - DictionaryTypeListVo.java
+    - 88a2d93cc2002fe3a16f3a2cf6956665de345adab99918ef7a01ac6c2c2e3fa8
+  - - DictionaryTypePageVo.java
+    - 2421ec562f7f30e0d272a6b6d2230e8ee189a0740cbc8cd6eac32b62398d94b0
+  - - DictionaryTypeTranslationEntity.java
+    - 333f07b1855b1428e46275b6dde9d05ce796c9ee4e918deae0f3843e97ee7cb1
+  - - EnquiryDictionaryTypePageDto.java
+    - ddb4b84ab2d260d80defa04000d28dd65488bc9cef49a41416159f5cdc01e3c8
+  - - UpdateDictionaryTypeDto.java
+    - 3c219af6184c3a23f32b6b069d48bb57d020527a287c0be10a73edf4057ebb8a
+  - - ValidateDictionaryTypeCodeUniqueDto.java
+    - 69a58782159ab90cff302d1b4f31fd1aa8a39f125bcd353b87d960a779e55888
+  - - ValidateDictionaryTypeNameUniqueDto.java
+    - 81a8abe263c81c6dad36be3b240d1f4a15d1fc9caba18ee9ab602bfba3320a5e
+  T6-generate-dictionary-type-persistence:
+  - - DictionaryTypeMapper.java
+    - abe03abc999fb1d3363ae93f7ec929cdcd21aeb9ad1aee5d67b9ee9697a993ff
+  - - DictionaryTypeTranslationMapper.java
+    - de6cf4c85e043e7fde768da17a16d8326d03e972e2edd4c17639cb2b4bc53049
+  T7-generate-dictionary-type-services:
+  - - DictionaryTypeManager.java
+    - c83edc212d5d797e7808d2ab9ee8a4c57bd2ec24b0a2f4aad20ebb2f2dc0b040
+  - - DictionaryTypeService.java
+    - 05b8e9cb5119b4e14fb6240cbe4e54da59c879658dd49b110004ce405c2a5b5a
+  - - DictionaryTypeServiceImpl.java
+    - 74abd4bcfeed17feeca664bda27821acd6b4bba7420e18d2c35905834ba3f8af
+  - - DictionaryTypeTranslationService.java
+    - 7694d868f2501f85cd171e0357444949a5a97c7e1a48d9a24a08a5770adb7b8f
+  - - DictionaryTypeTranslationServiceImpl.java
+    - fb1c0afe30d1291bf8d4cff166983e1129e7b4433720a4a23bdc49abc082df05
+  T8-generate-dictionary-type-resource:
+  - - DictionaryTypeResource.java
+    - 50115d1d5b86c5b2dcf699b09702edd8ea15ea7eb13068bf11c78cb0c297a91e
+  T9-generate-dictionary-data-domain:
+  - - CreateDictionaryDataDto.java
+    - 01c963d8975c4e6d01f7869905e238dfa09e1f4112710fae15f4f9f771c6d03c
+  - - DictionaryDataDetailsVo.java
+    - 44a92fc819e4e92ef04c52aa383802b7feb61581b222d7d06e3625ff5fe9e77d
+  - - DictionaryDataEntity.java
+    - 879e3ea0eff47ec7d0282c2bb1e9bb19cd2931419933e334a7940ab094a16a03
+  - - DictionaryDataListVo.java
+    - 914ad4cfd97c98765add44ffacbade1f45f6181bca4772aa30ce6cd98ee2fad8
+  - - DictionaryDataPageVo.java
+    - a3fb8c37968606ecb041593af9155951c7882481549dba0fc9a5b3614fa0b9f4
+  - - DictionaryDataTranslationEntity.java
+    - 6bca15a0742193825d2fac84ae9ad7e6b78222b7c438b80b0867da21b2631de6
+  - - EnquiryDictionaryDataPageDto.java
+    - 4cb71f0df0a043ec0b5a8fc74d5b5bf506ef6a603ede4ec96c679892cd046a90
+  - - UpdateDictionaryDataDto.java
+    - 48aa0b7e2a06754568b3106a61c751b400818fbb128dd5582e757a68058be586
+  - - ValidateDictionaryDataLabelUniqueDto.java
+    - 161e365396cc3ec3fb20ad742534e9180f2f85bc4024d6d3997ae925de013d49
+  - - ValidateDictionaryDataValueUniqueDto.java
+    - 7ac581a9e6deebcca5a442dd2b96cc707732583b067961c554bf27559c441086
+runtime_validations:
+  replay_trace_consistency: true
+  semantic_equivalence: true
+  logical_clock_monotonicity: true
+  checkpoint_contracts: true
+passed: true

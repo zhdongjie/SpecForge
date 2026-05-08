@@ -1,0 +1,22 @@
+graph_context:
+  graph_id: cycle-detection-scenario
+task_units:
+  - task_id: A
+    semantic_operation: architecture-discovery
+  - task_id: B
+    semantic_operation: capability-normalization
+dependency_edges:
+  - from: A
+    to: B
+  - from: B
+    to: A
+execution_order:
+  serial_order:
+    - A
+    - B
+parallel_batches:
+  - batch_id: P1
+    tasks:
+      - A
+      - B
+    mode: parallel
