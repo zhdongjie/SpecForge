@@ -1,4 +1,5 @@
 runs/
+outputs/
 __pycache__/
 benchmark-summary.yaml
 regression-summary.yaml

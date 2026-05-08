@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 from pathlib import Path
 
 from runtime.codegen.common import dump_yaml, safe_load_yaml
@@ -57,6 +58,22 @@ def resolve_build_plan_path(root: Path, build_plan: str) -> Path:
     return root / "specs" / candidate
 
 
+def resolve_output_path(root: Path, raw_path: str | None, fallback: str) -> Path:
+    candidate = Path(raw_path) if raw_path else Path(fallback)
+    return candidate if candidate.is_absolute() else (root / candidate)
+
+
+def export_final_backend(source_root: Path, destination_root: Path) -> None:
+    if destination_root.exists():
+        shutil.rmtree(destination_root)
+    destination_root.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(
+        source_root,
+        destination_root,
+        ignore=shutil.ignore_patterns(".m2", "target", "__pycache__"),
+    )
+
+
 def run_auto_build(args: argparse.Namespace, root: Path) -> None:
     build_plan_path = resolve_build_plan_path(root, args.build_plan)
     build_plan = safe_load_yaml(build_plan_path)
@@ -67,6 +84,11 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
     auto_repair = bool(build_plan.get("auto_repair", True))
     verify_boot = bool(build_plan.get("verify_boot", True))
     repair_max_passes = int(build_plan.get("repair_max_passes", args.repair_max_passes))
+    final_output_dir = resolve_output_path(
+        root,
+        build_plan.get("final_output_dir"),
+        f"outputs/{plan_id}",
+    )
     run_id = (
         str(build_plan.get("default_run_id", plan_id))
         if args.run_id == "run-001"
@@ -89,6 +111,9 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
         repair_max_passes=max(1, repair_max_passes),
     )
 
+    generated_project_root = Path(summary["generated_project_root"])
+    export_final_backend(generated_project_root, final_output_dir)
+
     auto_build_report = {
         "status": summary["status"],
         "plan_id": plan_id,
@@ -99,11 +124,13 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
         "auto_repair": auto_repair,
         "verify_boot": verify_boot,
         "repair_max_passes": repair_max_passes,
-        "generated_project_root": summary.get("generated_project_root"),
+        "generated_project_root": str(generated_project_root),
+        "final_output_dir": str(final_output_dir),
         "compile_status": summary.get("compile_status"),
         "boot_status": summary.get("boot_status"),
     }
     dump_yaml(run_root / "logs" / "auto-build-report.yaml", auto_build_report)
+    dump_yaml(final_output_dir / "logs" / "final-output-report.yaml", auto_build_report)
     if summary["status"] == "FAIL":
         raise RuntimeError("Auto build failed verification")
 

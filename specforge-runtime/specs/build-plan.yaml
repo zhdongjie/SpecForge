@@ -1,6 +1,7 @@
 plan_id: lab-reservation-autobuild
 default_run_id: lab-reservation-autobuild
 backend_root: ../backend
+final_output_dir: outputs/laboratory-reservation-backend
 module_schema: module-schema.resolved.yaml
 auto_repair: true
 verify_boot: true

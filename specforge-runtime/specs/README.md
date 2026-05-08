@@ -16,3 +16,4 @@ Working rule:
 - Put runtime-facing specs here instead of the repository root.
 - Keep generated run outputs under `specforge-runtime/runs/`, which is ignored.
 - Use `python main.py --auto-build --build-plan build-plan.yaml` for the canonical end-to-end backend compilation run.
+- Treat `specforge-runtime/outputs/` as the stable home for final exported backend code after a successful auto-build.
