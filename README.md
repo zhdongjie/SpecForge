@@ -277,6 +277,8 @@ For a new domain, the most portable workflow is:
 See [ONE_LINE_REQUIREMENT_PLAYBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md).
 See [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md) for copy-paste prompts for a fresh Codex session.
 See [REQUIREMENT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/REQUIREMENT_TEMPLATE.md) for a structured requirement document template.
+See [REQUIREMENT_AUTHORING_AND_HANDOFF_PROMPT.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/REQUIREMENT_AUTHORING_AND_HANDOFF_PROMPT.md) for the two-phase prompt, including a minimal daily-use copy-paste version that first writes a detailed requirement document, then lets you manually edit it, and finally lets the same Codex continue from that file.
+See [DAILY_REQUIREMENT_PROMPT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/DAILY_REQUIREMENT_PROMPT_TEMPLATE.md) for the fastest replace-only prompt template.
 See [FINAL_ONE_SHOT_PROTOCOL.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/FINAL_ONE_SHOT_PROTOCOL.md) for the shortest new-machine or fresh-Codex operating path.
 
 ## Handoff Rule
