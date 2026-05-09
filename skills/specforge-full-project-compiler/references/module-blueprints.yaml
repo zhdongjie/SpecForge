@@ -1,4 +1,165 @@
 domains:
+  laboratory-management:
+    project:
+      name: Laboratory Management Platform
+      bounded_context: laboratory-operations
+      primary_roles:
+        - Administrator
+        - Teacher
+        - Student
+        - LabManager
+      business_rules:
+        - laboratory reservation slots must not conflict within the same laboratory
+        - equipment usage actions must reference an existing laboratory and equipment record
+        - consumable inventory actions must remain behind centralized JWT authorization
+        - experiment project operations must preserve modular business boundaries
+    modules:
+      - module: laboratory-reservation-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: laboratory-operations
+        package_root: org.eu.originalkeen.business.labreservation
+        route_roots:
+          - /v1/business/laboratory
+          - /v1/business/laboratory-reservation
+        authorities:
+          - business:laboratory:*
+          - business:laboratory-reservation:*
+        entities:
+          - Laboratory
+          - LaboratoryReservation
+        tables:
+          - system_laboratory
+          - system_laboratory_reservation
+        purpose: laboratory resource and reservation lifecycle management
+      - module: reservation-approval-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: reservation-governance
+        package_root: org.eu.originalkeen.business.reservationapproval
+        route_roots:
+          - /v1/business/reservation-approval
+        authorities:
+          - business:reservation-approval:*
+        entities:
+          - ReservationApproval
+          - ReservationApprovalRecord
+        tables:
+          - reservation_approval
+          - reservation_approval_record
+        purpose: reservation approval decisions and audit trail
+      - module: laboratory-access-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: laboratory-access-control
+        package_root: org.eu.originalkeen.business.labaccess
+        route_roots:
+          - /v1/business/laboratory-access
+        authorities:
+          - business:laboratory-access:*
+        entities:
+          - LaboratoryAccessPolicy
+          - LaboratoryAccessScope
+        tables:
+          - laboratory_access_policy
+          - laboratory_access_scope
+        purpose: laboratory access scope and reservable policy management
+      - module: equipment-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: equipment-center
+        package_root: org.eu.originalkeen.business.equipment
+        route_roots:
+          - /v1/business/equipment
+        authorities:
+          - business:equipment:*
+        entities:
+          - LaboratoryEquipment
+          - EquipmentMaintenanceRecord
+        tables:
+          - laboratory_equipment
+          - equipment_maintenance_record
+        purpose: laboratory equipment lifecycle and maintenance management
+      - module: consumable-inventory-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: consumable-inventory-center
+        package_root: org.eu.originalkeen.business.consumableinventory
+        route_roots:
+          - /v1/business/consumable-inventory
+        authorities:
+          - business:consumable-inventory:*
+        entities:
+          - ConsumableItem
+          - ConsumableStockRecord
+        tables:
+          - consumable_item
+          - consumable_stock_record
+        purpose: laboratory consumable stock and inventory management
+      - module: experiment-project-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: experiment-project-center
+        package_root: org.eu.originalkeen.business.experimentproject
+        route_roots:
+          - /v1/business/experiment-project
+        authorities:
+          - business:experiment-project:*
+        entities:
+          - ExperimentProject
+          - ExperimentProjectMember
+        tables:
+          - experiment_project
+          - experiment_project_member
+        purpose: experiment project planning and member management
+      - module: schedule-calendar-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: schedule-calendar-center
+        package_root: org.eu.originalkeen.business.schedulecalendar
+        route_roots:
+          - /v1/business/schedule-calendar
+        authorities:
+          - business:schedule-calendar:*
+        entities:
+          - ScheduleCalendar
+          - ScheduleCalendarEvent
+        tables:
+          - schedule_calendar
+          - schedule_calendar_event
+        purpose: laboratory schedule and calendar event management
+      - module: report-statistics-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: report-statistics-center
+        package_root: org.eu.originalkeen.business.reportstatistics
+        route_roots:
+          - /v1/business/report-statistics
+        authorities:
+          - business:report-statistics:*
+        entities:
+          - ReservationStatisticSnapshot
+          - EquipmentUsageReport
+        tables:
+          - reservation_statistic_snapshot
+          - equipment_usage_report
+        purpose: laboratory reporting and statistics snapshot management
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/notification
+        authorities:
+          - business:notification:*
+        entities:
+          - NotificationMessage
+          - NotificationDeliveryRecord
+        tables:
+          - notification_message
+          - notification_delivery_record
+        purpose: laboratory workflow and approval notifications
   laboratory-reservation:
     project:
       name: Laboratory Reservation Platform
@@ -78,3 +239,114 @@ domains:
           - laboratory_access_policy
           - laboratory_access_scope
         purpose: laboratory access scope and reservable policy management
+  insurance-management:
+    project:
+      name: Insurance Operations Platform
+      bounded_context: insurance-operations
+      primary_roles:
+        - Administrator
+        - Underwriter
+        - ClaimsAdjuster
+        - FinanceOperator
+        - ChannelManager
+      business_rules:
+        - claim requests must reference an existing insured customer record
+        - premium payment actions must remain behind centralized JWT authorization
+        - renewal and underwriting operations must preserve modular business boundaries
+    modules:
+      - module: insurance-customer-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: insurance-customer-center
+        package_root: org.eu.originalkeen.business.insurancecustomer
+        route_roots:
+          - /v1/business/insurance-customer
+        authorities:
+          - business:insurance-customer:*
+        entities:
+          - InsuranceCustomer
+          - CustomerBeneficiary
+        tables:
+          - insurance_customer
+          - customer_beneficiary
+        purpose: insured customer profile and beneficiary lifecycle management
+      - module: insurance-claim-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: insurance-claim-operations
+        package_root: org.eu.originalkeen.business.insuranceclaim
+        route_roots:
+          - /v1/business/insurance-claim
+        authorities:
+          - business:insurance-claim:*
+        entities:
+          - InsuranceClaim
+          - ClaimSettlement
+        tables:
+          - insurance_claim
+          - claim_settlement
+        purpose: claim submission, settlement, and tracking management
+      - module: premium-payment-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: premium-payment-center
+        package_root: org.eu.originalkeen.business.premiumpayment
+        route_roots:
+          - /v1/business/premium-payment
+        authorities:
+          - business:premium-payment:*
+        entities:
+          - PremiumPayment
+          - PaymentRefund
+        tables:
+          - premium_payment
+          - payment_refund
+        purpose: premium collection and refund processing management
+      - module: policy-renewal-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: policy-renewal-center
+        package_root: org.eu.originalkeen.business.policyrenewal
+        route_roots:
+          - /v1/business/policy-renewal
+        authorities:
+          - business:policy-renewal:*
+        entities:
+          - PolicyRenewal
+          - RenewalReminder
+        tables:
+          - policy_renewal
+          - renewal_reminder
+        purpose: policy renewal cycle and reminder management
+      - module: underwriting-approval-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: underwriting-governance
+        package_root: org.eu.originalkeen.business.underwritingapproval
+        route_roots:
+          - /v1/business/underwriting-approval
+        authorities:
+          - business:underwriting-approval:*
+        entities:
+          - UnderwritingApproval
+          - UnderwritingDecisionRecord
+        tables:
+          - underwriting_approval
+          - underwriting_decision_record
+        purpose: underwriting review decision and approval governance management
+      - module: channel-agent-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: channel-agent-center
+        package_root: org.eu.originalkeen.business.channelagent
+        route_roots:
+          - /v1/business/channel-agent
+        authorities:
+          - business:channel-agent:*
+        entities:
+          - InsuranceChannel
+          - InsuranceAgent
+        tables:
+          - insurance_channel
+          - insurance_agent
+        purpose: sales channel and agent relationship management

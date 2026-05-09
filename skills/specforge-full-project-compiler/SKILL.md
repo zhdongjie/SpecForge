@@ -16,6 +16,8 @@ Read [references/module-blueprints.yaml](references/module-blueprints.yaml) when
 Read [references/portable-one-line-project-protocol.md](references/portable-one-line-project-protocol.md) when the user wants a one-sentence or one-document portable generation workflow that another Codex session can execute without prior chat context.
 Read [references/zero-context-handoff-checklist.md](references/zero-context-handoff-checklist.md) when the user explicitly wants migration, handoff, portability, or a copy-paste starter prompt for a fresh Codex session.
 Read [references/requirement-template-contract.md](references/requirement-template-contract.md) when the user wants a reusable requirement template or a structured document contract for future generation runs.
+Read [references/validated-domains-and-regression-suite.md](references/validated-domains-and-regression-suite.md) when the user asks whether the tool itself is stable, wants a new-machine shakeout, or wants a repeatable validation command.
+Read [../../specforge-runtime/docs/FINAL_ONE_SHOT_PROTOCOL.md](../../specforge-runtime/docs/FINAL_ONE_SHOT_PROTOCOL.md) when the user wants the shortest end-to-end protocol for a new machine or fresh Codex session.
 
 ## Execution Mode
 
@@ -36,6 +38,9 @@ Treat these directory roles as fixed:
 - `specforge-runtime/runs/<run-id>/` = execution trace for one attempt
 - `specforge-runtime/outputs/<target>/` = final deliverable
 - `sandbox/` = local scratch or migration rehearsal area
+
+Prefer automatic scaffold-domain selection first.
+Use explicit `--domain` only when automatic matching is wrong or the user wants a forced domain.
 
 ## Phase Order
 
@@ -154,6 +159,12 @@ Preferred one-command wrapper for portable execution:
 python scripts/run_requirement_project.py --repo-root <repo-root> --project-name "<project-name>" --requirement "<short requirement>" --run-id <run-id> --force
 ```
 
+Preferred one-command wrapper for requirement-file execution:
+
+```powershell
+python scripts/run_requirement_project.py --repo-root <repo-root> --project-name "<project-name>" --requirement-file "<requirement-file>" --run-id <run-id> --force
+```
+
 This scaffold step should:
 
 - write project-level specs
@@ -216,6 +227,18 @@ Always inspect:
 - `runs/<run-id>/generated-project/logs/project-assembly-report.yaml` when project assembly is used
 
 Prefer unique run ids for every iteration so replay and failure analysis remain reproducible.
+
+When the user asks to validate the tool itself instead of generating a single business project, prefer:
+
+```powershell
+python scripts/run_tool_validation_suite.py --repo-root <repo-root> --force
+```
+
+When the user wants a copy-paste prompt for another Codex session, prefer:
+
+```powershell
+python scripts/emit_codex_handoff_prompt.py --project-name "<project-name>" --requirement "<one-line requirement>" --mode inline
+```
 
 When reporting success, point the user first to:
 

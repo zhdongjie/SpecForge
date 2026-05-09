@@ -3,10 +3,13 @@ compiler_context:
   target_module_id: laboratory-access-management
   regeneration_mode: create
   stability_goal: deterministic
-  planner_tags: [bounded-module, access-control-center, validated-blueprint]
+  planner_tags:
+  - bounded-module
+  - laboratory-access-control
+  - default-enabled-blueprint
 module_identity:
   module_name: laboratory-access-management
-  bounded_context: access-control-center
+  bounded_context: laboratory-access-control
   semantic_role: business-domain
   responsibility_code: laboratory_access_management
   package_root: org.eu.originalkeen.business.labaccess
@@ -14,112 +17,166 @@ module_identity:
     laboratory-access-management: /v1/business/laboratory-access
 generation_boundaries:
   single_module_only: true
-  owns_aggregates: &entities
-    - LaboratoryAccessRule
-    - LaboratoryAccessRecord
-  may_reference: [ResponseVo, PageVo, OperateLog, PreAuthorize]
-  must_not_generate: [authentication flows, user management, role management]
+  owns_aggregates: &id001
+  - LaboratoryAccessPolicy
+  - LaboratoryAccessScope
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
 api_groups:
-  - group_id: laboratory_access_management
-    route_prefix: /v1/business/laboratory-access
-    aggregate: LaboratoryAccessRule
-    capability_ids:
-      - create-laboratory_access_management
-      - update-laboratory_access_management
-      - batch-delete-laboratory_access_management
-      - enquiry-laboratory_access_management-page
-      - enquiry-laboratory_access_management-details
-      - enquiry-laboratory_access_management-list
+- group_id: laboratory_access_management
+  route_prefix: /v1/business/laboratory-access
+  aggregate: LaboratoryAccessPolicy
+  capability_ids:
+  - create-laboratory_access_management
+  - update-laboratory_access_management
+  - batch-delete-laboratory_access_management
+  - enquiry-laboratory_access_management-page
+  - enquiry-laboratory_access_management-details
+  - enquiry-laboratory_access_management-list
 capabilities:
-  - capability_id: create-laboratory_access_management
-    semantic_intent: create-record
-    deterministic_pattern: create
-    stability_class: stable
-    api_group: laboratory_access_management
-    http_method: POST
-    route: /
-    authority: business:laboratory-access:create
-    transaction: read-write
-    input_dto: CreateLaboratoryAccessManagementDto
-    output_vo: Void
-    touched_entities: *entities
-  - capability_id: update-laboratory_access_management
-    semantic_intent: update-record
-    deterministic_pattern: update
-    stability_class: stable
-    api_group: laboratory_access_management
-    http_method: PUT
-    route: /
-    authority: business:laboratory-access:update
-    transaction: read-write
-    input_dto: UpdateLaboratoryAccessManagementDto
-    output_vo: Void
-    touched_entities: *entities
-  - capability_id: batch-delete-laboratory_access_management
-    semantic_intent: delete-record
-    deterministic_pattern: batch-delete
-    stability_class: stable
-    api_group: laboratory_access_management
-    http_method: DELETE
-    route: /
-    authority: business:laboratory-access:delete
-    transaction: read-write
-    input_dto: LaboratoryAccessManagementIdSet
-    output_vo: Void
-    touched_entities: *entities
-  - capability_id: enquiry-laboratory_access_management-page
-    semantic_intent: query-page
-    deterministic_pattern: page
-    stability_class: stable
-    api_group: laboratory_access_management
-    http_method: GET
-    route: /page
-    authority: business:laboratory-access:page
-    transaction: read-only
-    input_dto: EnquiryLaboratoryAccessManagementPageDto
-    output_vo: PageVo<LaboratoryAccessManagementPageVo>
-    touched_entities: *entities
-  - capability_id: enquiry-laboratory_access_management-details
-    semantic_intent: query-details
-    deterministic_pattern: details
-    stability_class: stable
-    api_group: laboratory_access_management
-    http_method: GET
-    route: /{id}
-    authority: business:laboratory-access:details
-    transaction: read-only
-    input_dto: LaboratoryAccessManagementIdPath
-    output_vo: LaboratoryAccessManagementDetailsVo
-    touched_entities: *entities
-  - capability_id: enquiry-laboratory_access_management-list
-    semantic_intent: query-list
-    deterministic_pattern: list
-    stability_class: stable
-    api_group: laboratory_access_management
-    http_method: GET
-    route: /list
-    authority: business:laboratory-access:list
-    transaction: read-only
-    input_dto: None
-    output_vo: List<LaboratoryAccessManagementListVo>
-    touched_entities: *entities
+- capability_id: create-laboratory_access_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: POST
+  route: /
+  authority: business:laboratory-access:create
+  transaction: read-write
+  input_dto: CreateLaboratoryAccessManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-laboratory_access_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: PUT
+  route: /
+  authority: business:laboratory-access:update
+  transaction: read-write
+  input_dto: UpdateLaboratoryAccessManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-laboratory_access_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: DELETE
+  route: /
+  authority: business:laboratory-access:delete
+  transaction: read-write
+  input_dto: LaboratoryAccessManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-laboratory_access_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: GET
+  route: /page
+  authority: business:laboratory-access:page
+  transaction: read-only
+  input_dto: EnquiryLaboratoryAccessManagementPageDto
+  output_vo: PageVo<LaboratoryAccessManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-laboratory_access_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: GET
+  route: /{id}
+  authority: business:laboratory-access:details
+  transaction: read-only
+  input_dto: LaboratoryAccessManagementIdPath
+  output_vo: LaboratoryAccessManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-laboratory_access_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: GET
+  route: /list
+  authority: business:laboratory-access:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<LaboratoryAccessManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
-    - entity_id: LaboratoryAccessRule
-      table: laboratory_access_rule
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: LaboratoryAccessRecord
-      table: laboratory_access_record
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-validation_rules: {uniqueness: [], referential: [], shape: []}
-architecture_constraints: {modular_monolith_mode: true, response_wrapper_must_be: ResponseVo, page_wrapper_must_be: PageVo, security_annotation_required: true}
-persistence_conventions: {framework: mybatis-flex, database: mysql}
-localization_requirements: {mandatory: false, languages: [], localized_aggregates: [], localized_fields: {}, fallback_policy: none}
-audit_behavior: {access_log: none, operate_log: {enabled: true, target_capabilities: [create-laboratory_access_management, update-laboratory_access_management, batch-delete-laboratory_access_management]}}
-generation_contract: {deterministic_output_required: true, preserve_project_contracts: [modular-monolith-boundaries, centralized-authority-based-security], blueprint_status: default-enabled-validated-blueprint}
+  - entity_id: LaboratoryAccessPolicy
+    table: laboratory_access_policy
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: LaboratoryAccessScope
+    table: laboratory_access_scope
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - LaboratoryAccessManagementResource
+  manager:
+  - LaboratoryAccessManagementManager
+  service:
+  - LaboratoryAccessManagementService
+  service_impl:
+  - LaboratoryAccessManagementServiceImpl
+  mapper:
+  - LaboratoryAccessManagementMapper
+  entity: *id001
+  dto:
+  - CreateLaboratoryAccessManagementDto
+  - UpdateLaboratoryAccessManagementDto
+  - EnquiryLaboratoryAccessManagementPageDto
+  vo:
+  - LaboratoryAccessManagementDetailsVo
+  - LaboratoryAccessManagementPageVo
+  - LaboratoryAccessManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-laboratory_access_management
+    - update-laboratory_access_management
+    - batch-delete-laboratory_access_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

@@ -1,4 +1,4 @@
 interface:
   display_name: "SpecForge Project Compiler"
-  short_description: "Generate full backends with SpecForge."
-  default_prompt: "Use $specforge-full-project-compiler to compile this requirement into a bootable backend."
+  short_description: "Compile requirement-driven bootable Spring Boot backends."
+  default_prompt: "Use $specforge-full-project-compiler to turn this requirement into a bootable backend, continue until compile and boot pass, and treat specforge-runtime/outputs/ as the only final deliverable."

@@ -3,7 +3,10 @@ compiler_context:
   target_module_id: report-statistics-management
   regeneration_mode: create
   stability_goal: deterministic
-  planner_tags: [bounded-module, report-statistics-center, validated-blueprint]
+  planner_tags:
+  - bounded-module
+  - report-statistics-center
+  - default-enabled-blueprint
 module_identity:
   module_name: report-statistics-management
   bounded_context: report-statistics-center
@@ -14,112 +17,166 @@ module_identity:
     report-statistics-management: /v1/business/report-statistics
 generation_boundaries:
   single_module_only: true
-  owns_aggregates: &entities
-    - ReservationStatisticSnapshot
-    - EquipmentUsageReport
-  may_reference: [ResponseVo, PageVo, OperateLog, PreAuthorize]
-  must_not_generate: [authentication flows, user management, role management]
+  owns_aggregates: &id001
+  - ReservationStatisticSnapshot
+  - EquipmentUsageReport
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
 api_groups:
-  - group_id: report_statistics_management
-    route_prefix: /v1/business/report-statistics
-    aggregate: ReservationStatisticSnapshot
-    capability_ids:
-      - create-report_statistics_management
-      - update-report_statistics_management
-      - batch-delete-report_statistics_management
-      - enquiry-report_statistics_management-page
-      - enquiry-report_statistics_management-details
-      - enquiry-report_statistics_management-list
+- group_id: report_statistics_management
+  route_prefix: /v1/business/report-statistics
+  aggregate: ReservationStatisticSnapshot
+  capability_ids:
+  - create-report_statistics_management
+  - update-report_statistics_management
+  - batch-delete-report_statistics_management
+  - enquiry-report_statistics_management-page
+  - enquiry-report_statistics_management-details
+  - enquiry-report_statistics_management-list
 capabilities:
-  - capability_id: create-report_statistics_management
-    semantic_intent: create-record
-    deterministic_pattern: create
-    stability_class: stable
-    api_group: report_statistics_management
-    http_method: POST
-    route: /
-    authority: business:report-statistics:create
-    transaction: read-write
-    input_dto: CreateReportStatisticsManagementDto
-    output_vo: Void
-    touched_entities: *entities
-  - capability_id: update-report_statistics_management
-    semantic_intent: update-record
-    deterministic_pattern: update
-    stability_class: stable
-    api_group: report_statistics_management
-    http_method: PUT
-    route: /
-    authority: business:report-statistics:update
-    transaction: read-write
-    input_dto: UpdateReportStatisticsManagementDto
-    output_vo: Void
-    touched_entities: *entities
-  - capability_id: batch-delete-report_statistics_management
-    semantic_intent: delete-record
-    deterministic_pattern: batch-delete
-    stability_class: stable
-    api_group: report_statistics_management
-    http_method: DELETE
-    route: /
-    authority: business:report-statistics:delete
-    transaction: read-write
-    input_dto: ReportStatisticsManagementIdSet
-    output_vo: Void
-    touched_entities: *entities
-  - capability_id: enquiry-report_statistics_management-page
-    semantic_intent: query-page
-    deterministic_pattern: page
-    stability_class: stable
-    api_group: report_statistics_management
-    http_method: GET
-    route: /page
-    authority: business:report-statistics:page
-    transaction: read-only
-    input_dto: EnquiryReportStatisticsManagementPageDto
-    output_vo: PageVo<ReportStatisticsManagementPageVo>
-    touched_entities: *entities
-  - capability_id: enquiry-report_statistics_management-details
-    semantic_intent: query-details
-    deterministic_pattern: details
-    stability_class: stable
-    api_group: report_statistics_management
-    http_method: GET
-    route: /{id}
-    authority: business:report-statistics:details
-    transaction: read-only
-    input_dto: ReportStatisticsManagementIdPath
-    output_vo: ReportStatisticsManagementDetailsVo
-    touched_entities: *entities
-  - capability_id: enquiry-report_statistics_management-list
-    semantic_intent: query-list
-    deterministic_pattern: list
-    stability_class: stable
-    api_group: report_statistics_management
-    http_method: GET
-    route: /list
-    authority: business:report-statistics:list
-    transaction: read-only
-    input_dto: None
-    output_vo: List<ReportStatisticsManagementListVo>
-    touched_entities: *entities
+- capability_id: create-report_statistics_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: POST
+  route: /
+  authority: business:report-statistics:create
+  transaction: read-write
+  input_dto: CreateReportStatisticsManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-report_statistics_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: PUT
+  route: /
+  authority: business:report-statistics:update
+  transaction: read-write
+  input_dto: UpdateReportStatisticsManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-report_statistics_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: DELETE
+  route: /
+  authority: business:report-statistics:delete
+  transaction: read-write
+  input_dto: ReportStatisticsManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-report_statistics_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: GET
+  route: /page
+  authority: business:report-statistics:page
+  transaction: read-only
+  input_dto: EnquiryReportStatisticsManagementPageDto
+  output_vo: PageVo<ReportStatisticsManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-report_statistics_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: GET
+  route: /{id}
+  authority: business:report-statistics:details
+  transaction: read-only
+  input_dto: ReportStatisticsManagementIdPath
+  output_vo: ReportStatisticsManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-report_statistics_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: GET
+  route: /list
+  authority: business:report-statistics:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ReportStatisticsManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
-    - entity_id: ReservationStatisticSnapshot
-      table: reservation_statistic_snapshot
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: EquipmentUsageReport
-      table: equipment_usage_report
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-validation_rules: {uniqueness: [], referential: [], shape: []}
-architecture_constraints: {modular_monolith_mode: true, response_wrapper_must_be: ResponseVo, page_wrapper_must_be: PageVo, security_annotation_required: true}
-persistence_conventions: {framework: mybatis-flex, database: mysql}
-localization_requirements: {mandatory: false, languages: [], localized_aggregates: [], localized_fields: {}, fallback_policy: none}
-audit_behavior: {access_log: none, operate_log: {enabled: true, target_capabilities: [create-report_statistics_management, update-report_statistics_management, batch-delete-report_statistics_management]}}
-generation_contract: {deterministic_output_required: true, preserve_project_contracts: [modular-monolith-boundaries, centralized-authority-based-security], blueprint_status: default-enabled-validated-blueprint}
+  - entity_id: ReservationStatisticSnapshot
+    table: reservation_statistic_snapshot
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: EquipmentUsageReport
+    table: equipment_usage_report
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - ReportStatisticsManagementResource
+  manager:
+  - ReportStatisticsManagementManager
+  service:
+  - ReportStatisticsManagementService
+  service_impl:
+  - ReportStatisticsManagementServiceImpl
+  mapper:
+  - ReportStatisticsManagementMapper
+  entity: *id001
+  dto:
+  - CreateReportStatisticsManagementDto
+  - UpdateReportStatisticsManagementDto
+  - EnquiryReportStatisticsManagementPageDto
+  vo:
+  - ReportStatisticsManagementDetailsVo
+  - ReportStatisticsManagementPageVo
+  - ReportStatisticsManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-report_statistics_management
+    - update-report_statistics_management
+    - batch-delete-report_statistics_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

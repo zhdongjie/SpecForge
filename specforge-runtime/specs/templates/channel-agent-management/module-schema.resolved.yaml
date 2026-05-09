@@ -14,33 +14,33 @@ module_identity:
   responsibility_code: channel_agent_management
   package_root: org.eu.originalkeen.business.channelagent
   route_roots:
-    - /v1/business/channel-agent
+  - /v1/business/channel-agent
 api_groups:
-  - group_id: channel_agent_management
-    route_prefix: /v1/business/channel-agent
-    aggregate: InsuranceChannel
-    capability_ids:
-      - create-channel_agent_management
-      - update-channel_agent_management
-      - batch-delete-channel_agent_management
-      - enquiry-channel_agent_management-page
-      - enquiry-channel_agent_management-details
-      - enquiry-channel_agent_management-list
+- group_id: channel_agent_management
+  route_prefix: /v1/business/channel-agent
+  aggregate: InsuranceChannel
+  capability_ids:
+  - create-channel_agent_management
+  - update-channel_agent_management
+  - batch-delete-channel_agent_management
+  - enquiry-channel_agent_management-page
+  - enquiry-channel_agent_management-details
+  - enquiry-channel_agent_management-list
 capabilities: []
 entity_graph:
   entities:
-    - entity_id: InsuranceChannel
-      table: insurance_channel
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: InsuranceAgent
-      table: insurance_agent
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
+  - entity_id: InsuranceChannel
+    table: insurance_channel
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: InsuranceAgent
+    table: insurance_agent
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
 validation_rules:
   uniqueness: []
   referential: []
@@ -73,30 +73,30 @@ audit_behavior:
   operate_log:
     enabled: true
     target_capabilities:
-      - create-channel_agent_management
-      - update-channel_agent_management
-      - batch-delete-channel_agent_management
+    - create-channel_agent_management
+    - update-channel_agent_management
+    - batch-delete-channel_agent_management
 integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - business:channel-agent:*
+    - business:channel-agent:*
   persistence:
     database: mysql
     required_tables:
-      - insurance_channel
-      - insurance_agent
+    - insurance_channel
+    - insurance_agent
 code_conventions:
   naming_stability: strict
   route_style: business-domain-aligned
   transaction_style: manager-boundary
 validation_hooks:
   pre_generation:
-    - hook-discovery-baseline-complete
+  - hook-discovery-baseline-complete
   post_unit:
-    - hook-artifact-name-convention
-    - hook-package-placement-check
+  - hook-artifact-name-convention
+  - hook-package-placement-check
   final:
-    - hook-module-boundary-check
-    - hook-deterministic-layout-check
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
 blueprint_status: default-enabled-validated-blueprint-for-ChannelAgentManagement

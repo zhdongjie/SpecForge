@@ -93,6 +93,16 @@ Or use the one-command wrapper:
 python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "Laboratory Reservation Platform" --requirement "Build a complete laboratory reservation management backend with reservation approval, notification, and laboratory access control under a modular-monolith Spring Boot architecture." --run-id lab-platform-001 --force
 ```
 
+The wrapper can auto-select a supported scaffold domain from the project name and requirement text.
+
+Use `--domain <domain-key>` only when you want to override automatic selection explicitly.
+
+Currently validated automatic scaffold domains include:
+
+- `laboratory-reservation`
+- `laboratory-management`
+- `insurance-management`
+
 ### 5. Check results
 
 Success report:
@@ -157,12 +167,89 @@ Compile full backend:
 python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id <run-id>
 ```
 
+One-command full generation:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
+```
+
+Requirement-file generation:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement-file "<requirement-file>" --run-id <run-id> --force
+```
+
+Run the portable validation suite:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --force
+```
+
 Direct runtime equivalent:
 
 ```powershell
 cd specforge-runtime
 python main.py --auto-build --build-plan build-plan.yaml --run-id <run-id>
 ```
+
+Emit a portable Codex handoff prompt:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.py --project-name "<project-name>" --requirement "<one-line requirement>" --mode inline
+```
+
+Emit a requirement-file handoff prompt:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.py --project-name "<project-name>" --requirement-file "<requirement-file>" --mode file
+```
+
+## Recommended Running Scheme
+
+### A. Generate a backend in the current machine
+
+1. Run the readiness check.
+2. Use the one-command wrapper with either `--requirement` or `--requirement-file`.
+3. Check:
+   - `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
+   - `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
+4. Accept success only if:
+   - `compile_status: PASS`
+   - `boot_status: PASS`
+5. Take the final backend only from:
+   - `specforge-runtime/outputs/<project-backend>/`
+
+### B. Handoff to a fresh Codex session
+
+1. Run `emit_codex_handoff_prompt.py`.
+2. Paste the emitted prompt into the new Codex session.
+3. Let the new session run until compile and boot pass, or it returns a reproducible failure bundle.
+
+### C. Validate the tool itself
+
+1. Run:
+   - `python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --force`
+2. Current built-in validated scenarios:
+   - `lab-inline-auto`
+   - `lab-platform-file-auto`
+   - `insurance-inline-auto`
+   - `insurance-file-auto`
+3. Use this when you want to prove the generator still works after refactors, migration, or environment changes.
+
+## Success And Failure Contract
+
+Successful generation means:
+
+- final backend exists under `specforge-runtime/outputs/`
+- compile passes
+- boot passes
+
+If a run fails, inspect first:
+
+- `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
+- `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
+- `specforge-runtime/runs/<run-id>/generated-project/logs/compile-diagnostics.yaml`
+- `specforge-runtime/runs/<run-id>/generated-project/logs/boot-diagnostics.yaml`
 
 ## One-Line Requirement Mode
 
@@ -179,6 +266,7 @@ For a new domain, the most portable workflow is:
 See [ONE_LINE_REQUIREMENT_PLAYBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md).
 See [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md) for copy-paste prompts for a fresh Codex session.
 See [REQUIREMENT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/REQUIREMENT_TEMPLATE.md) for a structured requirement document template.
+See [FINAL_ONE_SHOT_PROTOCOL.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/FINAL_ONE_SHOT_PROTOCOL.md) for the shortest new-machine or fresh-Codex operating path.
 
 ## Handoff Rule
 

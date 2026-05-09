@@ -14,33 +14,33 @@ module_identity:
   responsibility_code: insurance_customer_management
   package_root: org.eu.originalkeen.business.insurancecustomer
   route_roots:
-    - /v1/business/insurance-customer
+  - /v1/business/insurance-customer
 api_groups:
-  - group_id: insurance_customer_management
-    route_prefix: /v1/business/insurance-customer
-    aggregate: InsuranceCustomer
-    capability_ids:
-      - create-insurance_customer_management
-      - update-insurance_customer_management
-      - batch-delete-insurance_customer_management
-      - enquiry-insurance_customer_management-page
-      - enquiry-insurance_customer_management-details
-      - enquiry-insurance_customer_management-list
+- group_id: insurance_customer_management
+  route_prefix: /v1/business/insurance-customer
+  aggregate: InsuranceCustomer
+  capability_ids:
+  - create-insurance_customer_management
+  - update-insurance_customer_management
+  - batch-delete-insurance_customer_management
+  - enquiry-insurance_customer_management-page
+  - enquiry-insurance_customer_management-details
+  - enquiry-insurance_customer_management-list
 capabilities: []
 entity_graph:
   entities:
-    - entity_id: InsuranceCustomer
-      table: insurance_customer
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: CustomerBeneficiary
-      table: customer_beneficiary
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
+  - entity_id: InsuranceCustomer
+    table: insurance_customer
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: CustomerBeneficiary
+    table: customer_beneficiary
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
 validation_rules:
   uniqueness: []
   referential: []
@@ -73,30 +73,30 @@ audit_behavior:
   operate_log:
     enabled: true
     target_capabilities:
-      - create-insurance_customer_management
-      - update-insurance_customer_management
-      - batch-delete-insurance_customer_management
+    - create-insurance_customer_management
+    - update-insurance_customer_management
+    - batch-delete-insurance_customer_management
 integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - business:insurance-customer:*
+    - business:insurance-customer:*
   persistence:
     database: mysql
     required_tables:
-      - insurance_customer
-      - customer_beneficiary
+    - insurance_customer
+    - customer_beneficiary
 code_conventions:
   naming_stability: strict
   route_style: business-domain-aligned
   transaction_style: manager-boundary
 validation_hooks:
   pre_generation:
-    - hook-discovery-baseline-complete
+  - hook-discovery-baseline-complete
   post_unit:
-    - hook-artifact-name-convention
-    - hook-package-placement-check
+  - hook-artifact-name-convention
+  - hook-package-placement-check
   final:
-    - hook-module-boundary-check
-    - hook-deterministic-layout-check
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
 blueprint_status: default-enabled-validated-blueprint-for-InsuranceCustomerManagement

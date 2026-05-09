@@ -14,33 +14,33 @@ module_identity:
   responsibility_code: policy_renewal_management
   package_root: org.eu.originalkeen.business.policyrenewal
   route_roots:
-    - /v1/business/policy-renewal
+  - /v1/business/policy-renewal
 api_groups:
-  - group_id: policy_renewal_management
-    route_prefix: /v1/business/policy-renewal
-    aggregate: PolicyRenewal
-    capability_ids:
-      - create-policy_renewal_management
-      - update-policy_renewal_management
-      - batch-delete-policy_renewal_management
-      - enquiry-policy_renewal_management-page
-      - enquiry-policy_renewal_management-details
-      - enquiry-policy_renewal_management-list
+- group_id: policy_renewal_management
+  route_prefix: /v1/business/policy-renewal
+  aggregate: PolicyRenewal
+  capability_ids:
+  - create-policy_renewal_management
+  - update-policy_renewal_management
+  - batch-delete-policy_renewal_management
+  - enquiry-policy_renewal_management-page
+  - enquiry-policy_renewal_management-details
+  - enquiry-policy_renewal_management-list
 capabilities: []
 entity_graph:
   entities:
-    - entity_id: PolicyRenewal
-      table: policy_renewal
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: RenewalReminder
-      table: renewal_reminder
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
+  - entity_id: PolicyRenewal
+    table: policy_renewal
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: RenewalReminder
+    table: renewal_reminder
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
 validation_rules:
   uniqueness: []
   referential: []
@@ -73,30 +73,30 @@ audit_behavior:
   operate_log:
     enabled: true
     target_capabilities:
-      - create-policy_renewal_management
-      - update-policy_renewal_management
-      - batch-delete-policy_renewal_management
+    - create-policy_renewal_management
+    - update-policy_renewal_management
+    - batch-delete-policy_renewal_management
 integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - business:policy-renewal:*
+    - business:policy-renewal:*
   persistence:
     database: mysql
     required_tables:
-      - policy_renewal
-      - renewal_reminder
+    - policy_renewal
+    - renewal_reminder
 code_conventions:
   naming_stability: strict
   route_style: business-domain-aligned
   transaction_style: manager-boundary
 validation_hooks:
   pre_generation:
-    - hook-discovery-baseline-complete
+  - hook-discovery-baseline-complete
   post_unit:
-    - hook-artifact-name-convention
-    - hook-package-placement-check
+  - hook-artifact-name-convention
+  - hook-package-placement-check
   final:
-    - hook-module-boundary-check
-    - hook-deterministic-layout-check
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
 blueprint_status: default-enabled-validated-blueprint-for-PolicyRenewalManagement

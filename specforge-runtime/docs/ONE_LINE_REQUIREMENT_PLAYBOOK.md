@@ -73,6 +73,16 @@ If you want one wrapper command instead of separate scaffold and auto-build comm
 python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<requirement>" --run-id <run-id> --force
 ```
 
+By default the wrapper auto-selects a supported scaffold domain from the project name and requirement text.
+
+Use `--domain <domain-key>` only when you intentionally want to pin the scaffold domain.
+
+Currently validated automatic scaffold domains include:
+
+- `laboratory-reservation`
+- `laboratory-management`
+- `insurance-management`
+
 If you prefer a requirement document, use:
 
 ```powershell

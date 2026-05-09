@@ -14,7 +14,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--project-name", required=True)
     parser.add_argument("--requirement", default="")
     parser.add_argument("--requirement-file", default="")
-    parser.add_argument("--domain", default="laboratory-reservation")
+    parser.add_argument("--domain", default="auto")
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
@@ -26,7 +26,8 @@ def main() -> int:
     templates_root = specs_root / "templates"
     requirement_text = load_requirement_text(args.requirement, args.requirement_file)
     blueprints = load_blueprints(Path(__file__).resolve().parent.parent / "references" / "module-blueprints.yaml")
-    domain_blueprint = blueprints["domains"][args.domain]
+    domain_key = infer_domain(args.project_name, requirement_text, args.domain, blueprints)
+    domain_blueprint = blueprints["domains"][domain_key]
 
     write_project_spec(specs_root / "project-spec.md", args.project_name, requirement_text, domain_blueprint)
     write_project_assembly_plan(specs_root / "project-assembly-plan.yaml", args.project_name, domain_blueprint)
@@ -44,6 +45,23 @@ def load_requirement_text(inline_text: str, file_path: str) -> str:
 def load_blueprints(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         return yaml.safe_load(handle) or {}
+
+
+def infer_domain(project_name: str, requirement_text: str, domain: str, blueprints: dict[str, Any]) -> str:
+    if domain and domain != "auto":
+        return domain
+
+    haystack = f"{project_name}\n{requirement_text}".lower()
+    keyword_map = [
+        ("laboratory-management", ["equipment", "consumable", "experiment", "schedule", "calendar", "report", "statistics", "lab manager", "lab management"]),
+        ("insurance-management", ["insurance", "claim", "policy", "premium", "underwriting", "agent", "beneficiary", "renewal"]),
+        ("laboratory-reservation", ["laboratory", "lab ", "reservation", "experiment", "equipment", "consumable", "schedule", "booking"]),
+    ]
+    for domain_key, keywords in keyword_map:
+        if any(keyword in haystack for keyword in keywords):
+            return domain_key
+
+    return next(iter(blueprints.get("domains", {})), "laboratory-reservation")
 
 
 def write_project_spec(path: Path, project_name: str, requirement_text: str, blueprint: dict[str, Any]) -> None:

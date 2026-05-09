@@ -14,33 +14,33 @@ module_identity:
   responsibility_code: underwriting_approval_management
   package_root: org.eu.originalkeen.business.underwritingapproval
   route_roots:
-    - /v1/business/underwriting-approval
+  - /v1/business/underwriting-approval
 api_groups:
-  - group_id: underwriting_approval_management
-    route_prefix: /v1/business/underwriting-approval
-    aggregate: UnderwritingApproval
-    capability_ids:
-      - create-underwriting_approval_management
-      - update-underwriting_approval_management
-      - batch-delete-underwriting_approval_management
-      - enquiry-underwriting_approval_management-page
-      - enquiry-underwriting_approval_management-details
-      - enquiry-underwriting_approval_management-list
+- group_id: underwriting_approval_management
+  route_prefix: /v1/business/underwriting-approval
+  aggregate: UnderwritingApproval
+  capability_ids:
+  - create-underwriting_approval_management
+  - update-underwriting_approval_management
+  - batch-delete-underwriting_approval_management
+  - enquiry-underwriting_approval_management-page
+  - enquiry-underwriting_approval_management-details
+  - enquiry-underwriting_approval_management-list
 capabilities: []
 entity_graph:
   entities:
-    - entity_id: UnderwritingApproval
-      table: underwriting_approval
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
-    - entity_id: UnderwritingDecisionRecord
-      table: underwriting_decision_record
-      ownership: owned
-      base_type: PrimaryKeyEntity
-      aggregate_role: root
-      relations: []
+  - entity_id: UnderwritingApproval
+    table: underwriting_approval
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: UnderwritingDecisionRecord
+    table: underwriting_decision_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
 validation_rules:
   uniqueness: []
   referential: []
@@ -73,30 +73,30 @@ audit_behavior:
   operate_log:
     enabled: true
     target_capabilities:
-      - create-underwriting_approval_management
-      - update-underwriting_approval_management
-      - batch-delete-underwriting_approval_management
+    - create-underwriting_approval_management
+    - update-underwriting_approval_management
+    - batch-delete-underwriting_approval_management
 integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-      - business:underwriting-approval:*
+    - business:underwriting-approval:*
   persistence:
     database: mysql
     required_tables:
-      - underwriting_approval
-      - underwriting_decision_record
+    - underwriting_approval
+    - underwriting_decision_record
 code_conventions:
   naming_stability: strict
   route_style: business-domain-aligned
   transaction_style: manager-boundary
 validation_hooks:
   pre_generation:
-    - hook-discovery-baseline-complete
+  - hook-discovery-baseline-complete
   post_unit:
-    - hook-artifact-name-convention
-    - hook-package-placement-check
+  - hook-artifact-name-convention
+  - hook-package-placement-check
   final:
-    - hook-module-boundary-check
-    - hook-deterministic-layout-check
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
 blueprint_status: default-enabled-validated-blueprint-for-UnderwritingApprovalManagement
