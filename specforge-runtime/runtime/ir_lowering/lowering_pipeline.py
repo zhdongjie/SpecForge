@@ -96,13 +96,22 @@ class IRLoweringPipeline:
             "localization_requirements",
             "audit_behavior",
         ]:
-            if key not in merged and key in module_spec:
+            if self._should_backfill_from_module_spec(merged.get(key)) and key in module_spec:
                 merged[key] = module_spec[key]
         if "module_identity" in module_spec and "module_identity" in merged:
             merged["module_identity"] = {**module_spec["module_identity"], **merged["module_identity"]}
         elif "module_identity" not in merged and "module_identity" in module_spec:
             merged["module_identity"] = module_spec["module_identity"]
         return merged
+
+    def _should_backfill_from_module_spec(self, value: Any) -> bool:
+        if value is None:
+            return True
+        if isinstance(value, str):
+            return value.strip() == ""
+        if isinstance(value, (list, tuple, set, dict)):
+            return len(value) == 0
+        return False
 
     def _canonicalize_field_order(self, entities: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
         normalized: dict[str, dict[str, Any]] = {}

@@ -57,6 +57,7 @@ Follow this order strictly:
 9. Stop only on full success or reproducible failure.
 
 It is forbidden to claim completion before compile and boot verification.
+It is also forbidden to claim completion when business-domain modules fail route or permission contract validation.
 
 ## Repository Checks
 
@@ -225,6 +226,7 @@ Always inspect:
 - `runs/<run-id>/logs/auto-build-report.yaml`
 - `runs/<run-id>/generated-project/logs/project-health-report.yaml`
 - `runs/<run-id>/generated-project/logs/project-assembly-report.yaml` when project assembly is used
+- `outputs/<target>/logs/api-smoke/business-contract-validation.yaml` for business route and permission coverage
 
 Prefer unique run ids for every iteration so replay and failure analysis remain reproducible.
 
@@ -267,6 +269,7 @@ A task is complete only if:
 - final backend exists under `specforge-runtime/outputs/`
 - auto-build report shows `compile_status: PASS`
 - auto-build report shows `boot_status: PASS`
+- business contract validation under `specforge-runtime/outputs/<target>/logs/api-smoke/business-contract-validation.yaml` shows `status: PASS`
 
 If the user asked for a complete platform, completion also requires that the authored project spec and assembly plan cover the expected business-center surfaces, along with user/role/menu linkage and initialization SQL organization at the project level.
 

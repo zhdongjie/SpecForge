@@ -196,6 +196,30 @@ Run the portable validation suite:
 python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --force
 ```
 
+Clean runtime artifacts:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/clean_runtime_artifacts.py --repo-root .
+```
+
+Preview cleanup only:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/clean_runtime_artifacts.py --repo-root . --dry-run
+```
+
+Export backend API smoke assets:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/export_backend_api_smoke.py --backend-root specforge-runtime/outputs/<project-backend>
+```
+
+Validate business module route and permission contracts:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/export_backend_api_smoke.py --backend-root specforge-runtime/outputs/<project-backend> --validate-business-contract
+```
+
 Direct runtime equivalent:
 
 ```powershell
@@ -224,9 +248,11 @@ python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.
 3. Check:
    - `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
    - `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
+   - `specforge-runtime/outputs/<project-backend>/logs/api-smoke/business-contract-validation.yaml`
 4. Accept success only if:
    - `compile_status: PASS`
    - `boot_status: PASS`
+   - business contract validation status is `PASS`
 5. Take the final backend only from:
    - `specforge-runtime/outputs/<project-backend>/`
 
@@ -280,6 +306,7 @@ See [REQUIREMENT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/do
 See [REQUIREMENT_AUTHORING_AND_HANDOFF_PROMPT.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/REQUIREMENT_AUTHORING_AND_HANDOFF_PROMPT.md) for the two-phase prompt, including a minimal daily-use copy-paste version that first writes a detailed requirement document, then lets you manually edit it, and finally lets the same Codex continue from that file.
 See [DAILY_REQUIREMENT_PROMPT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/DAILY_REQUIREMENT_PROMPT_TEMPLATE.md) for the fastest replace-only prompt template.
 See [FINAL_ONE_SHOT_PROTOCOL.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/FINAL_ONE_SHOT_PROTOCOL.md) for the shortest new-machine or fresh-Codex operating path.
+See [CODEX_CHROME_TEST_LOOP.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_CHROME_TEST_LOOP.md) for the browser verification loop with Codex for Chrome.
 
 ## Handoff Rule
 

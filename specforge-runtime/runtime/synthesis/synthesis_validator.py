@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -18,9 +19,10 @@ class SynthesisValidator:
     def validate(self) -> dict[str, Any]:
         findings: list[dict[str, Any]] = []
         route_values: list[str] = []
-        permission_values: list[str] = []
         package_root = self.context["package_root"]
         semantic_role = self.context["schema"].get("module", {}).get("semantic_role", "")
+        route_index: list[dict[str, Any]] = []
+        permission_index: list[dict[str, Any]] = []
 
         if semantic_role == "business-domain" and not package_root.startswith("org.eu.originalkeen.business."):
             findings.append(
@@ -36,18 +38,45 @@ class SynthesisValidator:
             package_name = parse_package_name(source)
             if not package_name.startswith(package_root):
                 continue
-            route_values.extend(re.findall(r'@RequestMapping\("([^"]+)"\)', source))
-            permission_values.extend(re.findall(r'hasAuthority\(\'" \+ .*?\.([A-Z_]+) \+ "\'\)', source))
+            if source_file.name.endswith("Resource.java"):
+                request_mapping = self._match_single(source, '@RequestMapping("', '")')
+                methods = self._parse_http_methods(source)
+                if request_mapping:
+                    route_values.append(request_mapping)
+                route_index.append(
+                    {
+                        "class_name": source_file.stem,
+                        "package_name": package_name,
+                        "request_mapping": request_mapping,
+                        "method_count": len(methods),
+                        "methods": methods,
+                    }
+                )
+            if source_file.name.endswith("PermissionConstant.java"):
+                constants = self._parse_permission_constants(source)
+                permission_index.append(
+                    {
+                        "class_name": source_file.stem,
+                        "package_name": package_name,
+                        "constant_count": len(constants),
+                        "constants": constants,
+                    }
+                )
 
         findings.extend(self._duplicates(route_values, "route-duplication"))
         findings.extend(self._duplicates(self.context["schema"].get("permissions", []), "permission-duplication"))
         findings.extend(self._relation_findings())
+        findings.extend(self._business_domain_findings(route_index, permission_index, semantic_role))
 
         report = {
             "status": "PASS" if not findings else "FAIL",
             "finding_count": len(findings),
             "findings": findings,
+            "business_route_count": len(route_index),
+            "business_permission_constant_count": len(permission_index),
         }
+        dump_yaml(self.context["output_root"] / "logs" / "business-route-index.yaml", {"routes": route_index})
+        dump_yaml(self.context["output_root"] / "logs" / "business-permission-index.yaml", {"permission_constants": permission_index})
         dump_yaml(self.context["output_root"] / "logs" / "synthesis-validation.yaml", report)
         return report
 
@@ -130,6 +159,99 @@ class SynthesisValidator:
             }
             for value in duplicates
         ]
+
+    def _business_domain_findings(
+        self,
+        route_index: list[dict[str, Any]],
+        permission_index: list[dict[str, Any]],
+        semantic_role: str,
+    ) -> list[dict[str, Any]]:
+        findings: list[dict[str, Any]] = []
+        if semantic_role != "business-domain":
+            return findings
+
+        if not route_index:
+            findings.append(
+                {
+                    "code": "business-resource-missing",
+                    "status": "FAIL",
+                    "details": "Business-domain synthesis must emit at least one Resource route",
+                }
+            )
+        for route_entry in route_index:
+            if not route_entry.get("request_mapping"):
+                findings.append(
+                    {
+                        "code": "business-resource-request-mapping-missing",
+                        "status": "FAIL",
+                        "details": f"{route_entry['class_name']} is missing @RequestMapping",
+                    }
+                )
+            if not route_entry.get("methods"):
+                findings.append(
+                    {
+                        "code": "business-resource-method-binding-missing",
+                        "status": "FAIL",
+                        "details": f"{route_entry['class_name']} does not expose HTTP methods",
+                    }
+                )
+
+        if not permission_index:
+            findings.append(
+                {
+                    "code": "business-permission-constant-missing",
+                    "status": "FAIL",
+                    "details": "Business-domain synthesis must emit at least one PermissionConstant class",
+                }
+            )
+        for permission_entry in permission_index:
+            if permission_entry["constant_count"] == 0:
+                findings.append(
+                    {
+                        "code": "business-permission-constant-empty",
+                        "status": "FAIL",
+                        "details": f"{permission_entry['class_name']} contains no permission constants",
+                    }
+                )
+        return findings
+
+    def _parse_http_methods(self, source: str) -> list[dict[str, Any]]:
+        method_pattern = re.compile(r"((?:@[A-Za-z]+(?:\([^\n]*?\))?\s*)+)public\s+ResponseEntity<", re.DOTALL)
+        methods: list[dict[str, Any]] = []
+        for match in method_pattern.finditer(source):
+            annotation_block = match.group(1)
+            mapping = re.search(r'@(Get|Post|Put|Delete)Mapping(?:\("([^"]*)"\))?', annotation_block)
+            if not mapping:
+                continue
+            authorization = re.search(r"@PreAuthorize\(\"hasAuthority\('([^']+)'\)\"\)", annotation_block)
+            methods.append(
+                {
+                    "http_method": mapping.group(1).upper(),
+                    "sub_path": mapping.group(2) or "",
+                    "authority": authorization.group(1) if authorization else None,
+                }
+            )
+        return methods
+
+    def _parse_permission_constants(self, source: str) -> list[dict[str, str]]:
+        pattern = re.compile(r'public static final String ([A-Z0-9_]+) = "([^"]+)";')
+        return [
+            {
+                "constant_name": match.group(1),
+                "authority": match.group(2),
+            }
+            for match in pattern.finditer(source)
+        ]
+
+    def _match_single(self, source: str, prefix: str, suffix: str) -> str | None:
+        start = source.find(prefix)
+        if start < 0:
+            return None
+        start += len(prefix)
+        end = source.find(suffix, start)
+        if end < 0:
+            return None
+        return source[start:end]
 
     def _classify_compile_failure(self, result: dict[str, Any]) -> dict[str, Any]:
         combined_output = f"{result.get('stdout', '')}\n{result.get('stderr', '')}"

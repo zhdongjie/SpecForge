@@ -32,20 +32,17 @@ class IRLoweringPipelineTests(unittest.TestCase):
             self.assertEqual(summary["status"], "PASS")
             self.assertEqual(report["status"], "PASS")
             self.assertEqual(validation["status"], "PASS")
-            self.assertEqual(generated["module"]["route_base"], "/v1/system")
+            self.assertEqual(generated["module"]["route_base"], "/v1/business")
             self.assertEqual(
                 sorted(generated["entities"].keys()),
                 [
-                    "DictionaryData",
-                    "DictionaryDataTranslation",
-                    "DictionaryType",
-                    "DictionaryTypeTranslation",
+                    "LaboratoryBuilding",
+                    "LaboratoryRoom",
                 ],
             )
-            self.assertIn("system:dictionary-data:create", generated["permissions"])
-            dictionary_data_fields = [field["name"] for field in generated["entities"]["DictionaryData"]["fields"]]
-            self.assertIn("dictionaryTypeCode", dictionary_data_fields)
-            self.assertIn("dictionaryDataValue", dictionary_data_fields)
+            self.assertIn("business:laboratory-building:create", generated["permissions"])
+            laboratory_room_fields = [field["name"] for field in generated["entities"]["LaboratoryRoom"]["fields"]]
+            self.assertIn("laboratoryBuildingId", laboratory_room_fields)
 
     def test_lowering_pipeline_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as left_dir, tempfile.TemporaryDirectory() as right_dir:
@@ -62,6 +59,41 @@ class IRLoweringPipelineTests(unittest.TestCase):
 
             self.assertEqual(left_generated, right_generated)
             self.assertEqual(left_diff, right_diff)
+
+    def test_business_template_backfills_empty_capabilities_from_module_spec(self) -> None:
+        template_specs_dir = SPECS_DIR / "templates" / "underwriting-approval-management"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_root = Path(temp_dir) / "run-business"
+            summary = IRLoweringPipeline(
+                output_root=output_root,
+                specs_dir=template_specs_dir,
+            ).run()
+
+            generated = load_yaml(output_root / "generated-ir" / "field-schema.generated.yaml")
+            validation = load_yaml(output_root / "generated-ir" / "logs" / "lowering-validation.yaml")
+
+            self.assertEqual(summary["status"], "PASS")
+            self.assertEqual(validation["status"], "PASS")
+            self.assertEqual(generated["module"]["route_base"], "/v1/business/underwriting-approval")
+            self.assertEqual(
+                sorted(generated["permissions"]),
+                [
+                    "business:underwriting-approval:create",
+                    "business:underwriting-approval:delete",
+                    "business:underwriting-approval:details",
+                    "business:underwriting-approval:list",
+                    "business:underwriting-approval:page",
+                    "business:underwriting-approval:update",
+                ],
+            )
+            self.assertEqual(
+                generated["entities"]["UnderwritingApproval"]["permission_namespace"],
+                "business:underwriting-approval",
+            )
+            self.assertEqual(
+                generated["entities"]["UnderwritingApproval"]["route_segment"],
+                "underwriting-approval",
+            )
 
 
 if __name__ == "__main__":
