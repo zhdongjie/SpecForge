@@ -40,6 +40,10 @@ Execution contract:
 6. Treat specforge-runtime/outputs/ as the only final deliverable.
 ```
 
+If you need a structured document instead of free writing, start from:
+
+- `specforge-runtime/docs/REQUIREMENT_TEMPLATE.md`
+
 ## Prompt C: Domain + Completeness Bias
 
 Use this when you want to strongly signal "not a thin CRUD demo".
@@ -93,3 +97,11 @@ On failure, the agent should report at least:
 - failure bundle path under `specforge-runtime/runs/<run-id>/logs/`
 - blocking stage
 - next reproducible rerun command
+
+## Operator Shortcut
+
+If the environment already has Python, JDK, and Maven ready, the fastest single command is:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
+```

@@ -15,6 +15,7 @@ Read [references/starter-bundle-contract.md](references/starter-bundle-contract.
 Read [references/module-blueprints.yaml](references/module-blueprints.yaml) when scaffolding a first-pass project from minimal requirements.
 Read [references/portable-one-line-project-protocol.md](references/portable-one-line-project-protocol.md) when the user wants a one-sentence or one-document portable generation workflow that another Codex session can execute without prior chat context.
 Read [references/zero-context-handoff-checklist.md](references/zero-context-handoff-checklist.md) when the user explicitly wants migration, handoff, portability, or a copy-paste starter prompt for a fresh Codex session.
+Read [references/requirement-template-contract.md](references/requirement-template-contract.md) when the user wants a reusable requirement template or a structured document contract for future generation runs.
 
 ## Execution Mode
 
@@ -145,6 +146,12 @@ Preferred first-pass scaffold command:
 
 ```powershell
 python scripts/scaffold_requirement_project.py --repo-root <repo-root> --project-name "<project-name>" --requirement "<short requirement>"
+```
+
+Preferred one-command wrapper for portable execution:
+
+```powershell
+python scripts/run_requirement_project.py --repo-root <repo-root> --project-name "<project-name>" --requirement "<short requirement>" --run-id <run-id> --force
 ```
 
 This scaffold step should:

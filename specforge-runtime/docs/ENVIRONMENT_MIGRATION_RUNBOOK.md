@@ -70,6 +70,7 @@ SpecForge now resolves Java and Maven in this order.
    - `specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md`
    - `specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md`
    - `specforge-runtime/docs/CODEX_STARTER_PROMPTS.md`
+   - `specforge-runtime/docs/REQUIREMENT_TEMPLATE.md`
 
 ## Canonical Commands
 
@@ -89,6 +90,12 @@ Preferred wrapper commands from the repo root:
 python skills/specforge-full-project-compiler/scripts/check_specforge_workspace.py --repo-root .
 python skills/specforge-full-project-compiler/scripts/scaffold_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --force
 python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id <run-id>
+```
+
+One-command shortcut:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
 ```
 
 ### Runtime component commands

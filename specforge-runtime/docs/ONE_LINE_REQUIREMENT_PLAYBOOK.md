@@ -65,6 +65,20 @@ python skills/specforge-full-project-compiler/scripts/scaffold_requirement_proje
 python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id <run-id>
 ```
 
+### 4A. Optional one-command shortcut
+
+If you want one wrapper command instead of separate scaffold and auto-build commands:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<requirement>" --run-id <run-id> --force
+```
+
+If you prefer a requirement document, use:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement-file "<file>" --run-id <run-id> --force
+```
+
 ### 5. Inspect success or failure
 
 Required success files:
@@ -112,6 +126,7 @@ Treat specforge-runtime/outputs/ as the only final deliverable.
 Additional ready-to-use prompt variants are collected in:
 
 - `specforge-runtime/docs/CODEX_STARTER_PROMPTS.md`
+- `specforge-runtime/docs/REQUIREMENT_TEMPLATE.md`
 
 ## Directory Interpretation
 

@@ -10,6 +10,7 @@ Use this checklist before handing the repository to another machine, another Cod
 - `specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md`
 - `specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md`
 - `specforge-runtime/docs/CODEX_STARTER_PROMPTS.md`
+- `specforge-runtime/docs/REQUIREMENT_TEMPLATE.md`
 
 ## Minimum Files To Carry
 
@@ -48,6 +49,12 @@ Everything else is either:
 - template input
 - execution trace
 - or scratch space
+
+## Fastest Single Command
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
+```
 
 ## Failure Preservation Rule
 

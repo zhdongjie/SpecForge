@@ -87,6 +87,12 @@ This writes canonical specs into:
 python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id lab-platform-001
 ```
 
+Or use the one-command wrapper:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "Laboratory Reservation Platform" --requirement "Build a complete laboratory reservation management backend with reservation approval, notification, and laboratory access control under a modular-monolith Spring Boot architecture." --run-id lab-platform-001 --force
+```
+
 ### 5. Check results
 
 Success report:
@@ -172,6 +178,7 @@ For a new domain, the most portable workflow is:
 
 See [ONE_LINE_REQUIREMENT_PLAYBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md).
 See [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md) for copy-paste prompts for a fresh Codex session.
+See [REQUIREMENT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/REQUIREMENT_TEMPLATE.md) for a structured requirement document template.
 
 ## Handoff Rule
 
