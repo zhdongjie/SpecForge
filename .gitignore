@@ -146,6 +146,13 @@ specforge-runtime/.ruff_cache/
 # SpecForge local verification workspaces
 /sandbox/
 /logs/
+/sandbox/bundle-*/
+/sandbox/*.txt
+/logs/*.log
+
+# Repository-local IDE and key material safety
+/.idea/
+/.jwk/
 
 # Canonical SpecForge IR lives under specforge-runtime/specs/
 /module-spec.yaml

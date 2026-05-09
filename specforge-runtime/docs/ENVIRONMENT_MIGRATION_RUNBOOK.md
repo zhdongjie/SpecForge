@@ -19,6 +19,10 @@ Clone or copy the repository so that this directory exists:
 
 - `specforge-runtime/`
 
+Recommended repository companion path:
+
+- `skills/specforge-full-project-compiler/`
+
 Canonical runtime entrypoint:
 
 - `specforge-runtime/main.py`
@@ -32,6 +36,39 @@ Local-only verification area:
 - `sandbox/`
 
 Do not treat `sandbox/` as canonical source or final deliverable output.
+
+## Codex Skill Installation Modes
+
+There are two supported migration modes.
+
+### Mode A: Repository-local execution only
+
+Use this when you will run commands directly inside the repository.
+
+In this mode, keeping the skill under:
+
+- `skills/specforge-full-project-compiler/`
+
+is enough, because all documented commands already reference the repository-local script paths.
+
+### Mode B: Fresh Codex auto-discovery
+
+Use this when you want a fresh Codex environment to discover the skill automatically without being told the repository path first.
+
+Copy this directory:
+
+- `skills/specforge-full-project-compiler/`
+
+into the new machine's Codex home, for example:
+
+- `C:\Users\<username>\.codex\skills\specforge-full-project-compiler\`
+
+Recommended practice:
+
+- keep one copy in the repository for version control
+- keep one copy in `.codex/skills/` for automatic Codex discovery
+
+If only one copy is maintained, the repository copy remains the canonical source of truth.
 
 ## Toolchain Discovery Contract
 
@@ -57,14 +94,16 @@ SpecForge now resolves Java and Maven in this order.
 
 1. Install JDK 17.
 2. Install Maven 3.9+.
-3. Set environment variables:
+3. Copy the repository to the new machine.
+4. If you want automatic Codex skill discovery, copy `skills/specforge-full-project-compiler/` into `.codex/skills/`.
+5. Set environment variables:
    - `SPECFORGE_JAVA_HOME`
    - `SPECFORGE_MAVEN_CMD`
-4. Verify commands:
+6. Verify commands:
    - `java -version`
    - `mvn -version`
-5. Open the repo root.
-6. Read:
+7. Open the repo root.
+8. Read:
    - `README.md`
    - `WORKSPACE_LAYOUT.md`
    - `specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md`

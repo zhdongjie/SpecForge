@@ -26,13 +26,17 @@ or produce a reproducible failure bundle.
 
 1. Open the repository root.
 2. Ensure JDK 17+ and Maven 3.9+ are available.
-3. Run:
+3. If you want a fresh Codex environment to auto-discover the skill, copy:
+   - `skills/specforge-full-project-compiler/`
+   into:
+   - `C:\Users\<username>\.codex\skills\specforge-full-project-compiler\`
+4. Run:
 
 ```powershell
 python skills/specforge-full-project-compiler/scripts/check_specforge_workspace.py --repo-root .
 ```
 
-4. Use one of these:
+5. Use one of these:
 
 Inline requirement:
 

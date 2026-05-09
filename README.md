@@ -25,6 +25,7 @@ Its goal is:
 
 - `skills/`
   - Codex skills, including the full-project compiler skill
+  - repository-local source of truth for portable skill logic
 
 - `sandbox/`
   - local-only validation area
@@ -53,6 +54,16 @@ Recommended environment variables:
 
 - `SPECFORGE_JAVA_HOME`
 - `SPECFORGE_MAVEN_CMD`
+
+If you want a fresh Codex environment to auto-discover the project compiler skill, also copy:
+
+- `skills/specforge-full-project-compiler/`
+
+to:
+
+- `C:\Users\<username>\.codex\skills\specforge-full-project-compiler\`
+
+If you only plan to run the repository-local commands in this README, the repository copy under `skills/` is enough.
 
 See [ENVIRONMENT_MIGRATION_RUNBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md) for the portability contract.
 
