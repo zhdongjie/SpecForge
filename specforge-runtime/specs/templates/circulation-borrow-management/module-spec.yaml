@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: circulation_borrow_management-project-v1
+  target_module_id: circulation-borrow-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - circulation-borrow-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: circulation-borrow-management
+  bounded_context: circulation-borrow-center
+  semantic_role: business-domain
+  responsibility_code: circulation_borrow_management
+  package_root: org.eu.originalkeen.business.circulationborrow
+  route_namespace:
+    circulation-borrow-management: /v1/business/circulation-borrow
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - BorrowOrder
+  - BorrowRecord
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: circulation_borrow_management
+  route_prefix: /v1/business/circulation-borrow
+  aggregate: BorrowOrder
+  capability_ids:
+  - create-circulation_borrow_management
+  - update-circulation_borrow_management
+  - batch-delete-circulation_borrow_management
+  - enquiry-circulation_borrow_management-page
+  - enquiry-circulation_borrow_management-details
+  - enquiry-circulation_borrow_management-list
+capabilities:
+- capability_id: create-circulation_borrow_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: circulation_borrow_management
+  http_method: POST
+  route: /
+  authority: business:circulation-borrow:create
+  transaction: read-write
+  input_dto: CreateCirculationBorrowManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-circulation_borrow_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: circulation_borrow_management
+  http_method: PUT
+  route: /
+  authority: business:circulation-borrow:update
+  transaction: read-write
+  input_dto: UpdateCirculationBorrowManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-circulation_borrow_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: circulation_borrow_management
+  http_method: DELETE
+  route: /
+  authority: business:circulation-borrow:delete
+  transaction: read-write
+  input_dto: CirculationBorrowManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-circulation_borrow_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: circulation_borrow_management
+  http_method: GET
+  route: /page
+  authority: business:circulation-borrow:page
+  transaction: read-only
+  input_dto: EnquiryCirculationBorrowManagementPageDto
+  output_vo: PageVo<CirculationBorrowManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-circulation_borrow_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: circulation_borrow_management
+  http_method: GET
+  route: /{id}
+  authority: business:circulation-borrow:details
+  transaction: read-only
+  input_dto: CirculationBorrowManagementIdPath
+  output_vo: CirculationBorrowManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-circulation_borrow_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: circulation_borrow_management
+  http_method: GET
+  route: /list
+  authority: business:circulation-borrow:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<CirculationBorrowManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: BorrowOrder
+    table: borrow_order
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: BorrowRecord
+    table: borrow_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - CirculationBorrowManagementResource
+  manager:
+  - CirculationBorrowManagementManager
+  service:
+  - CirculationBorrowManagementService
+  service_impl:
+  - CirculationBorrowManagementServiceImpl
+  mapper:
+  - CirculationBorrowManagementMapper
+  entity: *id001
+  dto:
+  - CreateCirculationBorrowManagementDto
+  - UpdateCirculationBorrowManagementDto
+  - EnquiryCirculationBorrowManagementPageDto
+  vo:
+  - CirculationBorrowManagementDetailsVo
+  - CirculationBorrowManagementPageVo
+  - CirculationBorrowManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-circulation_borrow_management
+    - update-circulation_borrow_management
+    - batch-delete-circulation_borrow_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

@@ -12,13 +12,52 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from runtime.codegen.common import dump_yaml
+from runtime.hardening.boot_diagnostics import BootDiagnostics
 from runtime.hardening.compile_error_classifier import CompileErrorClassifier
 from runtime.hardening.compile_repair_engine import CompileRepairEngine
 from runtime.hardening.hardening_pipeline import HardeningPipeline
+from runtime.platform_compiler.boot_verifier import BootVerifier
 from runtime.replay import load_yaml
 
 SPECS_DIR = ROOT / "specs"
 BACKEND_ROOT = ROOT.parent / "backend"
+
+
+class FakeStdout:
+    def __init__(self, lines: list[str]) -> None:
+        self._lines = list(lines)
+
+    def readline(self) -> str:
+        if self._lines:
+            return self._lines.pop(0)
+        return ""
+
+
+class FakeProcess:
+    def __init__(self, lines: list[str], exit_code: int | None = None) -> None:
+        self.stdout = FakeStdout(lines)
+        self._exit_code = exit_code
+        self.returncode = exit_code
+        self.terminated = False
+        self.killed = False
+
+    def poll(self) -> int | None:
+        if self.stdout._lines:
+            return None
+        return self.returncode
+
+    def terminate(self) -> None:
+        self.terminated = True
+        if self.returncode is None:
+            self.returncode = 0
+
+    def wait(self, timeout: int | None = None) -> int:
+        return 0 if self.returncode is None else self.returncode
+
+    def kill(self) -> None:
+        self.killed = True
+        if self.returncode is None:
+            self.returncode = -9
 
 
 class CompileErrorClassifierTests(unittest.TestCase):
@@ -134,6 +173,69 @@ class HardeningPipelineTests(unittest.TestCase):
             self.assertTrue((logs_root / "boot-repair-report.yaml").exists())
             health_report = load_yaml(logs_root / "project-health-report.yaml")
             self.assertEqual(health_report["status"], "PASS")
+
+
+class BootVerificationTests(unittest.TestCase):
+    def test_boot_diagnostics_passes_when_started_marker_is_observed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            project_root = Path(temp_dir)
+            logs_root = project_root / "logs"
+            logs_root.mkdir(parents=True, exist_ok=True)
+            process = FakeProcess(
+                [
+                    "Downloading dependencies\n",
+                    "Started BackendApplication in 8.123 seconds\n",
+                ],
+                exit_code=None,
+            )
+            environment = {
+                "maven_command": "mvn",
+                "env": {},
+                "binding": {"java_home": "fake", "maven_command": "mvn"},
+            }
+            with patch(
+                "runtime.hardening.boot_diagnostics.CompileDiagnostics._resolve_environment",
+                return_value=environment,
+            ), patch(
+                "runtime.hardening.boot_diagnostics.subprocess.Popen",
+                return_value=process,
+            ), patch(
+                "runtime.hardening.boot_diagnostics.time.time",
+                side_effect=[0, 0, 1, 1, 1, 1],
+            ):
+                diagnostics = BootDiagnostics(project_root, logs_root).run(timeout_seconds=30, idle_timeout_seconds=10)
+
+            self.assertEqual(diagnostics["status"], "PASS")
+            self.assertIn("-ntp", diagnostics["command"])
+            self.assertEqual(diagnostics["failure_reason"], None)
+            written = load_yaml(logs_root / "boot-diagnostics.yaml")
+            self.assertEqual(written["status"], "PASS")
+
+    def test_boot_verifier_reports_idle_timeout_deterministically(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            project_root = Path(temp_dir)
+            process = FakeProcess([], exit_code=None)
+            toolchain = {
+                "maven_command": "mvn",
+                "binding": {"java_home": "fake", "maven_command": "mvn"},
+                "env": {},
+            }
+            with patch(
+                "runtime.platform_compiler.boot_verifier.resolve_toolchain",
+                return_value=toolchain,
+            ), patch(
+                "runtime.platform_compiler.boot_verifier.subprocess.Popen",
+                return_value=process,
+            ), patch(
+                "runtime.platform_compiler.boot_verifier.time.time",
+                side_effect=[0, 0, 181, 181],
+            ):
+                result = BootVerifier(project_root).boot_check(timeout_seconds=900, idle_timeout_seconds=180)
+
+            self.assertEqual(result["status"], "FAIL")
+            self.assertEqual(result["reason"], "startup-idle-timeout")
+            self.assertEqual(result["idle_timeout_seconds"], 180)
+            self.assertEqual(result["timeout_seconds"], 900)
 
 
 if __name__ == "__main__":

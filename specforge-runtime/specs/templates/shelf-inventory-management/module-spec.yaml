@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: shelf_inventory_management-project-v1
+  target_module_id: shelf-inventory-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - shelf-inventory-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: shelf-inventory-management
+  bounded_context: shelf-inventory-center
+  semantic_role: business-domain
+  responsibility_code: shelf_inventory_management
+  package_root: org.eu.originalkeen.business.shelfinventory
+  route_namespace:
+    shelf-inventory-management: /v1/business/shelf-inventory
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - ShelfLocation
+  - InventoryCheckRecord
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: shelf_inventory_management
+  route_prefix: /v1/business/shelf-inventory
+  aggregate: ShelfLocation
+  capability_ids:
+  - create-shelf_inventory_management
+  - update-shelf_inventory_management
+  - batch-delete-shelf_inventory_management
+  - enquiry-shelf_inventory_management-page
+  - enquiry-shelf_inventory_management-details
+  - enquiry-shelf_inventory_management-list
+capabilities:
+- capability_id: create-shelf_inventory_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: shelf_inventory_management
+  http_method: POST
+  route: /
+  authority: business:shelf-inventory:create
+  transaction: read-write
+  input_dto: CreateShelfInventoryManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-shelf_inventory_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: shelf_inventory_management
+  http_method: PUT
+  route: /
+  authority: business:shelf-inventory:update
+  transaction: read-write
+  input_dto: UpdateShelfInventoryManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-shelf_inventory_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: shelf_inventory_management
+  http_method: DELETE
+  route: /
+  authority: business:shelf-inventory:delete
+  transaction: read-write
+  input_dto: ShelfInventoryManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-shelf_inventory_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: shelf_inventory_management
+  http_method: GET
+  route: /page
+  authority: business:shelf-inventory:page
+  transaction: read-only
+  input_dto: EnquiryShelfInventoryManagementPageDto
+  output_vo: PageVo<ShelfInventoryManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-shelf_inventory_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: shelf_inventory_management
+  http_method: GET
+  route: /{id}
+  authority: business:shelf-inventory:details
+  transaction: read-only
+  input_dto: ShelfInventoryManagementIdPath
+  output_vo: ShelfInventoryManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-shelf_inventory_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: shelf_inventory_management
+  http_method: GET
+  route: /list
+  authority: business:shelf-inventory:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ShelfInventoryManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: ShelfLocation
+    table: shelf_location
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: InventoryCheckRecord
+    table: inventory_check_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - ShelfInventoryManagementResource
+  manager:
+  - ShelfInventoryManagementManager
+  service:
+  - ShelfInventoryManagementService
+  service_impl:
+  - ShelfInventoryManagementServiceImpl
+  mapper:
+  - ShelfInventoryManagementMapper
+  entity: *id001
+  dto:
+  - CreateShelfInventoryManagementDto
+  - UpdateShelfInventoryManagementDto
+  - EnquiryShelfInventoryManagementPageDto
+  vo:
+  - ShelfInventoryManagementDetailsVo
+  - ShelfInventoryManagementPageVo
+  - ShelfInventoryManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-shelf_inventory_management
+    - update-shelf_inventory_management
+    - batch-delete-shelf_inventory_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

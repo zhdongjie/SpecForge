@@ -120,8 +120,14 @@ This is the preferred path when a new machine or a new Codex session starts from
 1. Check workspace readiness.
 2. Scaffold project specs from one sentence or one requirements file.
 3. Run the canonical auto-build command.
-4. Accept only `compile_status: PASS` and `boot_status: PASS`.
+4. Accept only `compile_status: PASS`, `boot_status: PASS`, `business-contract-validation.yaml validation.status: PASS`, `delivery-validation.yaml status: PASS`, `sql-asset-validation.yaml status: PASS`, and `auth-surface-validation.yaml status: PASS`.
 5. Take the final backend only from `specforge-runtime/outputs/`.
+
+Workspace safety rule:
+
+- do not run two generation jobs concurrently in the same repository checkout
+- the wrappers now create `specforge-runtime/.workspace.lock` to prevent shared `specs/` and `outputs/` mutation races
+- if a process is interrupted unexpectedly, clear the stale lock only after confirming no SpecForge job is still running
 
 Preferred wrapper commands from the repo root:
 
@@ -135,6 +141,12 @@ One-command shortcut:
 
 ```powershell
 python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
+```
+
+Outcome summary command:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/summarize_specforge_outcome.py --repo-root . --run-id <run-id>
 ```
 
 ### Runtime component commands
@@ -175,6 +187,10 @@ Successful end-to-end runs must produce:
 
 - `runs/<run-id>/logs/auto-build-report.yaml`
 - `outputs/<target>/`
+- `outputs/<target>/logs/delivery-validation.yaml`
+- `outputs/<target>/logs/api-smoke/business-contract-validation.yaml`
+- `outputs/<target>/logs/sql-asset-validation.yaml`
+- `outputs/<target>/logs/auth-surface-validation.yaml`
 
 The final backend for handoff or deployment review is always the exported backend under:
 
@@ -188,6 +204,8 @@ Do not treat temporary generated directories inside `runs/` as final deliverable
 - Keep runtime version and specs in the same commit when migrating.
 - Always prefer `build-plan.yaml` driven runs over ad hoc command combinations.
 - Treat any compile or boot failure as a reproducible artifact only if the matching logs in `runs/<run-id>/logs/` are preserved.
+- Treat one repository checkout as one active mutable workspace for generation purposes.
+- Prefer separate repository copies if you need to run multiple domains in parallel on the same machine.
 
 ## Another Codex Handoff Contract
 
@@ -215,5 +233,11 @@ If generation cannot succeed on the new machine, preserve:
 - `boot-repair-report.yaml`
 - `project-health-report.yaml`
 - `auto-build-report.yaml`
+
+Use this helper to print the canonical success or failure paths:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/summarize_specforge_outcome.py --repo-root . --run-id <run-id>
+```
 
 These files together are the minimum reproducible failure bundle.

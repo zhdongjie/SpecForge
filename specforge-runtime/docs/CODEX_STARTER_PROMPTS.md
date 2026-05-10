@@ -17,7 +17,7 @@ Execution contract:
 1. Check workspace readiness.
 2. Scaffold canonical specs from the requirement.
 3. Run the canonical auto-build pipeline.
-4. Continue until compile and boot both pass, or return a reproducible failure bundle.
+4. Continue until compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass, or return a reproducible failure bundle.
 5. Treat specforge-runtime/outputs/ as the only final deliverable.
 6. Do not ask me for step-by-step confirmation unless there is a destructive risk or a major architecture ambiguity.
 ```
@@ -36,7 +36,7 @@ Execution contract:
 2. Normalize the requirement document into project scope.
 3. Scaffold or update canonical specs.
 4. Run the canonical auto-build pipeline.
-5. Continue until compile and boot both pass, or return a reproducible failure bundle.
+5. Continue until compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass, or return a reproducible failure bundle.
 6. Treat specforge-runtime/outputs/ as the only final deliverable.
 ```
 
@@ -63,7 +63,7 @@ Requirements:
 - keep business modules under org.eu.originalkeen.business.*
 - keep business routes under /v1/business/*
 - keep business authorities under business:*
-- continue until compile and boot both pass, or return a reproducible failure bundle
+- continue until compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass, or return a reproducible failure bundle
 - treat specforge-runtime/outputs/ as the only final deliverable
 ```
 
@@ -75,7 +75,7 @@ Use this when canonical specs already exist and you want the new Codex session t
 Use $specforge-full-project-compiler in this repository.
 Read README.md, WORKSPACE_LAYOUT.md, specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md, specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md, and specforge-runtime/specs/build-plan.yaml.
 Continue from the existing canonical specs instead of starting over.
-Run the canonical auto-build pipeline and keep iterating until compile and boot both pass, or return a reproducible failure bundle.
+Run the canonical auto-build pipeline and keep iterating until compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass, or return a reproducible failure bundle.
 Treat specforge-runtime/outputs/ as the only final deliverable.
 ```
 
@@ -87,6 +87,10 @@ On success, the agent should report at least:
 - run id
 - compile status
 - boot status
+- business contract validation status
+- delivery validation status
+- SQL asset validation status
+- auth surface validation status
 - module coverage summary
 
 ## Expected Failure Return

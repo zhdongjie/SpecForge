@@ -46,9 +46,11 @@ def build_inline_prompt(project_name: str, requirement: str) -> str:
             "1. Check workspace readiness.",
             "2. Scaffold canonical specs from the requirement.",
             "3. Run the canonical auto-build pipeline.",
-            "4. Continue until compile and boot both pass, or return a reproducible failure bundle.",
+            "4. Continue until compile, boot, and delivery validation all pass, or return a reproducible failure bundle.",
             "5. Treat specforge-runtime/outputs/ as the only final deliverable.",
-            "6. Do not ask me for step-by-step confirmation unless there is a destructive risk or a major architecture ambiguity.",
+            "6. Read specforge-runtime/outputs/<project-backend>/logs/delivery-validation.yaml before claiming success.",
+            "7. If the run fails, summarize the failure bundle paths under specforge-runtime/runs/<run-id>/generated-project/logs/ and specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml.",
+            "8. Do not ask me for step-by-step confirmation unless there is a destructive risk or a major architecture ambiguity.",
         ]
     )
 
@@ -67,8 +69,9 @@ def build_file_prompt(project_name: str, requirement_file: str) -> str:
             "2. Normalize the requirement document into project scope.",
             "3. Scaffold or update canonical specs.",
             "4. Run the canonical auto-build pipeline.",
-            "5. Continue until compile and boot both pass, or return a reproducible failure bundle.",
+            "5. Continue until compile, boot, and delivery validation all pass, or return a reproducible failure bundle.",
             "6. Treat specforge-runtime/outputs/ as the only final deliverable.",
+            "7. Read specforge-runtime/outputs/<project-backend>/logs/delivery-validation.yaml before claiming success.",
         ]
     )
 

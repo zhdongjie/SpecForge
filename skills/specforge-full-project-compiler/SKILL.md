@@ -39,6 +39,9 @@ Treat these directory roles as fixed:
 - `specforge-runtime/outputs/<target>/` = final deliverable
 - `sandbox/` = local scratch or migration rehearsal area
 
+Treat one repository checkout as one mutable generation workspace.
+Do not run multiple generation jobs in parallel against the same checkout.
+
 Prefer automatic scaffold-domain selection first.
 Use explicit `--domain` only when automatic matching is wrong or the user wants a forced domain.
 
@@ -52,12 +55,13 @@ Follow this order strictly:
 4. Author or update module-level specs for all enabled modules.
 5. Author or update `project-assembly-plan.yaml` and `build-plan.yaml`.
 6. Run the canonical auto-build pipeline.
-7. Inspect compile and boot reports.
+7. Inspect compile, boot, delivery, SQL asset, and auth surface reports.
 8. If needed, repair specs or compiler inputs and rerun.
 9. Stop only on full success or reproducible failure.
 
 It is forbidden to claim completion before compile and boot verification.
 It is also forbidden to claim completion when business-domain modules fail route or permission contract validation.
+It is also forbidden to claim completion when SQL asset validation or auth surface validation fails.
 
 ## Repository Checks
 
@@ -227,8 +231,12 @@ Always inspect:
 - `runs/<run-id>/generated-project/logs/project-health-report.yaml`
 - `runs/<run-id>/generated-project/logs/project-assembly-report.yaml` when project assembly is used
 - `outputs/<target>/logs/api-smoke/business-contract-validation.yaml` for business route and permission coverage
+- `outputs/<target>/logs/delivery-validation.yaml` for module coverage and full-platform contract coverage
+- `outputs/<target>/logs/sql-asset-validation.yaml` for generated SQL asset completeness
+- `outputs/<target>/logs/auth-surface-validation.yaml` for login/auth route readiness
 
 Prefer unique run ids for every iteration so replay and failure analysis remain reproducible.
+Prefer separate repository copies if you need parallel domain generation on the same machine.
 
 When the user asks to validate the tool itself instead of generating a single business project, prefer:
 
@@ -270,6 +278,9 @@ A task is complete only if:
 - auto-build report shows `compile_status: PASS`
 - auto-build report shows `boot_status: PASS`
 - business contract validation under `specforge-runtime/outputs/<target>/logs/api-smoke/business-contract-validation.yaml` shows `status: PASS`
+- delivery validation under `specforge-runtime/outputs/<target>/logs/delivery-validation.yaml` shows `status: PASS`
+- SQL asset validation under `specforge-runtime/outputs/<target>/logs/sql-asset-validation.yaml` shows `status: PASS`
+- auth surface validation under `specforge-runtime/outputs/<target>/logs/auth-surface-validation.yaml` shows `status: PASS`
 
 If the user asked for a complete platform, completion also requires that the authored project spec and assembly plan cover the expected business-center surfaces, along with user/role/menu linkage and initialization SQL organization at the project level.
 

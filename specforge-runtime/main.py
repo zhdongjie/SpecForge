@@ -64,15 +64,70 @@ def resolve_output_path(root: Path, raw_path: str | None, fallback: str) -> Path
     return candidate if candidate.is_absolute() else (root / candidate)
 
 
+def _is_transient_log_path(path: Path) -> bool:
+    return path.suffix.lower() == ".log" and "logs" in path.parts
+
+
+def _clear_output_directory(path: Path) -> list[str]:
+    preserved: list[str] = []
+    if not path.exists():
+        return preserved
+    for child in sorted(path.iterdir(), key=lambda item: (item.is_file(), str(item)), reverse=True):
+        _remove_output_path(child, preserved)
+    return preserved
+
+
+def _remove_output_path(path: Path, preserved: list[str]) -> None:
+    if not path.exists():
+        return
+    if path.is_dir():
+        for child in sorted(path.iterdir(), key=lambda item: (item.is_file(), str(item)), reverse=True):
+            _remove_output_path(child, preserved)
+        try:
+            path.rmdir()
+        except FileNotFoundError:
+            return
+        except OSError:
+            try:
+                remaining = list(path.iterdir())
+            except FileNotFoundError:
+                return
+            if remaining:
+                if all(_is_transient_log_path(item) for item in remaining if item.is_file()):
+                    return
+            raise
+        return
+
+    try:
+        path.unlink()
+    except PermissionError:
+        if _is_transient_log_path(path):
+            preserved.append(str(path))
+            return
+        raise
+
+
 def export_final_backend(source_root: Path, destination_root: Path) -> None:
-    if destination_root.exists():
-        shutil.rmtree(destination_root)
+    preserved_paths = _clear_output_directory(destination_root)
     destination_root.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(
         source_root,
         destination_root,
-        ignore=shutil.ignore_patterns(".m2", "target", "__pycache__"),
+        ignore=shutil.ignore_patterns(".m2", "target", "__pycache__", "*.log"),
+        dirs_exist_ok=True,
     )
+    if preserved_paths:
+        dump_yaml(
+            destination_root / "logs" / "output-export-report.yaml",
+            {
+                "status": "PASS",
+                "preserved_transient_paths": preserved_paths,
+                "notes": [
+                    "Transient locked log files from a previous output were preserved during export.",
+                    "Source artifacts were recopied with deterministic overwrite semantics except *.log files.",
+                ],
+            },
+        )
 
 
 def run_auto_build(args: argparse.Namespace, root: Path) -> None:

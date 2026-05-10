@@ -19,6 +19,10 @@ and let Codex run until:
 
 - compile passes
 - boot passes
+- delivery validation passes
+- business contract validation passes
+- SQL asset validation passes
+- auth surface validation passes
 
 or produce a reproducible failure bundle.
 
@@ -50,6 +54,13 @@ Requirement document:
 python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement-file "<requirement-file>" --run-id <run-id> --force
 ```
 
+Currently validated automatic scaffold domains include:
+
+- `laboratory-reservation`
+- `laboratory-management`
+- `insurance-management`
+- `library-management`
+
 ## Fastest Codex Handoff Workflow
 
 Generate a copy-paste prompt with:
@@ -75,6 +86,10 @@ Accept success only if:
 - `specforge-runtime/outputs/<project-backend>/` exists
 - `compile_status: PASS`
 - `boot_status: PASS`
+- `specforge-runtime/outputs/<project-backend>/logs/delivery-validation.yaml` says `status: PASS`
+- `specforge-runtime/outputs/<project-backend>/logs/api-smoke/business-contract-validation.yaml` says `validation.status: PASS`
+- `specforge-runtime/outputs/<project-backend>/logs/sql-asset-validation.yaml` says `status: PASS`
+- `specforge-runtime/outputs/<project-backend>/logs/auth-surface-validation.yaml` says `status: PASS`
 
 ## Failure Rule
 

@@ -14,12 +14,12 @@ module_identity:
   responsibility_code: report_statistics_management
   package_root: org.eu.originalkeen.business.reportstatistics
   route_namespace:
-    report-statistics-management: /v1/business/report-statistics
+    report-statistics-management: /v1/business/library-report
 generation_boundaries:
   single_module_only: true
   owns_aggregates: &id001
-  - ReservationStatisticSnapshot
-  - EquipmentUsageReport
+  - LibraryStatisticSnapshot
+  - BorrowStatisticReport
   may_reference:
   - ResponseVo
   - PageVo
@@ -31,8 +31,8 @@ generation_boundaries:
   - role management
 api_groups:
 - group_id: report_statistics_management
-  route_prefix: /v1/business/report-statistics
-  aggregate: ReservationStatisticSnapshot
+  route_prefix: /v1/business/library-report
+  aggregate: LibraryStatisticSnapshot
   capability_ids:
   - create-report_statistics_management
   - update-report_statistics_management
@@ -48,7 +48,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: POST
   route: /
-  authority: business:report-statistics:create
+  authority: business:library-report:create
   transaction: read-write
   input_dto: CreateReportStatisticsManagementDto
   output_vo: Void
@@ -60,7 +60,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: PUT
   route: /
-  authority: business:report-statistics:update
+  authority: business:library-report:update
   transaction: read-write
   input_dto: UpdateReportStatisticsManagementDto
   output_vo: Void
@@ -72,7 +72,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: DELETE
   route: /
-  authority: business:report-statistics:delete
+  authority: business:library-report:delete
   transaction: read-write
   input_dto: ReportStatisticsManagementIdSet
   output_vo: Void
@@ -84,7 +84,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: GET
   route: /page
-  authority: business:report-statistics:page
+  authority: business:library-report:page
   transaction: read-only
   input_dto: EnquiryReportStatisticsManagementPageDto
   output_vo: PageVo<ReportStatisticsManagementPageVo>
@@ -96,7 +96,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: GET
   route: /{id}
-  authority: business:report-statistics:details
+  authority: business:library-report:details
   transaction: read-only
   input_dto: ReportStatisticsManagementIdPath
   output_vo: ReportStatisticsManagementDetailsVo
@@ -108,21 +108,21 @@ capabilities:
   api_group: report_statistics_management
   http_method: GET
   route: /list
-  authority: business:report-statistics:list
+  authority: business:library-report:list
   transaction: read-only
   input_dto: None
   output_vo: List<ReportStatisticsManagementListVo>
   touched_entities: *id001
 entity_graph:
   entities:
-  - entity_id: ReservationStatisticSnapshot
-    table: reservation_statistic_snapshot
+  - entity_id: LibraryStatisticSnapshot
+    table: library_statistic_snapshot
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root
     relations: []
-  - entity_id: EquipmentUsageReport
-    table: equipment_usage_report
+  - entity_id: BorrowStatisticReport
+    table: borrow_statistic_report
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root

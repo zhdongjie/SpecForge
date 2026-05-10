@@ -30,7 +30,12 @@ def main() -> int:
     domain_blueprint = blueprints["domains"][domain_key]
 
     write_project_spec(specs_root / "project-spec.md", args.project_name, requirement_text, domain_blueprint)
-    write_project_assembly_plan(specs_root / "project-assembly-plan.yaml", args.project_name, domain_blueprint)
+    write_project_assembly_plan(
+        specs_root / "project-assembly-plan.yaml",
+        args.project_name,
+        domain_key,
+        domain_blueprint,
+    )
     write_build_plan(specs_root / "build-plan.yaml", args.project_name)
     write_template_modules(templates_root, domain_blueprint, force=args.force)
     return 0
@@ -52,14 +57,75 @@ def infer_domain(project_name: str, requirement_text: str, domain: str, blueprin
         return domain
 
     haystack = f"{project_name}\n{requirement_text}".lower()
-    keyword_map = [
-        ("laboratory-management", ["equipment", "consumable", "experiment", "schedule", "calendar", "report", "statistics", "lab manager", "lab management"]),
-        ("insurance-management", ["insurance", "claim", "policy", "premium", "underwriting", "agent", "beneficiary", "renewal"]),
-        ("laboratory-reservation", ["laboratory", "lab ", "reservation", "experiment", "equipment", "consumable", "schedule", "booking"]),
+    domain_signals = [
+        (
+            "insurance-management",
+            [
+                "insurance",
+                "claim",
+                "policy",
+                "premium",
+                "underwriting",
+                "agent",
+                "beneficiary",
+                "renewal",
+                "insurer",
+                "insured",
+            ],
+        ),
+        (
+            "laboratory-management",
+            [
+                "laboratory management",
+                "lab management",
+                "equipment",
+                "consumable",
+                "experiment project",
+                "experiment",
+                "schedule",
+                "calendar",
+                "access control",
+                "laboratory resource",
+            ],
+        ),
+        (
+            "library-management",
+            [
+                "library management",
+                "library platform",
+                "book",
+                "catalog",
+                "reader",
+                "borrow",
+                "borrowing",
+                "circulation",
+                "return",
+                "shelf",
+                "overdue",
+                "fine",
+                "reservation queue",
+            ],
+        ),
+        (
+            "laboratory-reservation",
+            [
+                "laboratory reservation",
+                "lab reservation",
+                "reservation",
+                "booking",
+                "approval",
+                "reservation rule",
+                "time slot",
+            ],
+        ),
     ]
-    for domain_key, keywords in keyword_map:
-        if any(keyword in haystack for keyword in keywords):
-            return domain_key
+    scored = [
+        (domain_key, sum(1 for keyword in keywords if keyword in haystack))
+        for domain_key, keywords in domain_signals
+    ]
+    scored.sort(key=lambda item: item[1], reverse=True)
+    if scored and scored[0][1] > 0:
+        return scored[0][0]
 
     return next(iter(blueprints.get("domains", {})), "laboratory-reservation")
 
@@ -71,6 +137,7 @@ def write_project_spec(path: Path, project_name: str, requirement_text: str, blu
         "project": {
             "name": project_name,
             "type": "springboot-vue3",
+            "platform_scope": project.get("platform_scope", "focused-platform"),
         },
         "architecture": {
             "style": "modular-monolith",
@@ -88,6 +155,10 @@ def write_project_spec(path: Path, project_name: str, requirement_text: str, blu
         ],
         "features": [
             f"Support {normalize_title(item['module'])} workflows." for item in modules
+        ]
+        + [
+            f"Preserve business-center coverage for {center}."
+            for center in project.get("required_business_centers", [])
         ],
         "auth": {
             "type": "jwt",
@@ -119,12 +190,13 @@ def write_project_spec(path: Path, project_name: str, requirement_text: str, blu
             "Preserve modular-monolith boundaries.",
             "Keep business-domain code under org.eu.originalkeen.business.*.",
             "Require compile and boot verification before success.",
+            "Preserve required business-center coverage from the selected domain profile.",
         ],
     }
     write_yaml_as_markdown(path, payload)
 
 
-def write_project_assembly_plan(path: Path, project_name: str, blueprint: dict[str, Any]) -> None:
+def write_project_assembly_plan(path: Path, project_name: str, domain_key: str, blueprint: dict[str, Any]) -> None:
     plan_id = slugify(project_name)
     modules = blueprint["modules"]
     payload = {
@@ -153,16 +225,9 @@ def write_project_assembly_plan(path: Path, project_name: str, blueprint: dict[s
                 "enabled": bool(item["enabled"]),
                 "semantic_role": item["semantic_role"],
                 "bounded_context": item["bounded_context"],
-                "module_spec": (
-                    "module-spec.yaml"
-                    if item["module"] == "laboratory-reservation-management"
-                    else f"templates/{item['module']}/module-spec.yaml"
-                ),
-                "module_schema": (
-                    "module-schema.resolved.yaml"
-                    if item["module"] == "laboratory-reservation-management"
-                    else f"templates/{item['module']}/module-schema.resolved.yaml"
-                ),
+                "business_center": item.get("business_center", item["bounded_context"]),
+                "module_spec": f"templates/{item['module']}/module-spec.yaml",
+                "module_schema": f"templates/{item['module']}/module-schema.resolved.yaml",
                 "generation_mode": "synthesize-and-assemble",
                 "dependencies": [],
                 "export_package_root": item["package_root"],
@@ -175,6 +240,19 @@ def write_project_assembly_plan(path: Path, project_name: str, blueprint: dict[s
             "auto_repair_enabled": True,
             "final_output_dir": f"outputs/{plan_id}-backend",
             "failure_bundle_required": True,
+        },
+        "coverage_contract": {
+            "domain_profile": domain_key,
+            "platform_scope": blueprint["project"].get("platform_scope", "focused-platform"),
+            "required_enabled_business_module_count": len(
+                [item for item in modules if item["enabled"] and item["semantic_role"] == "business-domain"]
+            ),
+            "required_enabled_business_modules": [
+                item["module"]
+                for item in modules
+                if item["enabled"] and item["semantic_role"] == "business-domain"
+            ],
+            "required_business_centers": list(blueprint["project"].get("required_business_centers", [])),
         },
     }
     write_yaml(path, payload)
@@ -205,8 +283,6 @@ def write_build_plan(path: Path, project_name: str) -> None:
 
 def write_template_modules(templates_root: Path, blueprint: dict[str, Any], force: bool = False) -> None:
     for item in blueprint["modules"]:
-        if item["module"] == "laboratory-reservation-management":
-            continue
         module_root = templates_root / item["module"]
         module_root.mkdir(parents=True, exist_ok=True)
         module_spec_path = module_root / "module-spec.yaml"

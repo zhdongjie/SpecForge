@@ -1,7 +1,7 @@
-plan_id: insurance-operations-platform
-default_run_id: insurance-operations-platform-autobuild
+plan_id: library-management-platform
+default_run_id: library-management-platform-autobuild
 backend_root: ../backend
-final_output_dir: outputs/insurance-operations-platform-backend
+final_output_dir: outputs/library-management-platform-backend
 project_assembly_plan: project-assembly-plan.yaml
 module_spec: module-spec.yaml
 module_schema: module-schema.resolved.yaml

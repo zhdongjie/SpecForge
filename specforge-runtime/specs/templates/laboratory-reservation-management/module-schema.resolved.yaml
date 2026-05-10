@@ -1,21 +1,104 @@
-resolution_context: {source_module_spec: module-spec.yaml, resolved_schema_id: laboratory_reservation_management-resolved-v1, target_module_id: laboratory-reservation-management, bounded_context: reservation-center, regeneration_mode: create, stability_goal: deterministic, compiler_stage: resolved-generation-plan, dag_compatible: true, multi_agent_safe: true}
-module_identity: {module_name: laboratory-reservation-management, semantic_role: business-domain, responsibility_code: laboratory_reservation_management, package_root: org.eu.originalkeen.business.labreservation, route_roots: [/v1/business/laboratory-reservation]}
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: laboratory_reservation_management-resolved-v1
+  target_module_id: laboratory-reservation-management
+  bounded_context: laboratory-operations
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+module_identity:
+  module_name: laboratory-reservation-management
+  semantic_role: business-domain
+  responsibility_code: laboratory_reservation_management
+  package_root: org.eu.originalkeen.business.labreservation
+  route_roots:
+  - /v1/business/laboratory
+  - /v1/business/laboratory-reservation
 api_groups:
-  - group_id: laboratory_reservation_management
-    route_prefix: /v1/business/laboratory-reservation
-    aggregate: LaboratoryReservationOrder
-    capability_ids: [create-laboratory_reservation_management, update-laboratory_reservation_management, batch-delete-laboratory_reservation_management, enquiry-laboratory_reservation_management-page, enquiry-laboratory_reservation_management-details, enquiry-laboratory_reservation_management-list]
+- group_id: laboratory_reservation_management
+  route_prefix: /v1/business/laboratory
+  aggregate: Laboratory
+  capability_ids:
+  - create-laboratory_reservation_management
+  - update-laboratory_reservation_management
+  - batch-delete-laboratory_reservation_management
+  - enquiry-laboratory_reservation_management-page
+  - enquiry-laboratory_reservation_management-details
+  - enquiry-laboratory_reservation_management-list
 capabilities: []
 entity_graph:
   entities:
-    - {entity_id: LaboratoryReservationOrder, table: laboratory_reservation_order, ownership: owned, base_type: PrimaryKeyEntity, aggregate_role: root, relations: []}
-    - {entity_id: ReservationScheduleSlot, table: reservation_schedule_slot, ownership: owned, base_type: PrimaryKeyEntity, aggregate_role: root, relations: []}
-validation_rules: {uniqueness: [], referential: [], shape: []}
-architectural_bindings: {code_conventions: {resource_suffix: Resource, manager_suffix: Manager, service_suffix: Service, service_impl_suffix: ServiceImpl, mapper_suffix: Mapper}, response_bindings: {wrapper_type: ResponseVo, page_type: PageVo, mutation_payload: Void}, persistence_bindings: {framework: mybatis-flex, aggregate_identity_style: primary-key-entity}}
-persistence_conventions: {framework: mybatis-flex, database: mysql}
-localization_requirements: {mandatory: false, languages: [], localized_aggregates: [], localized_fields: {}, fallback_policy: none}
-audit_behavior: {access_log: none, operate_log: {enabled: true, target_capabilities: [create-laboratory_reservation_management, update-laboratory_reservation_management, batch-delete-laboratory_reservation_management]}}
-integration_points: {security: {mode: centralized-method-security, authority_families: [business:laboratory-reservation:*]}, persistence: {database: mysql, required_tables: [laboratory_reservation_order, reservation_schedule_slot]}}
-code_conventions: {naming_stability: strict, route_style: business-domain-aligned, transaction_style: manager-boundary}
-validation_hooks: {pre_generation: [hook-discovery-baseline-complete], post_unit: [hook-artifact-name-convention, hook-package-placement-check], final: [hook-module-boundary-check, hook-deterministic-layout-check]}
+  - entity_id: Laboratory
+    table: system_laboratory
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: LaboratoryReservation
+    table: system_laboratory_reservation
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-laboratory_reservation_management
+    - update-laboratory_reservation_management
+    - batch-delete-laboratory_reservation_management
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+    - business:laboratory:*
+    - business:laboratory-reservation:*
+  persistence:
+    database: mysql
+    required_tables:
+    - system_laboratory
+    - system_laboratory_reservation
+code_conventions:
+  naming_stability: strict
+  route_style: business-domain-aligned
+  transaction_style: manager-boundary
+validation_hooks:
+  pre_generation:
+  - hook-discovery-baseline-complete
+  post_unit:
+  - hook-artifact-name-convention
+  - hook-package-placement-check
+  final:
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
 blueprint_status: default-enabled-validated-blueprint-for-LaboratoryReservationManagement

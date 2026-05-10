@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: reservation_queue_management-project-v1
+  target_module_id: reservation-queue-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - reservation-queue-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: reservation-queue-management
+  bounded_context: reservation-queue-center
+  semantic_role: business-domain
+  responsibility_code: reservation_queue_management
+  package_root: org.eu.originalkeen.business.reservationqueue
+  route_namespace:
+    reservation-queue-management: /v1/business/reservation-queue
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - BookReservation
+  - ReservationQueueEntry
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: reservation_queue_management
+  route_prefix: /v1/business/reservation-queue
+  aggregate: BookReservation
+  capability_ids:
+  - create-reservation_queue_management
+  - update-reservation_queue_management
+  - batch-delete-reservation_queue_management
+  - enquiry-reservation_queue_management-page
+  - enquiry-reservation_queue_management-details
+  - enquiry-reservation_queue_management-list
+capabilities:
+- capability_id: create-reservation_queue_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: reservation_queue_management
+  http_method: POST
+  route: /
+  authority: business:reservation-queue:create
+  transaction: read-write
+  input_dto: CreateReservationQueueManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-reservation_queue_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: reservation_queue_management
+  http_method: PUT
+  route: /
+  authority: business:reservation-queue:update
+  transaction: read-write
+  input_dto: UpdateReservationQueueManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-reservation_queue_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: reservation_queue_management
+  http_method: DELETE
+  route: /
+  authority: business:reservation-queue:delete
+  transaction: read-write
+  input_dto: ReservationQueueManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-reservation_queue_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: reservation_queue_management
+  http_method: GET
+  route: /page
+  authority: business:reservation-queue:page
+  transaction: read-only
+  input_dto: EnquiryReservationQueueManagementPageDto
+  output_vo: PageVo<ReservationQueueManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-reservation_queue_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: reservation_queue_management
+  http_method: GET
+  route: /{id}
+  authority: business:reservation-queue:details
+  transaction: read-only
+  input_dto: ReservationQueueManagementIdPath
+  output_vo: ReservationQueueManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-reservation_queue_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: reservation_queue_management
+  http_method: GET
+  route: /list
+  authority: business:reservation-queue:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ReservationQueueManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: BookReservation
+    table: book_reservation
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: ReservationQueueEntry
+    table: reservation_queue_entry
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - ReservationQueueManagementResource
+  manager:
+  - ReservationQueueManagementManager
+  service:
+  - ReservationQueueManagementService
+  service_impl:
+  - ReservationQueueManagementServiceImpl
+  mapper:
+  - ReservationQueueManagementMapper
+  entity: *id001
+  dto:
+  - CreateReservationQueueManagementDto
+  - UpdateReservationQueueManagementDto
+  - EnquiryReservationQueueManagementPageDto
+  vo:
+  - ReservationQueueManagementDetailsVo
+  - ReservationQueueManagementPageVo
+  - ReservationQueueManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-reservation_queue_management
+    - update-reservation_queue_management
+    - batch-delete-reservation_queue_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

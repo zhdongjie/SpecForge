@@ -1,8 +1,8 @@
-plan_id: insurance-operations-platform
-target_backend_name: insurance-operations-platform-backend
-description: deterministic backend assembly plan for Insurance Operations Platform
+plan_id: library-management-platform
+target_backend_name: library-management-platform-backend
+description: deterministic backend assembly plan for Library Management Platform
 project_identity:
-  name: Insurance Operations Platform
+  name: Library Management Platform
   architecture: modular-monolith
   package_root: org.eu.originalkeen
 platform_contract:
@@ -15,63 +15,123 @@ platform_contract:
     route_prefix: /v1/business/
     authority_prefix: 'business:'
 module_sequence:
-- module: insurance-customer-management
+- module: book-catalog-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: insurance-customer-center
-  module_spec: templates/insurance-customer-management/module-spec.yaml
-  module_schema: templates/insurance-customer-management/module-schema.resolved.yaml
+  bounded_context: book-catalog-center
+  business_center: book-catalog-center
+  module_spec: templates/book-catalog-management/module-spec.yaml
+  module_schema: templates/book-catalog-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.insurancecustomer
-- module: insurance-claim-management
+  export_package_root: org.eu.originalkeen.business.bookcatalog
+- module: reader-membership-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: insurance-claim-operations
-  module_spec: templates/insurance-claim-management/module-spec.yaml
-  module_schema: templates/insurance-claim-management/module-schema.resolved.yaml
+  bounded_context: reader-membership-center
+  business_center: reader-membership-center
+  module_spec: templates/reader-membership-management/module-spec.yaml
+  module_schema: templates/reader-membership-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.insuranceclaim
-- module: premium-payment-management
+  export_package_root: org.eu.originalkeen.business.readermembership
+- module: circulation-borrow-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: premium-payment-center
-  module_spec: templates/premium-payment-management/module-spec.yaml
-  module_schema: templates/premium-payment-management/module-schema.resolved.yaml
+  bounded_context: circulation-borrow-center
+  business_center: circulation-borrow-center
+  module_spec: templates/circulation-borrow-management/module-spec.yaml
+  module_schema: templates/circulation-borrow-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.premiumpayment
-- module: policy-renewal-management
+  export_package_root: org.eu.originalkeen.business.circulationborrow
+- module: return-inspection-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: policy-renewal-center
-  module_spec: templates/policy-renewal-management/module-spec.yaml
-  module_schema: templates/policy-renewal-management/module-schema.resolved.yaml
+  bounded_context: return-inspection-center
+  business_center: return-inspection-center
+  module_spec: templates/return-inspection-management/module-spec.yaml
+  module_schema: templates/return-inspection-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.policyrenewal
-- module: underwriting-approval-management
+  export_package_root: org.eu.originalkeen.business.returninspection
+- module: reservation-queue-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: underwriting-governance
-  module_spec: templates/underwriting-approval-management/module-spec.yaml
-  module_schema: templates/underwriting-approval-management/module-schema.resolved.yaml
+  bounded_context: reservation-queue-center
+  business_center: reservation-queue-center
+  module_spec: templates/reservation-queue-management/module-spec.yaml
+  module_schema: templates/reservation-queue-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.underwritingapproval
-- module: channel-agent-management
+  export_package_root: org.eu.originalkeen.business.reservationqueue
+- module: acquisition-supplier-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: channel-agent-center
-  module_spec: templates/channel-agent-management/module-spec.yaml
-  module_schema: templates/channel-agent-management/module-schema.resolved.yaml
+  bounded_context: acquisition-supplier-center
+  business_center: acquisition-supplier-center
+  module_spec: templates/acquisition-supplier-management/module-spec.yaml
+  module_schema: templates/acquisition-supplier-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.channelagent
+  export_package_root: org.eu.originalkeen.business.acquisitionsupplier
+- module: shelf-inventory-management
+  enabled: true
+  semantic_role: business-domain
+  bounded_context: shelf-inventory-center
+  business_center: shelf-inventory-center
+  module_spec: templates/shelf-inventory-management/module-spec.yaml
+  module_schema: templates/shelf-inventory-management/module-schema.resolved.yaml
+  generation_mode: synthesize-and-assemble
+  dependencies: []
+  export_package_root: org.eu.originalkeen.business.shelfinventory
+- module: notification-management
+  enabled: true
+  semantic_role: business-domain
+  bounded_context: notification-center
+  business_center: notification-center
+  module_spec: templates/notification-management/module-spec.yaml
+  module_schema: templates/notification-management/module-schema.resolved.yaml
+  generation_mode: synthesize-and-assemble
+  dependencies: []
+  export_package_root: org.eu.originalkeen.business.notification
+- module: report-statistics-management
+  enabled: true
+  semantic_role: business-domain
+  bounded_context: report-statistics-center
+  business_center: report-statistics-center
+  module_spec: templates/report-statistics-management/module-spec.yaml
+  module_schema: templates/report-statistics-management/module-schema.resolved.yaml
+  generation_mode: synthesize-and-assemble
+  dependencies: []
+  export_package_root: org.eu.originalkeen.business.reportstatistics
 assembly_contract:
   compile_required: true
   boot_verify_required: true
   auto_repair_enabled: true
-  final_output_dir: outputs/insurance-operations-platform-backend
+  final_output_dir: outputs/library-management-platform-backend
   failure_bundle_required: true
+coverage_contract:
+  domain_profile: library-management
+  platform_scope: complete-platform
+  required_enabled_business_module_count: 9
+  required_enabled_business_modules:
+  - book-catalog-management
+  - reader-membership-management
+  - circulation-borrow-management
+  - return-inspection-management
+  - reservation-queue-management
+  - acquisition-supplier-management
+  - shelf-inventory-management
+  - notification-management
+  - report-statistics-management
+  required_business_centers:
+  - book-catalog-center
+  - reader-membership-center
+  - circulation-borrow-center
+  - return-inspection-center
+  - reservation-queue-center
+  - acquisition-supplier-center
+  - shelf-inventory-center
+  - notification-center
+  - report-statistics-center

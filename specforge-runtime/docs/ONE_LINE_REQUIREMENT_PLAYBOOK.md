@@ -27,7 +27,7 @@ Output:
 - Treat `specforge-runtime/outputs/` as the only final deliverable location.
 - Treat `specforge-runtime/runs/` as execution evidence, not the product.
 - Treat `backend/` as template input, not output.
-- Accept success only if compile and boot both pass.
+- Accept success only if compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass.
 
 ## Operator Steps
 
@@ -82,6 +82,7 @@ Currently validated automatic scaffold domains include:
 - `laboratory-reservation`
 - `laboratory-management`
 - `insurance-management`
+- `library-management`
 
 If you prefer a requirement document, use:
 
@@ -95,11 +96,19 @@ Required success files:
 
 - `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
 - `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
+- `specforge-runtime/outputs/<project-backend>/logs/delivery-validation.yaml`
+- `specforge-runtime/outputs/<project-backend>/logs/api-smoke/business-contract-validation.yaml`
+- `specforge-runtime/outputs/<project-backend>/logs/sql-asset-validation.yaml`
+- `specforge-runtime/outputs/<project-backend>/logs/auth-surface-validation.yaml`
 
 Required success conditions:
 
 - `compile_status: PASS`
 - `boot_status: PASS`
+- `business-contract-validation.yaml validation.status: PASS`
+- `delivery-validation.yaml status: PASS`
+- `sql-asset-validation.yaml status: PASS`
+- `auth-surface-validation.yaml status: PASS`
 
 Final product:
 
@@ -129,7 +138,7 @@ Use $specforge-full-project-compiler in this repository.
 Read README.md, WORKSPACE_LAYOUT.md, and specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md.
 Then compile a complete Spring Boot backend from this requirement:
 <requirement>
-Run until compile and boot both pass, or return a reproducible failure bundle.
+Run until compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass, or return a reproducible failure bundle.
 Treat specforge-runtime/outputs/ as the only final deliverable.
 ```
 

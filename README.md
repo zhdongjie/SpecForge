@@ -43,6 +43,10 @@ If you want:
 
 use this flow.
 
+Shortest doc:
+
+- [SUPER_QUICKSTART.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/SUPER_QUICKSTART.md)
+
 ### 1. Prepare toolchain
 
 Install:
@@ -113,6 +117,7 @@ Currently validated automatic scaffold domains include:
 - `laboratory-reservation`
 - `laboratory-management`
 - `insurance-management`
+- `library-management`
 
 ### 5. Check results
 
@@ -220,6 +225,12 @@ Validate business module route and permission contracts:
 python skills/specforge-full-project-compiler/scripts/export_backend_api_smoke.py --backend-root specforge-runtime/outputs/<project-backend> --validate-business-contract
 ```
 
+Validate final backend delivery contract:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/validate_backend_delivery.py --repo-root . --run-id <run-id>
+```
+
 Direct runtime equivalent:
 
 ```powershell
@@ -249,10 +260,12 @@ python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.
    - `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
    - `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
    - `specforge-runtime/outputs/<project-backend>/logs/api-smoke/business-contract-validation.yaml`
+   - `specforge-runtime/outputs/<project-backend>/logs/delivery-validation.yaml`
 4. Accept success only if:
    - `compile_status: PASS`
    - `boot_status: PASS`
    - business contract validation status is `PASS`
+   - delivery validation status is `PASS`
 5. Take the final backend only from:
    - `specforge-runtime/outputs/<project-backend>/`
 
@@ -271,6 +284,7 @@ python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.
    - `lab-platform-file-auto`
    - `insurance-inline-auto`
    - `insurance-file-auto`
+   - `library-inline-auto`
 3. Use this when you want to prove the generator still works after refactors, migration, or environment changes.
 
 ## Success And Failure Contract

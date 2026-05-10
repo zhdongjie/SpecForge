@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: insurance_product_management-project-v1
+  target_module_id: insurance-product-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - insurance-product-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: insurance-product-management
+  bounded_context: insurance-product-center
+  semantic_role: business-domain
+  responsibility_code: insurance_product_management
+  package_root: org.eu.originalkeen.business.insuranceproduct
+  route_namespace:
+    insurance-product-management: /v1/business/insurance-product
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - InsuranceProduct
+  - InsuranceProductPlan
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: insurance_product_management
+  route_prefix: /v1/business/insurance-product
+  aggregate: InsuranceProduct
+  capability_ids:
+  - create-insurance_product_management
+  - update-insurance_product_management
+  - batch-delete-insurance_product_management
+  - enquiry-insurance_product_management-page
+  - enquiry-insurance_product_management-details
+  - enquiry-insurance_product_management-list
+capabilities:
+- capability_id: create-insurance_product_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: insurance_product_management
+  http_method: POST
+  route: /
+  authority: business:insurance-product:create
+  transaction: read-write
+  input_dto: CreateInsuranceProductManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-insurance_product_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: insurance_product_management
+  http_method: PUT
+  route: /
+  authority: business:insurance-product:update
+  transaction: read-write
+  input_dto: UpdateInsuranceProductManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-insurance_product_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: insurance_product_management
+  http_method: DELETE
+  route: /
+  authority: business:insurance-product:delete
+  transaction: read-write
+  input_dto: InsuranceProductManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-insurance_product_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: insurance_product_management
+  http_method: GET
+  route: /page
+  authority: business:insurance-product:page
+  transaction: read-only
+  input_dto: EnquiryInsuranceProductManagementPageDto
+  output_vo: PageVo<InsuranceProductManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-insurance_product_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: insurance_product_management
+  http_method: GET
+  route: /{id}
+  authority: business:insurance-product:details
+  transaction: read-only
+  input_dto: InsuranceProductManagementIdPath
+  output_vo: InsuranceProductManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-insurance_product_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: insurance_product_management
+  http_method: GET
+  route: /list
+  authority: business:insurance-product:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<InsuranceProductManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: InsuranceProduct
+    table: insurance_product
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: InsuranceProductPlan
+    table: insurance_product_plan
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - InsuranceProductManagementResource
+  manager:
+  - InsuranceProductManagementManager
+  service:
+  - InsuranceProductManagementService
+  service_impl:
+  - InsuranceProductManagementServiceImpl
+  mapper:
+  - InsuranceProductManagementMapper
+  entity: *id001
+  dto:
+  - CreateInsuranceProductManagementDto
+  - UpdateInsuranceProductManagementDto
+  - EnquiryInsuranceProductManagementPageDto
+  vo:
+  - InsuranceProductManagementDetailsVo
+  - InsuranceProductManagementPageVo
+  - InsuranceProductManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-insurance_product_management
+    - update-insurance_product_management
+    - batch-delete-insurance_product_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

@@ -14,11 +14,11 @@ module_identity:
   responsibility_code: notification_management
   package_root: org.eu.originalkeen.business.notification
   route_namespace:
-    notification-management: /v1/business/notification
+    notification-management: /v1/business/library-notification
 generation_boundaries:
   single_module_only: true
   owns_aggregates: &id001
-  - NotificationMessage
+  - LibraryNotification
   - NotificationDeliveryRecord
   may_reference:
   - ResponseVo
@@ -31,8 +31,8 @@ generation_boundaries:
   - role management
 api_groups:
 - group_id: notification_management
-  route_prefix: /v1/business/notification
-  aggregate: NotificationMessage
+  route_prefix: /v1/business/library-notification
+  aggregate: LibraryNotification
   capability_ids:
   - create-notification_management
   - update-notification_management
@@ -48,7 +48,7 @@ capabilities:
   api_group: notification_management
   http_method: POST
   route: /
-  authority: business:notification:create
+  authority: business:library-notification:create
   transaction: read-write
   input_dto: CreateNotificationManagementDto
   output_vo: Void
@@ -60,7 +60,7 @@ capabilities:
   api_group: notification_management
   http_method: PUT
   route: /
-  authority: business:notification:update
+  authority: business:library-notification:update
   transaction: read-write
   input_dto: UpdateNotificationManagementDto
   output_vo: Void
@@ -72,7 +72,7 @@ capabilities:
   api_group: notification_management
   http_method: DELETE
   route: /
-  authority: business:notification:delete
+  authority: business:library-notification:delete
   transaction: read-write
   input_dto: NotificationManagementIdSet
   output_vo: Void
@@ -84,7 +84,7 @@ capabilities:
   api_group: notification_management
   http_method: GET
   route: /page
-  authority: business:notification:page
+  authority: business:library-notification:page
   transaction: read-only
   input_dto: EnquiryNotificationManagementPageDto
   output_vo: PageVo<NotificationManagementPageVo>
@@ -96,7 +96,7 @@ capabilities:
   api_group: notification_management
   http_method: GET
   route: /{id}
-  authority: business:notification:details
+  authority: business:library-notification:details
   transaction: read-only
   input_dto: NotificationManagementIdPath
   output_vo: NotificationManagementDetailsVo
@@ -108,15 +108,15 @@ capabilities:
   api_group: notification_management
   http_method: GET
   route: /list
-  authority: business:notification:list
+  authority: business:library-notification:list
   transaction: read-only
   input_dto: None
   output_vo: List<NotificationManagementListVo>
   touched_entities: *id001
 entity_graph:
   entities:
-  - entity_id: NotificationMessage
-    table: notification_message
+  - entity_id: LibraryNotification
+    table: library_notification
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root

@@ -12,6 +12,7 @@ Use this reference when the user asks:
 - `laboratory-reservation`
 - `laboratory-management`
 - `insurance-management`
+- `library-management`
 
 ## Proven Input Shapes
 
@@ -50,6 +51,7 @@ Use `--force` to allow safe reruns of the same validation scenario and reset the
 - `lab-platform-file-auto`
 - `insurance-inline-auto`
 - `insurance-file-auto`
+- `library-inline-auto`
 
 ## Purpose Of The Regression Suite
 
@@ -68,7 +70,8 @@ Use the suite to validate:
 1. Run `check_specforge_workspace.py`
 2. Run `run_tool_validation_suite.py --scenario insurance-file-auto --force`
 3. Run `run_tool_validation_suite.py --scenario lab-platform-file-auto --force`
-4. Accept the environment as ready only after both compile and boot pass
+4. Run `run_tool_validation_suite.py --scenario library-inline-auto --force`
+5. Accept the environment as ready only after compile, boot, business, delivery, SQL, and auth checks pass across the selected scenarios
 
 ## Final Deliverable Rule
 

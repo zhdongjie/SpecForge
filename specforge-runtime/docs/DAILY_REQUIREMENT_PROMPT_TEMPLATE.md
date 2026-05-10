@@ -46,7 +46,7 @@ Rules:
 1. Check workspace readiness.
 2. Generate and update canonical specs from the requirement document.
 3. Run the canonical auto-build pipeline.
-4. Continue until compile and boot both pass, or return a reproducible failure bundle.
+4. Continue until compile, boot, business contract validation, delivery validation, SQL asset validation, and auth surface validation all pass, or return a reproducible failure bundle.
 5. Treat specforge-runtime/outputs/ as the only final deliverable.
 ```
 

@@ -1,110 +1,162 @@
 project:
-  name: Insurance Operations Platform
+  name: Library Management Platform
   type: springboot-vue3
+  platform_scope: complete-platform
 architecture:
   style: modular-monolith
   description: A modular-monolith Spring Boot backend compiled from SpecForge project
     and module specifications.
 modules:
-- name: insurance-customer-management
-  responsibility: insured customer profile and beneficiary lifecycle management
-  boundaries: Owns InsuranceCustomer, CustomerBeneficiary within insurance-customer-center.
+- name: book-catalog-management
+  responsibility: book catalog metadata and copy lifecycle management
+  boundaries: Owns BookCatalog, BookCopy within book-catalog-center.
   apis:
-  - insurance-customer-management administration
+  - book-catalog-management administration
   entities:
-  - InsuranceCustomer
-  - CustomerBeneficiary
-- name: insurance-claim-management
-  responsibility: claim submission, settlement, and tracking management
-  boundaries: Owns InsuranceClaim, ClaimSettlement within insurance-claim-operations.
+  - BookCatalog
+  - BookCopy
+- name: reader-membership-management
+  responsibility: reader account, eligibility, and membership lifecycle management
+  boundaries: Owns ReaderProfile, ReaderMembership within reader-membership-center.
   apis:
-  - insurance-claim-management administration
+  - reader-membership-management administration
   entities:
-  - InsuranceClaim
-  - ClaimSettlement
-- name: premium-payment-management
-  responsibility: premium collection and refund processing management
-  boundaries: Owns PremiumPayment, PaymentRefund within premium-payment-center.
+  - ReaderProfile
+  - ReaderMembership
+- name: circulation-borrow-management
+  responsibility: borrowing order placement and circulation record management
+  boundaries: Owns BorrowOrder, BorrowRecord within circulation-borrow-center.
   apis:
-  - premium-payment-management administration
+  - circulation-borrow-management administration
   entities:
-  - PremiumPayment
-  - PaymentRefund
-- name: policy-renewal-management
-  responsibility: policy renewal cycle and reminder management
-  boundaries: Owns PolicyRenewal, RenewalReminder within policy-renewal-center.
+  - BorrowOrder
+  - BorrowRecord
+- name: return-inspection-management
+  responsibility: return review, overdue handling, and damage assessment management
+  boundaries: Owns ReturnInspection, FineAssessment within return-inspection-center.
   apis:
-  - policy-renewal-management administration
+  - return-inspection-management administration
   entities:
-  - PolicyRenewal
-  - RenewalReminder
-- name: underwriting-approval-management
-  responsibility: underwriting review decision and approval governance management
-  boundaries: Owns UnderwritingApproval, UnderwritingDecisionRecord within underwriting-governance.
+  - ReturnInspection
+  - FineAssessment
+- name: reservation-queue-management
+  responsibility: reservation queue, waiting list, and fulfillment management
+  boundaries: Owns BookReservation, ReservationQueueEntry within reservation-queue-center.
   apis:
-  - underwriting-approval-management administration
+  - reservation-queue-management administration
   entities:
-  - UnderwritingApproval
-  - UnderwritingDecisionRecord
-- name: channel-agent-management
-  responsibility: sales channel and agent relationship management
-  boundaries: Owns InsuranceChannel, InsuranceAgent within channel-agent-center.
+  - BookReservation
+  - ReservationQueueEntry
+- name: acquisition-supplier-management
+  responsibility: procurement planning and supplier collaboration management
+  boundaries: Owns BookAcquisition, SupplierProfile within acquisition-supplier-center.
   apis:
-  - channel-agent-management administration
+  - acquisition-supplier-management administration
   entities:
-  - InsuranceChannel
-  - InsuranceAgent
+  - BookAcquisition
+  - SupplierProfile
+- name: shelf-inventory-management
+  responsibility: shelf organization, stocktake, and in-library inventory management
+  boundaries: Owns ShelfLocation, InventoryCheckRecord within shelf-inventory-center.
+  apis:
+  - shelf-inventory-management administration
+  entities:
+  - ShelfLocation
+  - InventoryCheckRecord
+- name: notification-management
+  responsibility: borrowing reminder and reader notification delivery management
+  boundaries: Owns LibraryNotification, NotificationDeliveryRecord within notification-center.
+  apis:
+  - notification-management administration
+  entities:
+  - LibraryNotification
+  - NotificationDeliveryRecord
+- name: report-statistics-management
+  responsibility: library circulation reporting and statistics snapshot management
+  boundaries: Owns LibraryStatisticSnapshot, BorrowStatisticReport within report-statistics-center.
+  apis:
+  - report-statistics-management administration
+  entities:
+  - LibraryStatisticSnapshot
+  - BorrowStatisticReport
 features:
-- Support Insurance Customer Management workflows.
-- Support Insurance Claim Management workflows.
-- Support Premium Payment Management workflows.
-- Support Policy Renewal Management workflows.
-- Support Underwriting Approval Management workflows.
-- Support Channel Agent Management workflows.
+- Support Book Catalog Management workflows.
+- Support Reader Membership Management workflows.
+- Support Circulation Borrow Management workflows.
+- Support Return Inspection Management workflows.
+- Support Reservation Queue Management workflows.
+- Support Acquisition Supplier Management workflows.
+- Support Shelf Inventory Management workflows.
+- Support Notification Management workflows.
+- Support Report Statistics Management workflows.
+- Preserve business-center coverage for book-catalog-center.
+- Preserve business-center coverage for reader-membership-center.
+- Preserve business-center coverage for circulation-borrow-center.
+- Preserve business-center coverage for return-inspection-center.
+- Preserve business-center coverage for reservation-queue-center.
+- Preserve business-center coverage for acquisition-supplier-center.
+- Preserve business-center coverage for shelf-inventory-center.
+- Preserve business-center coverage for notification-center.
+- Preserve business-center coverage for report-statistics-center.
 auth:
   type: jwt
   roles:
   - Administrator
-  - Underwriter
-  - ClaimsAdjuster
-  - FinanceOperator
-  - ChannelManager
+  - Librarian
+  - Reader
+  - Auditor
 database:
   type: mysql
   tables:
-  - name: insurance_customer
-    purpose: Persistence for insurance-customer-management
-  - name: customer_beneficiary
-    purpose: Persistence for insurance-customer-management
-  - name: insurance_claim
-    purpose: Persistence for insurance-claim-management
-  - name: claim_settlement
-    purpose: Persistence for insurance-claim-management
-  - name: premium_payment
-    purpose: Persistence for premium-payment-management
-  - name: payment_refund
-    purpose: Persistence for premium-payment-management
-  - name: policy_renewal
-    purpose: Persistence for policy-renewal-management
-  - name: renewal_reminder
-    purpose: Persistence for policy-renewal-management
-  - name: underwriting_approval
-    purpose: Persistence for underwriting-approval-management
-  - name: underwriting_decision_record
-    purpose: Persistence for underwriting-approval-management
-  - name: insurance_channel
-    purpose: Persistence for channel-agent-management
-  - name: insurance_agent
-    purpose: Persistence for channel-agent-management
+  - name: book_catalog
+    purpose: Persistence for book-catalog-management
+  - name: book_copy
+    purpose: Persistence for book-catalog-management
+  - name: reader_profile
+    purpose: Persistence for reader-membership-management
+  - name: reader_membership
+    purpose: Persistence for reader-membership-management
+  - name: borrow_order
+    purpose: Persistence for circulation-borrow-management
+  - name: borrow_record
+    purpose: Persistence for circulation-borrow-management
+  - name: return_inspection
+    purpose: Persistence for return-inspection-management
+  - name: fine_assessment
+    purpose: Persistence for return-inspection-management
+  - name: book_reservation
+    purpose: Persistence for reservation-queue-management
+  - name: reservation_queue_entry
+    purpose: Persistence for reservation-queue-management
+  - name: book_acquisition
+    purpose: Persistence for acquisition-supplier-management
+  - name: supplier_profile
+    purpose: Persistence for acquisition-supplier-management
+  - name: shelf_location
+    purpose: Persistence for shelf-inventory-management
+  - name: inventory_check_record
+    purpose: Persistence for shelf-inventory-management
+  - name: library_notification
+    purpose: Persistence for notification-management
+  - name: notification_delivery_record
+    purpose: Persistence for notification-management
+  - name: library_statistic_snapshot
+    purpose: Persistence for report-statistics-management
+  - name: borrow_statistic_report
+    purpose: Persistence for report-statistics-management
 frontend:
   pages: []
 business_rules:
-- claim requests must reference an existing insured customer record
-- premium payment actions must remain behind centralized JWT authorization
-- renewal and underwriting operations must preserve modular business boundaries
-- Build a complete modular-monolith Spring Boot insurance operations backend covering
-  insured customer management, claim management, premium payments, policy renewals,
-  underwriting approvals, and channel agent management.
+- book copies must remain traceable to a catalog entry and physical inventory location
+- borrowing and return workflows must preserve centralized JWT authorization boundaries
+- reservation queue actions must not bypass reader eligibility and stock availability
+  checks
+- reporting and notification flows must stay modular and consume library business
+  events through explicit business modules
+- Build a complete modular-monolith Spring Boot library management backend covering
+  book catalog center, reader membership center, circulation borrowing center, return
+  inspection center, reservation queue center, acquisition supplier center, shelf
+  inventory center, notification center, and statistics reporting center.
 dependencies:
   backend:
   - Spring Boot
@@ -119,3 +171,4 @@ generation_contract:
 - Preserve modular-monolith boundaries.
 - Keep business-domain code under org.eu.originalkeen.business.*.
 - Require compile and boot verification before success.
+- Preserve required business-center coverage from the selected domain profile.

@@ -1,0 +1,102 @@
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: circulation_borrow_management-resolved-v1
+  target_module_id: circulation-borrow-management
+  bounded_context: circulation-borrow-center
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+module_identity:
+  module_name: circulation-borrow-management
+  semantic_role: business-domain
+  responsibility_code: circulation_borrow_management
+  package_root: org.eu.originalkeen.business.circulationborrow
+  route_roots:
+  - /v1/business/circulation-borrow
+api_groups:
+- group_id: circulation_borrow_management
+  route_prefix: /v1/business/circulation-borrow
+  aggregate: BorrowOrder
+  capability_ids:
+  - create-circulation_borrow_management
+  - update-circulation_borrow_management
+  - batch-delete-circulation_borrow_management
+  - enquiry-circulation_borrow_management-page
+  - enquiry-circulation_borrow_management-details
+  - enquiry-circulation_borrow_management-list
+capabilities: []
+entity_graph:
+  entities:
+  - entity_id: BorrowOrder
+    table: borrow_order
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: BorrowRecord
+    table: borrow_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-circulation_borrow_management
+    - update-circulation_borrow_management
+    - batch-delete-circulation_borrow_management
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+    - business:circulation-borrow:*
+  persistence:
+    database: mysql
+    required_tables:
+    - borrow_order
+    - borrow_record
+code_conventions:
+  naming_stability: strict
+  route_style: business-domain-aligned
+  transaction_style: manager-boundary
+validation_hooks:
+  pre_generation:
+  - hook-discovery-baseline-complete
+  post_unit:
+  - hook-artifact-name-convention
+  - hook-package-placement-check
+  final:
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
+blueprint_status: default-enabled-validated-blueprint-for-CirculationBorrowManagement

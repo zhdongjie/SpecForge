@@ -3,11 +3,22 @@ domains:
     project:
       name: Laboratory Management Platform
       bounded_context: laboratory-operations
+      platform_scope: complete-platform
       primary_roles:
         - Administrator
         - Teacher
         - Student
         - LabManager
+      required_business_centers:
+        - laboratory-resource-center
+        - reservation-governance-center
+        - laboratory-access-control-center
+        - equipment-center
+        - consumable-inventory-center
+        - experiment-project-center
+        - schedule-calendar-center
+        - report-statistics-center
+        - notification-center
       business_rules:
         - laboratory reservation slots must not conflict within the same laboratory
         - equipment usage actions must reference an existing laboratory and equipment record
@@ -18,6 +29,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: laboratory-operations
+        business_center: laboratory-resource-center
         package_root: org.eu.originalkeen.business.labreservation
         route_roots:
           - /v1/business/laboratory
@@ -36,6 +48,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: reservation-governance
+        business_center: reservation-governance-center
         package_root: org.eu.originalkeen.business.reservationapproval
         route_roots:
           - /v1/business/reservation-approval
@@ -52,6 +65,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: laboratory-access-control
+        business_center: laboratory-access-control-center
         package_root: org.eu.originalkeen.business.labaccess
         route_roots:
           - /v1/business/laboratory-access
@@ -68,6 +82,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: equipment-center
+        business_center: equipment-center
         package_root: org.eu.originalkeen.business.equipment
         route_roots:
           - /v1/business/equipment
@@ -84,6 +99,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: consumable-inventory-center
+        business_center: consumable-inventory-center
         package_root: org.eu.originalkeen.business.consumableinventory
         route_roots:
           - /v1/business/consumable-inventory
@@ -100,6 +116,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: experiment-project-center
+        business_center: experiment-project-center
         package_root: org.eu.originalkeen.business.experimentproject
         route_roots:
           - /v1/business/experiment-project
@@ -116,6 +133,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: schedule-calendar-center
+        business_center: schedule-calendar-center
         package_root: org.eu.originalkeen.business.schedulecalendar
         route_roots:
           - /v1/business/schedule-calendar
@@ -132,6 +150,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: report-statistics-center
+        business_center: report-statistics-center
         package_root: org.eu.originalkeen.business.reportstatistics
         route_roots:
           - /v1/business/report-statistics
@@ -148,6 +167,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: notification-center
+        business_center: notification-center
         package_root: org.eu.originalkeen.business.notification
         route_roots:
           - /v1/business/notification
@@ -164,10 +184,16 @@ domains:
     project:
       name: Laboratory Reservation Platform
       bounded_context: laboratory-operations
+      platform_scope: focused-platform
       primary_roles:
         - Administrator
         - Teacher
         - Student
+      required_business_centers:
+        - laboratory-resource-center
+        - reservation-governance-center
+        - notification-center
+        - laboratory-access-control-center
       business_rules:
         - reservation slots must not conflict within the same laboratory
         - reservation requests must reference an existing laboratory
@@ -177,6 +203,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: laboratory-operations
+        business_center: laboratory-resource-center
         package_root: org.eu.originalkeen.business.labreservation
         route_roots:
           - /v1/business/laboratory
@@ -195,6 +222,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: reservation-governance
+        business_center: reservation-governance-center
         package_root: org.eu.originalkeen.business.reservationapproval
         route_roots:
           - /v1/business/reservation-approval
@@ -211,6 +239,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: notification-center
+        business_center: notification-center
         package_root: org.eu.originalkeen.business.notification
         route_roots:
           - /v1/business/notification
@@ -227,6 +256,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: laboratory-access-control
+        business_center: laboratory-access-control-center
         package_root: org.eu.originalkeen.business.labaccess
         route_roots:
           - /v1/business/laboratory-access
@@ -243,21 +273,56 @@ domains:
     project:
       name: Insurance Operations Platform
       bounded_context: insurance-operations
+      platform_scope: complete-platform
       primary_roles:
         - Administrator
+        - ProductManager
+        - PolicyOperator
         - Underwriter
         - ClaimsAdjuster
         - FinanceOperator
         - ChannelManager
+        - OperationAnalyst
+      required_business_centers:
+        - insurance-product-center
+        - insurance-customer-center
+        - insurance-policy-center
+        - insurance-claim-center
+        - premium-payment-center
+        - policy-renewal-center
+        - underwriting-governance-center
+        - channel-agent-center
+        - notification-center
+        - report-statistics-center
       business_rules:
+        - insurance product definitions must exist before policy issuance workflows
+        - policy records must reference valid product and customer records
         - claim requests must reference an existing insured customer record
         - premium payment actions must remain behind centralized JWT authorization
         - renewal and underwriting operations must preserve modular business boundaries
     modules:
+      - module: insurance-product-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: insurance-product-center
+        business_center: insurance-product-center
+        package_root: org.eu.originalkeen.business.insuranceproduct
+        route_roots:
+          - /v1/business/insurance-product
+        authorities:
+          - business:insurance-product:*
+        entities:
+          - InsuranceProduct
+          - InsuranceProductPlan
+        tables:
+          - insurance_product
+          - insurance_product_plan
+        purpose: insurance product catalog and plan lifecycle management
       - module: insurance-customer-management
         enabled: true
         semantic_role: business-domain
         bounded_context: insurance-customer-center
+        business_center: insurance-customer-center
         package_root: org.eu.originalkeen.business.insurancecustomer
         route_roots:
           - /v1/business/insurance-customer
@@ -270,10 +335,28 @@ domains:
           - insurance_customer
           - customer_beneficiary
         purpose: insured customer profile and beneficiary lifecycle management
+      - module: insurance-policy-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: insurance-policy-center
+        business_center: insurance-policy-center
+        package_root: org.eu.originalkeen.business.insurancepolicy
+        route_roots:
+          - /v1/business/insurance-policy
+        authorities:
+          - business:insurance-policy:*
+        entities:
+          - InsurancePolicy
+          - PolicyCoverage
+        tables:
+          - insurance_policy
+          - policy_coverage
+        purpose: insurance policy issuance and coverage management
       - module: insurance-claim-management
         enabled: true
         semantic_role: business-domain
         bounded_context: insurance-claim-operations
+        business_center: insurance-claim-center
         package_root: org.eu.originalkeen.business.insuranceclaim
         route_roots:
           - /v1/business/insurance-claim
@@ -290,6 +373,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: premium-payment-center
+        business_center: premium-payment-center
         package_root: org.eu.originalkeen.business.premiumpayment
         route_roots:
           - /v1/business/premium-payment
@@ -306,6 +390,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: policy-renewal-center
+        business_center: policy-renewal-center
         package_root: org.eu.originalkeen.business.policyrenewal
         route_roots:
           - /v1/business/policy-renewal
@@ -322,6 +407,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: underwriting-governance
+        business_center: underwriting-governance-center
         package_root: org.eu.originalkeen.business.underwritingapproval
         route_roots:
           - /v1/business/underwriting-approval
@@ -338,6 +424,7 @@ domains:
         enabled: true
         semantic_role: business-domain
         bounded_context: channel-agent-center
+        business_center: channel-agent-center
         package_root: org.eu.originalkeen.business.channelagent
         route_roots:
           - /v1/business/channel-agent
@@ -350,3 +437,216 @@ domains:
           - insurance_channel
           - insurance_agent
         purpose: sales channel and agent relationship management
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        business_center: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/insurance-notification
+        authorities:
+          - business:insurance-notification:*
+        entities:
+          - InsuranceNotification
+          - NotificationDeliveryRecord
+        tables:
+          - insurance_notification
+          - notification_delivery_record
+        purpose: insurance workflow notification and delivery tracking management
+      - module: report-statistics-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: report-statistics-center
+        business_center: report-statistics-center
+        package_root: org.eu.originalkeen.business.reportstatistics
+        route_roots:
+          - /v1/business/insurance-report
+        authorities:
+          - business:insurance-report:*
+        entities:
+          - InsuranceStatisticSnapshot
+          - ClaimStatisticReport
+        tables:
+          - insurance_statistic_snapshot
+          - claim_statistic_report
+        purpose: insurance operational reporting and statistics snapshot management
+  library-management:
+    project:
+      name: Library Management Platform
+      bounded_context: library-operations
+      platform_scope: complete-platform
+      primary_roles:
+        - Administrator
+        - Librarian
+        - Reader
+        - Auditor
+      required_business_centers:
+        - book-catalog-center
+        - reader-membership-center
+        - circulation-borrow-center
+        - return-inspection-center
+        - reservation-queue-center
+        - acquisition-supplier-center
+        - shelf-inventory-center
+        - notification-center
+        - report-statistics-center
+      business_rules:
+        - book copies must remain traceable to a catalog entry and physical inventory location
+        - borrowing and return workflows must preserve centralized JWT authorization boundaries
+        - reservation queue actions must not bypass reader eligibility and stock availability checks
+        - reporting and notification flows must stay modular and consume library business events through explicit business modules
+    modules:
+      - module: book-catalog-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: book-catalog-center
+        business_center: book-catalog-center
+        package_root: org.eu.originalkeen.business.bookcatalog
+        route_roots:
+          - /v1/business/book-catalog
+        authorities:
+          - business:book-catalog:*
+        entities:
+          - BookCatalog
+          - BookCopy
+        tables:
+          - book_catalog
+          - book_copy
+        purpose: book catalog metadata and copy lifecycle management
+      - module: reader-membership-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: reader-membership-center
+        business_center: reader-membership-center
+        package_root: org.eu.originalkeen.business.readermembership
+        route_roots:
+          - /v1/business/reader-membership
+        authorities:
+          - business:reader-membership:*
+        entities:
+          - ReaderProfile
+          - ReaderMembership
+        tables:
+          - reader_profile
+          - reader_membership
+        purpose: reader account, eligibility, and membership lifecycle management
+      - module: circulation-borrow-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: circulation-borrow-center
+        business_center: circulation-borrow-center
+        package_root: org.eu.originalkeen.business.circulationborrow
+        route_roots:
+          - /v1/business/circulation-borrow
+        authorities:
+          - business:circulation-borrow:*
+        entities:
+          - BorrowOrder
+          - BorrowRecord
+        tables:
+          - borrow_order
+          - borrow_record
+        purpose: borrowing order placement and circulation record management
+      - module: return-inspection-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: return-inspection-center
+        business_center: return-inspection-center
+        package_root: org.eu.originalkeen.business.returninspection
+        route_roots:
+          - /v1/business/return-inspection
+        authorities:
+          - business:return-inspection:*
+        entities:
+          - ReturnInspection
+          - FineAssessment
+        tables:
+          - return_inspection
+          - fine_assessment
+        purpose: return review, overdue handling, and damage assessment management
+      - module: reservation-queue-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: reservation-queue-center
+        business_center: reservation-queue-center
+        package_root: org.eu.originalkeen.business.reservationqueue
+        route_roots:
+          - /v1/business/reservation-queue
+        authorities:
+          - business:reservation-queue:*
+        entities:
+          - BookReservation
+          - ReservationQueueEntry
+        tables:
+          - book_reservation
+          - reservation_queue_entry
+        purpose: reservation queue, waiting list, and fulfillment management
+      - module: acquisition-supplier-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: acquisition-supplier-center
+        business_center: acquisition-supplier-center
+        package_root: org.eu.originalkeen.business.acquisitionsupplier
+        route_roots:
+          - /v1/business/acquisition-supplier
+        authorities:
+          - business:acquisition-supplier:*
+        entities:
+          - BookAcquisition
+          - SupplierProfile
+        tables:
+          - book_acquisition
+          - supplier_profile
+        purpose: procurement planning and supplier collaboration management
+      - module: shelf-inventory-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: shelf-inventory-center
+        business_center: shelf-inventory-center
+        package_root: org.eu.originalkeen.business.shelfinventory
+        route_roots:
+          - /v1/business/shelf-inventory
+        authorities:
+          - business:shelf-inventory:*
+        entities:
+          - ShelfLocation
+          - InventoryCheckRecord
+        tables:
+          - shelf_location
+          - inventory_check_record
+        purpose: shelf organization, stocktake, and in-library inventory management
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        business_center: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/library-notification
+        authorities:
+          - business:library-notification:*
+        entities:
+          - LibraryNotification
+          - NotificationDeliveryRecord
+        tables:
+          - library_notification
+          - notification_delivery_record
+        purpose: borrowing reminder and reader notification delivery management
+      - module: report-statistics-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: report-statistics-center
+        business_center: report-statistics-center
+        package_root: org.eu.originalkeen.business.reportstatistics
+        route_roots:
+          - /v1/business/library-report
+        authorities:
+          - business:library-report:*
+        entities:
+          - LibraryStatisticSnapshot
+          - BorrowStatisticReport
+        tables:
+          - library_statistic_snapshot
+          - borrow_statistic_report
+        purpose: library circulation reporting and statistics snapshot management

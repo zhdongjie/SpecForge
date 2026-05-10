@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: acquisition_supplier_management-project-v1
+  target_module_id: acquisition-supplier-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - acquisition-supplier-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: acquisition-supplier-management
+  bounded_context: acquisition-supplier-center
+  semantic_role: business-domain
+  responsibility_code: acquisition_supplier_management
+  package_root: org.eu.originalkeen.business.acquisitionsupplier
+  route_namespace:
+    acquisition-supplier-management: /v1/business/acquisition-supplier
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - BookAcquisition
+  - SupplierProfile
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: acquisition_supplier_management
+  route_prefix: /v1/business/acquisition-supplier
+  aggregate: BookAcquisition
+  capability_ids:
+  - create-acquisition_supplier_management
+  - update-acquisition_supplier_management
+  - batch-delete-acquisition_supplier_management
+  - enquiry-acquisition_supplier_management-page
+  - enquiry-acquisition_supplier_management-details
+  - enquiry-acquisition_supplier_management-list
+capabilities:
+- capability_id: create-acquisition_supplier_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: acquisition_supplier_management
+  http_method: POST
+  route: /
+  authority: business:acquisition-supplier:create
+  transaction: read-write
+  input_dto: CreateAcquisitionSupplierManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-acquisition_supplier_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: acquisition_supplier_management
+  http_method: PUT
+  route: /
+  authority: business:acquisition-supplier:update
+  transaction: read-write
+  input_dto: UpdateAcquisitionSupplierManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-acquisition_supplier_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: acquisition_supplier_management
+  http_method: DELETE
+  route: /
+  authority: business:acquisition-supplier:delete
+  transaction: read-write
+  input_dto: AcquisitionSupplierManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-acquisition_supplier_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: acquisition_supplier_management
+  http_method: GET
+  route: /page
+  authority: business:acquisition-supplier:page
+  transaction: read-only
+  input_dto: EnquiryAcquisitionSupplierManagementPageDto
+  output_vo: PageVo<AcquisitionSupplierManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-acquisition_supplier_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: acquisition_supplier_management
+  http_method: GET
+  route: /{id}
+  authority: business:acquisition-supplier:details
+  transaction: read-only
+  input_dto: AcquisitionSupplierManagementIdPath
+  output_vo: AcquisitionSupplierManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-acquisition_supplier_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: acquisition_supplier_management
+  http_method: GET
+  route: /list
+  authority: business:acquisition-supplier:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<AcquisitionSupplierManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: BookAcquisition
+    table: book_acquisition
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: SupplierProfile
+    table: supplier_profile
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - AcquisitionSupplierManagementResource
+  manager:
+  - AcquisitionSupplierManagementManager
+  service:
+  - AcquisitionSupplierManagementService
+  service_impl:
+  - AcquisitionSupplierManagementServiceImpl
+  mapper:
+  - AcquisitionSupplierManagementMapper
+  entity: *id001
+  dto:
+  - CreateAcquisitionSupplierManagementDto
+  - UpdateAcquisitionSupplierManagementDto
+  - EnquiryAcquisitionSupplierManagementPageDto
+  vo:
+  - AcquisitionSupplierManagementDetailsVo
+  - AcquisitionSupplierManagementPageVo
+  - AcquisitionSupplierManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-acquisition_supplier_management
+    - update-acquisition_supplier_management
+    - batch-delete-acquisition_supplier_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

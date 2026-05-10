@@ -14,11 +14,11 @@ module_identity:
   responsibility_code: notification_management
   package_root: org.eu.originalkeen.business.notification
   route_roots:
-  - /v1/business/notification
+  - /v1/business/library-notification
 api_groups:
 - group_id: notification_management
-  route_prefix: /v1/business/notification
-  aggregate: NotificationMessage
+  route_prefix: /v1/business/library-notification
+  aggregate: LibraryNotification
   capability_ids:
   - create-notification_management
   - update-notification_management
@@ -29,8 +29,8 @@ api_groups:
 capabilities: []
 entity_graph:
   entities:
-  - entity_id: NotificationMessage
-    table: notification_message
+  - entity_id: LibraryNotification
+    table: library_notification
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root
@@ -80,11 +80,11 @@ integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-    - business:notification:*
+    - business:library-notification:*
   persistence:
     database: mysql
     required_tables:
-    - notification_message
+    - library_notification
     - notification_delivery_record
 code_conventions:
   naming_stability: strict

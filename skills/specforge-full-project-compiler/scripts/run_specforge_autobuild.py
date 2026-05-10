@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from workspace_lock import acquire_workspace_lock
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,31 +26,75 @@ def main() -> int:
         print(f"[ERROR] Missing runtime entrypoint: {main_py}", file=sys.stderr)
         return 2
 
-    command = [
-        sys.executable,
-        str(main_py),
-        "--auto-build",
-        "--build-plan",
-        args.build_plan,
-        "--run-id",
-        args.run_id,
-    ]
-    completed = subprocess.run(command, cwd=runtime_root, check=False)
-    if completed.returncode != 0:
-        return completed.returncode
+    owner = f"run_specforge_autobuild:{args.run_id}"
+    with acquire_workspace_lock(repo_root, owner):
+        command = [
+            sys.executable,
+            str(main_py),
+            "--auto-build",
+            "--build-plan",
+            args.build_plan,
+            "--run-id",
+            args.run_id,
+        ]
+        completed = subprocess.run(command, cwd=runtime_root, check=False)
+        if completed.returncode != 0:
+            return completed.returncode
 
-    build_plan_path = resolve_build_plan(repo_root, args.build_plan)
-    build_plan = yaml.safe_load(build_plan_path.read_text(encoding="utf-8")) or {}
-    final_output_dir = resolve_output_dir(runtime_root, build_plan, build_plan_path)
-    validation_command = [
-        sys.executable,
-        str(Path(__file__).resolve().parent / "export_backend_api_smoke.py"),
-        "--backend-root",
-        str(final_output_dir),
-        "--validate-business-contract",
-    ]
-    validation = subprocess.run(validation_command, cwd=repo_root, check=False)
-    return validation.returncode
+        build_plan_path = resolve_build_plan(repo_root, args.build_plan)
+        build_plan = yaml.safe_load(build_plan_path.read_text(encoding="utf-8")) or {}
+        final_output_dir = resolve_output_dir(runtime_root, build_plan, build_plan_path)
+        validation_command = [
+            sys.executable,
+            str(Path(__file__).resolve().parent / "export_backend_api_smoke.py"),
+            "--backend-root",
+            str(final_output_dir),
+            "--validate-business-contract",
+        ]
+        validation = subprocess.run(validation_command, cwd=repo_root, check=False)
+        if validation.returncode != 0:
+            return validation.returncode
+
+        delivery_command = [
+            sys.executable,
+            str(Path(__file__).resolve().parent / "validate_backend_delivery.py"),
+            "--repo-root",
+            str(repo_root),
+            "--run-id",
+            args.run_id,
+            "--build-plan",
+            args.build_plan,
+        ]
+        delivery = subprocess.run(delivery_command, cwd=repo_root, check=False)
+        if delivery.returncode != 0:
+            return delivery.returncode
+
+        sql_assets_command = [
+            sys.executable,
+            str(Path(__file__).resolve().parent / "validate_sql_assets.py"),
+            "--repo-root",
+            str(repo_root),
+            "--run-id",
+            args.run_id,
+            "--build-plan",
+            args.build_plan,
+        ]
+        sql_assets = subprocess.run(sql_assets_command, cwd=repo_root, check=False)
+        if sql_assets.returncode != 0:
+            return sql_assets.returncode
+
+        auth_surface_command = [
+            sys.executable,
+            str(Path(__file__).resolve().parent / "validate_auth_surface.py"),
+            "--repo-root",
+            str(repo_root),
+            "--run-id",
+            args.run_id,
+            "--build-plan",
+            args.build_plan,
+        ]
+        auth_surface = subprocess.run(auth_surface_command, cwd=repo_root, check=False)
+        return auth_surface.returncode
 
 
 def resolve_build_plan(repo_root: Path, build_plan: str) -> Path:

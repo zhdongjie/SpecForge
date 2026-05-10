@@ -46,6 +46,11 @@ requirement
 - Final success means both:
   - compile passes
   - Spring Boot context boots
+- Final success also requires:
+  - business contract validation passes
+  - SQL asset validation passes
+  - auth surface validation passes
+  - expected enabled business modules are present in the exported backend
 - If the request asks for a full platform rather than an MVP, the project spec and assembly plan must reflect business-center level module coverage instead of a thin skeleton.
 
 ## Completion Criteria
@@ -54,6 +59,10 @@ Return success only if:
 
 - `auto-build-report.yaml` says `compile_status: PASS`
 - `auto-build-report.yaml` says `boot_status: PASS`
+- `business-contract-validation.yaml` says `validation.status: PASS`
+- `delivery-validation.yaml` says `status: PASS`
+- `sql-asset-validation.yaml` says `status: PASS`
+- `auth-surface-validation.yaml` says `status: PASS`
 - final backend exists under `specforge-runtime/outputs/`
 
 For complete-platform requests, also require the authored spec set to cover:

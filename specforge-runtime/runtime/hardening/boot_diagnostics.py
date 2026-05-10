@@ -23,6 +23,8 @@ class BootDiagnostics:
         "Tomcat started on port",
         "Netty started on port",
     )
+    DEFAULT_MAX_TIMEOUT_SECONDS = 900
+    DEFAULT_IDLE_TIMEOUT_SECONDS = 180
 
     def __init__(self, project_root: Path, logs_root: Path) -> None:
         self.project_root = project_root
@@ -36,10 +38,15 @@ class BootDiagnostics:
         self.redis_verifier = RedisVerifier()
         self.security_boot_verifier = SecurityBootVerifier()
 
-    def run(self, timeout_seconds: int = 120) -> dict[str, Any]:
+    def run(
+        self,
+        timeout_seconds: int = DEFAULT_MAX_TIMEOUT_SECONDS,
+        idle_timeout_seconds: int = DEFAULT_IDLE_TIMEOUT_SECONDS,
+    ) -> dict[str, Any]:
         environment = self.compile_diagnostics._resolve_environment()
         command = [
             environment["maven_command"],
+            "-ntp",
             "-Dmaven.repo.local=.m2/repository",
             "-DskipTests",
             "spring-boot:run",
@@ -54,16 +61,23 @@ class BootDiagnostics:
             env=environment["env"],
         )
         output_lines: list[str] = []
-        deadline = time.time() + timeout_seconds
         started = False
+        start_time = time.time()
+        deadline = start_time + timeout_seconds
+        last_output_at = start_time
+        failure_reason = ""
         try:
             while time.time() < deadline:
                 line = process.stdout.readline() if process.stdout is not None else ""
                 if line:
                     output_lines.append(line.rstrip())
+                    last_output_at = time.time()
                     if any(marker in line for marker in self.START_MARKERS):
                         started = True
                         break
+                elif process.poll() is None and time.time() - last_output_at >= idle_timeout_seconds:
+                    failure_reason = "startup-idle-timeout"
+                    break
                 if process.poll() is not None and not line:
                     break
         finally:
@@ -74,10 +88,19 @@ class BootDiagnostics:
                 except subprocess.TimeoutExpired:
                     process.kill()
         output = "\n".join(output_lines[-300:])
+        elapsed_seconds = round(time.time() - start_time, 3)
+        if not started and not failure_reason and process.poll() is None:
+            failure_reason = "startup-timeout"
+        elif not started and not failure_reason and process.poll() is not None:
+            failure_reason = "process-exited-before-start"
         diagnostics = {
             "status": "PASS" if started else "FAIL",
             "command": command,
             "environment_binding": environment["binding"],
+            "timeout_seconds": timeout_seconds,
+            "idle_timeout_seconds": idle_timeout_seconds,
+            "elapsed_seconds": elapsed_seconds,
+            "failure_reason": None if started else failure_reason,
             "boot_failures": [] if started else self.failure_classifier.classify(output),
             "spring_context": self.spring_context_verifier.summarize(output),
             "mapper_scan": self.mapper_scan_verifier.verify(output),

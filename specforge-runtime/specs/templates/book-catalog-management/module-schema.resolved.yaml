@@ -1,0 +1,102 @@
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: book_catalog_management-resolved-v1
+  target_module_id: book-catalog-management
+  bounded_context: book-catalog-center
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+module_identity:
+  module_name: book-catalog-management
+  semantic_role: business-domain
+  responsibility_code: book_catalog_management
+  package_root: org.eu.originalkeen.business.bookcatalog
+  route_roots:
+  - /v1/business/book-catalog
+api_groups:
+- group_id: book_catalog_management
+  route_prefix: /v1/business/book-catalog
+  aggregate: BookCatalog
+  capability_ids:
+  - create-book_catalog_management
+  - update-book_catalog_management
+  - batch-delete-book_catalog_management
+  - enquiry-book_catalog_management-page
+  - enquiry-book_catalog_management-details
+  - enquiry-book_catalog_management-list
+capabilities: []
+entity_graph:
+  entities:
+  - entity_id: BookCatalog
+    table: book_catalog
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: BookCopy
+    table: book_copy
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-book_catalog_management
+    - update-book_catalog_management
+    - batch-delete-book_catalog_management
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+    - business:book-catalog:*
+  persistence:
+    database: mysql
+    required_tables:
+    - book_catalog
+    - book_copy
+code_conventions:
+  naming_stability: strict
+  route_style: business-domain-aligned
+  transaction_style: manager-boundary
+validation_hooks:
+  pre_generation:
+  - hook-discovery-baseline-complete
+  post_unit:
+  - hook-artifact-name-convention
+  - hook-package-placement-check
+  final:
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
+blueprint_status: default-enabled-validated-blueprint-for-BookCatalogManagement
