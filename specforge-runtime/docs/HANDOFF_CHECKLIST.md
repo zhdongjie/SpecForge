@@ -11,6 +11,8 @@ Use this checklist before handing the repository to another machine, another Cod
 - `specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md`
 - `specforge-runtime/docs/CODEX_STARTER_PROMPTS.md`
 - `specforge-runtime/docs/REQUIREMENT_TEMPLATE.md`
+- `specforge-runtime/docs/FRONTEND_HANDOFF_BACKEND_CONTRACT.md`
+- `specforge-runtime/docs/FRONTEND_ZERO_CONTEXT_PROMPTS.md`
 
 ## Minimum Files To Carry
 

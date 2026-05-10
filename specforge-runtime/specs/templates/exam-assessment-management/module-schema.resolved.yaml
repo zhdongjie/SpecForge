@@ -1,0 +1,102 @@
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: exam_assessment_management-resolved-v1
+  target_module_id: exam-assessment-management
+  bounded_context: exam-assessment-center
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+module_identity:
+  module_name: exam-assessment-management
+  semantic_role: business-domain
+  responsibility_code: exam_assessment_management
+  package_root: org.eu.originalkeen.business.examassessment
+  route_roots:
+  - /v1/business/exam-assessment
+api_groups:
+- group_id: exam_assessment_management
+  route_prefix: /v1/business/exam-assessment
+  aggregate: CourseExam
+  capability_ids:
+  - create-exam_assessment_management
+  - update-exam_assessment_management
+  - batch-delete-exam_assessment_management
+  - enquiry-exam_assessment_management-page
+  - enquiry-exam_assessment_management-details
+  - enquiry-exam_assessment_management-list
+capabilities: []
+entity_graph:
+  entities:
+  - entity_id: CourseExam
+    table: course_exam
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: AssessmentRecord
+    table: assessment_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-exam_assessment_management
+    - update-exam_assessment_management
+    - batch-delete-exam_assessment_management
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+    - business:exam-assessment:*
+  persistence:
+    database: mysql
+    required_tables:
+    - course_exam
+    - assessment_record
+code_conventions:
+  naming_stability: strict
+  route_style: business-domain-aligned
+  transaction_style: manager-boundary
+validation_hooks:
+  pre_generation:
+  - hook-discovery-baseline-complete
+  post_unit:
+  - hook-artifact-name-convention
+  - hook-package-placement-check
+  final:
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
+blueprint_status: default-enabled-validated-blueprint-for-ExamAssessmentManagement

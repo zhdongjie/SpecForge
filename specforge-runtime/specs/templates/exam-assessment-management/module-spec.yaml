@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: exam_assessment_management-project-v1
+  target_module_id: exam-assessment-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - exam-assessment-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: exam-assessment-management
+  bounded_context: exam-assessment-center
+  semantic_role: business-domain
+  responsibility_code: exam_assessment_management
+  package_root: org.eu.originalkeen.business.examassessment
+  route_namespace:
+    exam-assessment-management: /v1/business/exam-assessment
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - CourseExam
+  - AssessmentRecord
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: exam_assessment_management
+  route_prefix: /v1/business/exam-assessment
+  aggregate: CourseExam
+  capability_ids:
+  - create-exam_assessment_management
+  - update-exam_assessment_management
+  - batch-delete-exam_assessment_management
+  - enquiry-exam_assessment_management-page
+  - enquiry-exam_assessment_management-details
+  - enquiry-exam_assessment_management-list
+capabilities:
+- capability_id: create-exam_assessment_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: exam_assessment_management
+  http_method: POST
+  route: /
+  authority: business:exam-assessment:create
+  transaction: read-write
+  input_dto: CreateExamAssessmentManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-exam_assessment_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: exam_assessment_management
+  http_method: PUT
+  route: /
+  authority: business:exam-assessment:update
+  transaction: read-write
+  input_dto: UpdateExamAssessmentManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-exam_assessment_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: exam_assessment_management
+  http_method: DELETE
+  route: /
+  authority: business:exam-assessment:delete
+  transaction: read-write
+  input_dto: ExamAssessmentManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-exam_assessment_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: exam_assessment_management
+  http_method: GET
+  route: /page
+  authority: business:exam-assessment:page
+  transaction: read-only
+  input_dto: EnquiryExamAssessmentManagementPageDto
+  output_vo: PageVo<ExamAssessmentManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-exam_assessment_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: exam_assessment_management
+  http_method: GET
+  route: /{id}
+  authority: business:exam-assessment:details
+  transaction: read-only
+  input_dto: ExamAssessmentManagementIdPath
+  output_vo: ExamAssessmentManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-exam_assessment_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: exam_assessment_management
+  http_method: GET
+  route: /list
+  authority: business:exam-assessment:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ExamAssessmentManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: CourseExam
+    table: course_exam
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: AssessmentRecord
+    table: assessment_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - ExamAssessmentManagementResource
+  manager:
+  - ExamAssessmentManagementManager
+  service:
+  - ExamAssessmentManagementService
+  service_impl:
+  - ExamAssessmentManagementServiceImpl
+  mapper:
+  - ExamAssessmentManagementMapper
+  entity: *id001
+  dto:
+  - CreateExamAssessmentManagementDto
+  - UpdateExamAssessmentManagementDto
+  - EnquiryExamAssessmentManagementPageDto
+  vo:
+  - ExamAssessmentManagementDetailsVo
+  - ExamAssessmentManagementPageVo
+  - ExamAssessmentManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-exam_assessment_management
+    - update-exam_assessment_management
+    - batch-delete-exam_assessment_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

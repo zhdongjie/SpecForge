@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: enrollment_selection_management-project-v1
+  target_module_id: enrollment-selection-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - enrollment-selection-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: enrollment-selection-management
+  bounded_context: enrollment-selection-center
+  semantic_role: business-domain
+  responsibility_code: enrollment_selection_management
+  package_root: org.eu.originalkeen.business.enrollmentselection
+  route_namespace:
+    enrollment-selection-management: /v1/business/enrollment-selection
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - CourseEnrollment
+  - EnrollmentSelectionRule
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: enrollment_selection_management
+  route_prefix: /v1/business/enrollment-selection
+  aggregate: CourseEnrollment
+  capability_ids:
+  - create-enrollment_selection_management
+  - update-enrollment_selection_management
+  - batch-delete-enrollment_selection_management
+  - enquiry-enrollment_selection_management-page
+  - enquiry-enrollment_selection_management-details
+  - enquiry-enrollment_selection_management-list
+capabilities:
+- capability_id: create-enrollment_selection_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: enrollment_selection_management
+  http_method: POST
+  route: /
+  authority: business:enrollment-selection:create
+  transaction: read-write
+  input_dto: CreateEnrollmentSelectionManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-enrollment_selection_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: enrollment_selection_management
+  http_method: PUT
+  route: /
+  authority: business:enrollment-selection:update
+  transaction: read-write
+  input_dto: UpdateEnrollmentSelectionManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-enrollment_selection_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: enrollment_selection_management
+  http_method: DELETE
+  route: /
+  authority: business:enrollment-selection:delete
+  transaction: read-write
+  input_dto: EnrollmentSelectionManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-enrollment_selection_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: enrollment_selection_management
+  http_method: GET
+  route: /page
+  authority: business:enrollment-selection:page
+  transaction: read-only
+  input_dto: EnquiryEnrollmentSelectionManagementPageDto
+  output_vo: PageVo<EnrollmentSelectionManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-enrollment_selection_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: enrollment_selection_management
+  http_method: GET
+  route: /{id}
+  authority: business:enrollment-selection:details
+  transaction: read-only
+  input_dto: EnrollmentSelectionManagementIdPath
+  output_vo: EnrollmentSelectionManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-enrollment_selection_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: enrollment_selection_management
+  http_method: GET
+  route: /list
+  authority: business:enrollment-selection:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<EnrollmentSelectionManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: CourseEnrollment
+    table: course_enrollment
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: EnrollmentSelectionRule
+    table: enrollment_selection_rule
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - EnrollmentSelectionManagementResource
+  manager:
+  - EnrollmentSelectionManagementManager
+  service:
+  - EnrollmentSelectionManagementService
+  service_impl:
+  - EnrollmentSelectionManagementServiceImpl
+  mapper:
+  - EnrollmentSelectionManagementMapper
+  entity: *id001
+  dto:
+  - CreateEnrollmentSelectionManagementDto
+  - UpdateEnrollmentSelectionManagementDto
+  - EnquiryEnrollmentSelectionManagementPageDto
+  vo:
+  - EnrollmentSelectionManagementDetailsVo
+  - EnrollmentSelectionManagementPageVo
+  - EnrollmentSelectionManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-enrollment_selection_management
+    - update-enrollment_selection_management
+    - batch-delete-enrollment_selection_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

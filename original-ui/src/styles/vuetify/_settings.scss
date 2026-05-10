@@ -1,0 +1,39 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:meta';
+@use 'vuetify/lib/styles/tools/functions' as *;
+@use 'elevations';
+@use 'typography';
+
+$transition-property: box-shadow, opacity !default;
+
+@forward 'vuetify/settings' with (
+  // 👉 global font family
+  $body-font-family: typography.$body-font-family,
+  $heading-font-family: typography.$heading-font-family,
+  // 👉 typography
+  $typography: typography.$typography,
+  // 👉 global border radius
+  $border-radius-root: 8px,
+  // 👉 global shadow
+  $shadow-key-umbra-opacity: elevations.$shadow-key-umbra-opacity,
+  $shadow-key-penumbra-opacity: elevations.$shadow-key-penumbra-opacity,
+  $shadow-key-ambient-opacity: elevations.$shadow-key-ambient-opacity,
+  $shadow-key-umbra: elevations.$shadow-key-umbra,
+  $shadow-key-penumbra: elevations.$shadow-key-penumbra,
+  $shadow-key-ambient: elevations.$shadow-key-ambient,
+  // 👉 divider
+  $divider-opacity: var(--v-border-opacity),
+  $divider-border-color: rgb(var(--v-border-color)),
+  // 👉 list
+  $list-nav-padding: 10px,
+  $list-item-nav-title-font-size: 0.875rem,
+  $list-item-icon-margin-start: 12px,
+  $list-item-icon-margin-end: 12px,
+  $list-item-icon-opacity: var(--v-high-emphasis-opacity),
+  $list-item-prepend-size: 8px,
+  // 👉 card
+  $card-transition-property: $transition-property,
+  // 👉 button
+  $button-transition-property: $transition-property
+);

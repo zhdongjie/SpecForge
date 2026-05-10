@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: move_in_out_management-project-v1
+  target_module_id: move-in-out-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - move-in-move-out-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: move-in-out-management
+  bounded_context: move-in-move-out-center
+  semantic_role: business-domain
+  responsibility_code: move_in_out_management
+  package_root: org.eu.originalkeen.business.moveinout
+  route_namespace:
+    move-in-out-management: /v1/business/move-in-out
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - MoveInRecord
+  - MoveOutRecord
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: move_in_out_management
+  route_prefix: /v1/business/move-in-out
+  aggregate: MoveInRecord
+  capability_ids:
+  - create-move_in_out_management
+  - update-move_in_out_management
+  - batch-delete-move_in_out_management
+  - enquiry-move_in_out_management-page
+  - enquiry-move_in_out_management-details
+  - enquiry-move_in_out_management-list
+capabilities:
+- capability_id: create-move_in_out_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: move_in_out_management
+  http_method: POST
+  route: /
+  authority: business:move-in-out:create
+  transaction: read-write
+  input_dto: CreateMoveInOutManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-move_in_out_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: move_in_out_management
+  http_method: PUT
+  route: /
+  authority: business:move-in-out:update
+  transaction: read-write
+  input_dto: UpdateMoveInOutManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-move_in_out_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: move_in_out_management
+  http_method: DELETE
+  route: /
+  authority: business:move-in-out:delete
+  transaction: read-write
+  input_dto: MoveInOutManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-move_in_out_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: move_in_out_management
+  http_method: GET
+  route: /page
+  authority: business:move-in-out:page
+  transaction: read-only
+  input_dto: EnquiryMoveInOutManagementPageDto
+  output_vo: PageVo<MoveInOutManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-move_in_out_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: move_in_out_management
+  http_method: GET
+  route: /{id}
+  authority: business:move-in-out:details
+  transaction: read-only
+  input_dto: MoveInOutManagementIdPath
+  output_vo: MoveInOutManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-move_in_out_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: move_in_out_management
+  http_method: GET
+  route: /list
+  authority: business:move-in-out:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<MoveInOutManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: MoveInRecord
+    table: move_in_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: MoveOutRecord
+    table: move_out_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - MoveInOutManagementResource
+  manager:
+  - MoveInOutManagementManager
+  service:
+  - MoveInOutManagementService
+  service_impl:
+  - MoveInOutManagementServiceImpl
+  mapper:
+  - MoveInOutManagementMapper
+  entity: *id001
+  dto:
+  - CreateMoveInOutManagementDto
+  - UpdateMoveInOutManagementDto
+  - EnquiryMoveInOutManagementPageDto
+  vo:
+  - MoveInOutManagementDetailsVo
+  - MoveInOutManagementPageVo
+  - MoveInOutManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-move_in_out_management
+    - update-move_in_out_management
+    - batch-delete-move_in_out_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

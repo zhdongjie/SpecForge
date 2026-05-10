@@ -55,6 +55,16 @@ def main() -> int:
         if validation.returncode != 0:
             return validation.returncode
 
+        delivery_assets_command = [
+            sys.executable,
+            str(Path(__file__).resolve().parent / "export_backend_delivery_assets.py"),
+            "--backend-root",
+            str(final_output_dir),
+        ]
+        delivery_assets = subprocess.run(delivery_assets_command, cwd=repo_root, check=False)
+        if delivery_assets.returncode != 0:
+            return delivery_assets.returncode
+
         delivery_command = [
             sys.executable,
             str(Path(__file__).resolve().parent / "validate_backend_delivery.py"),

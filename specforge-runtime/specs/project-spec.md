@@ -1,5 +1,5 @@
 project:
-  name: Library Management Platform
+  name: Dormitory Management Platform
   type: springboot-vue3
   platform_scope: complete-platform
 architecture:
@@ -7,156 +7,157 @@ architecture:
   description: A modular-monolith Spring Boot backend compiled from SpecForge project
     and module specifications.
 modules:
-- name: book-catalog-management
-  responsibility: book catalog metadata and copy lifecycle management
-  boundaries: Owns BookCatalog, BookCopy within book-catalog-center.
+- name: dormitory-building-management
+  responsibility: dormitory building, floor, and physical capacity management
+  boundaries: Owns DormitoryBuilding, DormitoryFloor within dormitory-building-center.
   apis:
-  - book-catalog-management administration
+  - dormitory-building-management administration
   entities:
-  - BookCatalog
-  - BookCopy
-- name: reader-membership-management
-  responsibility: reader account, eligibility, and membership lifecycle management
-  boundaries: Owns ReaderProfile, ReaderMembership within reader-membership-center.
+  - DormitoryBuilding
+  - DormitoryFloor
+- name: room-bed-allocation-management
+  responsibility: room inventory, bed assignment, and occupancy allocation management
+  boundaries: Owns DormitoryRoom, BedAllocation within room-bed-allocation-center.
   apis:
-  - reader-membership-management administration
+  - room-bed-allocation-management administration
   entities:
-  - ReaderProfile
-  - ReaderMembership
-- name: circulation-borrow-management
-  responsibility: borrowing order placement and circulation record management
-  boundaries: Owns BorrowOrder, BorrowRecord within circulation-borrow-center.
+  - DormitoryRoom
+  - BedAllocation
+- name: move-in-out-management
+  responsibility: student accommodation check-in and check-out lifecycle management
+  boundaries: Owns MoveInRecord, MoveOutRecord within move-in-move-out-center.
   apis:
-  - circulation-borrow-management administration
+  - move-in-out-management administration
   entities:
-  - BorrowOrder
-  - BorrowRecord
-- name: return-inspection-management
-  responsibility: return review, overdue handling, and damage assessment management
-  boundaries: Owns ReturnInspection, FineAssessment within return-inspection-center.
+  - MoveInRecord
+  - MoveOutRecord
+- name: repair-maintenance-management
+  responsibility: dormitory repair reporting and maintenance dispatch management
+  boundaries: Owns RepairWorkOrder, MaintenanceDispatchRecord within repair-maintenance-center.
   apis:
-  - return-inspection-management administration
+  - repair-maintenance-management administration
   entities:
-  - ReturnInspection
-  - FineAssessment
-- name: reservation-queue-management
-  responsibility: reservation queue, waiting list, and fulfillment management
-  boundaries: Owns BookReservation, ReservationQueueEntry within reservation-queue-center.
+  - RepairWorkOrder
+  - MaintenanceDispatchRecord
+- name: visitor-access-management
+  responsibility: dormitory visitor application and access record management
+  boundaries: Owns VisitorAccessRequest, VisitorAccessRecord within visitor-access-center.
   apis:
-  - reservation-queue-management administration
+  - visitor-access-management administration
   entities:
-  - BookReservation
-  - ReservationQueueEntry
-- name: acquisition-supplier-management
-  responsibility: procurement planning and supplier collaboration management
-  boundaries: Owns BookAcquisition, SupplierProfile within acquisition-supplier-center.
+  - VisitorAccessRequest
+  - VisitorAccessRecord
+- name: fee-billing-management
+  responsibility: accommodation billing and payment collection management
+  boundaries: Owns AccommodationBill, PaymentCollectionRecord within fee-billing-center.
   apis:
-  - acquisition-supplier-management administration
+  - fee-billing-management administration
   entities:
-  - BookAcquisition
-  - SupplierProfile
-- name: shelf-inventory-management
-  responsibility: shelf organization, stocktake, and in-library inventory management
-  boundaries: Owns ShelfLocation, InventoryCheckRecord within shelf-inventory-center.
+  - AccommodationBill
+  - PaymentCollectionRecord
+- name: hygiene-inspection-management
+  responsibility: dormitory hygiene inspection and scoring management
+  boundaries: Owns HygieneInspection, HygieneScoreRecord within hygiene-inspection-center.
   apis:
-  - shelf-inventory-management administration
+  - hygiene-inspection-management administration
   entities:
-  - ShelfLocation
-  - InventoryCheckRecord
+  - HygieneInspection
+  - HygieneScoreRecord
 - name: notification-management
-  responsibility: borrowing reminder and reader notification delivery management
-  boundaries: Owns LibraryNotification, NotificationDeliveryRecord within notification-center.
+  responsibility: accommodation event and policy notification delivery management
+  boundaries: Owns DormitoryNotification, NotificationDeliveryRecord within notification-center.
   apis:
   - notification-management administration
   entities:
-  - LibraryNotification
+  - DormitoryNotification
   - NotificationDeliveryRecord
 - name: report-statistics-management
-  responsibility: library circulation reporting and statistics snapshot management
-  boundaries: Owns LibraryStatisticSnapshot, BorrowStatisticReport within report-statistics-center.
+  responsibility: dormitory occupancy reporting and statistics snapshot management
+  boundaries: Owns DormitoryStatisticSnapshot, OccupancyStatisticReport within report-statistics-center.
   apis:
   - report-statistics-management administration
   entities:
-  - LibraryStatisticSnapshot
-  - BorrowStatisticReport
+  - DormitoryStatisticSnapshot
+  - OccupancyStatisticReport
 features:
-- Support Book Catalog Management workflows.
-- Support Reader Membership Management workflows.
-- Support Circulation Borrow Management workflows.
-- Support Return Inspection Management workflows.
-- Support Reservation Queue Management workflows.
-- Support Acquisition Supplier Management workflows.
-- Support Shelf Inventory Management workflows.
+- Support Dormitory Building Management workflows.
+- Support Room Bed Allocation Management workflows.
+- Support Move In Out Management workflows.
+- Support Repair Maintenance Management workflows.
+- Support Visitor Access Management workflows.
+- Support Fee Billing Management workflows.
+- Support Hygiene Inspection Management workflows.
 - Support Notification Management workflows.
 - Support Report Statistics Management workflows.
-- Preserve business-center coverage for book-catalog-center.
-- Preserve business-center coverage for reader-membership-center.
-- Preserve business-center coverage for circulation-borrow-center.
-- Preserve business-center coverage for return-inspection-center.
-- Preserve business-center coverage for reservation-queue-center.
-- Preserve business-center coverage for acquisition-supplier-center.
-- Preserve business-center coverage for shelf-inventory-center.
+- Preserve business-center coverage for dormitory-building-center.
+- Preserve business-center coverage for room-bed-allocation-center.
+- Preserve business-center coverage for move-in-move-out-center.
+- Preserve business-center coverage for repair-maintenance-center.
+- Preserve business-center coverage for visitor-access-center.
+- Preserve business-center coverage for fee-billing-center.
+- Preserve business-center coverage for hygiene-inspection-center.
 - Preserve business-center coverage for notification-center.
 - Preserve business-center coverage for report-statistics-center.
 auth:
   type: jwt
   roles:
   - Administrator
-  - Librarian
-  - Reader
-  - Auditor
+  - DormitoryManager
+  - Student
+  - Counselor
 database:
   type: mysql
   tables:
-  - name: book_catalog
-    purpose: Persistence for book-catalog-management
-  - name: book_copy
-    purpose: Persistence for book-catalog-management
-  - name: reader_profile
-    purpose: Persistence for reader-membership-management
-  - name: reader_membership
-    purpose: Persistence for reader-membership-management
-  - name: borrow_order
-    purpose: Persistence for circulation-borrow-management
-  - name: borrow_record
-    purpose: Persistence for circulation-borrow-management
-  - name: return_inspection
-    purpose: Persistence for return-inspection-management
-  - name: fine_assessment
-    purpose: Persistence for return-inspection-management
-  - name: book_reservation
-    purpose: Persistence for reservation-queue-management
-  - name: reservation_queue_entry
-    purpose: Persistence for reservation-queue-management
-  - name: book_acquisition
-    purpose: Persistence for acquisition-supplier-management
-  - name: supplier_profile
-    purpose: Persistence for acquisition-supplier-management
-  - name: shelf_location
-    purpose: Persistence for shelf-inventory-management
-  - name: inventory_check_record
-    purpose: Persistence for shelf-inventory-management
-  - name: library_notification
+  - name: dormitory_building
+    purpose: Persistence for dormitory-building-management
+  - name: dormitory_floor
+    purpose: Persistence for dormitory-building-management
+  - name: dormitory_room
+    purpose: Persistence for room-bed-allocation-management
+  - name: bed_allocation
+    purpose: Persistence for room-bed-allocation-management
+  - name: move_in_record
+    purpose: Persistence for move-in-out-management
+  - name: move_out_record
+    purpose: Persistence for move-in-out-management
+  - name: repair_work_order
+    purpose: Persistence for repair-maintenance-management
+  - name: maintenance_dispatch_record
+    purpose: Persistence for repair-maintenance-management
+  - name: visitor_access_request
+    purpose: Persistence for visitor-access-management
+  - name: visitor_access_record
+    purpose: Persistence for visitor-access-management
+  - name: accommodation_bill
+    purpose: Persistence for fee-billing-management
+  - name: payment_collection_record
+    purpose: Persistence for fee-billing-management
+  - name: hygiene_inspection
+    purpose: Persistence for hygiene-inspection-management
+  - name: hygiene_score_record
+    purpose: Persistence for hygiene-inspection-management
+  - name: dormitory_notification
     purpose: Persistence for notification-management
   - name: notification_delivery_record
     purpose: Persistence for notification-management
-  - name: library_statistic_snapshot
+  - name: dormitory_statistic_snapshot
     purpose: Persistence for report-statistics-management
-  - name: borrow_statistic_report
+  - name: occupancy_statistic_report
     purpose: Persistence for report-statistics-management
 frontend:
   pages: []
 business_rules:
-- book copies must remain traceable to a catalog entry and physical inventory location
-- borrowing and return workflows must preserve centralized JWT authorization boundaries
-- reservation queue actions must not bypass reader eligibility and stock availability
-  checks
-- reporting and notification flows must stay modular and consume library business
-  events through explicit business modules
-- Build a complete modular-monolith Spring Boot library management backend covering
-  book catalog center, reader membership center, circulation borrowing center, return
-  inspection center, reservation queue center, acquisition supplier center, shelf
-  inventory center, notification center, and statistics reporting center.
+- room and bed allocations must remain consistent with building, floor, and occupancy
+  capacity constraints
+- move-in, move-out, and visitor actions must remain behind centralized JWT authorization
+- repair, hygiene, and billing workflows must stay modular with explicit business
+  ownership
+- reporting and notifications must reflect dormitory events without leaking across
+  business boundaries
+- Build a complete modular-monolith Spring Boot dormitory management backend covering
+  dormitory building center, room bed allocation center, move-in move-out center,
+  repair maintenance center, visitor access center, fee billing center, hygiene inspection
+  center, notification center, and statistics reporting center.
 dependencies:
   backend:
   - Spring Boot

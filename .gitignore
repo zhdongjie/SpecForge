@@ -134,6 +134,7 @@ coverage/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.pnpm-store/
 
 # SpecForge runtime artifacts
 specforge-runtime/runs/
@@ -153,6 +154,21 @@ specforge-runtime/.ruff_cache/
 # Repository-local IDE and key material safety
 /.idea/
 /.jwk/
+/original-ui/.pnpm-store/
+/original-ui/node_modules/
+/original-ui/dist/
+/original-ui/dist-ssr/
+/original-ui/.vite/
+/original-ui/.vite-temp/
+/original-ui/coverage/
+/original-ui/*.local
+/original-ui/.eslintcache
+/original-ui/.stylelintcache
+
+# Generated backend runtime residue
+/specforge-runtime/outputs/*/runtime-logs/
+/specforge-runtime/outputs/*/.jwk/
+/specforge-runtime/outputs/*/logs/*.log
 
 # Canonical SpecForge IR lives under specforge-runtime/specs/
 /module-spec.yaml

@@ -50,6 +50,9 @@ requirement
   - business contract validation passes
   - SQL asset validation passes
   - auth surface validation passes
+  - demo-access asset exists
+  - Postman environment asset exists
+  - deterministic demo password reset SQL exists
   - expected enabled business modules are present in the exported backend
 - If the request asks for a full platform rather than an MVP, the project spec and assembly plan must reflect business-center level module coverage instead of a thin skeleton.
 
@@ -63,6 +66,9 @@ Return success only if:
 - `delivery-validation.yaml` says `status: PASS`
 - `sql-asset-validation.yaml` says `status: PASS`
 - `auth-surface-validation.yaml` says `status: PASS`
+- `demo-access.yaml` exists
+- `postman-environment.json` exists
+- `demo-password-reset.sql` exists
 - final backend exists under `specforge-runtime/outputs/`
 
 For complete-platform requests, also require the authored spec set to cover:

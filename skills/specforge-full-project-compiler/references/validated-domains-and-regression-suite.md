@@ -13,6 +13,8 @@ Use this reference when the user asks:
 - `laboratory-management`
 - `insurance-management`
 - `library-management`
+- `course-management`
+- `dormitory-management`
 
 ## Proven Input Shapes
 
@@ -52,6 +54,8 @@ Use `--force` to allow safe reruns of the same validation scenario and reset the
 - `insurance-inline-auto`
 - `insurance-file-auto`
 - `library-inline-auto`
+- `course-inline-auto`
+- `dormitory-inline-auto`
 
 ## Purpose Of The Regression Suite
 
@@ -71,7 +75,9 @@ Use the suite to validate:
 2. Run `run_tool_validation_suite.py --scenario insurance-file-auto --force`
 3. Run `run_tool_validation_suite.py --scenario lab-platform-file-auto --force`
 4. Run `run_tool_validation_suite.py --scenario library-inline-auto --force`
-5. Accept the environment as ready only after compile, boot, business, delivery, SQL, and auth checks pass across the selected scenarios
+5. Run `run_tool_validation_suite.py --scenario course-inline-auto --force`
+6. Run `run_tool_validation_suite.py --scenario dormitory-inline-auto --force`
+7. Accept the environment as ready only after compile, boot, business, delivery, SQL, and auth checks pass across the selected scenarios
 
 ## Final Deliverable Rule
 

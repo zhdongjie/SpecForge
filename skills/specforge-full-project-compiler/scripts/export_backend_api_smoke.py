@@ -58,6 +58,8 @@ def parse_resources(java_root: Path) -> list[dict[str, object]]:
     routes: list[dict[str, object]] = []
     for source_file in sorted(java_root.rglob("*Resource.java")):
         source = read_text(source_file)
+        if source_file.parent.name != "resource" and "@RestController" not in source:
+            continue
         package_name = parse_package_name(source)
         request_mapping = parse_request_mapping(source)
         methods = parse_methods(source)

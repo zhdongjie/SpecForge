@@ -84,6 +84,13 @@ Final deliverable:
 
 - `specforge-runtime/outputs/<project-backend>/`
 
+Frontend-ready handoff files in that output:
+
+- `logs/demo-access.yaml`
+- `logs/api-smoke/postman-collection.json`
+- `logs/api-smoke/postman-environment.json`
+- `src/main/resources/sql/demo-password-reset.sql`
+
 Operational note:
 
 - do not start two `run_requirement_project.py` or `run_specforge_autobuild.py` jobs in parallel against the same repository checkout
@@ -99,6 +106,10 @@ The most important files are:
 - `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
 - `specforge-runtime/runs/<run-id>/generated-project/logs/compile-diagnostics.yaml`
 - `specforge-runtime/runs/<run-id>/generated-project/logs/boot-diagnostics.yaml`
+
+For frontend integration after success, read:
+
+- `specforge-runtime/docs/FRONTEND_HANDOFF_BACKEND_CONTRACT.md`
 
 ## One-Line Codex Prompt
 

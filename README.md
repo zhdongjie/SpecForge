@@ -118,6 +118,8 @@ Currently validated automatic scaffold domains include:
 - `laboratory-management`
 - `insurance-management`
 - `library-management`
+- `course-management`
+- `dormitory-management`
 
 ### 5. Check results
 
@@ -218,6 +220,37 @@ Export backend API smoke assets:
 ```powershell
 python skills/specforge-full-project-compiler/scripts/export_backend_api_smoke.py --backend-root specforge-runtime/outputs/<project-backend>
 ```
+
+Export demo-access and frontend handoff assets:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/export_backend_delivery_assets.py --backend-root specforge-runtime/outputs/<project-backend>
+```
+
+## Frontend Handoff Assets
+
+Every successful generated backend should also expose:
+
+- `logs/demo-access.yaml`
+- `logs/api-smoke/postman-collection.json`
+- `logs/api-smoke/postman-environment.json`
+- `logs/api-smoke/curl-login-example.sh`
+- `logs/api-smoke/invoke-login.ps1`
+- `src/main/resources/sql/demo-password-reset.sql`
+
+Use these as the stable handoff surface when you connect a separate frontend repository.
+
+See [FRONTEND_HANDOFF_BACKEND_CONTRACT.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/FRONTEND_HANDOFF_BACKEND_CONTRACT.md) for the exact frontend integration contract.
+
+If another Codex session or frontend repository needs a zero-context backend docking prompt, use:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/emit_frontend_handoff_prompt.py --backend-output specforge-runtime/outputs/<project-backend> --project-name "<project-name>"
+```
+
+Prompt reference:
+
+- [FRONTEND_ZERO_CONTEXT_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/FRONTEND_ZERO_CONTEXT_PROMPTS.md)
 
 Validate business module route and permission contracts:
 

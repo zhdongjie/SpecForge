@@ -15,15 +15,15 @@ spring:
     basename: i18n/messages  # 国际化消息文件基础名称
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver  # 数据库驱动
-    url: jdbc:mysql://localhost:13306/originalkeen_auth_center?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai  # 数据库连接URL
-    username: root  # 数据库用户名
-    password: root  # 数据库密码
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:13306}/${MYSQL_DATABASE:originalkeen_auth_center}?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai  # 数据库连接URL
+    username: ${MYSQL_USERNAME:root}  # 数据库用户名
+    password: ${MYSQL_PASSWORD:root}  # 数据库密码
   data:
     redis:
-      host: localhost  # Redis主机
-      port: 6379  # Redis端口
-      password: root  # Redis密码
-      database: 0  # Redis数据库索引
+      host: ${REDIS_HOST:localhost}  # Redis主机
+      port: ${REDIS_PORT:6379}  # Redis端口
+      password: ${REDIS_PASSWORD:123456}  # Redis密码
+      database: ${REDIS_DATABASE:0}  # Redis数据库索引
 
 # MyBatis-Flex配置
 mybatis-flex:

@@ -1,0 +1,102 @@
+{
+  "common": {
+    "home": "首页",
+    "add": "新增",
+    "delete": "删除",
+    "edit": "编辑",
+    "import": "导入",
+    "export": "导出",
+    "search": "搜索",
+    "reset": "重置",
+    "createdTime": "创建时间",
+    "actions": "操作",
+    "cancel": "取消",
+    "confirm": "确认",
+    "copy": "复制",
+    "copied": "已复制",
+    "warning": "警告"
+  },
+  "app": {
+    "customizer": {
+      "language": "语言",
+      "chinese": "简体中文",
+      "english": "English",
+      "settings": "设置",
+      "sidebarLayout": "页面布局",
+      "themeLightColor": "白色主题颜色",
+      "themeDarkColor": "黑色主题颜色",
+      "contentWidth": "内容宽度",
+      "sidebarType": "导航栏大小",
+      "cardWith": "卡片边框样式",
+      "menuGroupOpenOn": "菜单展开方式",
+      "routerTransition": "路由动画"
+    }
+  },
+  "authorize": {
+    "login": {
+      "title": "Welcome to {appName} ! 👋🏻",
+      "subtitle": "Please login to your account and start adventure",
+      "username": "用户名",
+      "usernameIsRequired": "用户名不能为空",
+      "password": "密码",
+      "passwordIsRequired": "密码不能为空",
+      "rememberMe": "记住我",
+      "forgotPassword": "忘记密码？",
+      "login": "登录",
+      "noAccount": "没有账号？",
+      "registerNow": "立即注册"
+    },
+    "register": {
+      "title": "Adventure starts here 🚀",
+      "subtitle": "Make your app management easy and fun!",
+      "username": "用户名",
+      "usernameIsRequired": "用户名不能为空",
+      "invalidUsernameLength": "用户名长度必需在 {min}-{max} 个字符之间",
+      "usernameAlreadyUse": "用户名已被使用",
+      "password": "密码",
+      "passwordIsRequired": "密码不能为空",
+      "invalidPasswordLength": "密码长度必需在 {min}-{max} 个字符之间",
+      "invalidPasswordFormat": "密码必需包含数字、大写字母和小写字母",
+      "confirmPassword": "确认密码",
+      "confirmPasswordIsRequired": "确认密码不能为空",
+      "enteredPasswordsDiffer": "确认密码和密码不匹配",
+      "iAgree": "我同意",
+      "privacyPolicyAndTerms": "隐私政策和条款",
+      "register": "注册",
+      "alreadyHaveAccount": "已有帐号？",
+      "loginNow": "立即登录"
+    }
+  },
+  "system": {
+    "management": {
+      "user": {
+        "username": "用户名",
+        "usernameIsRequired": "用户名不能为空",
+        "invalidUsernameLength": "用户名长度必需在 {min}-{max} 个字符之间",
+        "usernameAlreadyUse": "用户名已被使用",
+        "role": "角色",
+        "roleListIsRequired": "角色不能为空",
+        "avatar": "头像",
+        "email": "电子邮箱",
+        "invalidEmailLength": "电子邮箱不能超过 {max} 个字符",
+        "invalidEmailFormat": "无效的电子邮箱格式",
+        "emailAlreadyExists": "电子邮箱已存在",
+        "phoneNumber": "手机号码",
+        "invalidPhoneNumberFormat": "无效的手机号码格式",
+        "phoneNumberAlreadyExists": "手机号码已存在",
+        "gender": "性别",
+        "addUser": "添加用户",
+        "password": "密码",
+        "passwordIsRequired": "密码不能为空",
+        "invalidPasswordLength": "密码长度必需在 {min}-{max} 个字符之间",
+        "invalidPasswordFormat": "密码必需包含数字、大写字母和小写字母",
+        "birthday": "出生日期",
+        "invalidBirthday": "无效的出生日期",
+        "editUser": "编辑用户",
+        "deleteUserConfirm": "确定要删除用户 '{username}' 吗？删除后将无法恢复。",
+        "deleteBatchConfirm": "确定要删除选中的 {count} 个用户吗？删除后将无法恢复。",
+        "deleteSuccess": "用户删除成功"
+      }
+    }
+  }
+}

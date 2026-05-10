@@ -14,11 +14,11 @@ module_identity:
   responsibility_code: report_statistics_management
   package_root: org.eu.originalkeen.business.reportstatistics
   route_roots:
-  - /v1/business/library-report
+  - /v1/business/dormitory-report
 api_groups:
 - group_id: report_statistics_management
-  route_prefix: /v1/business/library-report
-  aggregate: LibraryStatisticSnapshot
+  route_prefix: /v1/business/dormitory-report
+  aggregate: DormitoryStatisticSnapshot
   capability_ids:
   - create-report_statistics_management
   - update-report_statistics_management
@@ -29,14 +29,14 @@ api_groups:
 capabilities: []
 entity_graph:
   entities:
-  - entity_id: LibraryStatisticSnapshot
-    table: library_statistic_snapshot
+  - entity_id: DormitoryStatisticSnapshot
+    table: dormitory_statistic_snapshot
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root
     relations: []
-  - entity_id: BorrowStatisticReport
-    table: borrow_statistic_report
+  - entity_id: OccupancyStatisticReport
+    table: occupancy_statistic_report
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root
@@ -80,12 +80,12 @@ integration_points:
   security:
     mode: centralized-method-security
     authority_families:
-    - business:library-report:*
+    - business:dormitory-report:*
   persistence:
     database: mysql
     required_tables:
-    - library_statistic_snapshot
-    - borrow_statistic_report
+    - dormitory_statistic_snapshot
+    - occupancy_statistic_report
 code_conventions:
   naming_stability: strict
   route_style: business-domain-aligned

@@ -38,7 +38,7 @@ class SynthesisValidator:
             package_name = parse_package_name(source)
             if not package_name.startswith(package_root):
                 continue
-            if source_file.name.endswith("Resource.java"):
+            if source_file.name.endswith("Resource.java") and self._is_rest_resource(source_file, source):
                 request_mapping = self._match_single(source, '@RequestMapping("', '")')
                 methods = self._parse_http_methods(source)
                 if request_mapping:
@@ -148,6 +148,9 @@ class SynthesisValidator:
                         }
                     )
         return findings
+
+    def _is_rest_resource(self, source_file: Path, source: str) -> bool:
+        return source_file.parent.name == "resource" or "@RestController" in source
 
     def _duplicates(self, values: list[str], code: str) -> list[dict[str, Any]]:
         duplicates = sorted({value for value in values if values.count(value) > 1})

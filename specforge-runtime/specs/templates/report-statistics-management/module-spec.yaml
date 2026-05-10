@@ -14,12 +14,12 @@ module_identity:
   responsibility_code: report_statistics_management
   package_root: org.eu.originalkeen.business.reportstatistics
   route_namespace:
-    report-statistics-management: /v1/business/library-report
+    report-statistics-management: /v1/business/dormitory-report
 generation_boundaries:
   single_module_only: true
   owns_aggregates: &id001
-  - LibraryStatisticSnapshot
-  - BorrowStatisticReport
+  - DormitoryStatisticSnapshot
+  - OccupancyStatisticReport
   may_reference:
   - ResponseVo
   - PageVo
@@ -31,8 +31,8 @@ generation_boundaries:
   - role management
 api_groups:
 - group_id: report_statistics_management
-  route_prefix: /v1/business/library-report
-  aggregate: LibraryStatisticSnapshot
+  route_prefix: /v1/business/dormitory-report
+  aggregate: DormitoryStatisticSnapshot
   capability_ids:
   - create-report_statistics_management
   - update-report_statistics_management
@@ -48,7 +48,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: POST
   route: /
-  authority: business:library-report:create
+  authority: business:dormitory-report:create
   transaction: read-write
   input_dto: CreateReportStatisticsManagementDto
   output_vo: Void
@@ -60,7 +60,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: PUT
   route: /
-  authority: business:library-report:update
+  authority: business:dormitory-report:update
   transaction: read-write
   input_dto: UpdateReportStatisticsManagementDto
   output_vo: Void
@@ -72,7 +72,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: DELETE
   route: /
-  authority: business:library-report:delete
+  authority: business:dormitory-report:delete
   transaction: read-write
   input_dto: ReportStatisticsManagementIdSet
   output_vo: Void
@@ -84,7 +84,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: GET
   route: /page
-  authority: business:library-report:page
+  authority: business:dormitory-report:page
   transaction: read-only
   input_dto: EnquiryReportStatisticsManagementPageDto
   output_vo: PageVo<ReportStatisticsManagementPageVo>
@@ -96,7 +96,7 @@ capabilities:
   api_group: report_statistics_management
   http_method: GET
   route: /{id}
-  authority: business:library-report:details
+  authority: business:dormitory-report:details
   transaction: read-only
   input_dto: ReportStatisticsManagementIdPath
   output_vo: ReportStatisticsManagementDetailsVo
@@ -108,21 +108,21 @@ capabilities:
   api_group: report_statistics_management
   http_method: GET
   route: /list
-  authority: business:library-report:list
+  authority: business:dormitory-report:list
   transaction: read-only
   input_dto: None
   output_vo: List<ReportStatisticsManagementListVo>
   touched_entities: *id001
 entity_graph:
   entities:
-  - entity_id: LibraryStatisticSnapshot
-    table: library_statistic_snapshot
+  - entity_id: DormitoryStatisticSnapshot
+    table: dormitory_statistic_snapshot
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root
     relations: []
-  - entity_id: BorrowStatisticReport
-    table: borrow_statistic_report
+  - entity_id: OccupancyStatisticReport
+    table: occupancy_statistic_report
     ownership: owned
     base_type: PrimaryKeyEntity
     aggregate_role: root

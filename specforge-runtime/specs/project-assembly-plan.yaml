@@ -1,8 +1,8 @@
-plan_id: library-management-platform
-target_backend_name: library-management-platform-backend
-description: deterministic backend assembly plan for Library Management Platform
+plan_id: dormitory-management-platform
+target_backend_name: dormitory-management-platform-backend
+description: deterministic backend assembly plan for Dormitory Management Platform
 project_identity:
-  name: Library Management Platform
+  name: Dormitory Management Platform
   architecture: modular-monolith
   package_root: org.eu.originalkeen
 platform_contract:
@@ -15,76 +15,76 @@ platform_contract:
     route_prefix: /v1/business/
     authority_prefix: 'business:'
 module_sequence:
-- module: book-catalog-management
+- module: dormitory-building-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: book-catalog-center
-  business_center: book-catalog-center
-  module_spec: templates/book-catalog-management/module-spec.yaml
-  module_schema: templates/book-catalog-management/module-schema.resolved.yaml
+  bounded_context: dormitory-building-center
+  business_center: dormitory-building-center
+  module_spec: templates/dormitory-building-management/module-spec.yaml
+  module_schema: templates/dormitory-building-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.bookcatalog
-- module: reader-membership-management
+  export_package_root: org.eu.originalkeen.business.dormitorybuilding
+- module: room-bed-allocation-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: reader-membership-center
-  business_center: reader-membership-center
-  module_spec: templates/reader-membership-management/module-spec.yaml
-  module_schema: templates/reader-membership-management/module-schema.resolved.yaml
+  bounded_context: room-bed-allocation-center
+  business_center: room-bed-allocation-center
+  module_spec: templates/room-bed-allocation-management/module-spec.yaml
+  module_schema: templates/room-bed-allocation-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.readermembership
-- module: circulation-borrow-management
+  export_package_root: org.eu.originalkeen.business.roombedallocation
+- module: move-in-out-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: circulation-borrow-center
-  business_center: circulation-borrow-center
-  module_spec: templates/circulation-borrow-management/module-spec.yaml
-  module_schema: templates/circulation-borrow-management/module-schema.resolved.yaml
+  bounded_context: move-in-move-out-center
+  business_center: move-in-move-out-center
+  module_spec: templates/move-in-out-management/module-spec.yaml
+  module_schema: templates/move-in-out-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.circulationborrow
-- module: return-inspection-management
+  export_package_root: org.eu.originalkeen.business.moveinout
+- module: repair-maintenance-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: return-inspection-center
-  business_center: return-inspection-center
-  module_spec: templates/return-inspection-management/module-spec.yaml
-  module_schema: templates/return-inspection-management/module-schema.resolved.yaml
+  bounded_context: repair-maintenance-center
+  business_center: repair-maintenance-center
+  module_spec: templates/repair-maintenance-management/module-spec.yaml
+  module_schema: templates/repair-maintenance-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.returninspection
-- module: reservation-queue-management
+  export_package_root: org.eu.originalkeen.business.repairmaintenance
+- module: visitor-access-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: reservation-queue-center
-  business_center: reservation-queue-center
-  module_spec: templates/reservation-queue-management/module-spec.yaml
-  module_schema: templates/reservation-queue-management/module-schema.resolved.yaml
+  bounded_context: visitor-access-center
+  business_center: visitor-access-center
+  module_spec: templates/visitor-access-management/module-spec.yaml
+  module_schema: templates/visitor-access-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.reservationqueue
-- module: acquisition-supplier-management
+  export_package_root: org.eu.originalkeen.business.visitoraccess
+- module: fee-billing-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: acquisition-supplier-center
-  business_center: acquisition-supplier-center
-  module_spec: templates/acquisition-supplier-management/module-spec.yaml
-  module_schema: templates/acquisition-supplier-management/module-schema.resolved.yaml
+  bounded_context: fee-billing-center
+  business_center: fee-billing-center
+  module_spec: templates/fee-billing-management/module-spec.yaml
+  module_schema: templates/fee-billing-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.acquisitionsupplier
-- module: shelf-inventory-management
+  export_package_root: org.eu.originalkeen.business.feebilling
+- module: hygiene-inspection-management
   enabled: true
   semantic_role: business-domain
-  bounded_context: shelf-inventory-center
-  business_center: shelf-inventory-center
-  module_spec: templates/shelf-inventory-management/module-spec.yaml
-  module_schema: templates/shelf-inventory-management/module-schema.resolved.yaml
+  bounded_context: hygiene-inspection-center
+  business_center: hygiene-inspection-center
+  module_spec: templates/hygiene-inspection-management/module-spec.yaml
+  module_schema: templates/hygiene-inspection-management/module-schema.resolved.yaml
   generation_mode: synthesize-and-assemble
   dependencies: []
-  export_package_root: org.eu.originalkeen.business.shelfinventory
+  export_package_root: org.eu.originalkeen.business.hygieneinspection
 - module: notification-management
   enabled: true
   semantic_role: business-domain
@@ -109,29 +109,29 @@ assembly_contract:
   compile_required: true
   boot_verify_required: true
   auto_repair_enabled: true
-  final_output_dir: outputs/library-management-platform-backend
+  final_output_dir: outputs/dormitory-management-platform-backend
   failure_bundle_required: true
 coverage_contract:
-  domain_profile: library-management
+  domain_profile: dormitory-management
   platform_scope: complete-platform
   required_enabled_business_module_count: 9
   required_enabled_business_modules:
-  - book-catalog-management
-  - reader-membership-management
-  - circulation-borrow-management
-  - return-inspection-management
-  - reservation-queue-management
-  - acquisition-supplier-management
-  - shelf-inventory-management
+  - dormitory-building-management
+  - room-bed-allocation-management
+  - move-in-out-management
+  - repair-maintenance-management
+  - visitor-access-management
+  - fee-billing-management
+  - hygiene-inspection-management
   - notification-management
   - report-statistics-management
   required_business_centers:
-  - book-catalog-center
-  - reader-membership-center
-  - circulation-borrow-center
-  - return-inspection-center
-  - reservation-queue-center
-  - acquisition-supplier-center
-  - shelf-inventory-center
+  - dormitory-building-center
+  - room-bed-allocation-center
+  - move-in-move-out-center
+  - repair-maintenance-center
+  - visitor-access-center
+  - fee-billing-center
+  - hygiene-inspection-center
   - notification-center
   - report-statistics-center

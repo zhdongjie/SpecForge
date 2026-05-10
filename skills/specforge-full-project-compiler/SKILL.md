@@ -234,6 +234,9 @@ Always inspect:
 - `outputs/<target>/logs/delivery-validation.yaml` for module coverage and full-platform contract coverage
 - `outputs/<target>/logs/sql-asset-validation.yaml` for generated SQL asset completeness
 - `outputs/<target>/logs/auth-surface-validation.yaml` for login/auth route readiness
+- `outputs/<target>/logs/demo-access.yaml` for deterministic demo credentials and login endpoint
+- `outputs/<target>/logs/api-smoke/postman-environment.json` for frontend or Postman handoff
+- `outputs/<target>/src/main/resources/sql/demo-password-reset.sql` for reproducible demo account reset
 
 Prefer unique run ids for every iteration so replay and failure analysis remain reproducible.
 Prefer separate repository copies if you need parallel domain generation on the same machine.

@@ -1,0 +1,22 @@
+// 👉 vuetify
+@use 'vuetify/settings';
+@use 'vuetify/styles';
+
+// 👉 generic
+@use 'generic/override';
+@use 'generic/variables';
+@use 'generic/beautify';
+@use 'generic/animation';
+
+// 👉 layouts
+@use 'layout/vertical';
+@use 'layout/horizonal';
+
+// 👉 pages
+@use 'pages/authorize';
+
+// 👉 plugins
+@import 'nprogress/nprogress.css';
+@import 'vue3-perfect-scrollbar/style.css';
+@import 'vuetify-sonner/style.css';
+@import '@mdi/font/css/materialdesignicons.css';

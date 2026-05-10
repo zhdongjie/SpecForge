@@ -55,6 +55,9 @@ def main() -> int:
     findings: list[dict[str, str]] = []
     auth_resource_path = output_root / "src" / "main" / "java" / "org" / "eu" / "originalkeen" / "authorize" / "resource" / "AuthorizeResource.java"
     postman_path = output_root / "logs" / "api-smoke" / "postman-collection.json"
+    postman_environment_path = output_root / "logs" / "api-smoke" / "postman-environment.json"
+    demo_access_path = output_root / "logs" / "demo-access.yaml"
+    demo_password_reset_path = output_root / "src" / "main" / "resources" / "sql" / "demo-password-reset.sql"
     schema_path = output_root / "src" / "main" / "resources" / "sql" / "schema.sql"
 
     auth_checks = {
@@ -63,6 +66,9 @@ def main() -> int:
         "login_endpoint_present": False,
         "postman_login_present": False,
         "seed_admin_present": False,
+        "postman_environment_present": postman_environment_path.exists(),
+        "demo_access_present": demo_access_path.exists(),
+        "demo_password_reset_present": demo_password_reset_path.exists(),
     }
 
     if not auth_resource_path.exists():
@@ -106,6 +112,55 @@ def main() -> int:
                 {
                     "code": "postman-login-missing",
                     "details": "Postman smoke collection does not include POST /v1/authorize/login",
+                }
+            )
+
+    if not postman_environment_path.exists():
+        findings.append(
+            {
+                "code": "postman-environment-missing",
+                "details": f"Missing Postman environment: {postman_environment_path}",
+            }
+        )
+
+    if not demo_access_path.exists():
+        findings.append(
+            {
+                "code": "demo-access-missing",
+                "details": f"Missing demo access handoff file: {demo_access_path}",
+            }
+        )
+    else:
+        demo_access_text = read_text(demo_access_path)
+        if "Admin@123456" not in demo_access_text or "/v1/authorize/login" not in demo_access_text:
+            findings.append(
+                {
+                    "code": "demo-access-incomplete",
+                    "details": "demo-access.yaml does not expose the expected login endpoint and demo credentials",
+                }
+            )
+
+    if not demo_password_reset_path.exists():
+        findings.append(
+            {
+                "code": "demo-password-reset-missing",
+                "details": f"Missing deterministic demo password reset SQL: {demo_password_reset_path}",
+            }
+        )
+    else:
+        reset_sql_text = read_text(demo_password_reset_path)
+        if "Admin@123456" in reset_sql_text:
+            findings.append(
+                {
+                    "code": "demo-password-reset-plaintext-leak",
+                    "details": "demo-password-reset.sql should store encoded passwords instead of plaintext credentials",
+                }
+            )
+        if "UPDATE `SYSTEM_USER`" not in reset_sql_text.upper():
+            findings.append(
+                {
+                    "code": "demo-password-reset-update-missing",
+                    "details": "demo-password-reset.sql does not contain expected system_user update statements",
                 }
             )
 

@@ -1,0 +1,234 @@
+$shadow-key-umbra-opacity: rgb(145 158 171 / 30%) !default;
+$shadow-key-penumbra-opacity: rgb(145 158 171 / 2%) !default;
+$shadow-key-ambient-opacity: rgb(0 0 0 / 0%) !default;
+$shadow-key-umbra: (
+  0: (
+    0 0 0 0 $shadow-key-umbra-opacity
+  ),
+  1: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  2: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  3: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  4: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  5: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  6: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  7: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  8: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  9: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  10: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  11: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  12: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  13: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  14: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  15: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  16: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  17: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  18: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  19: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  20: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  21: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  22: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  23: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  ),
+  24: (
+    0px 0px 2px 0px $shadow-key-umbra-opacity
+  )
+);
+$shadow-key-penumbra: (
+  0: (
+    0 0 0 0 $shadow-key-penumbra-opacity
+  ),
+  1: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  2: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  3: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  4: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  5: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  6: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  7: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  8: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  9: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  10: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  11: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  12: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  13: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  14: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  15: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  16: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  17: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  18: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  19: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  20: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  21: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  22: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  23: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  ),
+  24: (
+    0px 12px 24px -4px $shadow-key-penumbra-opacity
+  )
+);
+$shadow-key-ambient: (
+  0: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  1: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  2: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  3: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  4: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  5: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  6: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  7: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  8: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  9: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  10: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  11: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  12: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  13: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  14: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  15: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  16: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  17: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  18: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  19: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  20: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  21: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  22: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  23: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  ),
+  24: (
+    0 0 0 0 $shadow-key-ambient-opacity
+  )
+);

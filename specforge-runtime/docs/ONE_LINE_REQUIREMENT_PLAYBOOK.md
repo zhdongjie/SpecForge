@@ -83,6 +83,8 @@ Currently validated automatic scaffold domains include:
 - `laboratory-management`
 - `insurance-management`
 - `library-management`
+- `course-management`
+- `dormitory-management`
 
 If you prefer a requirement document, use:
 
@@ -100,6 +102,9 @@ Required success files:
 - `specforge-runtime/outputs/<project-backend>/logs/api-smoke/business-contract-validation.yaml`
 - `specforge-runtime/outputs/<project-backend>/logs/sql-asset-validation.yaml`
 - `specforge-runtime/outputs/<project-backend>/logs/auth-surface-validation.yaml`
+- `specforge-runtime/outputs/<project-backend>/logs/demo-access.yaml`
+- `specforge-runtime/outputs/<project-backend>/logs/api-smoke/postman-environment.json`
+- `specforge-runtime/outputs/<project-backend>/src/main/resources/sql/demo-password-reset.sql`
 
 Required success conditions:
 
@@ -109,6 +114,9 @@ Required success conditions:
 - `delivery-validation.yaml status: PASS`
 - `sql-asset-validation.yaml status: PASS`
 - `auth-surface-validation.yaml status: PASS`
+- `demo-access.yaml` exists
+- `postman-environment.json` exists
+- `demo-password-reset.sql` exists
 
 Final product:
 

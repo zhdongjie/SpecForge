@@ -60,6 +60,8 @@ Currently validated automatic scaffold domains include:
 - `laboratory-management`
 - `insurance-management`
 - `library-management`
+- `course-management`
+- `dormitory-management`
 
 ## Fastest Codex Handoff Workflow
 
@@ -90,6 +92,9 @@ Accept success only if:
 - `specforge-runtime/outputs/<project-backend>/logs/api-smoke/business-contract-validation.yaml` says `validation.status: PASS`
 - `specforge-runtime/outputs/<project-backend>/logs/sql-asset-validation.yaml` says `status: PASS`
 - `specforge-runtime/outputs/<project-backend>/logs/auth-surface-validation.yaml` says `status: PASS`
+- `specforge-runtime/outputs/<project-backend>/logs/demo-access.yaml` exists
+- `specforge-runtime/outputs/<project-backend>/logs/api-smoke/postman-environment.json` exists
+- `specforge-runtime/outputs/<project-backend>/src/main/resources/sql/demo-password-reset.sql` exists
 
 ## Failure Rule
 

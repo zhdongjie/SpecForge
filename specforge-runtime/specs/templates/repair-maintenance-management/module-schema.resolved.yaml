@@ -1,0 +1,102 @@
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: repair_maintenance_management-resolved-v1
+  target_module_id: repair-maintenance-management
+  bounded_context: repair-maintenance-center
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+module_identity:
+  module_name: repair-maintenance-management
+  semantic_role: business-domain
+  responsibility_code: repair_maintenance_management
+  package_root: org.eu.originalkeen.business.repairmaintenance
+  route_roots:
+  - /v1/business/repair-maintenance
+api_groups:
+- group_id: repair_maintenance_management
+  route_prefix: /v1/business/repair-maintenance
+  aggregate: RepairWorkOrder
+  capability_ids:
+  - create-repair_maintenance_management
+  - update-repair_maintenance_management
+  - batch-delete-repair_maintenance_management
+  - enquiry-repair_maintenance_management-page
+  - enquiry-repair_maintenance_management-details
+  - enquiry-repair_maintenance_management-list
+capabilities: []
+entity_graph:
+  entities:
+  - entity_id: RepairWorkOrder
+    table: repair_work_order
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: MaintenanceDispatchRecord
+    table: maintenance_dispatch_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-repair_maintenance_management
+    - update-repair_maintenance_management
+    - batch-delete-repair_maintenance_management
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+    - business:repair-maintenance:*
+  persistence:
+    database: mysql
+    required_tables:
+    - repair_work_order
+    - maintenance_dispatch_record
+code_conventions:
+  naming_stability: strict
+  route_style: business-domain-aligned
+  transaction_style: manager-boundary
+validation_hooks:
+  pre_generation:
+  - hook-discovery-baseline-complete
+  post_unit:
+  - hook-artifact-name-convention
+  - hook-package-placement-check
+  final:
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
+blueprint_status: default-enabled-validated-blueprint-for-RepairMaintenanceManagement

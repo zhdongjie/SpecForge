@@ -14,7 +14,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repo-root", required=True)
     parser.add_argument(
         "--scenario",
-        choices=["all", "lab-inline-auto", "lab-platform-file-auto", "insurance-inline-auto", "insurance-file-auto", "library-inline-auto"],
+        choices=[
+            "all",
+            "lab-inline-auto",
+            "lab-platform-file-auto",
+            "insurance-inline-auto",
+            "insurance-file-auto",
+            "library-inline-auto",
+            "course-inline-auto",
+            "dormitory-inline-auto",
+        ],
         default="all",
     )
     parser.add_argument("--force", action="store_true")
@@ -98,6 +107,36 @@ def build_scenarios(repo_root: Path) -> list[dict[str, object]]:
                 "Build a complete modular-monolith Spring Boot library management backend covering book catalog center, reader membership center, circulation borrowing center, return inspection center, reservation queue center, acquisition supplier center, shelf inventory center, notification center, and statistics reporting center.",
                 "--run-id",
                 "validation-library-inline-auto-001",
+            ],
+        },
+        {
+            "name": "course-inline-auto",
+            "command": [
+                sys.executable,
+                str(wrapper),
+                "--repo-root",
+                str(repo_root),
+                "--project-name",
+                "Course Management Platform",
+                "--requirement",
+                "Build a complete modular-monolith Spring Boot course management backend covering course catalog center, teaching class center, enrollment selection center, timetable scheduling center, exam assessment center, teaching resource center, notification center, and statistics reporting center.",
+                "--run-id",
+                "validation-course-inline-auto-001",
+            ],
+        },
+        {
+            "name": "dormitory-inline-auto",
+            "command": [
+                sys.executable,
+                str(wrapper),
+                "--repo-root",
+                str(repo_root),
+                "--project-name",
+                "Dormitory Management Platform",
+                "--requirement",
+                "Build a complete modular-monolith Spring Boot dormitory management backend covering dormitory building center, room bed allocation center, move-in move-out center, repair maintenance center, visitor access center, fee billing center, hygiene inspection center, notification center, and statistics reporting center.",
+                "--run-id",
+                "validation-dormitory-inline-auto-001",
             ],
         },
     ]

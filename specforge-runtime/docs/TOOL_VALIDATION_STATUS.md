@@ -153,6 +153,49 @@ Validated behavior:
 9. auth surface validation passed
 10. final output preserved under `specforge-runtime/outputs/`
 
+### Verified path I: fourth-domain portability validation on course management
+
+Validated command:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --scenario course-inline-auto --force
+```
+
+Validated behavior:
+
+1. wrapper inferred `course-management` automatically from project name and requirement text
+2. scaffold step assembled a complete course-platform blueprint
+3. a validator false-positive caused by `TeachingResource.java` was fixed at the tool layer instead of hand-editing generated business code
+4. canonical auto-build executed without manual spec intervention
+5. compile passed
+6. boot passed
+7. business contract validation passed
+8. delivery validation passed
+9. SQL asset validation passed
+10. auth surface validation passed
+11. final output preserved under `specforge-runtime/outputs/`
+
+### Verified path J: fifth-domain portability validation on dormitory management
+
+Validated command:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --scenario dormitory-inline-auto --force
+```
+
+Validated behavior:
+
+1. wrapper inferred `dormitory-management` automatically from project name and requirement text
+2. scaffold step assembled a complete dormitory-platform blueprint
+3. canonical auto-build executed without manual spec intervention
+4. compile passed
+5. boot passed
+6. business contract validation passed
+7. delivery validation passed
+8. SQL asset validation passed
+9. auth surface validation passed
+10. final output preserved under `specforge-runtime/outputs/`
+
 ## Verified Success Evidence
 
 From `lab-tool-verify-001`:
@@ -227,6 +270,10 @@ From the rerunnable validation suite:
   - `insurance-inline-auto: PASS`
   - `insurance-file-auto: PASS`
   - `library-inline-auto: PASS`
+- frontend handoff closure:
+  - `demo-access.yaml` exported
+  - `postman-environment.json` exported
+  - `demo-password-reset.sql` exported
 - rerun safety:
   - `--force` now resets the matching `specforge-runtime/runs/<run-id>/` directory before rebuilding
 - workspace safety:
@@ -256,6 +303,48 @@ From `library-inline-auto`:
   - `status: PASS`
 - `outputs/library-management-platform-backend/logs/auth-surface-validation.yaml`
   - `status: PASS`
+- `outputs/library-management-platform-backend/logs/demo-access.yaml`
+  - exists
+- `outputs/library-management-platform-backend/logs/api-smoke/postman-environment.json`
+  - exists
+- `outputs/library-management-platform-backend/src/main/resources/sql/demo-password-reset.sql`
+  - exists
+
+From `course-inline-auto`:
+
+- wrapper stdout
+  - `[DOMAIN] course-management`
+- `generated-project/logs/compile-diagnostics.yaml`
+  - `status: PASS`
+- `generated-project/logs/boot-diagnostics.yaml`
+  - `status: PASS`
+- `generated-project/logs/project-health-report.yaml`
+  - `compile_status: PASS`
+  - `boot_status: PASS`
+- `outputs/course-management-platform-backend/logs/delivery-validation.yaml`
+  - `status: PASS`
+- `outputs/course-management-platform-backend/logs/sql-asset-validation.yaml`
+  - `status: PASS`
+- `outputs/course-management-platform-backend/logs/auth-surface-validation.yaml`
+  - `status: PASS`
+
+From `dormitory-inline-auto`:
+
+- wrapper stdout
+  - `[DOMAIN] dormitory-management`
+- `generated-project/logs/compile-diagnostics.yaml`
+  - `status: PASS`
+- `generated-project/logs/boot-diagnostics.yaml`
+  - `status: PASS`
+- `generated-project/logs/project-health-report.yaml`
+  - `compile_status: PASS`
+  - `boot_status: PASS`
+- `outputs/dormitory-management-platform-backend/logs/delivery-validation.yaml`
+  - `status: PASS`
+- `outputs/dormitory-management-platform-backend/logs/sql-asset-validation.yaml`
+  - `status: PASS`
+- `outputs/dormitory-management-platform-backend/logs/auth-surface-validation.yaml`
+  - `status: PASS`
 
 ## What Is Now Considered Stable
 
@@ -271,11 +360,14 @@ From `library-inline-auto`:
 - delivery validation loop
 - SQL asset validation loop
 - auth/login surface validation loop
+- frontend smoke and demo-access asset export
 - multi-domain scaffold validation for at least:
   - laboratory reservation
   - laboratory comprehensive management
   - insurance operations
-- third-domain portability validation on library management
+  - library management
+  - course management
+  - dormitory management
 - rerunnable validation-suite execution with stable scenario commands
 - Windows output export tolerance for locked transient log files
 - shared-workspace mutation protection through a repository-local lock
@@ -296,12 +388,14 @@ but broader domain coverage still requires more test samples before calling the 
 
 ## Current Practical Conclusion
 
-The generated backend path is now closed for at least three independent domains:
+The generated backend path is now closed for at least six independent domains:
 
 - laboratory reservation
 - laboratory comprehensive management
 - insurance operations
 - library management
+- course management
+- dormitory management
 - insurance operations complete-platform blueprint with:
   - product center
   - customer center
@@ -326,7 +420,7 @@ The tool itself is now validated as:
 - multi-domain verified at the scaffold and assembly level
 - capable of auto-selecting a supported scaffold blueprint from requirement semantics
 
-for the currently verified laboratory reservation, laboratory comprehensive management, insurance, and library workflows.
+for the currently verified laboratory reservation, laboratory comprehensive management, insurance, library, course, and dormitory workflows.
 
 ## Recommended Next Validation Step
 
@@ -354,3 +448,5 @@ Current built-in scenarios:
 - `insurance-inline-auto`
 - `insurance-file-auto`
 - `library-inline-auto`
+- `course-inline-auto`
+- `dormitory-inline-auto`

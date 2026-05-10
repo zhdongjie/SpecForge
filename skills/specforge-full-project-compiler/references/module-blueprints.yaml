@@ -650,3 +650,343 @@ domains:
           - library_statistic_snapshot
           - borrow_statistic_report
         purpose: library circulation reporting and statistics snapshot management
+  course-management:
+    project:
+      name: Course Management Platform
+      bounded_context: academic-operations
+      platform_scope: complete-platform
+      primary_roles:
+        - Administrator
+        - Teacher
+        - Student
+        - AcademicManager
+      required_business_centers:
+        - course-catalog-center
+        - teaching-class-center
+        - enrollment-selection-center
+        - timetable-scheduling-center
+        - exam-assessment-center
+        - teaching-resource-center
+        - notification-center
+        - report-statistics-center
+      business_rules:
+        - course offerings must remain linked to a valid catalog definition and academic term
+        - enrollment actions must respect centralized JWT authorization and class capacity constraints
+        - timetable, assessment, and teaching resource workflows must remain modular and deterministic
+        - reporting outputs must summarize teaching and enrollment activity without breaking business boundaries
+    modules:
+      - module: course-catalog-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: course-catalog-center
+        business_center: course-catalog-center
+        package_root: org.eu.originalkeen.business.coursecatalog
+        route_roots:
+          - /v1/business/course-catalog
+        authorities:
+          - business:course-catalog:*
+        entities:
+          - CourseCatalog
+          - CourseChapter
+        tables:
+          - course_catalog
+          - course_chapter
+        purpose: course catalog metadata and curriculum outline management
+      - module: teaching-class-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: teaching-class-center
+        business_center: teaching-class-center
+        package_root: org.eu.originalkeen.business.teachingclass
+        route_roots:
+          - /v1/business/teaching-class
+        authorities:
+          - business:teaching-class:*
+        entities:
+          - TeachingClass
+          - TeachingInstructorAssignment
+        tables:
+          - teaching_class
+          - teaching_instructor_assignment
+        purpose: class opening, teacher assignment, and term delivery management
+      - module: enrollment-selection-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: enrollment-selection-center
+        business_center: enrollment-selection-center
+        package_root: org.eu.originalkeen.business.enrollmentselection
+        route_roots:
+          - /v1/business/enrollment-selection
+        authorities:
+          - business:enrollment-selection:*
+        entities:
+          - CourseEnrollment
+          - EnrollmentSelectionRule
+        tables:
+          - course_enrollment
+          - enrollment_selection_rule
+        purpose: student enrollment, selection windows, and seat allocation management
+      - module: timetable-scheduling-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: timetable-scheduling-center
+        business_center: timetable-scheduling-center
+        package_root: org.eu.originalkeen.business.timetablescheduling
+        route_roots:
+          - /v1/business/timetable-scheduling
+        authorities:
+          - business:timetable-scheduling:*
+        entities:
+          - TimetableSchedule
+          - TimetableSession
+        tables:
+          - timetable_schedule
+          - timetable_session
+        purpose: timetable scheduling and teaching session arrangement management
+      - module: exam-assessment-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: exam-assessment-center
+        business_center: exam-assessment-center
+        package_root: org.eu.originalkeen.business.examassessment
+        route_roots:
+          - /v1/business/exam-assessment
+        authorities:
+          - business:exam-assessment:*
+        entities:
+          - CourseExam
+          - AssessmentRecord
+        tables:
+          - course_exam
+          - assessment_record
+        purpose: exam planning, scoring, and assessment record management
+      - module: teaching-resource-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: teaching-resource-center
+        business_center: teaching-resource-center
+        package_root: org.eu.originalkeen.business.teachingresource
+        route_roots:
+          - /v1/business/teaching-resource
+        authorities:
+          - business:teaching-resource:*
+        entities:
+          - TeachingResource
+          - ResourceDistributionRecord
+        tables:
+          - teaching_resource
+          - resource_distribution_record
+        purpose: teaching material repository and distribution tracking management
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        business_center: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/course-notification
+        authorities:
+          - business:course-notification:*
+        entities:
+          - CourseNotification
+          - NotificationDeliveryRecord
+        tables:
+          - course_notification
+          - notification_delivery_record
+        purpose: enrollment, timetable, and exam notice delivery management
+      - module: report-statistics-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: report-statistics-center
+        business_center: report-statistics-center
+        package_root: org.eu.originalkeen.business.reportstatistics
+        route_roots:
+          - /v1/business/course-report
+        authorities:
+          - business:course-report:*
+        entities:
+          - CourseStatisticSnapshot
+          - EnrollmentStatisticReport
+        tables:
+          - course_statistic_snapshot
+          - enrollment_statistic_report
+        purpose: academic operation reporting and statistics snapshot management
+  dormitory-management:
+    project:
+      name: Dormitory Management Platform
+      bounded_context: campus-accommodation
+      platform_scope: complete-platform
+      primary_roles:
+        - Administrator
+        - DormitoryManager
+        - Student
+        - Counselor
+      required_business_centers:
+        - dormitory-building-center
+        - room-bed-allocation-center
+        - move-in-move-out-center
+        - repair-maintenance-center
+        - visitor-access-center
+        - fee-billing-center
+        - hygiene-inspection-center
+        - notification-center
+        - report-statistics-center
+      business_rules:
+        - room and bed allocations must remain consistent with building, floor, and occupancy capacity constraints
+        - move-in, move-out, and visitor actions must remain behind centralized JWT authorization
+        - repair, hygiene, and billing workflows must stay modular with explicit business ownership
+        - reporting and notifications must reflect dormitory events without leaking across business boundaries
+    modules:
+      - module: dormitory-building-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: dormitory-building-center
+        business_center: dormitory-building-center
+        package_root: org.eu.originalkeen.business.dormitorybuilding
+        route_roots:
+          - /v1/business/dormitory-building
+        authorities:
+          - business:dormitory-building:*
+        entities:
+          - DormitoryBuilding
+          - DormitoryFloor
+        tables:
+          - dormitory_building
+          - dormitory_floor
+        purpose: dormitory building, floor, and physical capacity management
+      - module: room-bed-allocation-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: room-bed-allocation-center
+        business_center: room-bed-allocation-center
+        package_root: org.eu.originalkeen.business.roombedallocation
+        route_roots:
+          - /v1/business/room-bed-allocation
+        authorities:
+          - business:room-bed-allocation:*
+        entities:
+          - DormitoryRoom
+          - BedAllocation
+        tables:
+          - dormitory_room
+          - bed_allocation
+        purpose: room inventory, bed assignment, and occupancy allocation management
+      - module: move-in-out-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: move-in-move-out-center
+        business_center: move-in-move-out-center
+        package_root: org.eu.originalkeen.business.moveinout
+        route_roots:
+          - /v1/business/move-in-out
+        authorities:
+          - business:move-in-out:*
+        entities:
+          - MoveInRecord
+          - MoveOutRecord
+        tables:
+          - move_in_record
+          - move_out_record
+        purpose: student accommodation check-in and check-out lifecycle management
+      - module: repair-maintenance-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: repair-maintenance-center
+        business_center: repair-maintenance-center
+        package_root: org.eu.originalkeen.business.repairmaintenance
+        route_roots:
+          - /v1/business/repair-maintenance
+        authorities:
+          - business:repair-maintenance:*
+        entities:
+          - RepairWorkOrder
+          - MaintenanceDispatchRecord
+        tables:
+          - repair_work_order
+          - maintenance_dispatch_record
+        purpose: dormitory repair reporting and maintenance dispatch management
+      - module: visitor-access-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: visitor-access-center
+        business_center: visitor-access-center
+        package_root: org.eu.originalkeen.business.visitoraccess
+        route_roots:
+          - /v1/business/visitor-access
+        authorities:
+          - business:visitor-access:*
+        entities:
+          - VisitorAccessRequest
+          - VisitorAccessRecord
+        tables:
+          - visitor_access_request
+          - visitor_access_record
+        purpose: dormitory visitor application and access record management
+      - module: fee-billing-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: fee-billing-center
+        business_center: fee-billing-center
+        package_root: org.eu.originalkeen.business.feebilling
+        route_roots:
+          - /v1/business/fee-billing
+        authorities:
+          - business:fee-billing:*
+        entities:
+          - AccommodationBill
+          - PaymentCollectionRecord
+        tables:
+          - accommodation_bill
+          - payment_collection_record
+        purpose: accommodation billing and payment collection management
+      - module: hygiene-inspection-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: hygiene-inspection-center
+        business_center: hygiene-inspection-center
+        package_root: org.eu.originalkeen.business.hygieneinspection
+        route_roots:
+          - /v1/business/hygiene-inspection
+        authorities:
+          - business:hygiene-inspection:*
+        entities:
+          - HygieneInspection
+          - HygieneScoreRecord
+        tables:
+          - hygiene_inspection
+          - hygiene_score_record
+        purpose: dormitory hygiene inspection and scoring management
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        business_center: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/dormitory-notification
+        authorities:
+          - business:dormitory-notification:*
+        entities:
+          - DormitoryNotification
+          - NotificationDeliveryRecord
+        tables:
+          - dormitory_notification
+          - notification_delivery_record
+        purpose: accommodation event and policy notification delivery management
+      - module: report-statistics-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: report-statistics-center
+        business_center: report-statistics-center
+        package_root: org.eu.originalkeen.business.reportstatistics
+        route_roots:
+          - /v1/business/dormitory-report
+        authorities:
+          - business:dormitory-report:*
+        entities:
+          - DormitoryStatisticSnapshot
+          - OccupancyStatisticReport
+        tables:
+          - dormitory_statistic_snapshot
+          - occupancy_statistic_report
+        purpose: dormitory occupancy reporting and statistics snapshot management

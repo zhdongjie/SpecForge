@@ -1,0 +1,103 @@
+html {
+  overflow-y: auto;
+}
+
+// 👉 layout content container
+.app-content-container {
+  &.app-content-container-boxed {
+    max-width: 1200px;
+  }
+}
+
+// 👉 app bar tool
+.app-bar-tools {
+  margin: 0 4px;
+
+  &.app-bar-user-menu {
+    margin: 0 0 0 10px;
+  }
+
+  // 👉 layout vertical user menu
+  .layout-content-vertical & {
+    &.app-bar-user-menu {
+      margin: 0 20px 0 10px;
+    }
+  }
+}
+
+// 👉 input
+.v-input {
+  .v-label,
+  .v-field {
+    font-size: 0.815rem;
+  }
+}
+
+.v-input__details {
+  padding-bottom: 6px;
+}
+
+.card-border .v-card {
+  border: 1px solid rgb(var(--v-border-color), var(--v-border-opacity));
+  box-shadow: none !important;
+}
+
+// 👉 tabler
+.v-table {
+  transition: unset !important;
+
+  & > .v-table__wrapper > table {
+    padding: 4px 4px 8px;
+
+    th {
+      font-weight: bold;
+      white-space: nowrap;
+
+      .v-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+      }
+    }
+
+    .v-checkbox-btn {
+      .v-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+      }
+    }
+
+    td {
+      white-space: nowrap;
+      border-bottom: 0 !important;
+
+      .long-text {
+        white-space: normal;
+      }
+    }
+
+    & > tbody > tr > td,
+    & > tbody > tr > th,
+    & > thead > tr > td,
+    & > thead > tr > th,
+    & > tfoot > tr > td,
+    & > tfoot > tr > th {
+      transition: unset !important;
+    }
+
+    tbody {
+      tr {
+        font-size: 1em;
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s;
+
+        &:not(.v-data-table__selected):hover {
+          box-shadow: 0 3px 15px -2px rgb(0 0 0 / 12%);
+          transform: translateY(-4px);
+        }
+      }
+    }
+  }
+}

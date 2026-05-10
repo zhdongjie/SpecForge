@@ -144,7 +144,8 @@ public class DictionaryTypeServiceImpl extends ServiceImpl<DictionaryTypeMapper,
                 queryChain()
                         .select(
                                 dictionary_type.id,
-                                dictionary_type_translation.dictionary_type_name
+                                dictionary_type_translation.dictionary_type_name,
+                                dictionary_type.dictionary_type_code
                         )
                         .from(dictionary_type)
                         // 左连接字典类型翻译表，获取当前语言的名称

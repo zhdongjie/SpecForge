@@ -1,0 +1,182 @@
+compiler_context:
+  source_spec_id: visitor_access_management-project-v1
+  target_module_id: visitor-access-management
+  regeneration_mode: create
+  stability_goal: deterministic
+  planner_tags:
+  - bounded-module
+  - visitor-access-center
+  - default-enabled-blueprint
+module_identity:
+  module_name: visitor-access-management
+  bounded_context: visitor-access-center
+  semantic_role: business-domain
+  responsibility_code: visitor_access_management
+  package_root: org.eu.originalkeen.business.visitoraccess
+  route_namespace:
+    visitor-access-management: /v1/business/visitor-access
+generation_boundaries:
+  single_module_only: true
+  owns_aggregates: &id001
+  - VisitorAccessRequest
+  - VisitorAccessRecord
+  may_reference:
+  - ResponseVo
+  - PageVo
+  - OperateLog
+  - PreAuthorize
+  must_not_generate:
+  - authentication flows
+  - user management
+  - role management
+api_groups:
+- group_id: visitor_access_management
+  route_prefix: /v1/business/visitor-access
+  aggregate: VisitorAccessRequest
+  capability_ids:
+  - create-visitor_access_management
+  - update-visitor_access_management
+  - batch-delete-visitor_access_management
+  - enquiry-visitor_access_management-page
+  - enquiry-visitor_access_management-details
+  - enquiry-visitor_access_management-list
+capabilities:
+- capability_id: create-visitor_access_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: visitor_access_management
+  http_method: POST
+  route: /
+  authority: business:visitor-access:create
+  transaction: read-write
+  input_dto: CreateVisitorAccessManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: update-visitor_access_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: visitor_access_management
+  http_method: PUT
+  route: /
+  authority: business:visitor-access:update
+  transaction: read-write
+  input_dto: UpdateVisitorAccessManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-visitor_access_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: visitor_access_management
+  http_method: DELETE
+  route: /
+  authority: business:visitor-access:delete
+  transaction: read-write
+  input_dto: VisitorAccessManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-visitor_access_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: visitor_access_management
+  http_method: GET
+  route: /page
+  authority: business:visitor-access:page
+  transaction: read-only
+  input_dto: EnquiryVisitorAccessManagementPageDto
+  output_vo: PageVo<VisitorAccessManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-visitor_access_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: visitor_access_management
+  http_method: GET
+  route: /{id}
+  authority: business:visitor-access:details
+  transaction: read-only
+  input_dto: VisitorAccessManagementIdPath
+  output_vo: VisitorAccessManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-visitor_access_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: visitor_access_management
+  http_method: GET
+  route: /list
+  authority: business:visitor-access:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<VisitorAccessManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: VisitorAccessRequest
+    table: visitor_access_request
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: VisitorAccessRecord
+    table: visitor_access_record
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+artifact_contract:
+  resource:
+  - VisitorAccessManagementResource
+  manager:
+  - VisitorAccessManagementManager
+  service:
+  - VisitorAccessManagementService
+  service_impl:
+  - VisitorAccessManagementServiceImpl
+  mapper:
+  - VisitorAccessManagementMapper
+  entity: *id001
+  dto:
+  - CreateVisitorAccessManagementDto
+  - UpdateVisitorAccessManagementDto
+  - EnquiryVisitorAccessManagementPageDto
+  vo:
+  - VisitorAccessManagementDetailsVo
+  - VisitorAccessManagementPageVo
+  - VisitorAccessManagementListVo
+  bo: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architecture_constraints:
+  modular_monolith_mode: true
+  response_wrapper_must_be: ResponseVo
+  page_wrapper_must_be: PageVo
+  security_annotation_required: true
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-visitor_access_management
+    - update-visitor_access_management
+    - batch-delete-visitor_access_management
+generation_contract:
+  deterministic_output_required: true
+  preserve_project_contracts:
+  - modular-monolith-boundaries
+  - centralized-authority-based-security
+  blueprint_status: default-enabled-validated-blueprint

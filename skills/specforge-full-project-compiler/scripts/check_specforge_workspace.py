@@ -53,6 +53,8 @@ def main() -> int:
         skills_root / "scripts" / "run_requirement_project.py",
         skills_root / "scripts" / "run_specforge_autobuild.py",
         skills_root / "scripts" / "scaffold_requirement_project.py",
+        skills_root / "scripts" / "export_backend_api_smoke.py",
+        skills_root / "scripts" / "export_backend_delivery_assets.py",
         skills_root / "scripts" / "validate_sql_assets.py",
         skills_root / "scripts" / "validate_auth_surface.py",
         skills_root / "scripts" / "validate_backend_delivery.py",

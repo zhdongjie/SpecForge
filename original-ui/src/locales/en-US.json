@@ -1,0 +1,102 @@
+{
+  "common": {
+    "home": "Home",
+    "add": "Add",
+    "delete": "Delete",
+    "edit": "Edit",
+    "import": "Import",
+    "export": "Export",
+    "search": "Search",
+    "reset": "Reset",
+    "createdTime": "Created Time",
+    "actions": "Actions",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "copy": "Copy",
+    "copied": "Copied",
+    "warning": "Warning"
+  },
+  "app": {
+    "customizer": {
+      "language": "Languages",
+      "chinese": "简体中文",
+      "english": "English",
+      "settings": "Settings",
+      "sidebarLayout": "Sidebar Layout",
+      "themeLightColor": "Theme Light Color",
+      "themeDarkColor": "Theme Dark Color",
+      "contentWidth": "Content Width",
+      "sidebarType": "Sidebar Type",
+      "cardWith": "Card With",
+      "menuGroupOpenOn": "Menu Group Open On",
+      "routerTransition": "Router Transition"
+    }
+  },
+  "authorize": {
+    "login": {
+      "title": "Welcome to {appName} ! 👋🏻",
+      "subtitle": "Please login to your account and start adventure",
+      "username": "Username",
+      "usernameIsRequired": "Username is required",
+      "password": "Password",
+      "passwordIsRequired": "Password is required",
+      "rememberMe": "Remember Me",
+      "forgotPassword": "Forgot Password?",
+      "login": "Login",
+      "noAccount": "No account?",
+      "registerNow": "register now"
+    },
+    "register": {
+      "title": "Adventure starts here 🚀",
+      "subtitle": "Make your app management easy and fun!",
+      "username": "Username",
+      "usernameIsRequired": "Username is required",
+      "invalidUsernameLength": "Username must be between {min} and {max} characters long",
+      "usernameAlreadyUse": "Username is already in use",
+      "password": "Password",
+      "passwordIsRequired": "Password is required",
+      "invalidPasswordLength": "Password must be between {min} and {max} characters long",
+      "invalidPasswordFormat": "Password must include uppercase, lowercase, and number",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordIsRequired": "Confirm password is required",
+      "enteredPasswordsDiffer": "Confirm password and password do not match",
+      "iAgree": "I agree to",
+      "privacyPolicyAndTerms": "privacy policy & terms",
+      "register": "Register",
+      "alreadyHaveAccount": "Already have an account?",
+      "loginNow": "login now"
+    }
+  },
+  "system": {
+    "management": {
+      "user": {
+        "username": "Username",
+        "usernameIsRequired": "Username is required",
+        "invalidUsernameLength": "Username must be between {min} and {max} characters long",
+        "usernameAlreadyUse": "Username is already in use",
+        "role": "Role",
+        "roleListIsRequired": "Role list is required",
+        "avatar": "Avatar",
+        "email": "Email",
+        "invalidEmailLength": "Email cannot exceed {max} characters",
+        "invalidEmailFormat": "Invalid email format",
+        "emailAlreadyExists": "Email already exists",
+        "phoneNumber": "Phone Number",
+        "invalidPhoneNumberFormat": "Invalid phone number format",
+        "phoneNumberAlreadyExists": "Phone number already exists",
+        "gender": "Gender",
+        "addUser": "Add User",
+        "password": "Password",
+        "passwordIsRequired": "Password is required",
+        "invalidPasswordLength": "Password must be between {min} and {max} characters long",
+        "invalidPasswordFormat": "Password must include uppercase, lowercase, and number",
+        "birthday": "Birthday",
+        "invalidBirthday": "Invalid birthday",
+        "editUser": "Edit User",
+        "deleteUserConfirm": "Are you sure you want to delete user '{username}'? This action cannot be undone.",
+        "deleteBatchConfirm": "Are you sure you want to delete {count} selected users? This action cannot be undone.",
+        "deleteSuccess": "User(s) deleted successfully"
+      }
+    }
+  }
+}

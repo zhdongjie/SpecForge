@@ -1,0 +1,9 @@
+{
+  "*.{js,ts,cjs,cts,mjs,mts,jsx,tsx,vue}": [
+    "eslint --fix --ignore-pattern .gitignore"
+  ],
+  "*.{html,vue,css,scss}": ["stylelint --fix --ignore-path .gitignore"],
+  "*.{js,ts,cjs,cts,mjs,mts,jsx,tsx,html,vue,css,scss,json,md}": [
+    "prettier --write --ignore-path .gitignore"
+  ]
+}

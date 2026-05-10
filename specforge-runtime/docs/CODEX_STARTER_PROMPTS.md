@@ -109,3 +109,11 @@ If the environment already has Python, JDK, and Maven ready, the fastest single 
 ```powershell
 python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
 ```
+
+## Frontend Continuation Shortcut
+
+If a frontend repository or another Codex session needs to continue from an already generated backend, first emit a handoff prompt with:
+
+```powershell
+python skills/specforge-full-project-compiler/scripts/emit_frontend_handoff_prompt.py --backend-output specforge-runtime/outputs/<project-backend> --project-name "<project-name>"
+```

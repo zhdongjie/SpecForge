@@ -1458,11 +1458,11 @@ CREATE TABLE `system_user`
 -- ----------------------------
 INSERT INTO `system_user`
 VALUES (20250000000000001, 'Admin', NULL, NULL,
-        '{pbkdf2}c63e28db5fd94e6dc0c0b3ffc709c4605fd29b1ec3fe3284081cb525cb9aae06503689dbbc236f4f58bb417d1ff834c1',
+        '{pbkdf2}00112233445566778899aabbccddeeff83d1ba19e56a91877f85fef7191bc3ebdf5380f76800f5693040973e3921521e',
         NULL, NULL, '2025-01-01 00:00:00', NULL, '2025-01-01 00:00:00', NULL);
 INSERT INTO `system_user`
 VALUES (20250000000000002, 'User', NULL, NULL,
-        '{pbkdf2}fac170d8c23026b83580b708ce652f0c4dcd4a2e00ea55cd89e2342a370228100b0d309f822c27c9521368b4b2079271',
+        '{pbkdf2}00112233445566778899aabbccddeeff45bbcff27cb95f2c8131dcd4586bc675dfd4b2d1da191fab794b9f21cd77d0c4',
         NULL, NULL, '2025-01-01 00:00:00', NULL, '2025-01-01 00:00:00', NULL);
 
 -- ----------------------------

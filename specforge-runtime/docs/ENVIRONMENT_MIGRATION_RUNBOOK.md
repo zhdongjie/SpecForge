@@ -191,6 +191,9 @@ Successful end-to-end runs must produce:
 - `outputs/<target>/logs/api-smoke/business-contract-validation.yaml`
 - `outputs/<target>/logs/sql-asset-validation.yaml`
 - `outputs/<target>/logs/auth-surface-validation.yaml`
+- `outputs/<target>/logs/demo-access.yaml`
+- `outputs/<target>/logs/api-smoke/postman-environment.json`
+- `outputs/<target>/src/main/resources/sql/demo-password-reset.sql`
 
 The final backend for handoff or deployment review is always the exported backend under:
 
@@ -220,6 +223,8 @@ When another Codex session resumes this repository, it should:
 7. If the task begins from a new requirement, run the scaffold command before auto-build.
 8. Use `specforge-runtime/specs/build-plan.yaml` as the canonical execution entry spec.
 9. Export final deliverables only into `specforge-runtime/outputs/`.
+10. If a frontend repository will consume the backend, also read `specforge-runtime/docs/FRONTEND_HANDOFF_BACKEND_CONTRACT.md`.
+11. If another Codex session will continue from the generated backend, also read `specforge-runtime/docs/FRONTEND_ZERO_CONTEXT_PROMPTS.md`.
 
 The resumed agent must not rely on prior conversational context as part of the execution contract.
 

@@ -78,6 +78,13 @@ Final product:
 
 - `specforge-runtime/outputs/<project-backend>/`
 
+Frontend and smoke-test handoff assets inside the final product:
+
+- `logs/demo-access.yaml`
+- `logs/api-smoke/postman-collection.json`
+- `logs/api-smoke/postman-environment.json`
+- `src/main/resources/sql/demo-password-reset.sql`
+
 Run evidence:
 
 - `specforge-runtime/runs/<run-id>/`
@@ -95,6 +102,8 @@ If something fails, inspect:
 - `laboratory-management`
 - `insurance-management`
 - `library-management`
+- `course-management`
+- `dormitory-management`
 
 ## One-Line Prompt For Codex
 
@@ -106,3 +115,8 @@ Use $specforge-full-project-compiler in this repository. Read README.md, WORKSPA
 
 - Run only one generation job at a time in the same repository checkout.
 - Treat `specforge-runtime/outputs/` as the product and `specforge-runtime/runs/` as logs.
+
+For frontend docking, also read:
+
+- `specforge-runtime/docs/FRONTEND_HANDOFF_BACKEND_CONTRACT.md`
+- `specforge-runtime/docs/FRONTEND_ZERO_CONTEXT_PROMPTS.md`

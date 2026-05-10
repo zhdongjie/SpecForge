@@ -1,0 +1,7 @@
+export * from '@/api/authorize'
+export * from '@/api/business/personal'
+export * from '@/api/system/dictionaryType'
+export * from '@/api/system/dictionaryData'
+export * from '@/api/system/permission'
+export * from '@/api/system/role'
+export * from '@/api/system/user'

@@ -34,4 +34,10 @@ public class DictionaryTypeListVo implements Serializable {
      */
     private String dictionaryTypeName;
 
+    /**
+     * 字典类型代码
+     * 字典类型的唯一代码标识
+     */
+    private String dictionaryTypeCode;
+
 }
