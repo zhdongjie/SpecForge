@@ -198,9 +198,13 @@ class CompileRepairEngine:
         if not columns:
             return line
 
+        def normalize_column_name(name: str) -> str:
+            candidate = re.sub(r"(?<!^)(?=[A-Z])", "_", name).replace("-", "_")
+            return candidate.upper()
+
         def replace(match: re.Match[str]) -> str:
             column = match.group("column")
-            normalized = column.upper()
+            normalized = normalize_column_name(column)
             return f"{table_field}.{normalized}" if normalized in columns else match.group(0)
 
         return re.sub(rf"\b{re.escape(table_field)}\.(?P<column>[a-z][A-Za-z0-9_]*)\b", replace, line)

@@ -71,6 +71,41 @@ class CompileRepairEngineTests(unittest.TestCase):
             self.assertTrue((logs_root / "dependency-resolution-report.yaml").exists())
 
 
+    def test_compile_repair_engine_normalizes_mybatis_flex_table_def_suffix_alignment(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            project_root = Path(temp_dir)
+            logs_root = project_root / "logs"
+            table_def_path = project_root / "target" / "generated-sources" / "annotations" / "org" / "eu" / "originalkeen" / "business" / "role" / "domain" / "entity" / "table" / "RoleEntityTableDef.java"
+            source_path = project_root / "src" / "main" / "java" / "org" / "eu" / "originalkeen" / "business" / "role" / "resource" / "RoleResource.java"
+            table_def_path.parent.mkdir(parents=True, exist_ok=True)
+            source_path.parent.mkdir(parents=True, exist_ok=True)
+            table_def_path.write_text(
+                "public class RoleEntityTableDef {\n"
+                "    public static final RoleEntityTableDef ROLE_ENTITY = new RoleEntityTableDef();\n"
+                "    public final QueryColumn ID = new QueryColumn();\n"
+                "    public final QueryColumn ROLE_NAME = new QueryColumn();\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            source_path.write_text(
+                "import static org.eu.originalkeen.business.role.domain.entity.table.RoleTableDef.role;\n"
+                "\n"
+                "public class RoleResource {\n"
+                "    private final String select = role.roleName.toString() + role.id.toString();\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            repairs = CompileRepairEngine(project_root, logs_root).normalize_generated_table_def_imports()
+
+            updated = source_path.read_text(encoding="utf-8")
+            self.assertTrue(repairs)
+            self.assertEqual(repairs[0]["repair_type"], "mybatis_flex_table_def_entity_suffix_alignment")
+            self.assertIn("RoleEntityTableDef.ROLE_ENTITY", updated)
+            self.assertIn("ROLE_ENTITY.ROLE_NAME", updated)
+            self.assertIn("ROLE_ENTITY.ID", updated)
+
+
 class HardeningPipelineTests(unittest.TestCase):
     def test_hardening_pipeline_writes_reports_for_repairable_compile_failures(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
