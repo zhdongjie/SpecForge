@@ -35,9 +35,10 @@ class CompileDiagnostics:
             }
             dump_yaml(self.logs_root / "compile-diagnostics.yaml", diagnostics)
             return diagnostics
+        local_repo = environment["binding"]["local_repo"]
         command = [
             environment["maven_command"],
-            "-Dmaven.repo.local=.m2/repository",
+            f"-Dmaven.repo.local={local_repo}",
             "-DskipTests",
             "clean",
             "compile",
@@ -47,6 +48,8 @@ class CompileDiagnostics:
             cwd=self.project_root,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             check=False,
             env=environment["env"],
         )
@@ -71,7 +74,9 @@ class CompileDiagnostics:
         return diagnostics
 
     def _resolve_environment(self) -> dict[str, Any]:
-        return resolve_toolchain(local_repo=".m2/repository")
+        local_repo = self.logs_root / "maven-repository"
+        local_repo.mkdir(parents=True, exist_ok=True)
+        return resolve_toolchain(local_repo=str(local_repo))
 
     def _combine_output(self, stdout: str, stderr: str) -> str:
         return "\n".join(part for part in [stdout, stderr] if part)

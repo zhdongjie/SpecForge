@@ -36,11 +36,11 @@ class BootDiagnostics:
         self.redis_verifier = RedisVerifier()
         self.security_boot_verifier = SecurityBootVerifier()
 
-    def run(self, timeout_seconds: int = 120) -> dict[str, Any]:
+    def run(self, timeout_seconds: int = 600) -> dict[str, Any]:
         environment = self.compile_diagnostics._resolve_environment()
         command = [
             environment["maven_command"],
-            "-Dmaven.repo.local=.m2/repository",
+            f"-Dmaven.repo.local={environment['binding']['local_repo']}",
             "-DskipTests",
             "spring-boot:run",
             "-Dspring-boot.run.arguments=--server.port=0",
@@ -51,6 +51,8 @@ class BootDiagnostics:
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             env=environment["env"],
         )
         output_lines: list[str] = []

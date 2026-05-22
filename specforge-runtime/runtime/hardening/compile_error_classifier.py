@@ -9,6 +9,7 @@ class CompileErrorClassifier:
     def classify(self, output: str) -> list[dict[str, Any]]:
         findings: list[dict[str, Any]] = []
         findings.extend(self._classify_environment(output))
+        findings.extend(self._classify_maven_repository_errors(output))
         findings.extend(self._classify_duplicate_constructor(output))
         findings.extend(self._classify_unresolved_symbol(output))
         findings.extend(self._classify_package_errors(output))
@@ -22,6 +23,22 @@ class CompileErrorClassifier:
                     "category": "environment_jdk_mismatch",
                     "message": "Compiler requires JDK 17 or newer",
                     "evidence": "java-class-version-mismatch",
+                }
+            ]
+        return []
+
+    def _classify_maven_repository_errors(self, output: str) -> list[dict[str, Any]]:
+        if (
+            "DefaultTrackingFileManager.fileLock" in output
+            or "_remote.repositories" in output
+            or "Access is denied" in output
+            or "拒绝访问" in output
+        ):
+            return [
+                {
+                    "category": "maven_local_repository_access",
+                    "message": "Maven local repository access failed before Java compilation",
+                    "evidence": "maven-local-repository-lock-or-permission",
                 }
             ]
         return []

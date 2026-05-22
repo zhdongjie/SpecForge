@@ -42,7 +42,7 @@ class ControllerSynthesizer:
     def _source(self, context: dict[str, Any], entity_name: str, entity_spec: dict[str, Any], route_prefix: str, permission_class: str) -> str:
         entity_var = entity_name[:1].lower() + entity_name[1:]
         plural_param = f"{entity_var}Ids"
-        permission_namespace = entity_spec["permission_namespace"].replace(":", "_").upper()
+        permission_namespace = entity_spec["permission_namespace"].replace(":", "_").replace("-", "_").upper()
         return (
             f"package {context['package_root']}.resource;\n\n"
             f"import org.eu.originalkeen.core.annotation.OperateLog;\n"

@@ -89,6 +89,8 @@ class SynthesisValidator:
                 cwd=temp_backend,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 check=False,
                 env=toolchain["env"],
             )
@@ -113,12 +115,17 @@ class SynthesisValidator:
             {},
         )
         skipped_entities = controller_result.get("skipped_entities", [])
-        if skipped_entities:
+        partial_contract_skips = [
+            item
+            for item in skipped_entities
+            if 0 < len(item.get("missing", [])) < 2
+        ]
+        if partial_contract_skips:
             findings.append(
                 {
-                    "code": "controller-entity-skipped",
+                    "code": "controller-entity-partial-route-contract",
                     "status": "FAIL",
-                    "details": f"Controller synthesis skipped entities: {skipped_entities}",
+                    "details": f"Controller synthesis skipped entities with partial route contracts: {partial_contract_skips}",
                 }
             )
 

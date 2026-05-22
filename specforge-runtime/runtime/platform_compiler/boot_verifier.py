@@ -30,7 +30,8 @@ class BootVerifier:
         return {"compile_check": compile_check, "boot_check": boot_check}
 
     def compile_check(self) -> dict[str, Any]:
-        toolchain = resolve_toolchain()
+        toolchain = resolve_toolchain(local_repo=str(self.project_root / "logs" / "maven-repository"))
+        Path(toolchain["binding"]["local_repo"]).mkdir(parents=True, exist_ok=True)
         mvn_command = toolchain["maven_command"]
         if mvn_command is None:
             return {
@@ -39,10 +40,12 @@ class BootVerifier:
                 "environment_binding": toolchain["binding"],
             }
         completed = subprocess.run(
-            [mvn_command, "-q", "-DskipTests", "clean", "compile"],
+            [mvn_command, "-q", f"-Dmaven.repo.local={toolchain['binding']['local_repo']}", "-DskipTests", "clean", "compile"],
             cwd=self.project_root,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             check=False,
             env=toolchain["env"],
         )
@@ -61,7 +64,8 @@ class BootVerifier:
         return result
 
     def boot_check(self, timeout_seconds: int = 120) -> dict[str, Any]:
-        toolchain = resolve_toolchain()
+        toolchain = resolve_toolchain(local_repo=str(self.project_root / "logs" / "maven-repository"))
+        Path(toolchain["binding"]["local_repo"]).mkdir(parents=True, exist_ok=True)
         mvn_command = toolchain["maven_command"]
         if mvn_command is None:
             return {
@@ -71,11 +75,20 @@ class BootVerifier:
             }
 
         process = subprocess.Popen(
-            [mvn_command, "-q", "-DskipTests", "spring-boot:run", "-Dspring-boot.run.arguments=--server.port=0"],
+            [
+                mvn_command,
+                "-q",
+                f"-Dmaven.repo.local={toolchain['binding']['local_repo']}",
+                "-DskipTests",
+                "spring-boot:run",
+                "-Dspring-boot.run.arguments=--server.port=0",
+            ],
             cwd=self.project_root,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             env=toolchain["env"],
         )
         started = False

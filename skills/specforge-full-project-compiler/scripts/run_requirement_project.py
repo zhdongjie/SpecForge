@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
+import stat
+import time
 import subprocess
 import sys
 from pathlib import Path
@@ -104,8 +107,26 @@ def main() -> int:
 
 def reset_run_directory(repo_root: Path, run_id: str) -> None:
     run_root = repo_root / "specforge-runtime" / "runs" / run_id
+    if not run_root.exists():
+        return
+
+    def onerror(function, path, exc_info):
+        try:
+            os.chmod(path, stat.S_IWRITE | stat.S_IREAD | stat.S_IEXEC)
+            function(path)
+        except Exception:
+            raise
+
+    last_error: Exception | None = None
+    for _ in range(3):
+        try:
+            shutil.rmtree(run_root, onerror=onerror)
+            return
+        except OSError as exc:
+            last_error = exc
+            time.sleep(0.5)
     if run_root.exists():
-        shutil.rmtree(run_root)
+        raise last_error or OSError(f"failed to remove run directory: {run_root}")
 
 
 def infer_domain(project_name: str, requirement_text: str, requirement_file: str, domain: str, repo_root: Path) -> str:

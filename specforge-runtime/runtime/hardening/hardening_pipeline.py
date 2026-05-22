@@ -47,8 +47,20 @@ class HardeningPipeline:
         )
 
         initial_compile_diagnostics = CompileDiagnostics(self.generated_project_root, self.logs_root).run()
+        table_def_preflight_repairs = []
+        if initial_compile_diagnostics["status"] == "PASS":
+            table_def_preflight_repairs = CompileRepairEngine(
+                self.generated_project_root,
+                self.logs_root,
+            ).normalize_generated_table_def_imports()
+            if table_def_preflight_repairs:
+                initial_compile_diagnostics = CompileDiagnostics(self.generated_project_root, self.logs_root).run()
         compile_diagnostics = initial_compile_diagnostics
-        compile_repair_report = {"status": "SKIPPED", "repairs": [], "post_repair_status": compile_diagnostics["status"]}
+        compile_repair_report = {
+            "status": "PASS" if table_def_preflight_repairs else "SKIPPED",
+            "repairs": table_def_preflight_repairs,
+            "post_repair_status": compile_diagnostics["status"],
+        }
         if auto_repair:
             repair_runs: list[dict[str, Any]] = []
             for _ in range(max(1, repair_max_passes)):
@@ -60,7 +72,20 @@ class HardeningPipeline:
                 )
                 repair_runs.append(pass_report)
                 if pass_report["status"] == "NO_ACTION":
-                    compile_repair_report = pass_report
+                    compile_diagnostics = CompileDiagnostics(self.generated_project_root, self.logs_root).run()
+                    prior_repairs = [repair for item in repair_runs[:-1] for repair in item.get("repairs", [])]
+                    prior_passes = [entry for item in repair_runs[:-1] for entry in item.get("repair_passes", [])]
+                    if prior_repairs:
+                        compile_repair_report = {
+                            "status": "PASS",
+                            "repairs": prior_repairs,
+                            "repair_passes": prior_passes + pass_report.get("repair_passes", []),
+                            "dependency_resolution_status": pass_report.get("dependency_resolution_status", "PASS"),
+                            "post_repair_status": compile_diagnostics["status"],
+                        }
+                    else:
+                        compile_repair_report = pass_report
+                        compile_repair_report["post_repair_status"] = compile_diagnostics["status"]
                     break
                 compile_diagnostics = CompileDiagnostics(self.generated_project_root, self.logs_root).run()
                 compile_repair_report = {
