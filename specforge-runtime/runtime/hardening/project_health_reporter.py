@@ -25,6 +25,8 @@ class ProjectHealthReporter:
         boot_status = boot_diagnostics.get("status", "SKIPPED")
         boot_post_repair = boot_repair_report.get("post_repair_status", boot_status)
         overall = "PASS" if compile_post_repair == "PASS" and boot_post_repair in {"PASS", "SKIPPED"} else "FAIL"
+        compile_repairs = list(compile_repair_report.get("repairs", []) or [])
+        boot_repairs = list(boot_repair_report.get("repairs", []) or [])
         report = {
             "status": overall,
             "compile_status": compile_status,
@@ -33,6 +35,10 @@ class ProjectHealthReporter:
             "boot_post_repair_status": boot_post_repair,
             "compile_error_count": len(compile_diagnostics.get("compile_errors", [])),
             "boot_failure_count": len(boot_diagnostics.get("boot_failures", [])),
+            "compile_repair_count": len(compile_repairs),
+            "compile_repaired_categories": sorted({repair.get("repair_type") for repair in compile_repairs if repair.get("repair_type")}),
+            "boot_repair_count": len(boot_repairs),
+            "boot_repaired_categories": sorted({repair.get("repair_type") for repair in boot_repairs if repair.get("repair_type")}),
             "compile_repair_validation": compile_repair_validation,
             "boot_repair_validation": boot_repair_validation,
             "deterministic_repair_validation": deterministic_validation,

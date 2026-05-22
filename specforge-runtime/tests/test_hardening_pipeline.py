@@ -169,6 +169,11 @@ class HardeningPipelineTests(unittest.TestCase):
             self.assertTrue((logs_root / "boot-repair-report.yaml").exists())
             health_report = load_yaml(logs_root / "project-health-report.yaml")
             self.assertEqual(health_report["status"], "PASS")
+            self.assertEqual(health_report["compile_repair_count"], 2)
+            self.assertEqual(
+                set(health_report["compile_repaired_categories"]),
+                {"empty_query_dto_constructor_alignment", "permission_constant_normalization"},
+            )
 
 
 if __name__ == "__main__":
