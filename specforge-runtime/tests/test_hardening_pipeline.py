@@ -15,6 +15,7 @@ from runtime.codegen.common import dump_yaml
 from runtime.hardening.compile_error_classifier import CompileErrorClassifier
 from runtime.hardening.compile_repair_engine import CompileRepairEngine
 from runtime.hardening.hardening_pipeline import HardeningPipeline
+from runtime.hardening.project_health_reporter import ProjectHealthReporter
 from runtime.replay import load_yaml
 
 SPECS_DIR = ROOT / "specs"
@@ -104,6 +105,83 @@ class CompileRepairEngineTests(unittest.TestCase):
             self.assertIn("RoleEntityTableDef.ROLE_ENTITY", updated)
             self.assertIn("ROLE_ENTITY.ROLE_NAME", updated)
             self.assertIn("ROLE_ENTITY.ID", updated)
+
+
+class ProjectHealthReporterTests(unittest.TestCase):
+    def test_health_report_marks_unrepaired_compile_failures_as_fail(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            logs_root = Path(temp_dir) / "logs"
+            logs_root.mkdir(parents=True, exist_ok=True)
+
+            report = ProjectHealthReporter(logs_root).write(
+                compile_diagnostics={
+                    "status": "FAIL",
+                    "compile_errors": [
+                        {"category": "unresolved_symbol"},
+                        {"category": "duplicate_constructor"},
+                    ],
+                },
+                compile_repair_report={
+                    "status": "NO_ACTION",
+                    "repairs": [],
+                    "post_repair_status": "FAIL",
+                },
+                boot_diagnostics={
+                    "status": "BLOCKED",
+                    "boot_failures": [],
+                    "reason": "compile_failed",
+                },
+                boot_repair_report={
+                    "status": "SKIPPED",
+                    "repairs": [],
+                    "post_repair_status": "BLOCKED",
+                },
+                compile_repair_validation={"status": "PASS", "repair_count": 0},
+                boot_repair_validation={"status": "PASS", "repair_count": 0},
+                deterministic_validation={"status": "PASS"},
+            )
+
+            self.assertEqual(report["status"], "FAIL")
+            self.assertEqual(report["compile_status"], "FAIL")
+            self.assertEqual(report["compile_post_repair_status"], "FAIL")
+            self.assertEqual(report["compile_error_count"], 2)
+            self.assertEqual(report["boot_status"], "BLOCKED")
+            self.assertEqual(report["boot_post_repair_status"], "BLOCKED")
+            self.assertEqual(report["compile_repair_count"], 0)
+            self.assertEqual(report["boot_repair_count"], 0)
+            self.assertEqual(load_yaml(logs_root / "project-health-report.yaml"), report)
+
+    def test_health_report_marks_boot_failures_as_fail_even_after_compile_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            logs_root = Path(temp_dir) / "logs"
+            logs_root.mkdir(parents=True, exist_ok=True)
+
+            report = ProjectHealthReporter(logs_root).write(
+                compile_diagnostics={"status": "PASS", "compile_errors": []},
+                compile_repair_report={
+                    "status": "SKIPPED",
+                    "repairs": [],
+                    "post_repair_status": "PASS",
+                },
+                boot_diagnostics={
+                    "status": "FAIL",
+                    "boot_failures": [{"category": "port_conflict"}],
+                },
+                boot_repair_report={
+                    "status": "NO_ACTION",
+                    "repairs": [],
+                    "post_repair_status": "FAIL",
+                },
+                compile_repair_validation={"status": "PASS", "repair_count": 0},
+                boot_repair_validation={"status": "PASS", "repair_count": 0},
+                deterministic_validation={"status": "PASS"},
+            )
+
+            self.assertEqual(report["status"], "FAIL")
+            self.assertEqual(report["compile_status"], "PASS")
+            self.assertEqual(report["boot_status"], "FAIL")
+            self.assertEqual(report["boot_post_repair_status"], "FAIL")
+            self.assertEqual(report["boot_failure_count"], 1)
 
 
 class HardeningPipelineTests(unittest.TestCase):
