@@ -62,6 +62,7 @@ class SynthesisPipeline:
             ("sql-synthesizer", SqlSynthesizer().emit(context)),
         ]
         emitter_results = [{"emitter": name, **result} for name, result in emitters]
+        context["emitter_results"] = emitter_results
 
         manifest = {
             "module_name": schema["module"]["name"],

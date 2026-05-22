@@ -32,20 +32,18 @@ class IRLoweringPipelineTests(unittest.TestCase):
             self.assertEqual(summary["status"], "PASS")
             self.assertEqual(report["status"], "PASS")
             self.assertEqual(validation["status"], "PASS")
-            self.assertEqual(generated["module"]["route_base"], "/v1/system")
+            self.assertEqual(generated["module"]["route_base"], "/v1/business")
             self.assertEqual(
                 sorted(generated["entities"].keys()),
                 [
-                    "DictionaryData",
-                    "DictionaryDataTranslation",
-                    "DictionaryType",
-                    "DictionaryTypeTranslation",
+                    "LaboratoryBuilding",
+                    "LaboratoryRoom",
                 ],
             )
-            self.assertIn("system:dictionary-data:create", generated["permissions"])
-            dictionary_data_fields = [field["name"] for field in generated["entities"]["DictionaryData"]["fields"]]
-            self.assertIn("dictionaryTypeCode", dictionary_data_fields)
-            self.assertIn("dictionaryDataValue", dictionary_data_fields)
+            self.assertIn("business:laboratory-building:create", generated["permissions"])
+            laboratory_room_fields = [field["name"] for field in generated["entities"]["LaboratoryRoom"]["fields"]]
+            self.assertIn("laboratoryRoomCode", laboratory_room_fields)
+            self.assertIn("laboratoryRoomStatus", laboratory_room_fields)
 
     def test_lowering_pipeline_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as left_dir, tempfile.TemporaryDirectory() as right_dir:

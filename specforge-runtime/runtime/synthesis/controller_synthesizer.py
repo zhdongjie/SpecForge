@@ -9,9 +9,16 @@ from runtime.codegen.common import write_text
 class ControllerSynthesizer:
     def emit(self, context: dict[str, Any]) -> dict[str, Any]:
         artifacts: list[str] = []
+        skipped_entities: list[dict[str, Any]] = []
         permission_class = context["permission_class"]
         for entity_name, entity_spec in sorted(context["schema"].get("entities", {}).items()):
-            if not entity_spec.get("route_segment") or not entity_spec.get("permission_namespace"):
+            missing = [
+                key
+                for key in ["route_segment", "permission_namespace"]
+                if not entity_spec.get(key)
+            ]
+            if missing:
+                skipped_entities.append({"entity": entity_name, "missing": missing})
                 continue
             route_prefix = f"{context['schema']['module']['route_base']}/{entity_spec['route_segment']}"
             source = self._source(context, entity_name, entity_spec, route_prefix, permission_class)
@@ -26,7 +33,11 @@ class ControllerSynthesizer:
             )
             write_text(destination, source)
             artifacts.append(str(destination))
-        return {"artifact_count": len(artifacts), "artifacts": artifacts}
+        return {
+            "artifact_count": len(artifacts),
+            "artifacts": artifacts,
+            "skipped_entities": skipped_entities,
+        }
 
     def _source(self, context: dict[str, Any], entity_name: str, entity_spec: dict[str, Any], route_prefix: str, permission_class: str) -> str:
         entity_var = entity_name[:1].lower() + entity_name[1:]

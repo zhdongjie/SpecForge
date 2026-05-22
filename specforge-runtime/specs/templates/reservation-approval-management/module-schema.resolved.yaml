@@ -26,7 +26,81 @@ api_groups:
   - enquiry-reservation_approval_management-page
   - enquiry-reservation_approval_management-details
   - enquiry-reservation_approval_management-list
-capabilities: []
+capabilities:
+- capability_id: create-reservation_approval_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: reservation_approval_management
+  http_method: POST
+  route: /
+  authority: business:reservation-approval:create
+  transaction: read-write
+  input_dto: CreateReservationApprovalManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - ReservationApproval
+  - ReservationApprovalRecord
+- capability_id: update-reservation_approval_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: reservation_approval_management
+  http_method: PUT
+  route: /
+  authority: business:reservation-approval:update
+  transaction: read-write
+  input_dto: UpdateReservationApprovalManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-reservation_approval_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: reservation_approval_management
+  http_method: DELETE
+  route: /
+  authority: business:reservation-approval:delete
+  transaction: read-write
+  input_dto: ReservationApprovalManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-reservation_approval_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: reservation_approval_management
+  http_method: GET
+  route: /page
+  authority: business:reservation-approval:page
+  transaction: read-only
+  input_dto: EnquiryReservationApprovalManagementPageDto
+  output_vo: PageVo<ReservationApprovalManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-reservation_approval_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: reservation_approval_management
+  http_method: GET
+  route: /{id}
+  authority: business:reservation-approval:details
+  transaction: read-only
+  input_dto: ReservationApprovalManagementIdPath
+  output_vo: ReservationApprovalManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-reservation_approval_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: reservation_approval_management
+  http_method: GET
+  route: /list
+  authority: business:reservation-approval:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ReservationApprovalManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: ReservationApproval

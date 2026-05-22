@@ -26,7 +26,81 @@ api_groups:
   - enquiry-insurance_claim_management-page
   - enquiry-insurance_claim_management-details
   - enquiry-insurance_claim_management-list
-capabilities: []
+capabilities:
+- capability_id: create-insurance_claim_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: insurance_claim_management
+  http_method: POST
+  route: /
+  authority: business:insurance-claim:create
+  transaction: read-write
+  input_dto: CreateInsuranceClaimManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - InsuranceClaim
+  - ClaimSettlement
+- capability_id: update-insurance_claim_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: insurance_claim_management
+  http_method: PUT
+  route: /
+  authority: business:insurance-claim:update
+  transaction: read-write
+  input_dto: UpdateInsuranceClaimManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-insurance_claim_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: insurance_claim_management
+  http_method: DELETE
+  route: /
+  authority: business:insurance-claim:delete
+  transaction: read-write
+  input_dto: InsuranceClaimManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-insurance_claim_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: insurance_claim_management
+  http_method: GET
+  route: /page
+  authority: business:insurance-claim:page
+  transaction: read-only
+  input_dto: EnquiryInsuranceClaimManagementPageDto
+  output_vo: PageVo<InsuranceClaimManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-insurance_claim_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: insurance_claim_management
+  http_method: GET
+  route: /{id}
+  authority: business:insurance-claim:details
+  transaction: read-only
+  input_dto: InsuranceClaimManagementIdPath
+  output_vo: InsuranceClaimManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-insurance_claim_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: insurance_claim_management
+  http_method: GET
+  route: /list
+  authority: business:insurance-claim:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<InsuranceClaimManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: InsuranceClaim

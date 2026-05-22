@@ -26,7 +26,81 @@ api_groups:
   - enquiry-consumable_inventory_management-page
   - enquiry-consumable_inventory_management-details
   - enquiry-consumable_inventory_management-list
-capabilities: []
+capabilities:
+- capability_id: create-consumable_inventory_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: consumable_inventory_management
+  http_method: POST
+  route: /
+  authority: business:consumable-inventory:create
+  transaction: read-write
+  input_dto: CreateConsumableInventoryManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - ConsumableItem
+  - ConsumableStockRecord
+- capability_id: update-consumable_inventory_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: consumable_inventory_management
+  http_method: PUT
+  route: /
+  authority: business:consumable-inventory:update
+  transaction: read-write
+  input_dto: UpdateConsumableInventoryManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-consumable_inventory_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: consumable_inventory_management
+  http_method: DELETE
+  route: /
+  authority: business:consumable-inventory:delete
+  transaction: read-write
+  input_dto: ConsumableInventoryManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-consumable_inventory_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: consumable_inventory_management
+  http_method: GET
+  route: /page
+  authority: business:consumable-inventory:page
+  transaction: read-only
+  input_dto: EnquiryConsumableInventoryManagementPageDto
+  output_vo: PageVo<ConsumableInventoryManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-consumable_inventory_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: consumable_inventory_management
+  http_method: GET
+  route: /{id}
+  authority: business:consumable-inventory:details
+  transaction: read-only
+  input_dto: ConsumableInventoryManagementIdPath
+  output_vo: ConsumableInventoryManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-consumable_inventory_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: consumable_inventory_management
+  http_method: GET
+  route: /list
+  authority: business:consumable-inventory:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ConsumableInventoryManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: ConsumableItem

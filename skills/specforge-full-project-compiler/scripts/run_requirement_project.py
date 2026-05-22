@@ -18,6 +18,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--requirement-file", default="")
     parser.add_argument("--domain", default="auto")
     parser.add_argument("--build-plan", default="build-plan.yaml")
+    parser.add_argument(
+        "--final-output-dir",
+        default="",
+        help="Path under specforge-runtime for the generated backend output, for example outputs/original-api.",
+    )
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
@@ -64,6 +69,8 @@ def main() -> int:
         scaffold_command.extend(["--requirement", args.requirement])
     if args.requirement_file:
         scaffold_command.extend(["--requirement-file", args.requirement_file])
+    if args.final_output_dir:
+        scaffold_command.extend(["--final-output-dir", args.final_output_dir])
     if args.force:
         scaffold_command.append("--force")
 
@@ -115,15 +122,16 @@ def infer_domain(project_name: str, requirement_text: str, requirement_file: str
 
     haystack = f"{project_name}\n{text}".lower()
     keyword_map = [
-        ("laboratory-management", ["equipment", "consumable", "experiment", "schedule", "calendar", "report", "statistics", "lab manager", "lab management"]),
-        ("insurance-management", ["insurance", "claim", "policy", "premium", "underwriting", "agent", "beneficiary", "renewal"]),
-        ("laboratory-reservation", ["laboratory", "lab ", "reservation", "experiment", "equipment", "consumable", "schedule", "booking"]),
+        ("education-management", ["student", "students", "student management", "course", "course management", "classroom", "class management", "grade", "enrollment", "education", "school", "campus", "teacher", "学生", "课程", "教务", "校园", "学校", "班级", "成绩", "选课", "教师", "学院"]),
+        ("laboratory-reservation", ["laboratory reservation", "lab reservation", "reservation", "booking", "预约"]),
+        ("laboratory-management", ["laboratory", "lab ", "equipment", "consumable", "experiment", "schedule", "calendar", "report", "statistics", "lab manager", "lab management", "实验室", "设备", "耗材", "实验", "排期", "统计"]),
+        ("insurance-management", ["insurance", "claim", "policy", "premium", "underwriting", "agent", "beneficiary", "renewal", "保险", "理赔", "保单", "投保", "续保"]),
     ]
     for domain_key, keywords in keyword_map:
         if any(keyword in haystack for keyword in keywords):
             return domain_key
 
-    return "laboratory-reservation"
+    return "education-management"
 
 
 if __name__ == "__main__":

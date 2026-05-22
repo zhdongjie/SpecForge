@@ -26,7 +26,81 @@ api_groups:
   - enquiry-schedule_calendar_management-page
   - enquiry-schedule_calendar_management-details
   - enquiry-schedule_calendar_management-list
-capabilities: []
+capabilities:
+- capability_id: create-schedule_calendar_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: schedule_calendar_management
+  http_method: POST
+  route: /
+  authority: business:schedule-calendar:create
+  transaction: read-write
+  input_dto: CreateScheduleCalendarManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - ScheduleCalendar
+  - ScheduleCalendarEvent
+- capability_id: update-schedule_calendar_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: schedule_calendar_management
+  http_method: PUT
+  route: /
+  authority: business:schedule-calendar:update
+  transaction: read-write
+  input_dto: UpdateScheduleCalendarManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-schedule_calendar_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: schedule_calendar_management
+  http_method: DELETE
+  route: /
+  authority: business:schedule-calendar:delete
+  transaction: read-write
+  input_dto: ScheduleCalendarManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-schedule_calendar_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: schedule_calendar_management
+  http_method: GET
+  route: /page
+  authority: business:schedule-calendar:page
+  transaction: read-only
+  input_dto: EnquiryScheduleCalendarManagementPageDto
+  output_vo: PageVo<ScheduleCalendarManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-schedule_calendar_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: schedule_calendar_management
+  http_method: GET
+  route: /{id}
+  authority: business:schedule-calendar:details
+  transaction: read-only
+  input_dto: ScheduleCalendarManagementIdPath
+  output_vo: ScheduleCalendarManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-schedule_calendar_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: schedule_calendar_management
+  http_method: GET
+  route: /list
+  authority: business:schedule-calendar:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ScheduleCalendarManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: ScheduleCalendar

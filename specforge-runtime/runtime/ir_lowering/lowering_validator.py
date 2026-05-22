@@ -15,6 +15,25 @@ class LoweringValidator:
             findings.append({"code": "permission-duplication", "status": "FAIL", "details": "Permission identifiers must be unique"})
         if len(set(route_segments)) != len(route_segments):
             findings.append({"code": "route-duplication", "status": "FAIL", "details": "Route segments must be unique"})
+        semantic_role = generated_schema.get("module", {}).get("semantic_role", "")
+        if semantic_role == "business-domain":
+            if not permissions:
+                findings.append(
+                    {
+                        "code": "business-permissions-missing",
+                        "status": "FAIL",
+                        "details": "Business-domain lowering must produce non-empty permissions",
+                    }
+                )
+            if not route_segments:
+                findings.append(
+                    {
+                        "code": "business-routes-missing",
+                        "status": "FAIL",
+                        "details": "Business-domain lowering must produce at least one routable entity",
+                    }
+                )
+
         for entity_name, payload in sorted(entities.items()):
             field_names = [field["name"] for field in payload.get("fields", [])]
             if field_names != sorted(field_names, key=lambda value: (value != "id", value)):

@@ -15,6 +15,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--requirement", default="")
     parser.add_argument("--requirement-file", default="")
     parser.add_argument("--domain", default="auto")
+    parser.add_argument(
+        "--final-output-dir",
+        default="",
+        help="Path under specforge-runtime for the generated backend output, for example outputs/original-api.",
+    )
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
@@ -30,8 +35,13 @@ def main() -> int:
     domain_blueprint = blueprints["domains"][domain_key]
 
     write_project_spec(specs_root / "project-spec.md", args.project_name, requirement_text, domain_blueprint)
-    write_project_assembly_plan(specs_root / "project-assembly-plan.yaml", args.project_name, domain_blueprint)
-    write_build_plan(specs_root / "build-plan.yaml", args.project_name)
+    write_project_assembly_plan(
+        specs_root / "project-assembly-plan.yaml",
+        args.project_name,
+        domain_blueprint,
+        args.final_output_dir,
+    )
+    write_build_plan(specs_root / "build-plan.yaml", args.project_name, args.final_output_dir)
     write_template_modules(templates_root, domain_blueprint, force=args.force)
     return 0
 
@@ -53,16 +63,18 @@ def infer_domain(project_name: str, requirement_text: str, domain: str, blueprin
 
     haystack = f"{project_name}\n{requirement_text}".lower()
     keyword_map = [
-        ("laboratory-management", ["equipment", "consumable", "experiment", "schedule", "calendar", "report", "statistics", "lab manager", "lab management"]),
-        ("insurance-management", ["insurance", "claim", "policy", "premium", "underwriting", "agent", "beneficiary", "renewal"]),
-        ("laboratory-reservation", ["laboratory", "lab ", "reservation", "experiment", "equipment", "consumable", "schedule", "booking"]),
+        ("education-management", ["student", "students", "student management", "course", "course management", "classroom", "class management", "grade", "enrollment", "education", "school", "campus", "teacher", "学生", "课程", "教务", "校园", "学校", "班级", "成绩", "选课", "教师", "学院"]),
+        ("laboratory-reservation", ["laboratory reservation", "lab reservation", "reservation", "booking", "预约"]),
+        ("laboratory-management", ["laboratory", "lab ", "equipment", "consumable", "experiment", "schedule", "calendar", "report", "statistics", "lab manager", "lab management", "实验室", "设备", "耗材", "实验", "排期", "统计"]),
+        ("insurance-management", ["insurance", "claim", "policy", "premium", "underwriting", "agent", "beneficiary", "renewal", "保险", "理赔", "保单", "投保", "续保"]),
     ]
     for domain_key, keywords in keyword_map:
         if any(keyword in haystack for keyword in keywords):
             return domain_key
 
+    if "education-management" in blueprints.get("domains", {}):
+        return "education-management"
     return next(iter(blueprints.get("domains", {})), "laboratory-reservation")
-
 
 def write_project_spec(path: Path, project_name: str, requirement_text: str, blueprint: dict[str, Any]) -> None:
     project = blueprint["project"]
@@ -124,7 +136,14 @@ def write_project_spec(path: Path, project_name: str, requirement_text: str, blu
     write_yaml_as_markdown(path, payload)
 
 
-def write_project_assembly_plan(path: Path, project_name: str, blueprint: dict[str, Any]) -> None:
+def resolve_final_output_dir(plan_id: str, final_output_dir: str) -> str:
+    final_output_dir = final_output_dir.strip()
+    if final_output_dir:
+        return final_output_dir
+    return f"outputs/{plan_id}-backend"
+
+
+def write_project_assembly_plan(path: Path, project_name: str, blueprint: dict[str, Any], final_output_dir: str = "") -> None:
     plan_id = slugify(project_name)
     modules = blueprint["modules"]
     payload = {
@@ -173,20 +192,20 @@ def write_project_assembly_plan(path: Path, project_name: str, blueprint: dict[s
             "compile_required": True,
             "boot_verify_required": True,
             "auto_repair_enabled": True,
-            "final_output_dir": f"outputs/{plan_id}-backend",
+            "final_output_dir": resolve_final_output_dir(plan_id, final_output_dir),
             "failure_bundle_required": True,
         },
     }
     write_yaml(path, payload)
 
 
-def write_build_plan(path: Path, project_name: str) -> None:
+def write_build_plan(path: Path, project_name: str, final_output_dir: str = "") -> None:
     plan_id = slugify(project_name)
     payload = {
         "plan_id": plan_id,
         "default_run_id": f"{plan_id}-autobuild",
         "backend_root": "../backend",
-        "final_output_dir": f"outputs/{plan_id}-backend",
+        "final_output_dir": resolve_final_output_dir(plan_id, final_output_dir),
         "project_assembly_plan": "project-assembly-plan.yaml",
         "module_spec": "module-spec.yaml",
         "module_schema": "module-schema.resolved.yaml",
@@ -347,7 +366,7 @@ def build_module_schema_blueprint(item: dict[str, Any]) -> dict[str, Any]:
                 ],
             }
         ],
-        "capabilities": [],
+        "capabilities": build_module_spec_blueprint(item)["capabilities"],
         "entity_graph": {
             "entities": [
                 {

@@ -26,7 +26,81 @@ api_groups:
   - enquiry-channel_agent_management-page
   - enquiry-channel_agent_management-details
   - enquiry-channel_agent_management-list
-capabilities: []
+capabilities:
+- capability_id: create-channel_agent_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: channel_agent_management
+  http_method: POST
+  route: /
+  authority: business:channel-agent:create
+  transaction: read-write
+  input_dto: CreateChannelAgentManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - InsuranceChannel
+  - InsuranceAgent
+- capability_id: update-channel_agent_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: channel_agent_management
+  http_method: PUT
+  route: /
+  authority: business:channel-agent:update
+  transaction: read-write
+  input_dto: UpdateChannelAgentManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-channel_agent_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: channel_agent_management
+  http_method: DELETE
+  route: /
+  authority: business:channel-agent:delete
+  transaction: read-write
+  input_dto: ChannelAgentManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-channel_agent_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: channel_agent_management
+  http_method: GET
+  route: /page
+  authority: business:channel-agent:page
+  transaction: read-only
+  input_dto: EnquiryChannelAgentManagementPageDto
+  output_vo: PageVo<ChannelAgentManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-channel_agent_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: channel_agent_management
+  http_method: GET
+  route: /{id}
+  authority: business:channel-agent:details
+  transaction: read-only
+  input_dto: ChannelAgentManagementIdPath
+  output_vo: ChannelAgentManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-channel_agent_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: channel_agent_management
+  http_method: GET
+  route: /list
+  authority: business:channel-agent:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ChannelAgentManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: InsuranceChannel

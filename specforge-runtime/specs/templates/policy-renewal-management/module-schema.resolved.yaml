@@ -26,7 +26,81 @@ api_groups:
   - enquiry-policy_renewal_management-page
   - enquiry-policy_renewal_management-details
   - enquiry-policy_renewal_management-list
-capabilities: []
+capabilities:
+- capability_id: create-policy_renewal_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: policy_renewal_management
+  http_method: POST
+  route: /
+  authority: business:policy-renewal:create
+  transaction: read-write
+  input_dto: CreatePolicyRenewalManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - PolicyRenewal
+  - RenewalReminder
+- capability_id: update-policy_renewal_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: policy_renewal_management
+  http_method: PUT
+  route: /
+  authority: business:policy-renewal:update
+  transaction: read-write
+  input_dto: UpdatePolicyRenewalManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-policy_renewal_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: policy_renewal_management
+  http_method: DELETE
+  route: /
+  authority: business:policy-renewal:delete
+  transaction: read-write
+  input_dto: PolicyRenewalManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-policy_renewal_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: policy_renewal_management
+  http_method: GET
+  route: /page
+  authority: business:policy-renewal:page
+  transaction: read-only
+  input_dto: EnquiryPolicyRenewalManagementPageDto
+  output_vo: PageVo<PolicyRenewalManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-policy_renewal_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: policy_renewal_management
+  http_method: GET
+  route: /{id}
+  authority: business:policy-renewal:details
+  transaction: read-only
+  input_dto: PolicyRenewalManagementIdPath
+  output_vo: PolicyRenewalManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-policy_renewal_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: policy_renewal_management
+  http_method: GET
+  route: /list
+  authority: business:policy-renewal:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<PolicyRenewalManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: PolicyRenewal

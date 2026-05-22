@@ -96,7 +96,10 @@ class IRLoweringPipeline:
             "localization_requirements",
             "audit_behavior",
         ]:
-            if key not in merged and key in module_spec:
+            if key not in module_spec:
+                continue
+            current = merged.get(key)
+            if key not in merged or current in (None, [], {}):
                 merged[key] = module_spec[key]
         if "module_identity" in module_spec and "module_identity" in merged:
             merged["module_identity"] = {**module_spec["module_identity"], **merged["module_identity"]}

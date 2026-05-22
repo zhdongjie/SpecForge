@@ -79,6 +79,7 @@ Use `--domain <domain-key>` only when you intentionally want to pin the scaffold
 
 Currently validated automatic scaffold domains include:
 
+- `education-management`
 - `laboratory-reservation`
 - `laboratory-management`
 - `insurance-management`

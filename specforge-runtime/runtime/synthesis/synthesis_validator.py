@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -42,6 +43,7 @@ class SynthesisValidator:
         findings.extend(self._duplicates(route_values, "route-duplication"))
         findings.extend(self._duplicates(self.context["schema"].get("permissions", []), "permission-duplication"))
         findings.extend(self._relation_findings())
+        findings.extend(self._controller_contract_findings(semantic_role))
 
         report = {
             "status": "PASS" if not findings else "FAIL",
@@ -103,6 +105,62 @@ class SynthesisValidator:
             result = self._classify_compile_failure(result)
         dump_yaml(self.context["output_root"] / "logs" / "compile-check.yaml", result)
         return result
+
+    def _controller_contract_findings(self, semantic_role: str) -> list[dict[str, Any]]:
+        findings: list[dict[str, Any]] = []
+        controller_result = next(
+            (item for item in self.context.get("emitter_results", []) if item.get("emitter") == "controller-synthesizer"),
+            {},
+        )
+        skipped_entities = controller_result.get("skipped_entities", [])
+        if skipped_entities:
+            findings.append(
+                {
+                    "code": "controller-entity-skipped",
+                    "status": "FAIL",
+                    "details": f"Controller synthesis skipped entities: {skipped_entities}",
+                }
+            )
+
+        if semantic_role != "business-domain" or not self.context["schema"].get("permissions"):
+            return findings
+
+        resource_root = self.generated_java_root / Path(*self.context["package_root"].split(".")) / "resource"
+        resource_files = sorted(resource_root.glob("*Resource.java"))
+        if not resource_files:
+            findings.append(
+                {
+                    "code": "business-controller-missing",
+                    "status": "FAIL",
+                    "details": "Business-domain module with permissions must emit at least one Resource class.",
+                }
+            )
+            return findings
+
+        source = "\n".join(read_text(path) for path in resource_files)
+        expected_methods = {
+            "create": "@PostMapping",
+            "update": "@PutMapping",
+            "delete": "@DeleteMapping",
+            "page_or_list": ["@GetMapping(\"/page\")", "@GetMapping(\"/list\")"],
+            "details": "@GetMapping(\"/{id}\")",
+        }
+        missing = []
+        for name, marker in expected_methods.items():
+            if isinstance(marker, list):
+                if not any(item in source for item in marker):
+                    missing.append(name)
+            elif marker not in source:
+                missing.append(name)
+        if missing:
+            findings.append(
+                {
+                    "code": "business-crud-surface-incomplete",
+                    "status": "FAIL",
+                    "details": f"Business Resource CRUD surface is incomplete: {', '.join(missing)}",
+                }
+            )
+        return findings
 
     def _relation_findings(self) -> list[dict[str, Any]]:
         findings: list[dict[str, Any]] = []

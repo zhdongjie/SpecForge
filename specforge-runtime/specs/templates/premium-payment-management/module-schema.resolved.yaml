@@ -26,7 +26,81 @@ api_groups:
   - enquiry-premium_payment_management-page
   - enquiry-premium_payment_management-details
   - enquiry-premium_payment_management-list
-capabilities: []
+capabilities:
+- capability_id: create-premium_payment_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: premium_payment_management
+  http_method: POST
+  route: /
+  authority: business:premium-payment:create
+  transaction: read-write
+  input_dto: CreatePremiumPaymentManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - PremiumPayment
+  - PaymentRefund
+- capability_id: update-premium_payment_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: premium_payment_management
+  http_method: PUT
+  route: /
+  authority: business:premium-payment:update
+  transaction: read-write
+  input_dto: UpdatePremiumPaymentManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-premium_payment_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: premium_payment_management
+  http_method: DELETE
+  route: /
+  authority: business:premium-payment:delete
+  transaction: read-write
+  input_dto: PremiumPaymentManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-premium_payment_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: premium_payment_management
+  http_method: GET
+  route: /page
+  authority: business:premium-payment:page
+  transaction: read-only
+  input_dto: EnquiryPremiumPaymentManagementPageDto
+  output_vo: PageVo<PremiumPaymentManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-premium_payment_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: premium_payment_management
+  http_method: GET
+  route: /{id}
+  authority: business:premium-payment:details
+  transaction: read-only
+  input_dto: PremiumPaymentManagementIdPath
+  output_vo: PremiumPaymentManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-premium_payment_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: premium_payment_management
+  http_method: GET
+  route: /list
+  authority: business:premium-payment:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<PremiumPaymentManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: PremiumPayment

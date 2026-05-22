@@ -1,0 +1,176 @@
+resolution_context:
+  source_module_spec: module-spec.yaml
+  resolved_schema_id: student_management-resolved-v1
+  target_module_id: student-management
+  bounded_context: student-center
+  regeneration_mode: create
+  stability_goal: deterministic
+  compiler_stage: resolved-generation-plan
+  dag_compatible: true
+  multi_agent_safe: true
+module_identity:
+  module_name: student-management
+  semantic_role: business-domain
+  responsibility_code: student_management
+  package_root: org.eu.originalkeen.business.student
+  route_roots:
+  - /v1/business/student
+api_groups:
+- group_id: student_management
+  route_prefix: /v1/business/student
+  aggregate: Student
+  capability_ids:
+  - create-student_management
+  - update-student_management
+  - batch-delete-student_management
+  - enquiry-student_management-page
+  - enquiry-student_management-details
+  - enquiry-student_management-list
+capabilities:
+- capability_id: create-student_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: student_management
+  http_method: POST
+  route: /
+  authority: business:student:create
+  transaction: read-write
+  input_dto: CreateStudentManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - Student
+  - StudentProfile
+- capability_id: update-student_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: student_management
+  http_method: PUT
+  route: /
+  authority: business:student:update
+  transaction: read-write
+  input_dto: UpdateStudentManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-student_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: student_management
+  http_method: DELETE
+  route: /
+  authority: business:student:delete
+  transaction: read-write
+  input_dto: StudentManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-student_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: student_management
+  http_method: GET
+  route: /page
+  authority: business:student:page
+  transaction: read-only
+  input_dto: EnquiryStudentManagementPageDto
+  output_vo: PageVo<StudentManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-student_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: student_management
+  http_method: GET
+  route: /{id}
+  authority: business:student:details
+  transaction: read-only
+  input_dto: StudentManagementIdPath
+  output_vo: StudentManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-student_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: student_management
+  http_method: GET
+  route: /list
+  authority: business:student:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<StudentManagementListVo>
+  touched_entities: *id001
+entity_graph:
+  entities:
+  - entity_id: Student
+    table: student
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+  - entity_id: StudentProfile
+    table: student_profile
+    ownership: owned
+    base_type: PrimaryKeyEntity
+    aggregate_role: root
+    relations: []
+validation_rules:
+  uniqueness: []
+  referential: []
+  shape: []
+architectural_bindings:
+  code_conventions:
+    resource_suffix: Resource
+    manager_suffix: Manager
+    service_suffix: Service
+    service_impl_suffix: ServiceImpl
+    mapper_suffix: Mapper
+  response_bindings:
+    wrapper_type: ResponseVo
+    page_type: PageVo
+    mutation_payload: Void
+  persistence_bindings:
+    framework: mybatis-flex
+    aggregate_identity_style: primary-key-entity
+persistence_conventions:
+  framework: mybatis-flex
+  database: mysql
+localization_requirements:
+  mandatory: false
+  languages: []
+  localized_aggregates: []
+  localized_fields: {}
+  fallback_policy: none
+audit_behavior:
+  access_log: none
+  operate_log:
+    enabled: true
+    target_capabilities:
+    - create-student_management
+    - update-student_management
+    - batch-delete-student_management
+integration_points:
+  security:
+    mode: centralized-method-security
+    authority_families:
+    - business:student:*
+  persistence:
+    database: mysql
+    required_tables:
+    - student
+    - student_profile
+code_conventions:
+  naming_stability: strict
+  route_style: business-domain-aligned
+  transaction_style: manager-boundary
+validation_hooks:
+  pre_generation:
+  - hook-discovery-baseline-complete
+  post_unit:
+  - hook-artifact-name-convention
+  - hook-package-placement-check
+  final:
+  - hook-module-boundary-check
+  - hook-deterministic-layout-check
+blueprint_status: default-enabled-validated-blueprint-for-StudentManagement

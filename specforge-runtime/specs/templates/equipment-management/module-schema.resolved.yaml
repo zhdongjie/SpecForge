@@ -26,7 +26,81 @@ api_groups:
   - enquiry-equipment_management-page
   - enquiry-equipment_management-details
   - enquiry-equipment_management-list
-capabilities: []
+capabilities:
+- capability_id: create-equipment_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: equipment_management
+  http_method: POST
+  route: /
+  authority: business:equipment:create
+  transaction: read-write
+  input_dto: CreateEquipmentManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - LaboratoryEquipment
+  - EquipmentMaintenanceRecord
+- capability_id: update-equipment_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: equipment_management
+  http_method: PUT
+  route: /
+  authority: business:equipment:update
+  transaction: read-write
+  input_dto: UpdateEquipmentManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-equipment_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: equipment_management
+  http_method: DELETE
+  route: /
+  authority: business:equipment:delete
+  transaction: read-write
+  input_dto: EquipmentManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-equipment_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: equipment_management
+  http_method: GET
+  route: /page
+  authority: business:equipment:page
+  transaction: read-only
+  input_dto: EnquiryEquipmentManagementPageDto
+  output_vo: PageVo<EquipmentManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-equipment_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: equipment_management
+  http_method: GET
+  route: /{id}
+  authority: business:equipment:details
+  transaction: read-only
+  input_dto: EquipmentManagementIdPath
+  output_vo: EquipmentManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-equipment_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: equipment_management
+  http_method: GET
+  route: /list
+  authority: business:equipment:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<EquipmentManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: LaboratoryEquipment

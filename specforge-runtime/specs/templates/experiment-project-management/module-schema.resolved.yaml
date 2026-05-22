@@ -26,7 +26,81 @@ api_groups:
   - enquiry-experiment_project_management-page
   - enquiry-experiment_project_management-details
   - enquiry-experiment_project_management-list
-capabilities: []
+capabilities:
+- capability_id: create-experiment_project_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: experiment_project_management
+  http_method: POST
+  route: /
+  authority: business:experiment-project:create
+  transaction: read-write
+  input_dto: CreateExperimentProjectManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - ExperimentProject
+  - ExperimentProjectMember
+- capability_id: update-experiment_project_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: experiment_project_management
+  http_method: PUT
+  route: /
+  authority: business:experiment-project:update
+  transaction: read-write
+  input_dto: UpdateExperimentProjectManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-experiment_project_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: experiment_project_management
+  http_method: DELETE
+  route: /
+  authority: business:experiment-project:delete
+  transaction: read-write
+  input_dto: ExperimentProjectManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-experiment_project_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: experiment_project_management
+  http_method: GET
+  route: /page
+  authority: business:experiment-project:page
+  transaction: read-only
+  input_dto: EnquiryExperimentProjectManagementPageDto
+  output_vo: PageVo<ExperimentProjectManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-experiment_project_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: experiment_project_management
+  http_method: GET
+  route: /{id}
+  authority: business:experiment-project:details
+  transaction: read-only
+  input_dto: ExperimentProjectManagementIdPath
+  output_vo: ExperimentProjectManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-experiment_project_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: experiment_project_management
+  http_method: GET
+  route: /list
+  authority: business:experiment-project:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ExperimentProjectManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: ExperimentProject

@@ -26,7 +26,81 @@ api_groups:
   - enquiry-insurance_customer_management-page
   - enquiry-insurance_customer_management-details
   - enquiry-insurance_customer_management-list
-capabilities: []
+capabilities:
+- capability_id: create-insurance_customer_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: insurance_customer_management
+  http_method: POST
+  route: /
+  authority: business:insurance-customer:create
+  transaction: read-write
+  input_dto: CreateInsuranceCustomerManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - InsuranceCustomer
+  - CustomerBeneficiary
+- capability_id: update-insurance_customer_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: insurance_customer_management
+  http_method: PUT
+  route: /
+  authority: business:insurance-customer:update
+  transaction: read-write
+  input_dto: UpdateInsuranceCustomerManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-insurance_customer_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: insurance_customer_management
+  http_method: DELETE
+  route: /
+  authority: business:insurance-customer:delete
+  transaction: read-write
+  input_dto: InsuranceCustomerManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-insurance_customer_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: insurance_customer_management
+  http_method: GET
+  route: /page
+  authority: business:insurance-customer:page
+  transaction: read-only
+  input_dto: EnquiryInsuranceCustomerManagementPageDto
+  output_vo: PageVo<InsuranceCustomerManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-insurance_customer_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: insurance_customer_management
+  http_method: GET
+  route: /{id}
+  authority: business:insurance-customer:details
+  transaction: read-only
+  input_dto: InsuranceCustomerManagementIdPath
+  output_vo: InsuranceCustomerManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-insurance_customer_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: insurance_customer_management
+  http_method: GET
+  route: /list
+  authority: business:insurance-customer:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<InsuranceCustomerManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: InsuranceCustomer

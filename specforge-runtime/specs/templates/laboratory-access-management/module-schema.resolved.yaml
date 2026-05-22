@@ -26,7 +26,81 @@ api_groups:
   - enquiry-laboratory_access_management-page
   - enquiry-laboratory_access_management-details
   - enquiry-laboratory_access_management-list
-capabilities: []
+capabilities:
+- capability_id: create-laboratory_access_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: POST
+  route: /
+  authority: business:laboratory-access:create
+  transaction: read-write
+  input_dto: CreateLaboratoryAccessManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - LaboratoryAccessPolicy
+  - LaboratoryAccessScope
+- capability_id: update-laboratory_access_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: PUT
+  route: /
+  authority: business:laboratory-access:update
+  transaction: read-write
+  input_dto: UpdateLaboratoryAccessManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-laboratory_access_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: DELETE
+  route: /
+  authority: business:laboratory-access:delete
+  transaction: read-write
+  input_dto: LaboratoryAccessManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-laboratory_access_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: GET
+  route: /page
+  authority: business:laboratory-access:page
+  transaction: read-only
+  input_dto: EnquiryLaboratoryAccessManagementPageDto
+  output_vo: PageVo<LaboratoryAccessManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-laboratory_access_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: GET
+  route: /{id}
+  authority: business:laboratory-access:details
+  transaction: read-only
+  input_dto: LaboratoryAccessManagementIdPath
+  output_vo: LaboratoryAccessManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-laboratory_access_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: laboratory_access_management
+  http_method: GET
+  route: /list
+  authority: business:laboratory-access:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<LaboratoryAccessManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: LaboratoryAccessPolicy

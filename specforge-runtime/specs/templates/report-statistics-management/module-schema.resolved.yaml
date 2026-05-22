@@ -26,7 +26,81 @@ api_groups:
   - enquiry-report_statistics_management-page
   - enquiry-report_statistics_management-details
   - enquiry-report_statistics_management-list
-capabilities: []
+capabilities:
+- capability_id: create-report_statistics_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: POST
+  route: /
+  authority: business:report-statistics:create
+  transaction: read-write
+  input_dto: CreateReportStatisticsManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - ReservationStatisticSnapshot
+  - EquipmentUsageReport
+- capability_id: update-report_statistics_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: PUT
+  route: /
+  authority: business:report-statistics:update
+  transaction: read-write
+  input_dto: UpdateReportStatisticsManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-report_statistics_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: DELETE
+  route: /
+  authority: business:report-statistics:delete
+  transaction: read-write
+  input_dto: ReportStatisticsManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-report_statistics_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: GET
+  route: /page
+  authority: business:report-statistics:page
+  transaction: read-only
+  input_dto: EnquiryReportStatisticsManagementPageDto
+  output_vo: PageVo<ReportStatisticsManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-report_statistics_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: GET
+  route: /{id}
+  authority: business:report-statistics:details
+  transaction: read-only
+  input_dto: ReportStatisticsManagementIdPath
+  output_vo: ReportStatisticsManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-report_statistics_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: report_statistics_management
+  http_method: GET
+  route: /list
+  authority: business:report-statistics:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<ReportStatisticsManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: ReservationStatisticSnapshot

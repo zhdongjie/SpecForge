@@ -26,7 +26,81 @@ api_groups:
   - enquiry-notification_management-page
   - enquiry-notification_management-details
   - enquiry-notification_management-list
-capabilities: []
+capabilities:
+- capability_id: create-notification_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: notification_management
+  http_method: POST
+  route: /
+  authority: business:notification:create
+  transaction: read-write
+  input_dto: CreateNotificationManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - NotificationMessage
+  - NotificationDeliveryRecord
+- capability_id: update-notification_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: notification_management
+  http_method: PUT
+  route: /
+  authority: business:notification:update
+  transaction: read-write
+  input_dto: UpdateNotificationManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-notification_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: notification_management
+  http_method: DELETE
+  route: /
+  authority: business:notification:delete
+  transaction: read-write
+  input_dto: NotificationManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-notification_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: notification_management
+  http_method: GET
+  route: /page
+  authority: business:notification:page
+  transaction: read-only
+  input_dto: EnquiryNotificationManagementPageDto
+  output_vo: PageVo<NotificationManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-notification_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: notification_management
+  http_method: GET
+  route: /{id}
+  authority: business:notification:details
+  transaction: read-only
+  input_dto: NotificationManagementIdPath
+  output_vo: NotificationManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-notification_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: notification_management
+  http_method: GET
+  route: /list
+  authority: business:notification:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<NotificationManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: NotificationMessage

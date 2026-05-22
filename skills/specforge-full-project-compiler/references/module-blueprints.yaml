@@ -350,3 +350,114 @@ domains:
           - insurance_channel
           - insurance_agent
         purpose: sales channel and agent relationship management
+  education-management:
+    project:
+      name: Education Management Platform
+      bounded_context: education-operations
+      primary_roles:
+        - Administrator
+        - Teacher
+        - Student
+      business_rules:
+        - student records must remain behind centralized JWT authorization
+        - course codes and course names must remain unique
+        - enrollment actions must reference an existing student and teaching class
+        - score records must map to an enrolled student
+        - education workflow notifications must preserve modular business boundaries
+    modules:
+      - module: student-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: student-center
+        package_root: org.eu.originalkeen.business.student
+        route_roots:
+          - /v1/business/student
+        authorities:
+          - business:student:*
+        entities:
+          - Student
+          - StudentProfile
+        tables:
+          - student
+          - student_profile
+        purpose: student profile and academic identity lifecycle management
+      - module: course-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: course-center
+        package_root: org.eu.originalkeen.business.course
+        route_roots:
+          - /v1/business/course
+        authorities:
+          - business:course:*
+        entities:
+          - Course
+          - CourseCatalog
+        tables:
+          - course
+          - course_catalog
+        purpose: course catalog and course information management
+      - module: teaching-class-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: teaching-class-center
+        package_root: org.eu.originalkeen.business.teachingclass
+        route_roots:
+          - /v1/business/teaching-class
+        authorities:
+          - business:teaching-class:*
+        entities:
+          - TeachingClass
+          - ClassSchedule
+        tables:
+          - teaching_class
+          - class_schedule
+        purpose: teaching class arrangement and class schedule management
+      - module: enrollment-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: enrollment-center
+        package_root: org.eu.originalkeen.business.enrollment
+        route_roots:
+          - /v1/business/enrollment
+        authorities:
+          - business:enrollment:*
+        entities:
+          - StudentEnrollment
+          - EnrollmentAudit
+        tables:
+          - student_enrollment
+          - enrollment_audit
+        purpose: student enrollment and selection workflow management
+      - module: score-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: score-center
+        package_root: org.eu.originalkeen.business.score
+        route_roots:
+          - /v1/business/score
+        authorities:
+          - business:score:*
+        entities:
+          - StudentScore
+          - ScoreImportTask
+        tables:
+          - student_score
+          - score_import_task
+        purpose: student score registration and result publication management
+      - module: notification-management
+        enabled: true
+        semantic_role: business-domain
+        bounded_context: notification-center
+        package_root: org.eu.originalkeen.business.notification
+        route_roots:
+          - /v1/business/notification
+        authorities:
+          - business:notification:*
+        entities:
+          - NotificationMessage
+          - NotificationDeliveryRecord
+        tables:
+          - notification_message
+          - notification_delivery_record
+        purpose: education workflow and delivery notification management

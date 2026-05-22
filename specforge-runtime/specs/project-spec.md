@@ -1,110 +1,147 @@
 project:
-  name: Insurance Operations Platform
+  name: recipe-repair-input-check
   type: springboot-vue3
 architecture:
   style: modular-monolith
   description: A modular-monolith Spring Boot backend compiled from SpecForge project
     and module specifications.
 modules:
-- name: insurance-customer-management
-  responsibility: insured customer profile and beneficiary lifecycle management
-  boundaries: Owns InsuranceCustomer, CustomerBeneficiary within insurance-customer-center.
+- name: laboratory-reservation-management
+  responsibility: laboratory resource and reservation lifecycle management
+  boundaries: Owns Laboratory, LaboratoryReservation within laboratory-operations.
   apis:
-  - insurance-customer-management administration
+  - laboratory-reservation-management administration
   entities:
-  - InsuranceCustomer
-  - CustomerBeneficiary
-- name: insurance-claim-management
-  responsibility: claim submission, settlement, and tracking management
-  boundaries: Owns InsuranceClaim, ClaimSettlement within insurance-claim-operations.
+  - Laboratory
+  - LaboratoryReservation
+- name: reservation-approval-management
+  responsibility: reservation approval decisions and audit trail
+  boundaries: Owns ReservationApproval, ReservationApprovalRecord within reservation-governance.
   apis:
-  - insurance-claim-management administration
+  - reservation-approval-management administration
   entities:
-  - InsuranceClaim
-  - ClaimSettlement
-- name: premium-payment-management
-  responsibility: premium collection and refund processing management
-  boundaries: Owns PremiumPayment, PaymentRefund within premium-payment-center.
+  - ReservationApproval
+  - ReservationApprovalRecord
+- name: laboratory-access-management
+  responsibility: laboratory access scope and reservable policy management
+  boundaries: Owns LaboratoryAccessPolicy, LaboratoryAccessScope within laboratory-access-control.
   apis:
-  - premium-payment-management administration
+  - laboratory-access-management administration
   entities:
-  - PremiumPayment
-  - PaymentRefund
-- name: policy-renewal-management
-  responsibility: policy renewal cycle and reminder management
-  boundaries: Owns PolicyRenewal, RenewalReminder within policy-renewal-center.
+  - LaboratoryAccessPolicy
+  - LaboratoryAccessScope
+- name: equipment-management
+  responsibility: laboratory equipment lifecycle and maintenance management
+  boundaries: Owns LaboratoryEquipment, EquipmentMaintenanceRecord within equipment-center.
   apis:
-  - policy-renewal-management administration
+  - equipment-management administration
   entities:
-  - PolicyRenewal
-  - RenewalReminder
-- name: underwriting-approval-management
-  responsibility: underwriting review decision and approval governance management
-  boundaries: Owns UnderwritingApproval, UnderwritingDecisionRecord within underwriting-governance.
+  - LaboratoryEquipment
+  - EquipmentMaintenanceRecord
+- name: consumable-inventory-management
+  responsibility: laboratory consumable stock and inventory management
+  boundaries: Owns ConsumableItem, ConsumableStockRecord within consumable-inventory-center.
   apis:
-  - underwriting-approval-management administration
+  - consumable-inventory-management administration
   entities:
-  - UnderwritingApproval
-  - UnderwritingDecisionRecord
-- name: channel-agent-management
-  responsibility: sales channel and agent relationship management
-  boundaries: Owns InsuranceChannel, InsuranceAgent within channel-agent-center.
+  - ConsumableItem
+  - ConsumableStockRecord
+- name: experiment-project-management
+  responsibility: experiment project planning and member management
+  boundaries: Owns ExperimentProject, ExperimentProjectMember within experiment-project-center.
   apis:
-  - channel-agent-management administration
+  - experiment-project-management administration
   entities:
-  - InsuranceChannel
-  - InsuranceAgent
+  - ExperimentProject
+  - ExperimentProjectMember
+- name: schedule-calendar-management
+  responsibility: laboratory schedule and calendar event management
+  boundaries: Owns ScheduleCalendar, ScheduleCalendarEvent within schedule-calendar-center.
+  apis:
+  - schedule-calendar-management administration
+  entities:
+  - ScheduleCalendar
+  - ScheduleCalendarEvent
+- name: report-statistics-management
+  responsibility: laboratory reporting and statistics snapshot management
+  boundaries: Owns ReservationStatisticSnapshot, EquipmentUsageReport within report-statistics-center.
+  apis:
+  - report-statistics-management administration
+  entities:
+  - ReservationStatisticSnapshot
+  - EquipmentUsageReport
+- name: notification-management
+  responsibility: laboratory workflow and approval notifications
+  boundaries: Owns NotificationMessage, NotificationDeliveryRecord within notification-center.
+  apis:
+  - notification-management administration
+  entities:
+  - NotificationMessage
+  - NotificationDeliveryRecord
 features:
-- Support Insurance Customer Management workflows.
-- Support Insurance Claim Management workflows.
-- Support Premium Payment Management workflows.
-- Support Policy Renewal Management workflows.
-- Support Underwriting Approval Management workflows.
-- Support Channel Agent Management workflows.
+- Support Laboratory Reservation Management workflows.
+- Support Reservation Approval Management workflows.
+- Support Laboratory Access Management workflows.
+- Support Equipment Management workflows.
+- Support Consumable Inventory Management workflows.
+- Support Experiment Project Management workflows.
+- Support Schedule Calendar Management workflows.
+- Support Report Statistics Management workflows.
+- Support Notification Management workflows.
 auth:
   type: jwt
   roles:
   - Administrator
-  - Underwriter
-  - ClaimsAdjuster
-  - FinanceOperator
-  - ChannelManager
+  - Teacher
+  - Student
+  - LabManager
 database:
   type: mysql
   tables:
-  - name: insurance_customer
-    purpose: Persistence for insurance-customer-management
-  - name: customer_beneficiary
-    purpose: Persistence for insurance-customer-management
-  - name: insurance_claim
-    purpose: Persistence for insurance-claim-management
-  - name: claim_settlement
-    purpose: Persistence for insurance-claim-management
-  - name: premium_payment
-    purpose: Persistence for premium-payment-management
-  - name: payment_refund
-    purpose: Persistence for premium-payment-management
-  - name: policy_renewal
-    purpose: Persistence for policy-renewal-management
-  - name: renewal_reminder
-    purpose: Persistence for policy-renewal-management
-  - name: underwriting_approval
-    purpose: Persistence for underwriting-approval-management
-  - name: underwriting_decision_record
-    purpose: Persistence for underwriting-approval-management
-  - name: insurance_channel
-    purpose: Persistence for channel-agent-management
-  - name: insurance_agent
-    purpose: Persistence for channel-agent-management
+  - name: system_laboratory
+    purpose: Persistence for laboratory-reservation-management
+  - name: system_laboratory_reservation
+    purpose: Persistence for laboratory-reservation-management
+  - name: reservation_approval
+    purpose: Persistence for reservation-approval-management
+  - name: reservation_approval_record
+    purpose: Persistence for reservation-approval-management
+  - name: laboratory_access_policy
+    purpose: Persistence for laboratory-access-management
+  - name: laboratory_access_scope
+    purpose: Persistence for laboratory-access-management
+  - name: laboratory_equipment
+    purpose: Persistence for equipment-management
+  - name: equipment_maintenance_record
+    purpose: Persistence for equipment-management
+  - name: consumable_item
+    purpose: Persistence for consumable-inventory-management
+  - name: consumable_stock_record
+    purpose: Persistence for consumable-inventory-management
+  - name: experiment_project
+    purpose: Persistence for experiment-project-management
+  - name: experiment_project_member
+    purpose: Persistence for experiment-project-management
+  - name: schedule_calendar
+    purpose: Persistence for schedule-calendar-management
+  - name: schedule_calendar_event
+    purpose: Persistence for schedule-calendar-management
+  - name: reservation_statistic_snapshot
+    purpose: Persistence for report-statistics-management
+  - name: equipment_usage_report
+    purpose: Persistence for report-statistics-management
+  - name: notification_message
+    purpose: Persistence for notification-management
+  - name: notification_delivery_record
+    purpose: Persistence for notification-management
 frontend:
   pages: []
 business_rules:
-- claim requests must reference an existing insured customer record
-- premium payment actions must remain behind centralized JWT authorization
-- renewal and underwriting operations must preserve modular business boundaries
-- Build a complete modular-monolith Spring Boot insurance operations backend covering
-  insured customer management, claim management, premium payments, policy renewals,
-  underwriting approvals, and channel agent management.
+- laboratory reservation slots must not conflict within the same laboratory
+- equipment usage actions must reference an existing laboratory and equipment record
+- consumable inventory actions must remain behind centralized JWT authorization
+- experiment project operations must preserve modular business boundaries
+- 食谱管理系统，支持用户登录、菜谱浏览、搜索、收藏、发布、审核和后台统计。用于验证 API 回归摘要和 repair-input 产物。
 dependencies:
   backend:
   - Spring Boot

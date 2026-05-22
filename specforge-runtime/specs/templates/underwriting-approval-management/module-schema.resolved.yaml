@@ -26,7 +26,81 @@ api_groups:
   - enquiry-underwriting_approval_management-page
   - enquiry-underwriting_approval_management-details
   - enquiry-underwriting_approval_management-list
-capabilities: []
+capabilities:
+- capability_id: create-underwriting_approval_management
+  semantic_intent: create-record
+  deterministic_pattern: create
+  stability_class: stable
+  api_group: underwriting_approval_management
+  http_method: POST
+  route: /
+  authority: business:underwriting-approval:create
+  transaction: read-write
+  input_dto: CreateUnderwritingApprovalManagementDto
+  output_vo: Void
+  touched_entities: &id001
+  - UnderwritingApproval
+  - UnderwritingDecisionRecord
+- capability_id: update-underwriting_approval_management
+  semantic_intent: update-record
+  deterministic_pattern: update
+  stability_class: stable
+  api_group: underwriting_approval_management
+  http_method: PUT
+  route: /
+  authority: business:underwriting-approval:update
+  transaction: read-write
+  input_dto: UpdateUnderwritingApprovalManagementDto
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: batch-delete-underwriting_approval_management
+  semantic_intent: delete-record
+  deterministic_pattern: batch-delete
+  stability_class: stable
+  api_group: underwriting_approval_management
+  http_method: DELETE
+  route: /
+  authority: business:underwriting-approval:delete
+  transaction: read-write
+  input_dto: UnderwritingApprovalManagementIdSet
+  output_vo: Void
+  touched_entities: *id001
+- capability_id: enquiry-underwriting_approval_management-page
+  semantic_intent: query-page
+  deterministic_pattern: page
+  stability_class: stable
+  api_group: underwriting_approval_management
+  http_method: GET
+  route: /page
+  authority: business:underwriting-approval:page
+  transaction: read-only
+  input_dto: EnquiryUnderwritingApprovalManagementPageDto
+  output_vo: PageVo<UnderwritingApprovalManagementPageVo>
+  touched_entities: *id001
+- capability_id: enquiry-underwriting_approval_management-details
+  semantic_intent: query-details
+  deterministic_pattern: details
+  stability_class: stable
+  api_group: underwriting_approval_management
+  http_method: GET
+  route: /{id}
+  authority: business:underwriting-approval:details
+  transaction: read-only
+  input_dto: UnderwritingApprovalManagementIdPath
+  output_vo: UnderwritingApprovalManagementDetailsVo
+  touched_entities: *id001
+- capability_id: enquiry-underwriting_approval_management-list
+  semantic_intent: query-list
+  deterministic_pattern: list
+  stability_class: stable
+  api_group: underwriting_approval_management
+  http_method: GET
+  route: /list
+  authority: business:underwriting-approval:list
+  transaction: read-only
+  input_dto: None
+  output_vo: List<UnderwritingApprovalManagementListVo>
+  touched_entities: *id001
 entity_graph:
   entities:
   - entity_id: UnderwritingApproval
