@@ -1,7 +1,7 @@
-plan_id: recipe-repair-input-check
-default_run_id: recipe-repair-input-check-autobuild
+plan_id: laboratory-reservation
+default_run_id: laboratory-reservation-autobuild
 backend_root: ../backend
-final_output_dir: outputs/task-20260516-004811-7b02bf-recipe-repair-input-check-backend
+final_output_dir: outputs/task-20260523-051918-ca6070-laboratory-reservation-backend
 project_assembly_plan: project-assembly-plan.yaml
 module_spec: module-spec.yaml
 module_schema: module-schema.resolved.yaml

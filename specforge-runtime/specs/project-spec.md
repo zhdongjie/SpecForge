@@ -1,5 +1,5 @@
 project:
-  name: recipe-repair-input-check
+  name: laboratory-reservation
   type: springboot-vue3
 architecture:
   style: modular-monolith
@@ -141,7 +141,10 @@ business_rules:
 - equipment usage actions must reference an existing laboratory and equipment record
 - consumable inventory actions must remain behind centralized JWT authorization
 - experiment project operations must preserve modular business boundaries
-- 食谱管理系统，支持用户登录、菜谱浏览、搜索、收藏、发布、审核和后台统计。用于验证 API 回归摘要和 repair-input 产物。
+- 'Build a graduation project: laboratory reservation management system. It must support
+  login, laboratory room management, equipment management, reservation orders, approval
+  workflow, reservation cancellation, status tracking, and admin statistics. Generate
+  real business CRUD modules for laboratory rooms, equipment, and reservation orders.'
 dependencies:
   backend:
   - Spring Boot

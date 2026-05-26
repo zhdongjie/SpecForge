@@ -1,8 +1,8 @@
-plan_id: recipe-repair-input-check
-target_backend_name: recipe-repair-input-check-backend
-description: deterministic backend assembly plan for recipe-repair-input-check
+plan_id: laboratory-reservation
+target_backend_name: laboratory-reservation-backend
+description: deterministic backend assembly plan for laboratory-reservation
 project_identity:
-  name: recipe-repair-input-check
+  name: laboratory-reservation
   architecture: modular-monolith
   package_root: org.eu.originalkeen
 platform_contract:
@@ -100,5 +100,5 @@ assembly_contract:
   compile_required: true
   boot_verify_required: true
   auto_repair_enabled: true
-  final_output_dir: outputs/task-20260516-004811-7b02bf-recipe-repair-input-check-backend
+  final_output_dir: outputs/task-20260523-051918-ca6070-laboratory-reservation-backend
   failure_bundle_required: true
