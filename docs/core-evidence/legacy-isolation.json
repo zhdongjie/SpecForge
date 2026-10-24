@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-24",
+  "scope": "legacy entrypoint import isolation",
+  "baseline_commit": "0d74e4b",
+  "legacy_tests_before": {
+    "tests": 25,
+    "failures": [
+      "test_mutation_engine.MutationEngineTests.test_mutation_engine_emits_inventory_module",
+      "test_runtime_verification.RuntimeVerificationTests.test_artifact_conflict_runtime_semantics",
+      "test_runtime_verification.RuntimeVerificationTests.test_benchmark_runner_emits_summary",
+      "test_runtime_verification.RuntimeVerificationTests.test_logical_clock_drift_is_detected",
+      "test_runtime_verification.RuntimeVerificationTests.test_parallel_failure_runtime_semantics",
+      "test_runtime_verification.RuntimeVerificationTests.test_parallel_scheduler_stress_replays_are_deterministic",
+      "test_runtime_verification.RuntimeVerificationTests.test_regression_suite_bootstraps_and_replays",
+      "test_runtime_verification.RuntimeVerificationTests.test_replay_divergence_is_detected",
+      "test_runtime_verification.RuntimeVerificationTests.test_rollback_chain_invalidation_cleanup",
+      "test_runtime_verification.RuntimeVerificationTests.test_runtime_verifier_emits_extended_reports"
+    ],
+    "errors": [
+      "test_codegen_pipeline.CodegenPipelineTests.test_codegen_manifest_covers_required_artifacts",
+      "test_codegen_pipeline.CodegenPipelineTests.test_codegen_pipeline_emits_expected_outputs",
+      "test_platform_compiler.PlatformCompilerTests.test_project_compiler_assembles_bootable_backend_layout"
+    ]
+  },
+  "legacy_tests_after": {
+    "tests": 25,
+    "failures": [
+      "test_mutation_engine.MutationEngineTests.test_mutation_engine_emits_inventory_module",
+      "test_runtime_verification.RuntimeVerificationTests.test_artifact_conflict_runtime_semantics",
+      "test_runtime_verification.RuntimeVerificationTests.test_benchmark_runner_emits_summary",
+      "test_runtime_verification.RuntimeVerificationTests.test_logical_clock_drift_is_detected",
+      "test_runtime_verification.RuntimeVerificationTests.test_parallel_failure_runtime_semantics",
+      "test_runtime_verification.RuntimeVerificationTests.test_parallel_scheduler_stress_replays_are_deterministic",
+      "test_runtime_verification.RuntimeVerificationTests.test_regression_suite_bootstraps_and_replays",
+      "test_runtime_verification.RuntimeVerificationTests.test_replay_divergence_is_detected",
+      "test_runtime_verification.RuntimeVerificationTests.test_rollback_chain_invalidation_cleanup",
+      "test_runtime_verification.RuntimeVerificationTests.test_runtime_verifier_emits_extended_reports"
+    ],
+    "errors": [
+      "test_codegen_pipeline.CodegenPipelineTests.test_codegen_manifest_covers_required_artifacts",
+      "test_codegen_pipeline.CodegenPipelineTests.test_codegen_pipeline_emits_expected_outputs",
+      "test_platform_compiler.PlatformCompilerTests.test_project_compiler_assembles_bootable_backend_layout"
+    ]
+  },
+  "same_failed_case_ids": true,
+  "legacy_passed": 12,
+  "core_tests_passed": 65,
+  "compatibility_tests_passed": 5,
+  "runtime_modules_loaded_on_main_import": {
+    "before": 121,
+    "after": 0
+  },
+  "full_build_api_browser_rerun": false,
+  "compatibility_autobuild_check": "Real HardeningPipeline import under experimental-import blocker; stubbed pipeline checks arguments, PASS/FAIL reports, export, and exception. No Maven or service startup."
+}

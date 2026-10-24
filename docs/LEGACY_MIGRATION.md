@@ -25,7 +25,7 @@ run_requirement_project.py
       → specforge-runtime/outputs/<project>
 ```
 
-`main.py` 在模块顶层还导入 DagEngine、MutationEngine、RuntimeExecutor、GoldenValidator、CodegenPipeline 等，故“正常构建未运行某分支”不等于可以删除文件。静态清单 `core-evidence/legacy-import-inventory.json` 保存全部已跟踪旧 Python 文件的哈希、AST 导入和脚本字符串；相对导入保留原形式，不宣称覆盖反射、配置或外部使用。
+初次盘点时，`main.py` 在模块顶层还导入 DagEngine、MutationEngine、RuntimeExecutor、GoldenValidator、CodegenPipeline 等，故“正常构建未运行某分支”不等于可以删除文件。现已完成下述按分支延迟导入；旧分支自身仍依赖这些源码。静态清单 `core-evidence/legacy-import-inventory.json` 保存全部已跟踪旧 Python 文件的哈希、AST 导入和脚本字符串；相对导入保留原形式，不宣称覆盖反射、配置或外部使用。
 
 ## 逐类决策
 
@@ -58,3 +58,14 @@ run_requirement_project.py
 2. 独立 legacy 命令分组并记录仍在用的调用方；依赖图、历史行为和恢复路径验证后，再归档实验源码。不能仅按文件名判断无用。
 3. OpenClaw 不在当前核心范围。只有将来明确要求接回时，才实现 YAML 规格、模板、工作区、验收包、退出码与发布清单适配；不能把自然语言参数静默塞给新 CLI。
 4. 旧模板与 runtime 的整体移除在最后进行，需证实没有兼容消费者。本轮不承诺删除日期。
+
+
+## 第二批：旧入口依赖隔离已完成
+
+旧 `main.py` 只在实际选择分支时导入对应流水线；默认模拟执行收敛至 `run_simulation`，不改默认行为、参数或分支优先级。导入主程序时加载的 `runtime` 模块从 121 个降至 0 个；`--help` 即使阻止所有 runtime 导入仍可运行。真实 HardeningPipeline 导入在禁止 DAG、executor、verifier、golden、mutation、replay、parallel scheduler、logical clock 的条件下通过。
+
+新增 `tests_compat/`，运行 `python3 -m unittest discover -s tests_compat -v`。5 项测试覆盖无运行时依赖的帮助入口、真实构建依赖边界、全部显式分支分发、auto-build 优先级和默认模拟分发，以及使用替身流水线验证 PASS/FAIL 报告与导出合同。
+
+本轮验证：新核心 65 项通过，兼容测试 5 项通过；旧版 25 项在修改前后均为 12 通过、10 失败、3 错误，失败及错误用例 ID 完全一致。证据见 `core-evidence/legacy-isolation.json`。本轮未跑 Maven、容器或浏览器全量验收，兼容测试中的构建执行使用替身，不等于真实构建成功。
+
+本轮未移动实验源码。下一步可以将实验命令的实现拆成独立模块，并保留原入口转发；只有依赖与调用方已经隔离的文件才能进一步物理归档。初次静态导入清单保留作历史快照，以本段和新证据为当前状态。

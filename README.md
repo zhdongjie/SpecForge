@@ -41,6 +41,8 @@ python3 -m specforge run \
 
 运行核心测试：`python3 -m unittest discover -s tests_core -q`。
 
+旧入口兼容边界测试：`python3 -m unittest discover -s tests_compat -v`。
+
 ## 旧版兼容
 
 `skills/specforge-full-project-compiler/scripts/run_requirement_project.py`、`specforge-runtime/` 和 `backend/` 仍保留原路径。外部 OpenClaw dispatcher 仍调用旧入口，其自然语言输入和仅后端输出合同与新版不同。

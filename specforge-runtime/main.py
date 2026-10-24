@@ -4,19 +4,10 @@ import argparse
 import shutil
 from pathlib import Path
 
-from runtime.codegen.common import dump_yaml, safe_load_yaml
-from runtime.codegen import CodegenPipeline
-from runtime.dag_engine import DagEngine
-from runtime.hardening import HardeningPipeline
-from runtime.executor import RuntimeExecutor
-from runtime.golden_validator import GoldenValidator
-from runtime.ir_lowering import IRLoweringPipeline
-from runtime.loader import SpecLoader
-from runtime.mutation import MutationEngine
-from runtime.platform_compiler import ProjectCompiler
-from runtime.run_config import FailureInjection, RunConfig
-from runtime.synthesis import SynthesisPipeline
-from runtime.verifier import RuntimeVerifier
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from runtime.run_config import RunConfig
 
 
 def parse_args() -> argparse.Namespace:
@@ -76,6 +67,9 @@ def export_final_backend(source_root: Path, destination_root: Path) -> None:
 
 
 def run_auto_build(args: argparse.Namespace, root: Path) -> None:
+    from runtime.codegen.common import dump_yaml, safe_load_yaml
+    from runtime.hardening import HardeningPipeline
+
     build_plan_path = resolve_build_plan_path(root, args.build_plan)
     build_plan = safe_load_yaml(build_plan_path)
 
@@ -143,6 +137,8 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
 
 
 def build_run_config(args: argparse.Namespace) -> RunConfig:
+    from runtime.run_config import FailureInjection, RunConfig
+
     partial_replay_tasks = tuple(
         task_id.strip() for task_id in args.partial_replay.split(",") if task_id.strip()
     )
@@ -178,6 +174,8 @@ def main() -> None:
         run_auto_build(args, root)
         return
     if args.emit_code:
+        from runtime.codegen import CodegenPipeline
+
         output_root = root / "runs" / args.run_id / "generated-module"
         specs_dir = root / "specs"
         backend_root = (root / args.backend_root).resolve()
@@ -191,6 +189,8 @@ def main() -> None:
             raise RuntimeError("Code generation failed verification")
         return
     if args.mutate_module:
+        from runtime.mutation import MutationEngine
+
         output_root = root / "runs" / args.run_id / "mutated-module"
         specs_dir = root / "specs"
         backend_root = (root / args.backend_root).resolve()
@@ -206,6 +206,8 @@ def main() -> None:
             raise RuntimeError("Module mutation failed verification")
         return
     if args.synthesize_module:
+        from runtime.synthesis import SynthesisPipeline
+
         output_root = root / "runs" / args.run_id / "generated-module"
         specs_dir = root / "specs"
         backend_root = (root / args.backend_root).resolve()
@@ -219,6 +221,8 @@ def main() -> None:
             raise RuntimeError("Field-level synthesis failed verification")
         return
     if args.lower_ir:
+        from runtime.ir_lowering import IRLoweringPipeline
+
         output_root = root / "runs" / args.run_id
         specs_dir = root / "specs"
         summary = IRLoweringPipeline(
@@ -229,6 +233,8 @@ def main() -> None:
             raise RuntimeError("IR lowering failed verification")
         return
     if args.compile_backend:
+        from runtime.platform_compiler import ProjectCompiler
+
         output_root = root / "runs" / args.run_id
         specs_dir = root / "specs"
         backend_root = (root / args.backend_root).resolve()
@@ -248,6 +254,8 @@ def main() -> None:
             raise RuntimeError("Backend compilation failed verification")
         return
     if args.harden_backend:
+        from runtime.hardening import HardeningPipeline
+
         output_root = root / "runs" / args.run_id
         specs_dir = root / "specs"
         backend_root = (root / args.backend_root).resolve()
@@ -269,10 +277,22 @@ def main() -> None:
         return
 
     if args.run_regression_suite:
+        from runtime.golden_validator import GoldenValidator
+
         summary = GoldenValidator(root).run_regression_suite()
         if summary["failed_count"] > 0:
             raise RuntimeError("Regression suite failed")
         return
+
+    run_simulation(args, root)
+
+
+def run_simulation(args: argparse.Namespace, root: Path) -> None:
+    """Retain the historical default simulation without loading it for builds."""
+    from runtime.dag_engine import DagEngine
+    from runtime.executor import RuntimeExecutor
+    from runtime.loader import SpecLoader
+    from runtime.verifier import RuntimeVerifier
 
     specs_dir = root / "specs"
     run_config = build_run_config(args)

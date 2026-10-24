@@ -7,6 +7,7 @@
 | `specforge/` | 新核心、生成资产及显式验收包 |
 | `examples/` | 版本 1 YAML 固定业务规格 |
 | `tests_core/` | 新核心独立回归测试 |
+| `tests_compat/` | 旧入口依赖隔离与调用合同测试 |
 | `tools/` | Windows / WSL 运行包装 |
 | `docs/` | 当前合同、验收证据、迁移决策 |
 | `docs/legacy/` | 旧版操作文档历史归档 |
@@ -21,4 +22,4 @@
 
 `skills/`、`backend/`、`specforge-runtime/` 保留路径及行为。旧版共享规格在 `specforge-runtime/specs/`，日志在 `specforge-runtime/runs/`，仅后端产物在 `specforge-runtime/outputs/`。这些路径不适用于新版。
 
-旧版实验能力仍被主程序导入，未完成调用隔离前不可移动。具体调用证据与退出条件见 [迁移清单](docs/LEGACY_MIGRATION.md)。本轮没有清理用户运行记录、生成产物或数据库。
+旧版实验能力现按命令分支导入，默认模拟等旧命令仍依赖其源码，尚不可直接移动。具体调用证据与退出条件见 [迁移清单](docs/LEGACY_MIGRATION.md)。本轮没有清理用户运行记录、生成产物或数据库。
