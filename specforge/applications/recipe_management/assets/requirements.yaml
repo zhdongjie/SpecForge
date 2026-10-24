@@ -1,0 +1,200 @@
+version: 1
+origin: 用户提出的食谱业务与本轮上传、权限组合修复；未批准删除任何必需项
+requirements:
+- id: REQ-LOGIN
+  need: 用户登录后才能使用系统
+  mode: reuse
+  rationale: 直接复用模板认证，不重写登录基础设施
+  sources:
+  - backend/src/main/java/com/original/authorize/resource/AuthorizeResource.java
+  template_evidence:
+  - backend/src/main/java/com/original/authorize/resource/AuthorizeResource.java
+  api:
+  - login sfadmin
+  - anonymous recipes denied
+  browser:
+  - author creates ingredient and step details and submits draft
+  stages: []
+- id: REQ-BROWSE
+  need: 仅浏览已发布菜谱，并可按分类分页
+  mode: custom
+  rationale: 应用适配发布状态，普通用户不能看到其他人的草稿
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence: []
+  api:
+  - draft absent from public browsing
+  - published listing includes approved recipe
+  - category filter isolates recipes
+  browser:
+  - reader searches published recipe and favorites it
+  stages: []
+- id: REQ-SEARCH
+  need: 按菜名与简介搜索，保留分页和字面匹配
+  mode: custom
+  rationale: 参数化查询，不将用户输入拼成 SQL
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence: []
+  api:
+  - keyword searches recipe title
+  - keyword searches recipe summary
+  - search wildcard escaped literally
+  - search is parameterized
+  browser: []
+  stages: []
+- id: REQ-DETAILS
+  need: 查看和编辑完整的食材与步骤明细
+  mode: custom
+  rationale: 应用明细与主记录同事务保存，详情读取保持一致
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence: []
+  api:
+  - invalid edit preserves prior children
+  browser:
+  - reviewer inspects complete recipe details and approves
+  stages: []
+- id: REQ-AUTHORING
+  need: 作者发布、编辑并提交审核；他人不能修改
+  mode: adapt
+  rationale: 复用登录态身份，增加作者归属及修订状态约束
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence:
+  - backend/src/main/java/com/original/core/utils/SecurityUtils.java
+  api:
+  - author identity spoof rejected
+  - other author cannot edit
+  - pending recipe not editable
+  - stale update rejected
+  browser:
+  - author creates ingredient and step details and submits draft
+  stages: []
+- id: REQ-REVIEW
+  need: 管理员审核、驳回有原因，禁止自审和过期审批
+  mode: adapt
+  rationale: 复用权限机制并增加状态、归属、修订检查
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence:
+  - backend/src/main/java/com/original/core/utils/SecurityUtils.java
+  api:
+  - competing approvals exactly one success
+  - administrator self-approval denied
+  - administrator self-rejection denied
+  - rejection requires reason
+  - old review revision cannot approve updated content
+  browser:
+  - rejection reason, author correction and resubmission restore publication
+  stages: []
+- id: REQ-FAVORITES
+  need: 收藏与取消幂等、本人隔离，隐藏撤回内容
+  mode: custom
+  rationale: 联合唯一约束与业务状态过滤
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence: []
+  api:
+  - concurrent favorite idempotent
+  - database uniqueness prevents duplicate favorite
+  - favorites isolated by user
+  - favorites do not leak withdrawn content
+  browser:
+  - reader cancels favorite and returns to recipe discovery
+  stages: []
+- id: REQ-STATS
+  need: 后台统计仅管理员可见，计数与分类分布正确
+  mode: custom
+  rationale: 应用统计接口复用模板认证权限
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipe_stats/index.vue
+  template_evidence: []
+  api:
+  - normal user statistics denied
+  - publication counts correct
+  - category distribution matches published count
+  browser:
+  - administrator statistics dashboard accessible
+  stages: []
+- id: REQ-COVER-UPLOAD
+  need: 真实图片选择、上传、预览与发布展示
+  mode: adapt
+  rationale: 调用现有 FileManager 和 MIME/大小策略；补食谱权限及图片内容校验
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence:
+  - backend/src/main/java/com/original/system/file/manager/FileManager.java
+  - backend/src/main/java/com/original/core/utils/FileUtils.java
+  api:
+  - platform image upload works
+  - platform MIME detection and metadata agree
+  - spoofed PNG payload rejected
+  - oversized upload rejected
+  - oversized image dimensions rejected
+  browser:
+  - author uploads and previews real cover image
+  - published recipe renders uploaded cover
+  stages: []
+- id: REQ-COVER-LIFECYCLE
+  need: 封面保存、替换、移除、删除及未引用文件清理
+  mode: adapt
+  rationale: 复用 FileReferenceService 与清理任务，适配事务和候选重查
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  template_evidence:
+  - backend/src/main/java/com/original/system/file/service/impl/FileReferenceServiceImpl.java
+  - backend/src/main/java/com/original/system/task/process/ClearFileProcess.java
+  api:
+  - recipe save creates platform file reference
+  - reference failure rolls back recipe write
+  - reference failure rolls back reference replacement
+  - replacement releases old reference and protects new cover
+  - referenced cover survives real cleanup
+  - unreferenced replaced cover eventually cleaned
+  browser:
+  - author reopens and replaces uploaded cover
+  stages: []
+- id: REQ-PERMISSIONS
+  need: 角色、操作、归属及状态的权限组合都生效
+  mode: adapt
+  rationale: 权限字符串不等于业务授权；文件权限不能替代发布权限
+  sources:
+  - backend/src/main/java/com/original/business/recipes/RecipeResource.java
+  - frontend/src/pages/business/recipes/index.vue
+  template_evidence:
+  - frontend/src/composables/useAuthorities.ts
+  - backend/src/main/java/com/original/core/utils/SecurityUtils.java
+  api:
+  - readonly cover upload denied
+  - generic upload permission cannot replace recipe publish permission
+  - cannot attach another user image
+  - absolute URL cannot disguise system image path
+  - raw table bypass denied recipe
+  - normal user review queue denied
+  browser:
+  - readonly account has browsing without mutation controls
+  - no-access account denied recipe route
+  stages: []
+- id: REQ-DELIVERY
+  need: 生成包可独立部署，不能依赖开发工作区
+  mode: reuse
+  rationale: 复用模板生产部署并执行独立解压验收
+  sources:
+  - deploy/compose.yaml
+  - deploy/Dockerfile.backend
+  - deploy/Dockerfile.frontend
+  template_evidence:
+  - deploy/compose.yaml
+  api: []
+  browser: []
+  stages:
+  - compose

@@ -70,6 +70,25 @@ class ReleaseDeliveryTests(unittest.TestCase):
                 release.validate_extract(archive, root / "extract")
             self.assertFalse((root / "extract").exists())
 
+    def test_application_archive_without_coverage_proof_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+
+            def change(files, manifest):
+                spec = (ROOT / "examples/recipe_management.yaml").read_bytes()
+                identity = {"spec_sha256": hashlib.sha256(spec).hexdigest()}
+                manifest["identity"] = identity
+                for name, value in {
+                    "specforge/project.yaml": spec,
+                    "specforge/identity.json": json.dumps(identity).encode(),
+                }.items():
+                    files[name] = value
+                    manifest["sha256"][name] = hashlib.sha256(value).hexdigest()
+
+            archive = self.fixture(root, change)
+            with self.assertRaisesRegex(ValueError, "verified requirement coverage"):
+                release.validate_extract(archive, root / "extract")
+
     def test_missing_required_file_rejected(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

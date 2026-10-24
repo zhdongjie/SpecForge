@@ -32,6 +32,7 @@ const view = ref("published"),
 const rows = ref<Recipe[]>([]),
   categories = ref<Category[]>([]),
   busy = ref(false),
+  uploading = ref(false),
   error = ref("");
 const editing = ref(false),
   detail = ref<Recipe | null>(null),
@@ -126,7 +127,32 @@ async function edit(row: Recipe) {
     error.value = (e as Error).message;
   }
 }
+async function uploadCover(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+  error.value = "";
+  if (file.size > 5 * 1024 * 1024) {
+    error.value = "图片不能超过 5MB";
+    input.value = "";
+    return;
+  }
+  uploading.value = true;
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    draft.value.cover_url = (
+      await request.post<FormData, { url: string }>("/v1/recipes/cover", form)
+    ).data.url;
+  } catch (e) {
+    error.value = (e as Error).message || "封面上传失败";
+  } finally {
+    uploading.value = false;
+    input.value = "";
+  }
+}
 async function save() {
+  if (uploading.value) return;
   busy.value = true;
   error.value = "";
   try {
@@ -417,9 +443,34 @@ onMounted(async () => {
           </div>
           <v-text-field
             v-model="draft.cover_url"
-            label="封面图片地址（可选，HTTPS）"
+            label="封面图片地址（可选）"
             maxlength="255"
           />
+          <div class="recipe-upload">
+            <label
+              >上传封面（PNG/JPEG，最多 5MB）<input
+                data-testid="cover-upload"
+                aria-label="上传封面"
+                type="file"
+                accept="image/png,image/jpeg"
+                :disabled="busy || uploading"
+                @change="uploadCover"
+            /></label>
+            <v-progress-linear v-if="uploading" indeterminate />
+            <img
+              v-if="draft.cover_url"
+              :src="draft.cover_url"
+              data-testid="cover-preview"
+              alt="封面预览"
+              referrerpolicy="no-referrer"
+            />
+            <v-btn
+              v-if="draft.cover_url"
+              :disabled="uploading"
+              @click="draft.cover_url = ''"
+              >移除封面</v-btn
+            >
+          </div>
           <h3>食材清单</h3>
           <div
             v-for="(item, index) in draft.ingredients"
@@ -468,9 +519,11 @@ onMounted(async () => {
             >添加步骤</v-btn
           ></v-card-text
         ><v-card-actions
-          ><v-spacer /><v-btn :disabled="busy" @click="editing = false"
+          ><v-spacer /><v-btn
+            :disabled="busy || uploading"
+            @click="editing = false"
             >取消</v-btn
-          ><v-btn color="primary" :loading="busy" @click="save"
+          ><v-btn color="primary" :loading="busy || uploading" @click="save"
             >保存草稿</v-btn
           ></v-card-actions
         ></v-card
@@ -529,6 +582,17 @@ onMounted(async () => {
   </main>
 </template>
 <style scoped>
+.recipe-upload {
+  margin: 8px 0 24px;
+  display: grid;
+  gap: 12px;
+}
+.recipe-upload img {
+  max-width: 100%;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+}
 .recipe-shell {
   max-width: 1280px;
   margin: 0 auto;

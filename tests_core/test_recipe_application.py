@@ -72,6 +72,21 @@ class RecipeApplicationTests(unittest.TestCase):
             (template / "frontend/src/appConfig.ts").write_text(
                 "export default {name: 'template'}"
             )
+            from specforge.applications.recipe_management.adaptations import (
+                ENUM,
+                CLEANER,
+                ENUM_MARKER,
+                CLEANER_FIELD,
+                CLEANER_LOOP,
+            )
+
+            for name, content in [
+                (ENUM, ENUM_MARKER),
+                (CLEANER, CLEANER_FIELD + "\n" + CLEANER_LOOP),
+            ]:
+                path = template / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content)
             before = inventory(template)
             first = generate(
                 ROOT / "examples/recipe_management.yaml", template, root / "project"

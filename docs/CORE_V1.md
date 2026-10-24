@@ -70,3 +70,8 @@ Windows / WSL 浏览器工作进程包装：
 ```
 
 `release.json` 是独立交付验收结论；`mounts.json` 记录实际挂载，API / 浏览器报告与脱敏诊断位于同一目录。此验收不更改原生成记录及 published.json。失败不能视为最终交付完成；清理失败也会报告 FAIL。验收临时账号不属于正式部署配置，实际安装按包内文档设置管理员环境变量。
+
+
+## 新项目需求覆盖门禁
+
+新项目完整验收和发布必须有生成源码中的 `specforge/requirements.yaml`；四个固定历史样板保留兼容例外。`reports/requirements.json` 给出逐项验证，清单随源码和哈希进入交付包，独立部署再检查。完整流程与项目补充实现方式见 [实施流程](GENERATION_WORKFLOW.md)。不能把生成器已支持的功能当成用户需求边界。

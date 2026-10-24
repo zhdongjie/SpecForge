@@ -8,6 +8,7 @@ from pathlib import Path
 from .acceptance_packs import get_pack
 from .browser import BrowserRunner
 from .errors import VerificationError
+from .coverage import check_requirements
 from .spec import load
 from .workspace import inventory, digest, write_json, read_json
 
@@ -153,6 +154,10 @@ def verify(run, build_only=False, reuse_build=False, acceptance_pack=None):
                 reports,
                 payload,
             )
+            stage = "coverage"
+            coverage = check_requirements(source, reports, result["checks"])
+            if coverage is not None:
+                result["requirements"] = coverage
         except Exception as exc:
             primary = exc
         finally:

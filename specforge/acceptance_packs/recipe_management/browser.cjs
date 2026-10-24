@@ -27,6 +27,16 @@ const fs = require("fs"),
     await dialog
       .getByLabel("步骤 2", { exact: true })
       .fill("热锅炒熟鸡蛋，加入番茄翻炒，加盐调味。");
+    await dialog.getByTestId("cover-upload").setInputFiles({
+      name: "browser-cover.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(cfg.png_fixture, "base64"),
+    });
+    const previewImage = dialog.getByTestId("cover-preview");
+    await previewImage.waitFor({ state: "visible" });
+    await previewImage.evaluate((img) => img.decode());
+    assert.ok(await previewImage.evaluate((img) => img.naturalWidth > 0));
+    mark("author uploads and previews real cover image");
     await dialog.getByRole("button", { name: "保存草稿", exact: true }).click();
     let card = author.locator("article").filter({ hasText: cfg.recipe_title });
     await visible(card.getByText("草稿", { exact: true }));
@@ -57,6 +67,15 @@ const fs = require("fs"),
       .locator("article")
       .filter({ hasText: cfg.recipe_title });
     await visible(published);
+    await published
+      .locator('img[alt="菜谱封面"]')
+      .evaluate((img) => img.decode());
+    assert.ok(
+      await published
+        .locator('img[alt="菜谱封面"]')
+        .evaluate((img) => img.naturalWidth > 0),
+    );
+    mark("published recipe renders uploaded cover");
     await published.getByRole("button", { name: "收藏", exact: true }).click();
     await visible(
       published.getByRole("button", { name: "取消收藏", exact: true }),
@@ -72,6 +91,24 @@ const fs = require("fs"),
       await dialog.getByLabel("食材名称 2", { exact: true }).inputValue(),
       "鸡蛋",
     );
+    await visible(dialog.getByTestId("cover-preview"));
+    const previousCover = await dialog
+      .getByTestId("cover-preview")
+      .getAttribute("src");
+    await dialog.getByTestId("cover-upload").setInputFiles({
+      name: "replacement.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(cfg.png_fixture, "base64"),
+    });
+    await author.waitForFunction(
+      (previous) =>
+        document
+          .querySelector('[data-testid="cover-preview"]')
+          ?.getAttribute("src") !== previous,
+      previousCover,
+    );
+    await dialog.getByTestId("cover-preview").evaluate((img) => img.decode());
+    mark("author reopens and replaces uploaded cover");
     await dialog
       .getByLabel("简介", { exact: true })
       .fill("加入完整调味说明，重新提交审核。");

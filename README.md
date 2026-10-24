@@ -4,6 +4,8 @@
 
 ## 开始使用
 
+真实项目先按 [需求到交付流程](docs/GENERATION_WORKFLOW.md) 做需求覆盖与模板复用审查。未登记的能力先查模板源码，不能直接删减需求。
+
 ```bash
 python3 -m pip install -e .
 python3 -m specforge run \

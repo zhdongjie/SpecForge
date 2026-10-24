@@ -24,6 +24,7 @@ import zipfile
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from specforge.acceptance_packs import get_pack
 from specforge.browser import BrowserRunner
+from specforge.coverage import check_requirements, require_verified_plan
 from specforge.spec import load
 from specforge.workspace import digest, read_json, write_json
 
@@ -100,6 +101,7 @@ def validate_extract(archive, destination):
         raise ValueError("archive identity mismatch")
     if digest(source / "specforge/project.yaml") != manifest["identity"]["spec_sha256"]:
         raise ValueError("spec identity hash mismatch")
+    require_verified_plan(source, manifest["verification"])
     return source, manifest
 
 
@@ -301,6 +303,10 @@ def verify_release(archive, reports, acceptance_pack):
                     reports,
                     payload,
                 )
+                stage = "coverage"
+                coverage = check_requirements(source, reports, result["checks"])
+                if coverage is not None:
+                    result["requirements"] = coverage
             except Exception as exc:
                 primary = exc
             finally:

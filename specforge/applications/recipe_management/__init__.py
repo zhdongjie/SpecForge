@@ -88,6 +88,9 @@ def permissions(spec, standard):
 
 
 def emit(source):
+    from .adaptations import adapt
+
+    adapt(source)
     # appConfig is the template's explicit application branding configuration.
     config = source / "frontend/src/appConfig.ts"
     content, count = re.subn(
@@ -109,11 +112,17 @@ def emit(source):
         target = source / destination
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text((ASSETS / asset).read_text())
+    (source / "specforge/requirements.yaml").write_text(
+        (ASSETS / "requirements.yaml").read_text()
+    )
     (source / "RECIPE_SYSTEM.md").write_text((ASSETS / "RECIPE_SYSTEM.md").read_text())
     return """
 ALTER TABLE sf_recipe ADD INDEX recipe_browse(publication_state,sf_deleted,category_id,id), ADD INDEX recipe_author(author_id,sf_deleted,id);
 ALTER TABLE sf_recipe_ingredient ADD UNIQUE KEY recipe_ingredient_position(recipe_id,position);
 ALTER TABLE sf_recipe_step ADD UNIQUE KEY recipe_step_position(recipe_id,position);
 ALTER TABLE sf_recipe_favorite ADD UNIQUE KEY recipe_user_favorite(recipe_id,user_id), ADD INDEX favorite_user(user_id,sf_deleted);
+-- Adapt platform seed metadata to the MIME strings detected by Tika.
+UPDATE system_file_metadata SET mime_type='image/png' WHERE mime_type='application/png';
+UPDATE system_file_metadata SET mime_type='image/jpeg' WHERE mime_type='application/jpeg';
 INSERT INTO sf_recipe_category(name) VALUES ('家常菜'),('素食'),('汤羹'),('烘焙');
 """

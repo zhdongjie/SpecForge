@@ -1,20 +1,28 @@
 package com.original.business.recipes;
 
+import com.original.core.config.properties.OriginalProperties;
 import com.original.core.domain.vo.PageVo;
 import com.original.core.domain.vo.ResponseVo;
+import com.original.core.enums.FileBusinessType;
+import com.original.core.utils.FileUtils;
 import com.original.core.utils.SecurityUtils;
+import com.original.system.file.manager.FileManager;
+import com.original.system.file.service.FileReferenceService;
 import java.net.URI;
 import java.sql.Statement;
 import java.util.*;
+import javax.imageio.ImageIO;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /** Recipe application boundary. Raw generated entity endpoints receive no grants. */
 @RestController
@@ -23,12 +31,27 @@ import org.springframework.web.bind.annotation.*;
 public class RecipeResource {
   private final JdbcTemplate db;
   private final TransactionTemplate tx;
+  private final FileManager files;
+  private final FileReferenceService references;
+  private final OriginalProperties properties;
+  private static final String COVER_PREFIX = "/api/files";
 
-  public RecipeResource(JdbcTemplate db) {
-    this.db = db;
-    this.tx =
-        new TransactionTemplate(
-            new DataSourceTransactionManager(Objects.requireNonNull(db.getDataSource())));
+  public RecipeResource(
+      SqlSessionFactory sessions,
+      TransactionManagementConfigurer management,
+      FileManager files,
+      FileReferenceService references,
+      OriginalProperties properties) {
+    this.files = files;
+    this.references = references;
+    this.properties = properties;
+    this.db = new JdbcTemplate(sessions.getConfiguration().getEnvironment().getDataSource());
+    var manager = management.annotationDrivenTransactionManager();
+    if (!(manager instanceof org.springframework.transaction.PlatformTransactionManager platform)) {
+      throw new IllegalArgumentException(
+          "Template must provide an imperative platform transaction manager");
+    }
+    this.tx = new TransactionTemplate(platform);
   }
 
   private boolean has(String action) {
@@ -208,6 +231,70 @@ public class RecipeResource {
         });
   }
 
+  /**
+   * Reuse the platform uploader while keeping recipe-publish authority independent of file admin.
+   */
+  @PostMapping("/cover")
+  public ResponseVo<Map<String, String>> uploadCover(@RequestParam("file") MultipartFile file)
+      throws Exception {
+    grant("publish");
+    if (file.isEmpty()
+        || file.getSize() > 5L * 1024 * 1024
+        || file.getOriginalFilename() == null
+        || file.getOriginalFilename().length() > 128)
+      throw new IllegalArgumentException("请选择不超过 5MB 的 PNG/JPEG 图片");
+    String mime = FileUtils.getMimeType(file.getBytes(), file.getOriginalFilename());
+    if (!Set.of("image/png", "image/jpeg").contains(mime))
+      throw new IllegalArgumentException("仅支持真实 PNG/JPEG 图片");
+    try (var input = ImageIO.createImageInputStream(file.getInputStream())) {
+      var readers = ImageIO.getImageReaders(input);
+      if (!readers.hasNext()) throw new IllegalArgumentException("图片内容无效");
+      var reader = readers.next();
+      try {
+        reader.setInput(input);
+        int width = reader.getWidth(0), height = reader.getHeight(0);
+        if (width < 1 || height < 1 || width > 4096 || height > 4096 || reader.read(0) == null)
+          throw new IllegalArgumentException("图片尺寸不得超过 4096×4096");
+      } finally {
+        reader.dispose();
+      }
+    } catch (java.io.IOException ex) {
+      throw new IllegalArgumentException("图片内容无效");
+    }
+    String uploaded = files.upload(List.of(file)).getData().get(0);
+    String prefix = properties.upload().requestUrl();
+    if (!uploaded.startsWith(prefix + "/")) throw new IllegalArgumentException("上传服务返回了无效文件路径");
+    return ResponseVo.success(
+        Map.of(
+            "url",
+            COVER_PREFIX + uploaded.substring(prefix.length()),
+            "name",
+            file.getOriginalFilename()));
+  }
+
+  private void validateCover(String cover) {
+    if (!cover.startsWith(COVER_PREFIX + "/")) return;
+    String relative = cover.substring(COVER_PREFIX.length());
+    var rows =
+        db.queryForList(
+            "SELECT id,created_by,mime_type FROM system_file WHERE file_url=? FOR UPDATE",
+            relative);
+    if (rows.size() != 1
+        || rows.get(0).get("created_by") == null
+        || ((Number) rows.get(0).get("created_by")).longValue() != user()
+        || !Set.of("image/png", "image/jpeg").contains(rows.get(0).get("mime_type")))
+      throw new IllegalArgumentException("封面必须是本人上传且仍存在的图片");
+  }
+
+  private void syncCover(long recipe, String cover) {
+    references.updateFileReference(
+        recipe,
+        cover.startsWith(COVER_PREFIX + "/")
+            ? properties.upload().requestUrl() + cover.substring(COVER_PREFIX.length())
+            : null,
+        FileBusinessType.RECIPE_COVER);
+  }
+
   private Map<String, Object> draft(Map<String, Object> body, boolean update) {
     var allowed =
         new HashSet<>(
@@ -233,14 +320,15 @@ public class RecipeResource {
     values.put("servings", number(body.getOrDefault("servings", 1), 1, 100, "份数"));
     values.put("prep_minutes", number(body.getOrDefault("prep_minutes", 0), 0, 1440, "准备时间"));
     String cover = text(body.get("cover_url"), 255, false, "封面");
-    if (!cover.isEmpty()) {
+    if (!cover.isEmpty() && !cover.startsWith(COVER_PREFIX + "/")) {
       try {
         URI uri = URI.create(cover);
         if (!"https".equalsIgnoreCase(uri.getScheme())
             || uri.getHost() == null
-            || uri.getUserInfo() != null) throw new IllegalArgumentException();
+            || uri.getUserInfo() != null
+            || uri.getPath().startsWith(COVER_PREFIX + "/")) throw new IllegalArgumentException();
       } catch (Exception ex) {
-        throw new IllegalArgumentException("封面必须为 HTTPS 图片地址");
+        throw new IllegalArgumentException("封面必须是本系统上传图片或 HTTPS 图片地址");
       }
     }
     values.put("cover_url", cover);
@@ -288,6 +376,7 @@ public class RecipeResource {
     return tx.execute(
         status -> {
           var values = draft(body, false);
+          validateCover((String) values.get("cover_url"));
           values.put("author_id", user());
           values.put("publication_state", "DRAFT");
           values.put("revision", 1);
@@ -309,6 +398,7 @@ public class RecipeResource {
               keys);
           long id = Objects.requireNonNull(keys.getKey()).longValue();
           children(id, body);
+          syncCover(id, (String) values.get("cover_url"));
           return ResponseVo.success(decorate(row(id, false)));
         });
   }
@@ -326,6 +416,7 @@ public class RecipeResource {
           version(record, body);
           if ("PENDING".equals(record.get("publication_state")))
             throw new IllegalArgumentException("待审核菜谱不能编辑");
+          validateCover((String) values.get("cover_url"));
           var args = new ArrayList<Object>(values.values());
           args.add(id);
           args.add(record.get("revision"));
@@ -337,6 +428,7 @@ public class RecipeResource {
                   args.toArray())
               != 1) throw new IllegalArgumentException("菜谱已更新");
           children(id, body);
+          syncCover(id, (String) values.get("cover_url"));
           return ResponseVo.success();
         });
   }
@@ -351,6 +443,7 @@ public class RecipeResource {
           version(record, Map.of("revision", revision));
           if ("PENDING".equals(record.get("publication_state")))
             throw new IllegalArgumentException("待审核菜谱不能删除");
+          references.deleteFileReference(id, FileBusinessType.RECIPE_COVER);
           db.update("UPDATE sf_recipe SET sf_deleted=1,revision=revision+1 WHERE id=?", id);
           return ResponseVo.success();
         });

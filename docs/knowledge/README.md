@@ -20,6 +20,10 @@
 - [C-005 食谱应用合同](contracts/recipes.md)
 - [D-005 显式应用扩展](decisions/application-extensions.md)
 
+- [C-006 需求覆盖与模板复用合同](contracts/delivery-coverage.md)
+- [T-006 混合事务回滚](troubleshooting/mixed-transactions.md)
+- [T-007 上传 MIME 策略适配](troubleshooting/upload-mime.md)
+
 ## 维护方式
 
 先判断知识归属，再更新对应条目。合同是当前规则唯一说明；决策记录问题、方案、代价与重新评估条件；排错记录现象、根因、处理与验证。新条目沿用分类编号，包含状态、适用范围、最近验证日期、代码与证据链接。未经证实的推测标为待验证。

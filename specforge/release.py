@@ -3,6 +3,7 @@ from pathlib import Path
 from .workspace import read_json, write_json, inventory, digest
 from .verification import artifact_hashes, verify
 from .errors import RepairNotApplicable, VerificationError
+from .coverage import require_verified_plan
 
 
 def repair(run):
@@ -107,6 +108,7 @@ def package(run, workspace):
         "artifacts_sha256"
     ] != artifact_hashes(source):
         raise ValueError("Source or compiled artifacts changed after verification")
+    require_verified_plan(source, report)
     manifest = read_json(run / "manifest.json")
     files = {name: source / name for name in report["source_sha256"]}
     files.update({name: source / name for name in report["artifacts_sha256"]})

@@ -359,6 +359,9 @@ def accept(origin, password, project, source, reports):
         call(root + "/statistics", token=readonly)["code"] == 40300,
         "readonly statistics denied",
     )
+    from .media import accept as accept_media
+
+    png_fixture = accept_media(c, admin, chef, reader, readonly, none, data)
     # Leave three complete, approved recipes for discovery screenshots and manual review.
     for title, summary in [
         ("清爽黄瓜拌木耳", "清爽开胃，适合搭配家常餐桌。"),
@@ -367,4 +370,8 @@ def accept(origin, password, project, source, reports):
         dish = create(title=title, summary=summary)
         check(action(dish, "submit", chef)["code"] == 20000, "seed dish submitted")
         check(action(dish, "approve", admin)["code"] == 20000, "seed dish approved")
-    return {"recipe_title": "浏览器番茄炒蛋", "category": "家常菜"}
+    return {
+        "recipe_title": "浏览器番茄炒蛋",
+        "category": "家常菜",
+        "png_fixture": png_fixture,
+    }
