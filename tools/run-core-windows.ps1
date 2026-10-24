@@ -9,6 +9,8 @@ param(
     [string]$Node = '',
     [string]$PlaywrightModule = '',
     [string]$Chromium = 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+    [string]$ReleaseArchive = '',
+    [string]$ReportsDirectory = '',
     [switch]$ReuseBuild
 )
 $ErrorActionPreference = 'Stop'
@@ -40,7 +42,10 @@ try {
         SPECFORGE_BROWSER_STAGING = $sfLinuxStaging
     }
     foreach ($sfEntry in $sfVars.GetEnumerator()) { $sfSetup += 'export ' + $sfEntry.Key + '=' + (Quote-Bash $sfEntry.Value) + '; ' }
-    if ($ReuseBuild) {
+    if ($ReleaseArchive) {
+        if (-not $ReportsDirectory) { throw 'Release verification requires ReportsDirectory' }
+        $sfCommand = 'python3 tools/verify-release.py --archive ' + (Quote-Bash $ReleaseArchive) + ' --reports ' + (Quote-Bash $ReportsDirectory)
+    } elseif ($ReuseBuild) {
         $sfCommand = 'python3 -m specforge verify --reuse-build --workspace ' + (Quote-Bash $Workspace)
     } else {
         $sfCommand = 'python3 -m specforge run --workspace ' + (Quote-Bash $Workspace) + ' --spec ' + (Quote-Bash $Spec) + ' --template ' + (Quote-Bash $Template)

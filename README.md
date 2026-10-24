@@ -34,6 +34,7 @@ python3 -m specforge run \
 ## 文档与验证
 
 - [工程知识库：规则、决策与排错](docs/knowledge/README.md)
+- [知识库与新版交付验证结果](docs/KNOWLEDGE_DELIVERY.md)
 
 - [运行、规格与失败诊断](docs/CORE_V1.md)
 - [工作区合同](WORKSPACE_LAYOUT.md)

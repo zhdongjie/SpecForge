@@ -51,3 +51,22 @@ python3 -m specforge run --workspace /absolute/workspace/book-fields-v2 --spec e
 ```
 
 验收包通过固定 project.id `book_fields_v1` / `book_fields_v2` 显式选择场景，再严格校验对应字段合同；不是根据字段名推断场景。复用原图书借阅 API 全集和同一个浏览器脚本，增加字段断言。证据见 [字段变更验收](core-evidence/field-changes.json)。
+
+
+## 交付包独立部署验收
+
+这是开发验收工具，应用部署只需要包内生产产物和 Docker，不依赖本仓库。
+
+```bash
+python3 tools/verify-release.py --archive /absolute/release.zip --reports /absolute/new-report-directory --acceptance-pack book-lending
+```
+
+校验和文件默认在交付包旁的 `.zip.sha256`。报告目录必须尚不存在，避免覆盖证据。工具校验整个包及文件清单，解压至全新临时目录，以独立 Compose 项目和全新卷启动包内 JAR / dist，执行完整 API 和浏览器验收，最后清理。允许缓存或下载固定摘要的 Docker 基础镜像；不承诺离线部署。
+
+Windows / WSL 浏览器工作进程包装：
+
+```powershell
+./run-core-windows.ps1 -ReleaseArchive /absolute/release.zip -ReportsDirectory /absolute/new-report-directory -AcceptancePack book-lending
+```
+
+`release.json` 是独立交付验收结论；`mounts.json` 记录实际挂载，API / 浏览器报告与脱敏诊断位于同一目录。此验收不更改原生成记录及 published.json。失败不能视为最终交付完成；清理失败也会报告 FAIL。验收临时账号不属于正式部署配置，实际安装按包内文档设置管理员环境变量。

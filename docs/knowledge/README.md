@@ -15,6 +15,8 @@
 - [T-003 Windows 与 WSL 浏览器运行](troubleshooting/windows-wsl-browser.md)
 - [T-004 本机容器构建环境](troubleshooting/build-environment.md)
 
+- [T-005 临时管理员密码必须满足模板合同](troubleshooting/bootstrap-password.md)
+
 ## 维护方式
 
 先判断知识归属，再更新对应条目。合同是当前规则唯一说明；决策记录问题、方案、代价与重新评估条件；排错记录现象、根因、处理与验证。新条目沿用分类编号，包含状态、适用范围、最近验证日期、代码与证据链接。未经证实的推测标为待验证。

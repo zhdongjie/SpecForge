@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-24",
+  "core_tests": 78,
+  "compatibility_tests": 9,
+  "knowledge_entries": 13,
+  "archives": {
+    "device-borrow": {
+      "archive": "/home/zhang/.local/state/specforge-core/device-borrow/releases/device_borrow-20261024T063426-683f886cd5.zip",
+      "sha256": "7e06ca03f6903845ab1aa6ad7c07dab68b6b36d022e8710571125154335611ed",
+      "project": {
+        "id": "device_borrow",
+        "name": "设备借用管理"
+      },
+      "spec_sha256": "f57f5476cc26429c1f5526fdcd5ae873f7fad5e788ca5a2410ed45cad2f4b0fa",
+      "template_git": "d3331dd5543cb75ada3a9947dc22a9342687b9d6",
+      "template_inventory_sha256": "fc4f0744a485023a8293cf7220e56100a9b3d1928aad93eb077b439abbc8286f",
+      "checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      },
+      "api_checks": 45,
+      "browser_checks": [
+        "admin creates device",
+        "applicant submits",
+        "admin approves and returns",
+        "readonly cannot mutate",
+        "no-access route denied"
+      ],
+      "report_directory": "/home/zhang/.local/state/specforge-core/release-checks/device-borrow-3",
+      "compose_project": "sf-accept-release-58c09d3c3777447f",
+      "resources_removed": true,
+      "extraction_removed": true
+    },
+    "book-lending": {
+      "archive": "/home/zhang/.local/state/specforge-core/book-lending/releases/book_lending-20261024T063426-077e08c954.zip",
+      "sha256": "eb9bd243cda782dae7515f8da194d2c6dcbf18feabad42e22f041855b59410b0",
+      "project": {
+        "id": "book_lending",
+        "name": "图书借阅管理"
+      },
+      "spec_sha256": "53410a5869cb37f2fe37bdced79edc852d34821a5b1b08682f3cc7e6f7c3ee74",
+      "template_git": "d3331dd5543cb75ada3a9947dc22a9342687b9d6",
+      "template_inventory_sha256": "fc4f0744a485023a8293cf7220e56100a9b3d1928aad93eb077b439abbc8286f",
+      "checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      },
+      "api_checks": 77,
+      "browser_checks": [
+        "admin creates book with stock two",
+        "reader submits quantity two without approval controls",
+        "approval consumes exactly two stock units in the UI",
+        "return restores availability without inflating total stock",
+        "readonly reader has no mutation controls",
+        "no-access reader cannot enter lending route"
+      ],
+      "report_directory": "/home/zhang/.local/state/specforge-core/release-checks/book-lending-1",
+      "compose_project": "sf-accept-release-4140b7dc6cfb49ad",
+      "resources_removed": true,
+      "extraction_removed": true
+    },
+    "book-fields-v1": {
+      "archive": "/home/zhang/.local/state/specforge-core/book-fields-v1/releases/book_fields_v1-20261024T070903-4331ab29dd.zip",
+      "sha256": "7bf81c261e53b8b4fc876312cd701c701b64efdeb3ffa976dd4057a8babedd77",
+      "project": {
+        "id": "book_fields_v1",
+        "name": "图书字段变更场景 1"
+      },
+      "spec_sha256": "72379f9042a72bc5620371935f609d537240931d7e3ad36fe89a899a542bace9",
+      "template_git": "d3331dd5543cb75ada3a9947dc22a9342687b9d6",
+      "template_inventory_sha256": "fc4f0744a485023a8293cf7220e56100a9b3d1928aad93eb077b439abbc8286f",
+      "checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      },
+      "api_checks": 91,
+      "browser_checks": [
+        "admin creates book with stock two",
+        "field scenario form list persistence and reopen verified",
+        "reader submits quantity two without approval controls",
+        "approval consumes exactly two stock units in the UI",
+        "return restores availability without inflating total stock",
+        "readonly reader has no mutation controls",
+        "no-access reader cannot enter lending route"
+      ],
+      "report_directory": "/home/zhang/.local/state/specforge-core/release-checks/book-fields-v1-1",
+      "compose_project": "sf-accept-release-ad61058760a4441c",
+      "resources_removed": true,
+      "extraction_removed": true
+    },
+    "book-fields-v2": {
+      "archive": "/home/zhang/.local/state/specforge-core/book-fields-v2/releases/book_fields_v2-20261024T071156-f85569dccc.zip",
+      "sha256": "805ba387589836f287e1b1c2166b8145f13adab46d778b583304115a78aff728",
+      "project": {
+        "id": "book_fields_v2",
+        "name": "图书字段变更场景 2"
+      },
+      "spec_sha256": "ccc20506326ca5ecee96de324f5d4312dc4e8ed8d7512010ec5edfb1744b09d7",
+      "template_git": "d3331dd5543cb75ada3a9947dc22a9342687b9d6",
+      "template_inventory_sha256": "fc4f0744a485023a8293cf7220e56100a9b3d1928aad93eb077b439abbc8286f",
+      "checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      },
+      "api_checks": 85,
+      "browser_checks": [
+        "admin creates book with stock two",
+        "field scenario form list persistence and reopen verified",
+        "reader submits quantity two without approval controls",
+        "approval consumes exactly two stock units in the UI",
+        "return restores availability without inflating total stock",
+        "readonly reader has no mutation controls",
+        "no-access reader cannot enter lending route"
+      ],
+      "report_directory": "/home/zhang/.local/state/specforge-core/release-checks/book-fields-v2-1",
+      "compose_project": "sf-accept-release-2f7d02def6e14b28",
+      "resources_removed": true,
+      "extraction_removed": true
+    }
+  },
+  "negative_cases": [
+    "corrupted checksum",
+    "missing deployment file",
+    "manifest hash mismatch",
+    "unlisted entry",
+    "path traversal",
+    "absolute and backslash paths",
+    "symlink",
+    "external bind mount",
+    "cleanup failure"
+  ],
+  "failed_attempts": [
+    {
+      "report": "device-borrow-1",
+      "stage": "api",
+      "cause": "temporary bootstrap password exceeded template max length; transient health success before application shutdown"
+    },
+    {
+      "report": "device-borrow-2",
+      "stage": "compose",
+      "cause": "same bootstrap password contract violation; corrected without application changes"
+    }
+  ],
+  "original_publications_unchanged": true,
+  "isolated_wheel_import": "PASS"
+}
