@@ -17,6 +17,7 @@ class AcceptancePack:
 PACKS = {
     "device-borrow": "specforge.acceptance_packs.device_borrow",
     "book-lending": "specforge.acceptance_packs.book_lending",
+    "book-lending-fields": "specforge.acceptance_packs.book_lending_fields",
 }
 
 
@@ -30,5 +31,7 @@ def get_pack(name):
         name,
         module.validate_spec,
         module.accept,
-        Path(module.__file__).with_name("browser.cjs"),
+        getattr(
+            module, "BROWSER_SCRIPT", Path(module.__file__).with_name("browser.cjs")
+        ),
     )

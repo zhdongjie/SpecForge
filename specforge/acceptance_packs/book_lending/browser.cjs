@@ -7,7 +7,7 @@ const fs = require("fs"),
   const label = (name) =>
     defs.loan.workflow.transitions.find((a) => a.name === name).label;
   const state = (name) => defs.loan.workflow.state_labels?.[name] || name;
-  await withBrowser(cfg, async ({ session, visible, absent, mark }) => {
+  await withBrowser(cfg, async ({ session, visible, absent, mark, assert }) => {
     const admin = await session("sfadmin");
     await admin.goto(cfg.origin + "/business/sf_book");
     await admin
@@ -20,11 +20,32 @@ const fs = require("fs"),
       .getByTestId("field-stock")
       .locator("input")
       .fill(String(cfg.book.stock));
+    if (cfg.field_case) {
+      await dialog.getByTestId("field-" + cfg.field_case.field).locator("input").fill(cfg.field_case.value);
+      if (cfg.field_case.shelf) {
+        assert.equal(await dialog.getByTestId("field-shelf_number").locator("input").inputValue(), "0");
+        await dialog.getByTestId("field-shelf_number").locator("input").fill("8");
+      } else {
+        await visible(dialog.getByLabel("馆藏名称", { exact: true }));
+        await absent(dialog.getByTestId("field-isbn"));
+        await absent(dialog.getByTestId("field-shelf_number"));
+      }
+    }
     await dialog.getByRole("button", { name: "保存", exact: true }).click();
     await visible(
       admin.getByRole("cell", { name: cfg.book.code, exact: true }),
     );
     mark("admin creates book with stock two");
+    if (cfg.field_case) {
+      const fieldRow = admin.getByRole("row").filter({ hasText: cfg.book.code });
+      await visible(fieldRow.getByRole("cell", { name: cfg.field_case.value, exact: true }));
+      await fieldRow.getByRole("button", { name: "编辑", exact: true }).click();
+      dialog = admin.getByRole("dialog");
+      assert.equal(await dialog.getByTestId("field-" + cfg.field_case.field).locator("input").inputValue(), cfg.field_case.value);
+      if (cfg.field_case.shelf) assert.equal(await dialog.getByTestId("field-shelf_number").locator("input").inputValue(), "8");
+      await dialog.getByRole("button", { name: "取消", exact: true }).click();
+      mark("field scenario form list persistence and reopen verified");
+    }
     const reader = await session("liba");
     await reader.goto(cfg.origin + "/business/sf_loan");
     await reader

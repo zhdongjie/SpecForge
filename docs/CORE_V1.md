@@ -39,3 +39,15 @@ Credentials pass via stdin, never command-line arguments. The adapter stages its
 - [工作区与交付](knowledge/contracts/workspace-release.md)
 - [验证和修复](knowledge/contracts/verification-repair.md)
 - [旧资产兼容与历史测试](LEGACY_MIGRATION.md)
+
+
+## 固定字段变更验收
+
+`examples/book_fields_v1.yaml` 新增可选 ISBN 和带 min/default 的书架号；`examples/book_fields_v2.yaml` 将 ISBN 改名为馆藏编号，删除书架号并修改名称标签。两者使用全新数据库，不是存量升级脚本。
+
+```bash
+python3 -m specforge run --workspace /absolute/workspace/book-fields-v1 --spec examples/book_fields_v1.yaml --template /absolute/path/to/admin-platform --acceptance-pack book-lending-fields
+python3 -m specforge run --workspace /absolute/workspace/book-fields-v2 --spec examples/book_fields_v2.yaml --template /absolute/path/to/admin-platform --acceptance-pack book-lending-fields
+```
+
+验收包通过固定 project.id `book_fields_v1` / `book_fields_v2` 显式选择场景，再严格校验对应字段合同；不是根据字段名推断场景。复用原图书借阅 API 全集和同一个浏览器脚本，增加字段断言。证据见 [字段变更验收](core-evidence/field-changes.json)。
