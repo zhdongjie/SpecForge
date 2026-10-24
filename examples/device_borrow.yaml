@@ -1,0 +1,38 @@
+version: 1
+project: {id: device_borrow, name: 设备借用管理}
+entities:
+  - name: device
+    label: 设备
+    access: admin
+    crud: [create, update, delete, page, detail]
+    fields:
+      - {name: code, label: 设备编号, type: string, required: true, unique: true}
+      - {name: name, label: 设备名称, type: string, required: true}
+      - {name: enabled, label: 启用, type: boolean, required: true, default: true}
+      - {name: purchased_at, label: 购置时间, type: datetime}
+      - {name: category, label: 类别, type: enum, values: [GENERAL, SPECIAL], required: true, default: GENERAL}
+      - {name: service_years, label: 使用年限, type: integer, required: true, default: 0}
+    page: {list: [code, name, enabled, category], form: [code, name, enabled, purchased_at, category, service_years]}
+  - name: borrow
+    label: 借用申请
+    access: owner
+    crud: [create, page, detail]
+    fields:
+      - {name: device_id, label: 设备, type: foreign, reference: device, required: true}
+      - {name: reason, label: 借用用途, type: string, required: true}
+    page: {list: [device_id, reason], form: [device_id, reason]}
+    workflow:
+      initial: PENDING
+      states: [PENDING, APPROVED, REJECTED, RETURNED]
+      state_labels: {PENDING: 待审批, APPROVED: 已批准, REJECTED: 已拒绝, RETURNED: 已归还}
+      exclusive_reference: {field: device_id, active_state: APPROVED, terminal_states: [REJECTED, RETURNED]}
+      transitions:
+        - {name: approve, label: 批准, from: PENDING, to: APPROVED, forbid_self: true, exclusive: true}
+        - {name: reject, label: 拒绝, from: PENDING, to: REJECTED, forbid_self: true}
+        - {name: return_device, label: 确认归还, from: APPROVED, to: RETURNED}
+acceptance:
+  - 申请人只能查看自己的申请
+  - 管理员不能审批自己的申请
+  - 并发批准同一设备只有一个成功
+  - 归还后设备可以再次借用
+  - 未结束申请阻止删除设备

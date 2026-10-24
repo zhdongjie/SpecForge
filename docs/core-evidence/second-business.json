@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-24",
+  "core_tests": 65,
+  "businesses": {
+    "book-lending": {
+      "run_id": "20261024T063426-077e08c954",
+      "api_passed": 77,
+      "browser_checks": [
+        "admin creates book with stock two",
+        "reader submits quantity two without approval controls",
+        "approval consumes exactly two stock units in the UI",
+        "return restores availability without inflating total stock",
+        "readonly reader has no mutation controls",
+        "no-access reader cannot enter lending route"
+      ],
+      "checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "archive": "/home/zhang/.local/state/specforge-core/book-lending/releases/book_lending-20261024T063426-077e08c954.zip",
+      "sha256": "eb9bd243cda782dae7515f8da194d2c6dcbf18feabad42e22f041855b59410b0",
+      "archive_hashes_verified": true,
+      "acceptance_environment_removed": true
+    },
+    "device-borrow": {
+      "run_id": "20261024T063426-683f886cd5",
+      "api_passed": 45,
+      "browser_checks": [
+        "admin creates device",
+        "applicant submits",
+        "admin approves and returns",
+        "readonly cannot mutate",
+        "no-access route denied"
+      ],
+      "checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "archive": "/home/zhang/.local/state/specforge-core/device-borrow/releases/device_borrow-20261024T063426-683f886cd5.zip",
+      "sha256": "7e06ca03f6903845ab1aa6ad7c07dab68b6b36d022e8710571125154335611ed",
+      "archive_hashes_verified": true,
+      "acceptance_environment_removed": true
+    }
+  },
+  "wheel": "PASS"
+}

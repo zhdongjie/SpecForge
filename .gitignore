@@ -159,3 +159,6 @@ specforge-runtime/.ruff_cache/
 /module-schema.resolved.yaml
 /generation-task-graph.yaml
 /task-run-record.yaml
+
+# SpecForge core local build metadata
+*.egg-info/

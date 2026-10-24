@@ -299,3 +299,11 @@ The validated local flow now supports:
 - compile pass
 - boot pass
 - final export under `specforge-runtime/outputs/`
+
+## Independent core v1
+
+The new template-based full-stack path is documented in [docs/CORE_V1.md](docs/CORE_V1.md). Start with `python -m specforge --help`. Historical commands above remain available.
+
+Full verification now requires `--acceptance-pack device-borrow`. See [maintenance review](docs/CORE_V1_REVIEW.md) for the generator/pack/browser boundaries and stage-aware repair behavior.
+
+The second full-stack example is `examples/book_lending.yaml`, selected with `--acceptance-pack book-lending` and its own workspace. See [second-business verification](docs/CORE_V1_SECOND_BUSINESS.md).

@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-24",
+  "run_id": "20261024T061338-dba36685f4",
+  "core_tests": 46,
+  "api_checks": 45,
+  "api_passed": 45,
+  "checks": {
+    "api": "PASS",
+    "backend": "PASS",
+    "browser": "PASS",
+    "compose": "PASS",
+    "frontend": "PASS"
+  },
+  "acceptance_pack": "device-borrow",
+  "browser": {
+    "status": "PASS",
+    "checks": [
+      "admin creates device",
+      "applicant submits",
+      "admin approves and returns",
+      "readonly cannot mutate",
+      "no-access route denied"
+    ]
+  },
+  "archive": "/home/zhang/.local/state/specforge-core/device-borrow/releases/device_borrow-20261024T061338-dba36685f4.zip",
+  "archive_sha256": "489f3e22265f3c031d7a854793555057e60904a2a25340f27d91f510836bf6ab",
+  "archive_hashes_verified": true,
+  "acceptance_runtime_removed": true,
+  "wheel_assets_and_imports": "PASS"
+}

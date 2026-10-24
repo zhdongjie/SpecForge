@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "specforge-core"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0,<7"]
+
+[project.optional-dependencies]
+acceptance = ["playwright>=1.48,<2"]
+
+[project.scripts]
+specforge = "specforge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["specforge*"]
+exclude = ["specforge-runtime*"]
+
+[tool.setuptools.package-data]
+specforge = ["assets/*"]
+"specforge.acceptance_packs.device_borrow" = ["browser.cjs"]
+
+"specforge.acceptance_packs.book_lending" = ["browser.cjs"]

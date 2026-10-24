@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-24",
+  "command": "python3 -m unittest discover -s tests -v",
+  "cwd": "specforge-runtime",
+  "tests": 25,
+  "passed": 12,
+  "failures": 10,
+  "errors": 3,
+  "failed_cases": [
+    "test_codegen_manifest_covers_required_artifacts (test_codegen_pipeline.CodegenPipelineTests) ... ERROR",
+    "test_codegen_pipeline_emits_expected_outputs (test_codegen_pipeline.CodegenPipelineTests) ... ERROR",
+    "test_mutation_engine_emits_inventory_module (test_mutation_engine.MutationEngineTests) ... FAIL",
+    "test_project_compiler_assembles_bootable_backend_layout (test_platform_compiler.PlatformCompilerTests) ... ERROR",
+    "test_artifact_conflict_runtime_semantics (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_benchmark_runner_emits_summary (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_logical_clock_drift_is_detected (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_parallel_failure_runtime_semantics (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_parallel_scheduler_stress_replays_are_deterministic (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_regression_suite_bootstraps_and_replays (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_replay_divergence_is_detected (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_rollback_chain_invalidation_cleanup (test_runtime_verification.RuntimeVerificationTests) ... FAIL",
+    "test_runtime_verifier_emits_extended_reports (test_runtime_verification.RuntimeVerificationTests) ... FAIL"
+  ]
+}

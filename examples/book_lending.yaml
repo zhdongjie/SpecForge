@@ -1,0 +1,36 @@
+version: 1
+project: {id: book_lending, name: 图书借阅管理}
+entities:
+  - name: book
+    label: 图书
+    access: admin
+    crud: [create, update, delete, page, detail]
+    fields:
+      - {name: code, label: 图书编号, type: string, required: true, unique: true}
+      - {name: name, label: 书名, type: string, required: true}
+      - {name: stock, label: 库存数量, type: integer, required: true, min: 0, default: 0}
+    page: {list: [code, name, stock], form: [code, name, stock]}
+  - name: loan
+    label: 借阅申请
+    access: owner
+    crud: [create, page, detail]
+    fields:
+      - {name: book_id, label: 图书, type: foreign, reference: book, required: true}
+      - {name: quantity, label: 借阅数量, type: integer, required: true, min: 1, default: 1}
+      - {name: reason, label: 借阅用途, type: string, required: true}
+    page: {list: [book_id, quantity, reason], form: [book_id, quantity, reason]}
+    workflow:
+      initial: PENDING
+      states: [PENDING, APPROVED, REJECTED, RETURNED]
+      state_labels: {PENDING: 待审批, APPROVED: 借阅中, REJECTED: 已拒绝, RETURNED: 已归还}
+      capacity_reference: {field: book_id, capacity_field: stock, quantity_field: quantity, active_state: APPROVED, terminal_states: [REJECTED, RETURNED]}
+      transitions:
+        - {name: approve, label: 批准借阅, from: PENDING, to: APPROVED, forbid_self: true}
+        - {name: reject, label: 拒绝借阅, from: PENDING, to: REJECTED, forbid_self: true}
+        - {name: return_books, label: 确认归还, from: APPROVED, to: RETURNED}
+acceptance:
+  - 待审批不占用库存，批准时按数量占用，整单归还时释放
+  - 同一本书可同时存在多笔借阅，生效数量不能超过库存总数
+  - 库存总数不能降低到当前已借出数量以下
+  - 并发审批、并发归还不得造成超借或重复释放
+  - 申请人只能查看本人的借阅，管理员不得自审
