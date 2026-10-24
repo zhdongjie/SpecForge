@@ -15,6 +15,7 @@ class AcceptancePack:
 
 
 PACKS = {
+    "recipe-management": "specforge.acceptance_packs.recipe_management",
     "device-borrow": "specforge.acceptance_packs.device_borrow",
     "book-lending": "specforge.acceptance_packs.book_lending",
     "book-lending-fields": "specforge.acceptance_packs.book_lending_fields",

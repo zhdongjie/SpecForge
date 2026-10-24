@@ -23,3 +23,7 @@ specforge = ["assets/*"]
 "specforge.acceptance_packs.device_borrow" = ["browser.cjs"]
 
 "specforge.acceptance_packs.book_lending" = ["browser.cjs"]
+
+"specforge.applications.recipe_management" = ["assets/*"]
+
+"specforge.acceptance_packs.recipe_management" = ["browser.cjs"]

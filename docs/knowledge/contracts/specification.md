@@ -11,3 +11,6 @@
 
 
 固定字段变更回归见 [场景测试](../../../tests_core/test_field_changes.py) 与 [真实验收证据](../../core-evidence/field-changes.json)。两个变体分别以明确项目标识选择场景，均重新生成到独立工作区。增加、改名、删除以及标签修改同步作用于 SQL、后端输入、前端类型和页面；不处理原项目数据迁移。
+
+
+规格可显式声明 `application`，当前支持 `recipe-management`。未知扩展或不符合其固定实体合同的规格在写入前拒绝；未声明时沿用通用规格路径。具体规则见 [C-005](recipes.md)。

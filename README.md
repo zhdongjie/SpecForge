@@ -1,6 +1,6 @@
 # SpecForge
 
-基于明确业务规格和后台模板生成可独立部署的前后端项目。新项目统一使用 `python -m specforge`；当前支持设备借用和图书借阅两套完整验收样板。
+基于明确业务规格和后台模板生成可独立部署的前后端项目。新项目统一使用 `python -m specforge`；当前提供设备借用、图书借阅验收样板和食谱管理真实应用扩展。
 
 ## 开始使用
 
@@ -32,6 +32,8 @@ python3 -m specforge run \
 当前不支持自然语言解析、模型修复和已交付项目增量升级。
 
 ## 文档与验证
+
+- [食谱管理系统：真实项目规格与运行](docs/RECIPE_PROJECT.md)
 
 - [工程知识库：规则、决策与排错](docs/knowledge/README.md)
 - [知识库与新版交付验证结果](docs/KNOWLEDGE_DELIVERY.md)

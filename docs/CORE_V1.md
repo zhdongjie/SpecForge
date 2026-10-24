@@ -1,6 +1,6 @@
 # SpecForge core v1 操作入口
 
-新项目使用独立 `specforge` 包；旧运行时冻结兼容。当前已验证设备借用和图书借阅两套完整业务，详见 [历史验收证据](CORE_V1_SECOND_BUSINESS.md)。当前规则以 [工程知识库](knowledge/README.md) 为准。
+新项目使用独立 `specforge` 包；旧运行时冻结兼容。当前已验证设备借用、图书借阅及显式食谱应用。样板历史见 [第二业务验收](CORE_V1_SECOND_BUSINESS.md)，真实应用见 [食谱项目](RECIPE_PROJECT.md)。当前规则以 [工程知识库](knowledge/README.md) 为准。
 
 ## 安装与运行
 

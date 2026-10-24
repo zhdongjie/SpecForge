@@ -1,0 +1,201 @@
+version: 1
+project:
+  id: recipe_management
+  name: 食谱管理系统
+application: recipe-management
+entities:
+- name: recipe_category
+  label: 菜谱分类
+  access: admin
+  crud:
+  - create
+  - update
+  - delete
+  - page
+  - detail
+  fields:
+  - name: name
+    label: 分类名称
+    type: string
+    required: true
+    unique: true
+  page:
+    list:
+    - name
+    form:
+    - name
+- name: recipe
+  label: 菜谱
+  access: admin
+  crud:
+  - page
+  - detail
+  fields:
+  - name: title
+    label: 菜名
+    type: string
+    required: true
+  - name: summary
+    label: 简介
+    type: string
+  - name: category_id
+    label: 分类
+    type: foreign
+    reference: recipe_category
+    required: true
+  - name: author_id
+    label: 作者
+    type: foreign
+    reference: system_user
+    required: true
+  - name: publication_state
+    label: 发布状态
+    type: enum
+    values:
+    - DRAFT
+    - PENDING
+    - PUBLISHED
+    - REJECTED
+    required: true
+    default: DRAFT
+  - name: review_reason
+    label: 审核说明
+    type: string
+  - name: servings
+    label: 份数
+    type: integer
+    required: true
+    min: 1
+    default: 1
+  - name: prep_minutes
+    label: 准备时间
+    type: integer
+    required: true
+    min: 0
+    default: 0
+  - name: cover_url
+    label: 封面图片地址
+    type: string
+  - name: revision
+    label: 修订号
+    type: integer
+    required: true
+    min: 1
+    default: 1
+  page:
+    list:
+    - title
+    - summary
+    - category_id
+    - publication_state
+    - servings
+    - prep_minutes
+    - revision
+    form:
+    - title
+    - summary
+    - category_id
+    - author_id
+    - publication_state
+    - review_reason
+    - servings
+    - prep_minutes
+    - cover_url
+    - revision
+- name: recipe_ingredient
+  label: 食材
+  access: admin
+  crud:
+  - page
+  - detail
+  fields:
+  - name: recipe_id
+    label: 菜谱
+    type: foreign
+    reference: recipe
+    required: true
+  - name: name
+    label: 食材名称
+    type: string
+    required: true
+  - name: amount
+    label: 用量
+    type: string
+    required: true
+  - name: position
+    label: 顺序
+    type: integer
+    required: true
+    min: 1
+  page:
+    list:
+    - recipe_id
+    - name
+    - amount
+    - position
+    form:
+    - recipe_id
+    - name
+    - amount
+    - position
+- name: recipe_step
+  label: 步骤
+  access: admin
+  crud:
+  - page
+  - detail
+  fields:
+  - name: recipe_id
+    label: 菜谱
+    type: foreign
+    reference: recipe
+    required: true
+  - name: instruction
+    label: 做法
+    type: string
+    required: true
+  - name: position
+    label: 顺序
+    type: integer
+    required: true
+    min: 1
+  page:
+    list:
+    - recipe_id
+    - instruction
+    - position
+    form:
+    - recipe_id
+    - instruction
+    - position
+- name: recipe_favorite
+  label: 收藏
+  access: admin
+  crud:
+  - page
+  - detail
+  fields:
+  - name: recipe_id
+    label: 菜谱
+    type: foreign
+    reference: recipe
+    required: true
+  - name: user_id
+    label: 用户
+    type: foreign
+    reference: system_user
+    required: true
+  page:
+    list:
+    - recipe_id
+    - user_id
+    form:
+    - recipe_id
+    - user_id
+acceptance:
+- 仅登录用户可访问菜谱；普通用户仅浏览已发布菜谱和自己的内容
+- 作者编辑草稿并提交审核；已发布菜谱修改后撤回展示重新审核
+- 管理员审核且不得自审；驳回必须填写原因，重复和过期操作失败
+- 食材步骤在事务中保存；关键字及分类筛选分页
+- 收藏幂等且仅对已发布菜谱生效，不泄漏撤回内容
+- 统计仅管理员可见，按已发布菜谱分类汇总

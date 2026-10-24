@@ -130,7 +130,7 @@ def load(path):
 
 
 def validate(s):
-    keys(s, {"version", "project", "entities", "acceptance"}, "spec")
+    keys(s, {"version", "project", "entities", "acceptance", "application"}, "spec")
     require(
         type(s.get("version")) is int and s["version"] == 1, "unsupported spec version"
     )
@@ -451,6 +451,13 @@ def validate(s):
         and all(isinstance(x, str) and x for x in s["acceptance"]),
         "acceptance scenarios required",
     )
+    if "application" in s:
+        from .applications import get_application
+
+        try:
+            get_application(s["application"]).validate_spec(s)
+        except ValueError as exc:
+            raise SpecError(str(exc)) from exc
     return s
 
 

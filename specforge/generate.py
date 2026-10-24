@@ -321,7 +321,15 @@ def generate(spec_path, template, workspace):
         )
     emit(source, "frontend/src/api/business/generated.ts", types)
     perms = permissions(s)
+    application = None
+    if "application" in s:
+        from .applications import get_application
+
+        application = get_application(s["application"])
+        perms = application.permissions(s, perms)
     migration = sql(s, perms)
+    if application:
+        migration += application.emit(source)
     emit(
         source, "backend/src/main/resources/db/migration/SF001__business.sql", migration
     )
