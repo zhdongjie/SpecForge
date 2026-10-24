@@ -1,0 +1,1641 @@
+{
+  "method": "AST imports and .py string literals over tracked legacy Python; not a runtime reachability proof; dynamic and external callers require separate review",
+  "baseline": "bbd5aae",
+  "files": [
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/bootstrap_specforge_bundle.py",
+      "sha256": "dffc242e2880118bca688cb7a99bf7ee03565318c4128456aa6c0940a9395f77",
+      "imports": [
+        "__future__",
+        "argparse",
+        "pathlib",
+        "shutil",
+        "sys"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/check_specforge_workspace.py",
+      "sha256": "6e7734932833afc790e0d866cf45b205fbea379b203844888b4956e6c1db0bd4",
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "sys"
+      ],
+      "script_literals": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.py",
+      "sha256": "838047d98b0a8f20476c710675e56b3cb0401f94cb3e5a69f049ef71ca0ba941",
+      "imports": [
+        "__future__",
+        "argparse",
+        "pathlib"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/run_requirement_project.py",
+      "sha256": "1d82249862cf227f1e8c8bcc7bcfcfa6ed050f4ee4a9901d9b11a016f00e36e2",
+      "imports": [
+        "__future__",
+        "argparse",
+        "os",
+        "pathlib",
+        "shutil",
+        "stat",
+        "subprocess",
+        "sys",
+        "time"
+      ],
+      "script_literals": [
+        "check_specforge_workspace.py",
+        "run_specforge_autobuild.py",
+        "scaffold_requirement_project.py"
+      ]
+    },
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py",
+      "sha256": "5dfdc7efdae22bff1a0c91f72b958e760d3b51dab282c3d8d58817a02c689d9b",
+      "imports": [
+        "__future__",
+        "argparse",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "script_literals": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py",
+      "sha256": "a5880dc5e967e343e6a61997ded2978a82052088aa91828538a3f56b1739097c",
+      "imports": [
+        "__future__",
+        "argparse",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "script_literals": [
+        "run_requirement_project.py"
+      ]
+    },
+    {
+      "path": "skills/specforge-full-project-compiler/scripts/scaffold_requirement_project.py",
+      "sha256": "bb8f34f248758e5963f11afba5cc7af1ef472686d0ab328844d0eec96ea5da17",
+      "imports": [
+        "__future__",
+        "argparse",
+        "pathlib",
+        "re",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/main.py",
+      "sha256": "2e7ad80c61d8e341f7235af7ea967a188dcda401e3198998617599b1b1a1564e",
+      "imports": [
+        "__future__",
+        "argparse",
+        "pathlib",
+        "runtime.codegen",
+        "runtime.codegen.common",
+        "runtime.dag_engine",
+        "runtime.executor",
+        "runtime.golden_validator",
+        "runtime.hardening",
+        "runtime.ir_lowering",
+        "runtime.loader",
+        "runtime.mutation",
+        "runtime.platform_compiler",
+        "runtime.run_config",
+        "runtime.synthesis",
+        "runtime.verifier",
+        "shutil"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/__init__.py",
+      "sha256": "060a37fa528a0ae63ab5458dd9d8ec04446a35858c18cdc49a1c51ab0f513f05",
+      "imports": [],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/artifact_planner.py",
+      "sha256": "de5699db16ff36dc74b5601e4a5ed5388391e4277f15e3c94d0ded86559e3a16",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/benchmark_runner.py",
+      "sha256": "3f765ae3e985dad08e0bdcc8907ca9c11d285bfaf362136340add9b55b25c02e",
+      "imports": [
+        "__future__",
+        "datetime",
+        "pathlib",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/checkpoint_validator.py",
+      "sha256": "54f8d1151a3ebcf3556153ff839580caa5ad0d8eda3db95fb9ae76139dc14bb4",
+      "imports": [
+        ".replay",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/__init__.py",
+      "sha256": "1671c9ce96aea917e9808b3d5708862712ac2bd12dadf9f3c35265cefcf77346",
+      "imports": [
+        ".pipeline"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/common.py",
+      "sha256": "de0bb80e3d070eac6feee09a982ea61014ed99d89600104ada8d40507d2630e5",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "pathlib",
+        "re",
+        "shutil",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/controller_emitter.py",
+      "sha256": "fb1d3973666e1b8a0b229e949833cdf58f88b5239469b10b2238671797afc121",
+      "imports": [
+        ".common",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/dto_emitter.py",
+      "sha256": "4e1537f395879e660fb6a3823024a4753fd8c69d2e7073c3de95ffd62e950735",
+      "imports": [
+        ".common",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/entity_emitter.py",
+      "sha256": "c8471180ef3f0e3cd2807a73ce49fa6e2f78a75e70ad9d4a489d211fedf7ff00",
+      "imports": [
+        ".common",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/mapper_emitter.py",
+      "sha256": "6838a4bc5a58d9d9f47e14be2162dd7b75615b9da5a05268a85ffbe4a892e51c",
+      "imports": [
+        ".common",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/pipeline.py",
+      "sha256": "0d475b8d896d77d33ad9e1e2bd17d103c6bca128d6acba64159ac398103a8eb7",
+      "imports": [
+        ".common",
+        ".controller_emitter",
+        ".dto_emitter",
+        ".entity_emitter",
+        ".mapper_emitter",
+        ".service_emitter",
+        ".sql_emitter",
+        ".validator",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/service_emitter.py",
+      "sha256": "630799fb9d5d9e572eeacd60498a259d5813d2b96e1d127a94e76ded9243dfe8",
+      "imports": [
+        ".common",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/sql_emitter.py",
+      "sha256": "0b7c6d5b07bc1e3f9c696915619a2e44f3016afbd9f8484b0adff84dea39c238",
+      "imports": [
+        ".common",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/codegen/validator.py",
+      "sha256": "d5abbf633f05fc29c6c91c078ebb5a6d4f3a8038b493a7e4af192aa098d6a464",
+      "imports": [
+        ".common",
+        "__future__",
+        "pathlib",
+        "re",
+        "runtime.toolchain",
+        "subprocess",
+        "tempfile",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/conflict_detector.py",
+      "sha256": "333be3f5fc3ef754b8f01ffe67accad5528b1a281c423f662429edb9962a7e5b",
+      "imports": [
+        "__future__",
+        "collections",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/dag_engine.py",
+      "sha256": "80dd2a02836278f52b7a0f3e0ae9a11c84261d4715867e4161b28ded99f13864",
+      "imports": [
+        ".task_state",
+        "__future__",
+        "collections",
+        "dataclasses",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/executor.py",
+      "sha256": "1b376734020cdfaa48420cb13fc8cbcb6146003592f5ac1ae6c10558269f251c",
+      "imports": [
+        ".artifact_planner",
+        ".conflict_detector",
+        ".dag_engine",
+        ".logical_clock",
+        ".parallel_scheduler",
+        ".recorder",
+        ".replay",
+        ".run_config",
+        ".task_state",
+        ".validator",
+        "__future__",
+        "collections",
+        "datetime",
+        "hashlib",
+        "pathlib",
+        "shutil",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/golden/__init__.py",
+      "sha256": "3c78788ea0fb8b468bf16f215d385ccca713e31b0d6625da9c1c4e1f920e5b92",
+      "imports": [
+        "__future__"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/golden_loader.py",
+      "sha256": "5a3e2d519887804373dd7f2dd57b407b3a8efc115fa0fff4a12d7af0aa88feb6",
+      "imports": [
+        ".replay",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/golden_validator.py",
+      "sha256": "a319475be233bd77782bd0f0fbe149bca68b7d499e6143b4f3a247242ff1f607",
+      "imports": [
+        ".benchmark_runner",
+        ".dag_engine",
+        ".executor",
+        ".golden_loader",
+        ".loader",
+        ".replay_diff",
+        ".run_config",
+        ".semantic_equivalence",
+        ".verifier",
+        "__future__",
+        "datetime",
+        "pathlib",
+        "shutil",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/graph_validator.py",
+      "sha256": "7e4aa34ea6042b3c22616a2744be15f9dea9a70bc4ecf51fccfb72ad5452273a",
+      "imports": [
+        ".dag_engine",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/__init__.py",
+      "sha256": "c9587aa42b87eea3e2a22fae97e307824feb8d7a43bb539ba7fcf9cc4cf18065",
+      "imports": [
+        ".hardening_pipeline"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/bean_conflict_resolver.py",
+      "sha256": "e147d9e347bbb1842d69301be2ea1adb8fa315d8d058cf03da6e09dc89951134",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/boot_diagnostics.py",
+      "sha256": "56cbdf88f60b216fbb062281b2d739225395b89ce3cd0a963e8ee048d5f6e71e",
+      "imports": [
+        ".boot_failure_classifier",
+        ".compile_diagnostics",
+        ".controller_registration_verifier",
+        ".datasource_verifier",
+        ".mapper_scan_verifier",
+        ".redis_verifier",
+        ".security_boot_verifier",
+        ".spring_context_verifier",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "subprocess",
+        "time",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/boot_failure_classifier.py",
+      "sha256": "07d064ff0ca8adafb8b5c1438b87a2290da0152c72ac2ecf22580e80642e1501",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/boot_repair_validator.py",
+      "sha256": "d478543546a9b2a58c6d354c4398023b3e254286c467cfd951dd8f1cfd07d5f2",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/compile_diagnostics.py",
+      "sha256": "90945f8b8d51036a7d65842a3385a7f81f123e17da771043d85617e0afc2a00c",
+      "imports": [
+        ".compile_error_classifier",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.toolchain",
+        "subprocess",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/compile_error_classifier.py",
+      "sha256": "b5dd7249d8785102ee86dcf7661b30ea414e61f67ecd7cb88bbf196e07153654",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "re",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/compile_repair_engine.py",
+      "sha256": "7be8123298d048e4a91108085847896c21bc39f94d376d19bb7aaf876a083214",
+      "imports": [
+        ".bean_conflict_resolver",
+        ".dependency_resolver",
+        ".import_resolver",
+        ".package_resolver",
+        "__future__",
+        "pathlib",
+        "re",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/compile_repair_validator.py",
+      "sha256": "1733c5596084ac26cc10c193790531b69b0f66b2d89b3731e56d3fd8dfd50d04",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/controller_registration_verifier.py",
+      "sha256": "de928ad4aaf27255607fa6c51a761c6a47eebf960663ac95c77ba55a92ea8949",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/datasource_verifier.py",
+      "sha256": "2a79b2d0360677cad38bd950dded4a294b14bddefea8080ca49e01a526b67c27",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/dependency_resolver.py",
+      "sha256": "d7265ae4b69a883550cf9122ee5d81ed56114265be2c8a56a22e9a576c5dcc46",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/deterministic_repair_validator.py",
+      "sha256": "589ba43ee04c0b2e80eb3a05f4f26ed5db76dae5e6eb1d80bd592167918382e3",
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/hardening_pipeline.py",
+      "sha256": "2627da231b374264940b0f9c6182476d9bf8879acd84f2aac668157edc673c6d",
+      "imports": [
+        ".boot_diagnostics",
+        ".boot_repair_validator",
+        ".compile_diagnostics",
+        ".compile_repair_engine",
+        ".compile_repair_validator",
+        ".deterministic_repair_validator",
+        ".project_health_reporter",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.platform_compiler",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/import_resolver.py",
+      "sha256": "32909a131f6e3545552971402fed131cd51a4dba5e8c8d970636fe02b3a9a42a",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "re",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/mapper_scan_verifier.py",
+      "sha256": "b3b89daffe2544279b801e20f8bcd8674e1c0e3e091c212d722360dded0d75df",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/package_resolver.py",
+      "sha256": "e841f428484505904ba862781ea6307d9f07d3ba90fec5afffddc4ef3bdbe4be",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/project_health_reporter.py",
+      "sha256": "95e9fb0c447d51e0f61059cce51eee2a12cf60cd32f7b6ece8657715d52f599c",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/redis_verifier.py",
+      "sha256": "e835234c8dcf1d9bf46d7b511ca66fb4db0680edf166e662601953f864e48baa",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/security_boot_verifier.py",
+      "sha256": "4a3796885e32bf0bda8da5304df2c7b068f70a964101d65c7f074fba2a1d740f",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/hardening/spring_context_verifier.py",
+      "sha256": "57fadcb0277292e38221c63b91402e251166d3f4df630c60c7e6e51f0af59e51",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/__init__.py",
+      "sha256": "aa487d26e4db184812b7cc4530203fa84e4ab9aaf881d6869b26af7afa2c69bb",
+      "imports": [
+        ".lowering_pipeline"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/audit_lowering.py",
+      "sha256": "d424560eb86b15b2d3aaa78da645855ad9e1fed4d9ecf4afe427fdee531bfbff",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/canonicalizer.py",
+      "sha256": "9384b0e71914bb81e2e82f73e67e4aaa58031c19a50ed3643e27cb817fb8890c",
+      "imports": [
+        "__future__",
+        "copy",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/capability_expander.py",
+      "sha256": "29a20c60e0a39a8e2ccd45b588ba30236bea2f0e18f5d5fadadd2c38c1bca1cb",
+      "imports": [
+        "__future__",
+        "collections",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/dto_contract_lowering.py",
+      "sha256": "b23a620192315a04e042ca7dada00cf4f330d3e0af31f1c02dc42e1d21d1ff5f",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/entity_inference.py",
+      "sha256": "10c6a8a4253e6a5e5a3b54c61066ee8ccf190ebd7110c8c8207ff647fc9e3f6d",
+      "imports": [
+        ".naming_resolution",
+        "__future__",
+        "collections",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/lowering_diff.py",
+      "sha256": "c94345f739af285d0c3902f7294909e5af0bb922f0920849e332a420d85b9773",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/lowering_pipeline.py",
+      "sha256": "364d277a4f37e235a1bef49dff910617dff8c17eee747dc60a1fded6fccbe2b1",
+      "imports": [
+        ".audit_lowering",
+        ".canonicalizer",
+        ".capability_expander",
+        ".dto_contract_lowering",
+        ".entity_inference",
+        ".lowering_diff",
+        ".lowering_validator",
+        ".module_to_field_lowering",
+        ".naming_resolution",
+        ".pagination_lowering",
+        ".permission_lowering",
+        ".relation_inference",
+        ".validation_lowering",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/lowering_validator.py",
+      "sha256": "17fd008eaa268639400197ff9cc6d142ff487bb4e0e4dfa39ae0358ad25f0a1e",
+      "imports": [
+        "__future__",
+        "json",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/module_to_field_lowering.py",
+      "sha256": "5a5006e4f34796b7d5af63e5c4d9ce9f9e96e5a7e6e3c4f2635d8d9ffb961cf8",
+      "imports": [
+        ".naming_resolution",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/naming_resolution.py",
+      "sha256": "b5f0cafa5a8040401f15b2c10ab89e4c268468865a91be4a683474ac2afb76e2",
+      "imports": [
+        "__future__",
+        "re",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/pagination_lowering.py",
+      "sha256": "3eba4eb566ddd051088efea3b3bcc2999e86225003b80b5bac7a7b19bc4bd705",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/permission_lowering.py",
+      "sha256": "7b77260860caae5331e146b0719dbea5be5894703307ea508e39d5aeb12788c1",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/relation_inference.py",
+      "sha256": "ee1d5b96873c20a609dd740bfb30393f2de45bc07b3c12c9401291c8ce162c23",
+      "imports": [
+        ".naming_resolution",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/ir_lowering/validation_lowering.py",
+      "sha256": "117a5ef1f0441e27fccfdff55bfe742e18fa939c695f6d27267d1e678836bb44",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/lineage_validator.py",
+      "sha256": "bc96eaeb983d912c31d5ef319cacd3e620197e9639d6e6a5a88f5ce4178c65fc",
+      "imports": [
+        ".replay",
+        "__future__",
+        "hashlib",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/loader.py",
+      "sha256": "ff4c16290700e73c43598d49351c08bafbe87dbd49e163dd1b4f9c45614b3c22",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/logical_clock.py",
+      "sha256": "c095258539af4757bb98b4376a139eac728706a9ffb49920870dc7237f28682a",
+      "imports": [
+        "__future__",
+        "dataclasses"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/__init__.py",
+      "sha256": "da9fb7928cc64873d515ff2a392ae02a40c7a3e5cab535f63e359e69895f0b84",
+      "imports": [
+        ".mutation_engine"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/artifact_graph_mutator.py",
+      "sha256": "329480b8194f9e7ce385ae71347bdffec8e6bd1cc5761cb6263f8567f8b2bbbe",
+      "imports": [
+        ".naming_transformer",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/dto_mutator.py",
+      "sha256": "41cc937753ad3b38171cfb2c2c71df01e287ef3f5cd5463bc20ba52d2ec69bd7",
+      "imports": [
+        ".semantic_rewriter",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/entity_mutator.py",
+      "sha256": "9acb715b71f77bbc9af2e5a1d3d432fcd4b81be950a06d7fca175cd94adb5e0d",
+      "imports": [
+        ".semantic_rewriter",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/mutation_diff.py",
+      "sha256": "bbb72dad388542b7b2bd5b055b3e2d579053bbc1c948d96ef5e95061e51e1f76",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/mutation_engine.py",
+      "sha256": "a39079780bd10c96f97b19955e91263cc6c8b709a7550f247c588cd3d88e9ec6",
+      "imports": [
+        ".artifact_graph_mutator",
+        ".dto_mutator",
+        ".entity_mutator",
+        ".mutation_diff",
+        ".mutation_validator",
+        ".naming_transformer",
+        ".permission_mutator",
+        ".route_mutator",
+        ".semantic_rewriter",
+        ".sql_mutator",
+        "__future__",
+        "dataclasses",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/mutation_validator.py",
+      "sha256": "6425bd5744a4b8048ccd588aa8a29106100b327cb1721acd9e38daf5c66fca4e",
+      "imports": [
+        ".naming_transformer",
+        "__future__",
+        "pathlib",
+        "re",
+        "runtime.codegen.common",
+        "runtime.toolchain",
+        "subprocess",
+        "tempfile",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/naming_transformer.py",
+      "sha256": "873c537b65bcf85e09019510b3064d68990d8ce8e558ba700d724e332019e7bc",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "pathlib",
+        "re",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/permission_mutator.py",
+      "sha256": "44120909f1899121ea0425e68a4c1b47b61935953228dcde7104abcfb6892e7c",
+      "imports": [
+        ".semantic_rewriter",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/route_mutator.py",
+      "sha256": "f1b2b31027784d2777343c450d0685b06cb9476ef61627571ec98495fd5bcbc3",
+      "imports": [
+        ".semantic_rewriter",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/semantic_rewriter.py",
+      "sha256": "dc1573f8a215bc3932d423de6af274e30bbb27b7cd95145ff6e1edf7b668bef1",
+      "imports": [
+        ".naming_transformer",
+        "__future__"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/mutation/sql_mutator.py",
+      "sha256": "1449d2eeb5f3c6ab7c7e33a96244297d7969e52507fead42f89bb55eaad2467f",
+      "imports": [
+        ".semantic_rewriter",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/parallel_scheduler.py",
+      "sha256": "da643892b5fdeb87a1211138cdb72df672f93fbb10be020a0b47dba8b9b8b5d5",
+      "imports": [
+        ".dag_engine",
+        "__future__",
+        "concurrent.futures",
+        "dataclasses",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/__init__.py",
+      "sha256": "e99b448a17e47df4c732730c608023513418327054dad01f7cb04397317c06b3",
+      "imports": [
+        ".platform_pipeline",
+        ".project_assembly_compiler",
+        ".project_compiler"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/application_yaml_synthesizer.py",
+      "sha256": "5f3965f9cfb6ea88c9d5854713f451e689c121a91c48d39cfc46680f6916006b",
+      "imports": [
+        "__future__",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/audit_synthesizer.py",
+      "sha256": "255dce62ca3514c7d6756b9f3ae91b5cab501a8f65eaaaaa991ef62fa473ba32",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/auth_context_synthesizer.py",
+      "sha256": "c7fca470ab63cc72100e728ea63b96740e9ce8a4588e1a02ba3ba50f75db1cd5",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/backend_assembler.py",
+      "sha256": "d0120604d95cb08e3eb0a9485383161c15dc0fa0783f454e10efb77a31569c30",
+      "imports": [
+        ".boot_verifier",
+        ".infrastructure_validator",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.synthesis",
+        "shutil",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/base_entity_synthesizer.py",
+      "sha256": "032940f5edf031bbf92e49d168e0d99ba47e3f1a41a1bd1bcffafa2eed9e779c",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/boot_verifier.py",
+      "sha256": "03a597567b8b887213d62579e66fcf1b60252d7034338aa965410323b1e2dec8",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.toolchain",
+        "subprocess",
+        "time",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/bootstrap_synthesizer.py",
+      "sha256": "535add572e1037ef49d7b65ce4e935308b17a3c4b2e9e54fdb46ecef0a7b3367",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/datasource_synthesizer.py",
+      "sha256": "f3de6df2e442eccb358262314cc4942297af76095cc887e29bf819e300aeee67",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/exception_handler_synthesizer.py",
+      "sha256": "519140032320c0c77f517e464d767961397b0c9dd9bd71d5e1dcd91549904d6f",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/infrastructure_validator.py",
+      "sha256": "ecb64d9fcc16fd712b156b6cbc6397255224b100e8079b0f228cd8b980885886",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/jwt_synthesizer.py",
+      "sha256": "420b27f405d2c4a797ddfa333958442d8fedfd87aecf8d680ab98637dfc080fe",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/operation_log_synthesizer.py",
+      "sha256": "ede977cc39a94dc910bee5104ff6793e91658648fbba51c1399bd35bec9ad909",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/package_structure_resolver.py",
+      "sha256": "d9168732506568f5d3188b7a32dcb23ccdcb6d29e7eede8c4cc7539037b61ed0",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/pagination_synthesizer.py",
+      "sha256": "a30182cc7cf4ecf88f7561c83f717ee4ab3623ea311db9bc9babbd2df3a46183",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/permission_infrastructure_synthesizer.py",
+      "sha256": "2afaa384afc6a9ce4cbdc5ae466fdb0d935f4ade63acb52a23be6c8d5a298b47",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/platform_pipeline.py",
+      "sha256": "cf754a0d72327de3769ebb29f887f1f966c06a0af63c79a4d7ac7c3ab2eae641",
+      "imports": [
+        ".application_yaml_synthesizer",
+        ".audit_synthesizer",
+        ".auth_context_synthesizer",
+        ".base_entity_synthesizer",
+        ".bootstrap_synthesizer",
+        ".datasource_synthesizer",
+        ".exception_handler_synthesizer",
+        ".jwt_synthesizer",
+        ".operation_log_synthesizer",
+        ".package_structure_resolver",
+        ".pagination_synthesizer",
+        ".permission_infrastructure_synthesizer",
+        ".pom_synthesizer",
+        ".redis_synthesizer",
+        ".response_wrapper_synthesizer",
+        ".security_synthesizer",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/pom_synthesizer.py",
+      "sha256": "f77c5e7387193ff8b50b6c88358c43db5e8d67ffeb1b24baa94aed6d64f9910d",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "re",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/project_assembly_compiler.py",
+      "sha256": "f434385f3025548f6edb79d2a4a8bf4abcc7fee18b4507709e174f368764be4e",
+      "imports": [
+        ".backend_assembler",
+        ".boot_verifier",
+        ".infrastructure_validator",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.ir_lowering",
+        "runtime.synthesis",
+        "shutil",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/project_compiler.py",
+      "sha256": "304ea240a46731e61d4ea1d1e33c0cc65a2237454951212a88ca18d44fd5fa28",
+      "imports": [
+        ".backend_assembler",
+        ".project_assembly_compiler",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.ir_lowering",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/redis_synthesizer.py",
+      "sha256": "8d829ec3562087f1ab2665c275eecfb8da4895954c53374c946db67c77f1d470",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/response_wrapper_synthesizer.py",
+      "sha256": "d802f2b9f66096895d9b3ad56c762b69fae6399e05dabfa9651c178afe7d81d5",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/platform_compiler/security_synthesizer.py",
+      "sha256": "4feca508c73714e7de9e70251a34442142c65468635ffb8d3ef5dbb222694cb9",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/recorder.py",
+      "sha256": "6614ba3e87fc7091d949e9661020f07d53594d089419fbb4f63f187e63ed97f0",
+      "imports": [
+        ".task_state",
+        "__future__",
+        "datetime",
+        "pathlib",
+        "threading",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/replay.py",
+      "sha256": "7110674d8beb77096f0b661482dc506f41737a7cb55dd7f03c9ee5daf55755d3",
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/replay_diff.py",
+      "sha256": "b2db3707bd457f30982650a4f7b23a54a905b9818a3420c502c2eb6958ecb420",
+      "imports": [
+        ".semantic_equivalence",
+        "__future__",
+        "pathlib",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/replay_validator.py",
+      "sha256": "fd17f44c2e3d431b11b318592be2b2020841f028e60bdbfe7d5318d6972083db",
+      "imports": [
+        ".replay",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/run_config.py",
+      "sha256": "84de86e8cf0092aeea3a2762c1bf8a3f57a28560d2b024a57d89c9717a9abc6d",
+      "imports": [
+        "__future__",
+        "dataclasses"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/semantic_equivalence.py",
+      "sha256": "eef38f78ac0bdd0d1c8df58446d54e1c0385bcdc93d43657bdc13157a5036b6e",
+      "imports": [
+        ".replay",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/semantic_validator.py",
+      "sha256": "4594d1f4e82084c2fa95ee6d3ddee4e86a6b4935ca00e3b1f7d9a1e9e7dadf2d",
+      "imports": [
+        ".dag_engine",
+        ".replay",
+        ".task_state",
+        "__future__",
+        "pathlib",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/__init__.py",
+      "sha256": "8b57c3bdff267822099aeeb9677310f3520958925530539c96f7f3a7a47b303e",
+      "imports": [
+        ".synthesis_pipeline"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/controller_synthesizer.py",
+      "sha256": "9482ea1483c6a5016f6af8565f6b2c664cec5c40e3348f2bccf3f5bb4b95478e",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/dto_synthesizer.py",
+      "sha256": "9df1a04cbdd5d2e3916dc991475fd6c95fd93eba404dd41f1682fc0a132abc6b",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/entity_synthesizer.py",
+      "sha256": "efe2dcd1ff0bd7c472666521bdcf571aeaf15803cd9db1d8f9a5c03402e1a500",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/field_type_system.py",
+      "sha256": "6f1e5e8fc2767a3b85a285d6b4a08b82019c41b616cb580160a84856fc0dac76",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "decimal",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/mapper_synthesizer.py",
+      "sha256": "e3298c26c33b1da18282e9a86c00941001e196598aa35a3798cdb2297e9443d9",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/naming_canonicalizer.py",
+      "sha256": "e38902a5e3e507a2c76f9fa9afa05c97c7b46b7c557ffacc3b8afe14eac4c4a9",
+      "imports": [
+        "__future__",
+        "re"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/permission_synthesizer.py",
+      "sha256": "5363293a62cc8ececcbd732ce77de7fb05444ed0defbbd43a449b2486683a8e9",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/relation_synthesizer.py",
+      "sha256": "d7081a242143780c01f3d5c4ae090c69345dcaf8047e9122b100b7a1291bc2a1",
+      "imports": [
+        ".naming_canonicalizer",
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/service_synthesizer.py",
+      "sha256": "5f5c656fb68bb2b3dceb2331df3aa1f1ea3e08e0ee3f1cda781a6ff417e0faf2",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/sql_synthesizer.py",
+      "sha256": "c3075ae699584e3801da045ee931c4bd1860edb9a34b878b04c00eaef6e54f19",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/synthesis_diff.py",
+      "sha256": "f29ea8da786acc4db795a4eb42e89a99c8c9f0a879f28af76048db88769bdf86",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/synthesis_pipeline.py",
+      "sha256": "b27508aa91f74d58b958a1b67f427a27d42d0c9577c9f9c2755b939820c27c9e",
+      "imports": [
+        ".controller_synthesizer",
+        ".dto_synthesizer",
+        ".entity_synthesizer",
+        ".field_type_system",
+        ".mapper_synthesizer",
+        ".naming_canonicalizer",
+        ".permission_synthesizer",
+        ".relation_synthesizer",
+        ".service_synthesizer",
+        ".sql_synthesizer",
+        ".synthesis_diff",
+        ".synthesis_validator",
+        ".validation_synthesizer",
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/synthesis_validator.py",
+      "sha256": "1df29c305c1e919cfc912b826d179a9162a95b140ad2d443781910a77abe2671",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "re",
+        "runtime.codegen.common",
+        "runtime.toolchain",
+        "shutil",
+        "subprocess",
+        "tempfile",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/synthesis/validation_synthesizer.py",
+      "sha256": "a34e22c37ebef3e6aab14dc3e6ddb3ef5f84fc206230c9abfba7d9846a8c14b1",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/task_state.py",
+      "sha256": "dc49f4004e2a708b74b7582a242c7e77c0774a5708fd7690399b4ac8892f89b0",
+      "imports": [
+        "__future__",
+        "enum"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/toolchain.py",
+      "sha256": "5237b9829023d92a73ba23808686864dceb5794509ceafd934ecf10882983b6f",
+      "imports": [
+        "__future__",
+        "functools",
+        "os",
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/validator.py",
+      "sha256": "0859397735dab8354eba0dbcc5c7803657873f755ff8028218abcb873054c2af",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/runtime/verifier.py",
+      "sha256": "6a1c456bbd7cbdffc28d701246634ebb030dcde11f6295bba3b0573401092806",
+      "imports": [
+        ".checkpoint_validator",
+        ".graph_validator",
+        ".lineage_validator",
+        ".replay",
+        ".replay_diff",
+        ".replay_validator",
+        ".semantic_equivalence",
+        ".semantic_validator",
+        "__future__",
+        "datetime",
+        "pathlib",
+        "typing",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_codegen_pipeline.py",
+      "sha256": "a8a07399a5774ec9f589fcc1a6c6224d9f8a6076c586daa2e78d78fc6b72f5cc",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen",
+        "runtime.loader",
+        "runtime.replay",
+        "sys",
+        "tempfile",
+        "unittest"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_hardening_pipeline.py",
+      "sha256": "9343f5b74a6b411d371ec9678777724aaa3d3a3f78abb4b07b957997188d2392",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.codegen.common",
+        "runtime.hardening.compile_error_classifier",
+        "runtime.hardening.compile_repair_engine",
+        "runtime.hardening.hardening_pipeline",
+        "runtime.hardening.project_health_reporter",
+        "runtime.replay",
+        "sys",
+        "tempfile",
+        "unittest",
+        "unittest.mock"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_ir_lowering_pipeline.py",
+      "sha256": "765ab78dcee08ea6b08afb5d6ee591641844768b3a9232ab32177cfb3702614f",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.ir_lowering",
+        "runtime.replay",
+        "sys",
+        "tempfile",
+        "unittest"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_mutation_engine.py",
+      "sha256": "32126207f710acd965c7227b1bb1ee3b1c740902672f4a3107629727f4f47607",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.mutation",
+        "runtime.replay",
+        "sys",
+        "tempfile",
+        "unittest"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_platform_compiler.py",
+      "sha256": "f82433284220d806ed6dbcfe80db53f775536ebc518eb2b6cf5b6753b05e370c",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.platform_compiler",
+        "runtime.replay",
+        "sys",
+        "tempfile",
+        "unittest"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_runtime_verification.py",
+      "sha256": "5f2099775e378b881796d265253dbc52624813bd0eeb4a9de76dd8a23bee9544",
+      "imports": [
+        "__future__",
+        "copy",
+        "pathlib",
+        "runtime.benchmark_runner",
+        "runtime.dag_engine",
+        "runtime.executor",
+        "runtime.golden_validator",
+        "runtime.graph_validator",
+        "runtime.loader",
+        "runtime.replay",
+        "runtime.run_config",
+        "runtime.verifier",
+        "shutil",
+        "tempfile",
+        "unittest",
+        "yaml"
+      ],
+      "script_literals": []
+    },
+    {
+      "path": "specforge-runtime/tests/test_synthesis_pipeline.py",
+      "sha256": "1b9b54b0d15434b69bcd51efd854042cb8d6c2a91ec05923620383ae1823bba7",
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.replay",
+        "runtime.synthesis",
+        "sys",
+        "tempfile",
+        "unittest"
+      ],
+      "script_literals": []
+    }
+  ]
+}

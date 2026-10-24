@@ -1,68 +1,24 @@
-# SpecForge Workspace Layout
+# SpecForge 工作区合同
 
-This file defines the repository-level directory contract.
+## 当前开发入口
 
-## Directory Roles
+| 目录 | 职责 |
+|---|---|
+| `specforge/` | 新核心、生成资产及显式验收包 |
+| `examples/` | 版本 1 YAML 固定业务规格 |
+| `tests_core/` | 新核心独立回归测试 |
+| `tools/` | Windows / WSL 运行包装 |
+| `docs/` | 当前合同、验收证据、迁移决策 |
+| `docs/legacy/` | 旧版操作文档历史归档 |
 
-- `backend/`
-  - baseline backend template used as the compilation assembly target
-  - not the final exported backend for generated projects
+模板由 `--template` 显式提供，本机使用外部仓库的 `templates/admin-platform`。仓库 `backend/` 是旧模板，不是新核心默认输入。
 
-- `specforge-runtime/`
-  - canonical compiler runtime source
-  - all runtime-facing specs live under `specforge-runtime/specs/`
-  - successful generated projects are exported to `specforge-runtime/outputs/`
-  - temporary execution traces live under `specforge-runtime/runs/`
+## 新核心项目工作区
 
-- `skills/`
-  - Codex skills used to bootstrap, scaffold, and execute SpecForge flows
+每个项目显式指定独立 `--workspace`，规格与模板输入快照、生成源码、报告和清单位于每轮 `runs/<run-id>/` 下。成功交付包位于 `releases/`。失败运行保留诊断，不替换成功发布指针。不能把生成副本改动当成生成器源码改动。
 
-- `sandbox/`
-  - local-only validation area
-  - used for bundle bootstrap, cross-machine simulation, smoke tests, and failure reproduction
-  - not part of the canonical source tree
-  - ignored by git
+## 兼容区
 
-## Human Shortcut
+`skills/`、`backend/`、`specforge-runtime/` 保留路径及行为。旧版共享规格在 `specforge-runtime/specs/`，日志在 `specforge-runtime/runs/`，仅后端产物在 `specforge-runtime/outputs/`。这些路径不适用于新版。
 
-When operating the repo, treat the directories like this:
-
-- "template input" = `backend/`
-- "compiler source" = `specforge-runtime/`
-- "this run's evidence" = `specforge-runtime/runs/<run-id>/`
-- "final product" = `specforge-runtime/outputs/<project-backend>/`
-- "scratchpad" = `sandbox/`
-
-If you are only looking for the generated deliverable, skip everything else and open `specforge-runtime/outputs/`.
-
-## Final Deliverable Rule
-
-Treat only this location as the final generated backend:
-
-- `specforge-runtime/outputs/<project-backend>/`
-
-Do not treat these as final deliverables:
-
-- `sandbox/...`
-- `specforge-runtime/runs/<run-id>/generated-project/`
-
-Those directories are temporary verification artifacts.
-
-## Recommended Operator Flow
-
-1. Update or scaffold specs under `specforge-runtime/specs/`
-2. Run the canonical auto-build pipeline
-3. Check:
-   - `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
-   - `specforge-runtime/outputs/<project-backend>/`
-4. Handoff or commit only canonical source changes and intended exported outputs
-
-## Cleanliness Rules
-
-- Keep experimental bundles under `sandbox/`
-- Keep reproducible failure evidence under `specforge-runtime/runs/`
-- Keep handoff-ready generated backends under `specforge-runtime/outputs/`
-- Do not scatter generated artifacts into the repository root
-- Do not treat `backend/` and `outputs/` as duplicates:
-  - `backend/` is the stable assembly baseline
-  - `outputs/` is the compiled result
+旧版实验能力仍被主程序导入，未完成调用隔离前不可移动。具体调用证据与退出条件见 [迁移清单](docs/LEGACY_MIGRATION.md)。本轮没有清理用户运行记录、生成产物或数据库。

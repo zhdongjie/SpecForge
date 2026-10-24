@@ -1,309 +1,48 @@
 # SpecForge
 
-SpecForge is a deterministic Spring Boot backend compiler workflow.
+基于明确业务规格和后台模板生成可独立部署的前后端项目。新项目统一使用 `python -m specforge`；当前支持设备借用和图书借阅两套完整验收样板。
 
-Its goal is:
+## 开始使用
 
-- input a short project requirement or a requirement document
-- compile project specs and module specs
-- generate a full backend
-- verify compile and boot
-- export the final backend into a stable output directory
-
-## Directory Map
-
-- `backend/`
-  - baseline backend template
-  - compiler assembly input
-  - not the final generated deliverable
-
-- `specforge-runtime/`
-  - compiler runtime
-  - canonical specs live in `specforge-runtime/specs/`
-  - per-run execution traces live in `specforge-runtime/runs/`
-  - final generated projects export into `specforge-runtime/outputs/`
-
-- `skills/`
-  - Codex skills, including the full-project compiler skill
-  - repository-local source of truth for portable skill logic
-
-- `sandbox/`
-  - local-only validation area
-  - ignored by git
-
-See [WORKSPACE_LAYOUT.md](WORKSPACE_LAYOUT.md) for the full workspace contract.
-
-## Fastest Path
-
-If you want:
-
-- one project name
-- or one short requirement
-- and one complete generated backend
-
-use this flow.
-
-### 1. Prepare toolchain
-
-Install:
-
-- JDK 17+
-- Maven 3.9+
-
-Recommended environment variables:
-
-- `SPECFORGE_JAVA_HOME`
-- `SPECFORGE_MAVEN_CMD`
-
-If you want a fresh Codex environment to auto-discover the project compiler skill, also copy:
-
-- `skills/specforge-full-project-compiler/`
-
-to:
-
-- `C:\Users\<username>\.codex\skills\specforge-full-project-compiler\`
-
-If you only plan to run the repository-local commands in this README, the repository copy under `skills/` is enough.
-
-See [ENVIRONMENT_MIGRATION_RUNBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md) for the portability contract.
-
-### 2. Check workspace
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/check_specforge_workspace.py --repo-root .
+```bash
+python3 -m pip install -e .
+python3 -m specforge run \
+  --workspace /home/zhang/.local/state/specforge-core/device-borrow \
+  --spec examples/device_borrow.yaml \
+  --template /mnt/e/Project/Zhang/openclaw-codegen/templates/admin-platform \
+  --acceptance-pack device-borrow
 ```
 
-Expected result:
-
-- `"ready": true`
-
-### 3. Scaffold from a short requirement
-
-Example:
+完整验收需要 JDK、Maven、pnpm、Docker 和浏览器环境。当前 Windows + WSL 环境使用已验证的包装入口：
 
 ```powershell
-python skills/specforge-full-project-compiler/scripts/scaffold_requirement_project.py --repo-root . --project-name "Laboratory Reservation Platform" --requirement "Build a complete laboratory reservation management backend with reservation approval, notification, and laboratory access control under a modular-monolith Spring Boot architecture." --force
+# 在 Windows PowerShell 中运行仓库 tools/run-core-windows.ps1 的本地副本
+./run-core-windows.ps1
 ```
 
-This writes canonical specs into:
+包装脚本的路径与环境配置见 [独立运行说明](docs/CORE_V1.md)。图书借阅改用 `examples/book_lending.yaml`、独立工作区及 `--acceptance-pack book-lending`。
 
-- `specforge-runtime/specs/project-spec.md`
-- `specforge-runtime/specs/project-assembly-plan.yaml`
-- `specforge-runtime/specs/build-plan.yaml`
-- `specforge-runtime/specs/templates/...`
+## 工作范围
 
-### 4. Run the canonical auto-build
+- 输入：版本 1 YAML 规格和显式模板路径。
+- 流程：validate → generate → verify → repair（已知规则、最多两轮）→ package。
+- 输出：指定工作区中的独立 `runs/<run-id>/` 与通过全部验收的 `releases/`。
+- 新核心代码：`specforge/`；固定样例：`examples/`；回归测试：`tests_core/`。
 
-```powershell
-python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id lab-platform-001
-```
+当前不支持自然语言解析、模型修复和已交付项目增量升级。
 
-Or use the one-command wrapper:
+## 文档与验证
 
-```powershell
-python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "Laboratory Reservation Platform" --requirement "Build a complete laboratory reservation management backend with reservation approval, notification, and laboratory access control under a modular-monolith Spring Boot architecture." --run-id lab-platform-001 --force
-```
+- [运行、规格与失败诊断](docs/CORE_V1.md)
+- [工作区合同](WORKSPACE_LAYOUT.md)
+- [旧资产迁移清单](docs/LEGACY_MIGRATION.md)
+- [第二业务与两套系统的验收结果](docs/CORE_V1_SECOND_BUSINESS.md)
+- [维护性整改记录](docs/CORE_V1_REVIEW.md)
 
-The wrapper can auto-select a supported scaffold domain from the project name and requirement text.
+运行核心测试：`python3 -m unittest discover -s tests_core -q`。
 
-Use `--domain <domain-key>` only when you want to override automatic selection explicitly.
+## 旧版兼容
 
-Currently validated automatic scaffold domains include:
+`skills/specforge-full-project-compiler/scripts/run_requirement_project.py`、`specforge-runtime/` 和 `backend/` 仍保留原路径。外部 OpenClaw dispatcher 仍调用旧入口，其自然语言输入和仅后端输出合同与新版不同。
 
-- `laboratory-reservation`
-- `laboratory-management`
-- `insurance-management`
-
-### 5. Check results
-
-Success report:
-
-- `specforge-runtime/runs/lab-platform-001/logs/auto-build-report.yaml`
-
-Health report:
-
-- `specforge-runtime/runs/lab-platform-001/generated-project/logs/project-health-report.yaml`
-
-Final exported backend:
-
-- `specforge-runtime/outputs/<project-backend>/`
-
-## Final Output Rule
-
-Treat only this as the final generated project:
-
-- `specforge-runtime/outputs/<project-backend>/`
-
-Meaning of each frequently-seen directory:
-
-- `backend/`
-  - reusable template input
-- `specforge-runtime/runs/<run-id>/`
-  - one build attempt
-  - contains logs, diagnostics, intermediate IR, and a transient assembled project for validation
-- `specforge-runtime/outputs/<project-backend>/`
-  - latest handoff-ready generated backend
-- `sandbox/`
-  - local-only experimentation or migration rehearsal area
-
-Do not treat these as final deliverables:
-
-- `sandbox/...`
-- `specforge-runtime/runs/<run-id>/generated-project/`
-
-Those are validation and intermediate directories.
-
-If you feel "the output directories are too many", the practical rule is simple:
-
-- look at `specforge-runtime/outputs/` for the product
-- look at `specforge-runtime/runs/` only when you need logs or failure diagnosis
-
-## Canonical End-to-End Commands
-
-Workspace readiness:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/check_specforge_workspace.py --repo-root .
-```
-
-Scaffold project specs:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/scaffold_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<requirement>" --force
-```
-
-Compile full backend:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/run_specforge_autobuild.py --repo-root . --run-id <run-id>
-```
-
-One-command full generation:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement "<one-line requirement>" --run-id <run-id> --force
-```
-
-Requirement-file generation:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/run_requirement_project.py --repo-root . --project-name "<project-name>" --requirement-file "<requirement-file>" --run-id <run-id> --force
-```
-
-Run the portable validation suite:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --force
-```
-
-Direct runtime equivalent:
-
-```powershell
-cd specforge-runtime
-python main.py --auto-build --build-plan build-plan.yaml --run-id <run-id>
-```
-
-Emit a portable Codex handoff prompt:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.py --project-name "<project-name>" --requirement "<one-line requirement>" --mode inline
-```
-
-Emit a requirement-file handoff prompt:
-
-```powershell
-python skills/specforge-full-project-compiler/scripts/emit_codex_handoff_prompt.py --project-name "<project-name>" --requirement-file "<requirement-file>" --mode file
-```
-
-## Recommended Running Scheme
-
-### A. Generate a backend in the current machine
-
-1. Run the readiness check.
-2. Use the one-command wrapper with either `--requirement` or `--requirement-file`.
-3. Check:
-   - `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
-   - `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
-4. Accept success only if:
-   - `compile_status: PASS`
-   - `boot_status: PASS`
-5. Take the final backend only from:
-   - `specforge-runtime/outputs/<project-backend>/`
-
-### B. Handoff to a fresh Codex session
-
-1. Run `emit_codex_handoff_prompt.py`.
-2. Paste the emitted prompt into the new Codex session.
-3. Let the new session run until compile and boot pass, or it returns a reproducible failure bundle.
-
-### C. Validate the tool itself
-
-1. Run:
-   - `python skills/specforge-full-project-compiler/scripts/run_tool_validation_suite.py --repo-root . --force`
-2. Current built-in validated scenarios:
-   - `lab-inline-auto`
-   - `lab-platform-file-auto`
-   - `insurance-inline-auto`
-   - `insurance-file-auto`
-3. Use this when you want to prove the generator still works after refactors, migration, or environment changes.
-
-## Success And Failure Contract
-
-Successful generation means:
-
-- final backend exists under `specforge-runtime/outputs/`
-- compile passes
-- boot passes
-
-If a run fails, inspect first:
-
-- `specforge-runtime/runs/<run-id>/logs/auto-build-report.yaml`
-- `specforge-runtime/runs/<run-id>/generated-project/logs/project-health-report.yaml`
-- `specforge-runtime/runs/<run-id>/generated-project/logs/compile-diagnostics.yaml`
-- `specforge-runtime/runs/<run-id>/generated-project/logs/boot-diagnostics.yaml`
-
-## One-Line Requirement Mode
-
-For a new domain, the most portable workflow is:
-
-1. Put the repository on the new machine.
-2. Ensure JDK and Maven resolve.
-3. Give Codex one project sentence or one requirements document.
-4. Let the skill scaffold specs into `specforge-runtime/specs/`.
-5. Run the canonical auto-build.
-6. Accept success only if `compile` and `boot` both pass.
-7. Take the final backend only from `specforge-runtime/outputs/`.
-
-See [ONE_LINE_REQUIREMENT_PLAYBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ONE_LINE_REQUIREMENT_PLAYBOOK.md).
-See [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md) for copy-paste prompts for a fresh Codex session.
-See [REQUIREMENT_TEMPLATE.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/REQUIREMENT_TEMPLATE.md) for a structured requirement document template.
-See [FINAL_ONE_SHOT_PROTOCOL.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/FINAL_ONE_SHOT_PROTOCOL.md) for the shortest new-machine or fresh-Codex operating path.
-
-## Handoff Rule
-
-When moving to another machine or another Codex session:
-
-1. Read [README.md](README.md)
-2. Read [WORKSPACE_LAYOUT.md](WORKSPACE_LAYOUT.md)
-3. Read [PROJECT_COMPILER_PROTOCOL.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/PROJECT_COMPILER_PROTOCOL.md)
-4. Read [ENVIRONMENT_MIGRATION_RUNBOOK.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/ENVIRONMENT_MIGRATION_RUNBOOK.md)
-5. Read [CODEX_STARTER_PROMPTS.md](E:/Project/Generate/SpecForge/specforge-runtime/docs/CODEX_STARTER_PROMPTS.md)
-6. Use `specforge-runtime/specs/build-plan.yaml` as the canonical execution entry
-
-## Current Proven Flow
-
-The validated local flow now supports:
-
-- scaffold from a one-line requirement
-- assemble multiple business modules
-- compile pass
-- boot pass
-- final export under `specforge-runtime/outputs/`
-
-## Independent core v1
-
-The new template-based full-stack path is documented in [docs/CORE_V1.md](docs/CORE_V1.md). Start with `python -m specforge --help`. Historical commands above remain available.
-
-Full verification now requires `--acceptance-pack device-borrow`. See [maintenance review](docs/CORE_V1_REVIEW.md) for the generator/pack/browser boundaries and stage-aware repair behavior.
-
-The second full-stack example is `examples/book_lending.yaml`, selected with `--acceptance-pack book-lending` and its own workspace. See [second-business verification](docs/CORE_V1_SECOND_BUSINESS.md).
+旧版操作说明已归档至 [历史 README](docs/legacy/README.md) 和 [历史目录合同](docs/legacy/WORKSPACE_LAYOUT.md)。新项目按上面的新版入口执行；外部适配器切换需另行实现明确规格输入与完整验收合同。
