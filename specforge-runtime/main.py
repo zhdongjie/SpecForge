@@ -137,34 +137,17 @@ def run_auto_build(args: argparse.Namespace, root: Path) -> None:
 
 
 def build_run_config(args: argparse.Namespace) -> RunConfig:
-    from runtime.run_config import FailureInjection, RunConfig
+    """Compatibility forwarding for callers importing the historical helper."""
+    from legacy_commands.simulation import build_run_config as build
 
-    partial_replay_tasks = tuple(
-        task_id.strip() for task_id in args.partial_replay.split(",") if task_id.strip()
-    )
-    injections: list[FailureInjection] = []
-    for raw in args.inject_failure:
-        parts = raw.split(":", 3)
-        task_id = parts[0]
-        failure_type = parts[1] if len(parts) > 1 and parts[1] else "validation"
-        attempt = int(parts[2]) if len(parts) > 2 and parts[2] else 1
-        message = parts[3] if len(parts) > 3 and parts[3] else "Injected runtime failure"
-        injections.append(
-            FailureInjection(
-                task_id=task_id,
-                failure_type=failure_type,
-                attempt=attempt,
-                message=message,
-            )
-        )
-    return RunConfig(
-        run_id=args.run_id,
-        replay_source_run_id=args.replay_source_run,
-        partial_replay_tasks=partial_replay_tasks,
-        compare_trace=bool(args.replay_source_run and not args.no_compare_trace),
-        failure_injections=tuple(injections),
-        max_workers=max(1, args.max_workers),
-    )
+    return build(args)
+
+
+def run_simulation(args: argparse.Namespace, root: Path) -> None:
+    """Compatibility forwarding for the historical default command."""
+    from legacy_commands.simulation import run_simulation as run
+
+    run(args, root)
 
 
 def main() -> None:
@@ -173,166 +156,11 @@ def main() -> None:
     if args.auto_build:
         run_auto_build(args, root)
         return
-    if args.emit_code:
-        from runtime.codegen import CodegenPipeline
 
-        output_root = root / "runs" / args.run_id / "generated-module"
-        specs_dir = root / "specs"
-        backend_root = (root / args.backend_root).resolve()
-        summary = CodegenPipeline(
-            project_root=root.parent,
-            backend_root=backend_root,
-            output_root=output_root,
-            specs_dir=specs_dir,
-        ).run(verify_compile=args.verify_compile)
-        if summary["status"] != "PASS":
-            raise RuntimeError("Code generation failed verification")
-        return
-    if args.mutate_module:
-        from runtime.mutation import MutationEngine
+    from legacy_commands import dispatch
 
-        output_root = root / "runs" / args.run_id / "mutated-module"
-        specs_dir = root / "specs"
-        backend_root = (root / args.backend_root).resolve()
-        mutation_spec_path = specs_dir / args.mutation_spec
-        summary = MutationEngine(
-            project_root=root.parent,
-            backend_root=backend_root,
-            output_root=output_root,
-            specs_dir=specs_dir,
-            mutation_spec_path=mutation_spec_path,
-        ).run(verify_compile=args.verify_compile)
-        if summary["status"] != "PASS":
-            raise RuntimeError("Module mutation failed verification")
-        return
-    if args.synthesize_module:
-        from runtime.synthesis import SynthesisPipeline
-
-        output_root = root / "runs" / args.run_id / "generated-module"
-        specs_dir = root / "specs"
-        backend_root = (root / args.backend_root).resolve()
-        summary = SynthesisPipeline(
-            project_root=root.parent,
-            backend_root=backend_root,
-            output_root=output_root,
-            specs_dir=specs_dir,
-        ).run(verify_compile=args.verify_compile, field_schema_name=args.field_schema)
-        if summary["status"] != "PASS":
-            raise RuntimeError("Field-level synthesis failed verification")
-        return
-    if args.lower_ir:
-        from runtime.ir_lowering import IRLoweringPipeline
-
-        output_root = root / "runs" / args.run_id
-        specs_dir = root / "specs"
-        summary = IRLoweringPipeline(
-            output_root=output_root,
-            specs_dir=specs_dir,
-        ).run(module_schema_name=args.module_schema)
-        if summary["status"] != "PASS":
-            raise RuntimeError("IR lowering failed verification")
-        return
-    if args.compile_backend:
-        from runtime.platform_compiler import ProjectCompiler
-
-        output_root = root / "runs" / args.run_id
-        specs_dir = root / "specs"
-        backend_root = (root / args.backend_root).resolve()
-        summary = ProjectCompiler(
-            project_root=root.parent,
-            backend_root=backend_root,
-            run_root=output_root,
-            specs_dir=specs_dir,
-        ).run(
-            module_schema_name=args.module_schema,
-            module_spec_name="module-spec.yaml",
-            project_assembly_plan_name=args.project_assembly_plan or None,
-            run_compile=True,
-            run_boot=not args.skip_boot_verify,
-        )
-        if summary["status"] == "FAIL":
-            raise RuntimeError("Backend compilation failed verification")
-        return
-    if args.harden_backend:
-        from runtime.hardening import HardeningPipeline
-
-        output_root = root / "runs" / args.run_id
-        specs_dir = root / "specs"
-        backend_root = (root / args.backend_root).resolve()
-        summary = HardeningPipeline(
-            project_root=root.parent,
-            backend_root=backend_root,
-            run_root=output_root,
-            specs_dir=specs_dir,
-        ).run(
-            module_schema_name=args.module_schema,
-            module_spec_name="module-spec.yaml",
-            project_assembly_plan_name=args.project_assembly_plan or None,
-            auto_repair=args.auto_repair,
-            verify_boot=args.verify_boot,
-            repair_max_passes=max(1, args.repair_max_passes),
-        )
-        if summary["status"] == "FAIL":
-            raise RuntimeError("Backend hardening failed verification")
-        return
-
-    if args.run_regression_suite:
-        from runtime.golden_validator import GoldenValidator
-
-        summary = GoldenValidator(root).run_regression_suite()
-        if summary["failed_count"] > 0:
-            raise RuntimeError("Regression suite failed")
-        return
-
-    run_simulation(args, root)
-
-
-def run_simulation(args: argparse.Namespace, root: Path) -> None:
-    """Retain the historical default simulation without loading it for builds."""
-    from runtime.dag_engine import DagEngine
-    from runtime.executor import RuntimeExecutor
-    from runtime.loader import SpecLoader
-    from runtime.verifier import RuntimeVerifier
-
-    specs_dir = root / "specs"
-    run_config = build_run_config(args)
-    run_dir = root / "runs" / run_config.run_id
-
-    loader = SpecLoader(specs_dir)
-    loaded = loader.load_all()
-
-    dag = DagEngine(loaded["task_graph"])
-    dag.validate_acyclic()
-    dag.validate_serial_order()
-
-    executor = RuntimeExecutor(
-        dag=dag,
-        resolved_schema=loaded["resolved_schema"],
-        task_graph=loaded["task_graph"],
-        run_dir=run_dir,
-        specs_dir=specs_dir,
-        run_config=run_config,
-    )
-    verifier = RuntimeVerifier(specs_dir=specs_dir, run_dir=run_dir)
-    static_report = verifier.verify_static(loaded)
-    if not static_report["passed"]:
-        raise RuntimeError("Static task graph verification failed")
-    execution_error: Exception | None = None
-    try:
-        executor.execute()
-    except Exception as exc:
-        execution_error = exc
-
-    runtime_report = verifier.verify_runtime(
-        loaded,
-        replay_source_run_id=run_config.replay_source_run_id,
-        affected_tasks=set(executor.affected_tasks) if run_config.mode == "partial-replay" else None,
-    )
-
-    if execution_error is not None:
-        raise execution_error
-    if not runtime_report["passed"]:
-        raise RuntimeError("Runtime verification failed")
+    if not dispatch(args, root):
+        run_simulation(args, root)
 
 
 if __name__ == "__main__":

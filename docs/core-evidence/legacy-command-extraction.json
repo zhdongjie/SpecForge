@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-24",
+  "baseline_commit": "a54a5fc",
+  "main_lines_before": 339,
+  "main_lines_after": 167,
+  "unchanged_ast": [
+    "parse_args",
+    "run_auto_build",
+    "resolve_build_plan_path",
+    "resolve_output_path",
+    "export_final_backend",
+    "extracted build_run_config",
+    "extracted run_simulation",
+    "six extracted module command bodies"
+  ],
+  "help_text_identical": true,
+  "core_tests_passed": 65,
+  "compatibility_tests_passed": 9,
+  "legacy_failed_case_ids_unchanged": true,
+  "legacy_results": {
+    "tests": 25,
+    "failures": [
+      "test_mutation_engine.MutationEngineTests.test_mutation_engine_emits_inventory_module",
+      "test_runtime_verification.RuntimeVerificationTests.test_artifact_conflict_runtime_semantics",
+      "test_runtime_verification.RuntimeVerificationTests.test_benchmark_runner_emits_summary",
+      "test_runtime_verification.RuntimeVerificationTests.test_logical_clock_drift_is_detected",
+      "test_runtime_verification.RuntimeVerificationTests.test_parallel_failure_runtime_semantics",
+      "test_runtime_verification.RuntimeVerificationTests.test_parallel_scheduler_stress_replays_are_deterministic",
+      "test_runtime_verification.RuntimeVerificationTests.test_regression_suite_bootstraps_and_replays",
+      "test_runtime_verification.RuntimeVerificationTests.test_replay_divergence_is_detected",
+      "test_runtime_verification.RuntimeVerificationTests.test_rollback_chain_invalidation_cleanup",
+      "test_runtime_verification.RuntimeVerificationTests.test_runtime_verifier_emits_extended_reports"
+    ],
+    "errors": [
+      "test_codegen_pipeline.CodegenPipelineTests.test_codegen_manifest_covers_required_artifacts",
+      "test_codegen_pipeline.CodegenPipelineTests.test_codegen_pipeline_emits_expected_outputs",
+      "test_platform_compiler.PlatformCompilerTests.test_project_compiler_assembles_bootable_backend_layout"
+    ]
+  },
+  "legacy_passed": 12,
+  "full_build_api_browser_rerun": false,
+  "runtime_implementations_moved_or_deleted": false
+}

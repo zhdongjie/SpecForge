@@ -20,6 +20,6 @@
 
 ## 兼容区
 
-`skills/`、`backend/`、`specforge-runtime/` 保留路径及行为。旧版共享规格在 `specforge-runtime/specs/`，日志在 `specforge-runtime/runs/`，仅后端产物在 `specforge-runtime/outputs/`。这些路径不适用于新版。
+`skills/`、`backend/`、`specforge-runtime/` 保留路径及行为。旧主程序保留自动构建，其他旧命令实现位于 `specforge-runtime/legacy_commands/`，由原命令转发。旧版共享规格在 `specforge-runtime/specs/`，日志在 `specforge-runtime/runs/`，仅后端产物在 `specforge-runtime/outputs/`。这些路径不适用于新版。
 
 旧版实验能力现按命令分支导入，默认模拟等旧命令仍依赖其源码，尚不可直接移动。具体调用证据与退出条件见 [迁移清单](docs/LEGACY_MIGRATION.md)。本轮没有清理用户运行记录、生成产物或数据库。

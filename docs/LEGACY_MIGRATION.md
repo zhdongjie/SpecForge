@@ -69,3 +69,21 @@ run_requirement_project.py
 本轮验证：新核心 65 项通过，兼容测试 5 项通过；旧版 25 项在修改前后均为 12 通过、10 失败、3 错误，失败及错误用例 ID 完全一致。证据见 `core-evidence/legacy-isolation.json`。本轮未跑 Maven、容器或浏览器全量验收，兼容测试中的构建执行使用替身，不等于真实构建成功。
 
 本轮未移动实验源码。下一步可以将实验命令的实现拆成独立模块，并保留原入口转发；只有依赖与调用方已经隔离的文件才能进一步物理归档。初次静态导入清单保留作历史快照，以本段和新证据为当前状态。
+
+
+## 第三批：旧命令实现已拆分
+
+`specforge-runtime/main.py` 从 339 行缩减到 167 行，保留原参数、auto-build 实现和转发入口。旧命令实现集中到 `specforge-runtime/legacy_commands/`：
+
+| 文件 | 内容 |
+|---|---|
+| `__init__.py` | 延迟分发，保持原六个模块命令与 golden 回归的优先级 |
+| `modules.py` | emit-code、mutate-module、synthesize-module、lower-ir、compile-backend、harden-backend |
+| `simulation.py` | 默认 DAG 执行、回放、故障注入参数与验证流程 |
+| `regression.py` | 原 golden 回归命令 |
+
+`main.build_run_config` 和 `main.run_simulation` 保留兼容转发；auto-build 在导入 legacy_commands 之前直接执行。未增加新的默认行为，也未移动或删除 runtime 内部实现。
+
+验证证据为 `core-evidence/legacy-command-extraction.json`：原参数解析、auto-build、路径解析、导出实现和搬出的六个模块分支、模拟与配置函数均通过语法树等价对照，帮助输出完全相同。兼容测试增加到 9 项，覆盖原命令的失败文本及优先级、回放配置、执行错误后仍生成验证报告并传播原异常；新版 65 项通过。旧 25 项仍为 12 通过、10 失败、3 错误，用例身份一致。本轮未执行完整 Maven、容器或浏览器验收。
+
+当前已经形成三层边界：新版独立 `specforge/`，旧自动构建入口 `main.py --auto-build`，旧命令适配实现 `legacy_commands/`。后续源码归档须按这些命令实际依赖逐个判断，不能直接删除 runtime 模拟器文件，因为默认旧命令和历史测试仍在使用。
