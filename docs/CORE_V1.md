@@ -17,6 +17,30 @@ python3 -m specforge run --workspace /absolute/workspace/device-borrow --spec ex
 
 纯 Linux 浏览器依赖安装：`pip install -e ".[acceptance]"`，然后 `python -m playwright install chromium` 并安装浏览器系统依赖。
 
+## 本机正式模板与直接运行
+
+当前 Windows/WSL 包装入口默认模板为：
+
+```text
+/mnt/e/Project/Zhang/openclaw-codegen/exports/github/springboot3-vue3-vuetify-admin-template
+```
+
+这是模板独立仓库的本地工作副本；修改后应先验证和提交，再生成交付项目。`templates/admin-platform` 是旧的验证/兼容副本，不再作为包装入口默认值。核心CLI仍要求显式 `--template`，其他机器或模板使用 `-Template` 覆盖，不依赖本机目录布局。
+
+Windows PowerShell直接运行，不需要另存可能过期的脚本副本：
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+& "\\wsl.localhost\Ubuntu\home\zhang\projects\ai\SpecForge\tools\run-core-windows.ps1" `
+  -Spec /home/zhang/projects/ai/SpecForge/examples/recipe_management.yaml `
+  -Workspace /home/zhang/.local/state/specforge-core/recipe-management `
+  -AcceptancePack recipe-management
+```
+
+图书/设备仍显式选相应Spec和AcceptancePack，使用各自工作区。每次生成创建新的运行目录；失败不会替换旧成功包。新业务先建立需求和复用审查，不能仅改验收包名字冒充新领域支持。
+
+完成后在工作区的 `published.json` 查看最新通过验收的包路径，在 `runs/<run-id>/reports/` 查看检查及需求覆盖证据。独立部署验收使用下方ReleaseArchive参数，其ReportsDirectory必须是新目录。
+
 ## Browser adapter for Windows/WSL
 
 There is one JavaScript browser scenario per acceptance pack. The portable default uses the Node runtime and Playwright core bundled with the optional Python Playwright distribution; Python contains no duplicate UI workflow. An optional Windows Node adapter can reuse a locally installed Playwright and Chromium without downloading a second browser into WSL:

@@ -2,7 +2,7 @@
 param(
     [string]$Distribution = 'Ubuntu',
     [string]$RepoRoot = '/home/zhang/projects/ai/SpecForge',
-    [string]$Template = '/mnt/e/Project/Zhang/openclaw-codegen/templates/admin-platform',
+    [string]$Template = '/mnt/e/Project/Zhang/openclaw-codegen/exports/github/springboot3-vue3-vuetify-admin-template',
     [string]$Workspace = '/home/zhang/.local/state/specforge-core/device-borrow',
     [string]$Spec = '',
     [string]$AcceptancePack = 'device-borrow',

@@ -11,16 +11,21 @@ python3 -m pip install -e .
 python3 -m specforge run \
   --workspace /home/zhang/.local/state/specforge-core/device-borrow \
   --spec examples/device_borrow.yaml \
-  --template /mnt/e/Project/Zhang/openclaw-codegen/templates/admin-platform \
+  --template /mnt/e/Project/Zhang/openclaw-codegen/exports/github/springboot3-vue3-vuetify-admin-template \
   --acceptance-pack device-borrow
 ```
 
 完整验收需要 JDK、Maven、pnpm、Docker 和浏览器环境。当前 Windows + WSL 环境使用已验证的包装入口：
 
 ```powershell
-# 在 Windows PowerShell 中运行仓库 tools/run-core-windows.ps1 的本地副本
-./run-core-windows.ps1
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+& "\\wsl.localhost\Ubuntu\home\zhang\projects\ai\SpecForge\tools\run-core-windows.ps1" `
+  -Spec /home/zhang/projects/ai/SpecForge/examples/recipe_management.yaml `
+  -Workspace /home/zhang/.local/state/specforge-core/recipe-management `
+  -AcceptancePack recipe-management
 ```
+
+包装入口默认使用已提交的正式模板本地副本；`-Template` 仍可显式覆盖。它会创建新运行记录，不覆盖已有成功产物。
 
 包装脚本的路径与环境配置见 [独立运行说明](docs/CORE_V1.md)。图书借阅改用 `examples/book_lending.yaml`、独立工作区及 `--acceptance-pack book-lending`。
 
