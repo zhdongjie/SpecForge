@@ -205,6 +205,59 @@ const fs = require("fs"),
       fullPage: true,
     });
     mark("administrator statistics dashboard accessible");
+    await admin.goto(cfg.origin + "/business/sf_recipe_category");
+    await admin
+      .getByRole("button", { name: "新增菜谱分类", exact: true })
+      .click();
+    let categoryDialog = admin.getByRole("dialog");
+    await categoryDialog
+      .getByRole("button", { name: "保存", exact: true })
+      .click();
+    await visible(categoryDialog.getByText("请填写分类名称", { exact: true }));
+    const categoryName = "UI分类" + cfg.recipe_title;
+    await categoryDialog
+      .getByTestId("field-name")
+      .locator("input")
+      .fill(categoryName);
+    await categoryDialog
+      .getByRole("button", { name: "保存", exact: true })
+      .click();
+    let categoryRow = admin.getByRole("row").filter({ hasText: categoryName });
+    await visible(categoryRow);
+    await categoryRow
+      .getByRole("button", { name: "编辑", exact: true })
+      .click();
+    categoryDialog = admin.getByRole("dialog");
+    await categoryDialog
+      .getByTestId("field-name")
+      .locator("input")
+      .fill(categoryName + "修改");
+    await categoryDialog
+      .getByRole("button", { name: "保存", exact: true })
+      .click();
+    categoryRow = admin
+      .getByRole("row")
+      .filter({ hasText: categoryName + "修改" });
+    await visible(categoryRow);
+    await categoryRow
+      .getByRole("button", { name: "删除", exact: true })
+      .click();
+    await admin
+      .getByRole("dialog")
+      .getByRole("button", { name: "取消", exact: true })
+      .click();
+    await visible(categoryRow);
+    await categoryRow
+      .getByRole("button", { name: "删除", exact: true })
+      .click();
+    await admin
+      .getByRole("dialog")
+      .getByRole("button", { name: "确认", exact: true })
+      .click();
+    await absent(categoryRow);
+    mark(
+      "category form validation create edit and confirmed deletion use template UI",
+    );
     const readonly = await session("sfread");
     await readonly.goto(cfg.origin + "/business/recipes");
     await visible(

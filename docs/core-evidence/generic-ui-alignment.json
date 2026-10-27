@@ -1,0 +1,210 @@
+{
+  "date": "2026-10-27",
+  "status": "PASS",
+  "scope": "generic generated CRUD and recipe category UI",
+  "core_tests": 97,
+  "compatibility_tests": 9,
+  "asset_sha256": "f429126ebe798a8190a2907b15e4b3f8411607c1cf7c71533f3197e4b004fd18",
+  "runs": [
+    {
+      "spec": "device_borrow",
+      "run_id": "20261027T085631-d625aed9a8",
+      "source": "/home/zhang/.local/state/specforge-core/generic-ui-device_borrow-20261027/runs/20261027T085631-d625aed9a8/source",
+      "spec_sha256": "f57f5476cc26429c1f5526fdcd5ae873f7fad5e788ca5a2410ed45cad2f4b0fa",
+      "template_git": "28a93f84c939a7848c943e3bb2b40b6278fea6d9",
+      "template_manifest_sha256": "8e12ac524b10d6b33b6fdabba0cdaf52a3edbf5b79efa46386baf47257927b3c",
+      "generated_asset_sha256": "f429126ebe798a8190a2907b15e4b3f8411607c1cf7c71533f3197e4b004fd18",
+      "generation": {
+        "status": "PASS",
+        "api_checks": 45,
+        "browser_checks": 8
+      },
+      "release": {
+        "status": "PASS",
+        "archive": "/home/zhang/.local/state/specforge-core/generic-ui-device_borrow-20261027/releases/device_borrow-20261027T085631-d625aed9a8.zip",
+        "sha256": "926426812ebc2226c9fb412a295c1e3ec8e7cb4fa9cb15ec306c9aff04b663e0",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api_checks": 45,
+        "browser_checks": 8,
+        "reports": "/home/zhang/.local/state/specforge-core/generic-ui-device_borrow-20261027/independent-release-ui-final",
+        "container_and_volume_cleanup_confirmed": true
+      }
+    },
+    {
+      "spec": "book_lending",
+      "run_id": "20261027T085852-70e78c9180",
+      "source": "/home/zhang/.local/state/specforge-core/generic-ui-book_lending-20261027/runs/20261027T085852-70e78c9180/source",
+      "spec_sha256": "53410a5869cb37f2fe37bdced79edc852d34821a5b1b08682f3cc7e6f7c3ee74",
+      "template_git": "28a93f84c939a7848c943e3bb2b40b6278fea6d9",
+      "template_manifest_sha256": "8e12ac524b10d6b33b6fdabba0cdaf52a3edbf5b79efa46386baf47257927b3c",
+      "generated_asset_sha256": "f429126ebe798a8190a2907b15e4b3f8411607c1cf7c71533f3197e4b004fd18",
+      "generation": {
+        "status": "PASS",
+        "api_checks": 77,
+        "browser_checks": 7
+      },
+      "release": {
+        "status": "PASS",
+        "archive": "/home/zhang/.local/state/specforge-core/generic-ui-book_lending-20261027/releases/book_lending-20261027T085852-70e78c9180.zip",
+        "sha256": "03d780b37db536e89b2f5d2a86f9f6de0597d4eade362c55b613dec7419d7e5b",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api_checks": 77,
+        "browser_checks": 7,
+        "reports": "/home/zhang/.local/state/specforge-core/generic-ui-book_lending-20261027/independent-release-ui-final",
+        "container_and_volume_cleanup_confirmed": true
+      }
+    },
+    {
+      "spec": "book_fields_v1",
+      "run_id": "20261027T085631-cd2f6bf2b7",
+      "source": "/home/zhang/.local/state/specforge-core/generic-ui-book_fields_v1-20261027/runs/20261027T085631-cd2f6bf2b7/source",
+      "spec_sha256": "72379f9042a72bc5620371935f609d537240931d7e3ad36fe89a899a542bace9",
+      "template_git": "28a93f84c939a7848c943e3bb2b40b6278fea6d9",
+      "template_manifest_sha256": "8e12ac524b10d6b33b6fdabba0cdaf52a3edbf5b79efa46386baf47257927b3c",
+      "generated_asset_sha256": "f429126ebe798a8190a2907b15e4b3f8411607c1cf7c71533f3197e4b004fd18",
+      "generation": {
+        "status": "PASS",
+        "api_checks": 91,
+        "browser_checks": 8
+      },
+      "release": {
+        "status": "PASS",
+        "archive": "/home/zhang/.local/state/specforge-core/generic-ui-book_fields_v1-20261027/releases/book_fields_v1-20261027T085631-cd2f6bf2b7.zip",
+        "sha256": "694b90a46292442171fa5c47610b877a7c21efdbe7e1a15abb8f44270c171489",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api_checks": 91,
+        "browser_checks": 8,
+        "reports": "/home/zhang/.local/state/specforge-core/generic-ui-book_fields_v1-20261027/independent-release-ui-final",
+        "container_and_volume_cleanup_confirmed": true
+      }
+    },
+    {
+      "spec": "book_fields_v2",
+      "run_id": "20261027T085852-6cd3e2ee45",
+      "source": "/home/zhang/.local/state/specforge-core/generic-ui-book_fields_v2-20261027/runs/20261027T085852-6cd3e2ee45/source",
+      "spec_sha256": "ccc20506326ca5ecee96de324f5d4312dc4e8ed8d7512010ec5edfb1744b09d7",
+      "template_git": "28a93f84c939a7848c943e3bb2b40b6278fea6d9",
+      "template_manifest_sha256": "8e12ac524b10d6b33b6fdabba0cdaf52a3edbf5b79efa46386baf47257927b3c",
+      "generated_asset_sha256": "f429126ebe798a8190a2907b15e4b3f8411607c1cf7c71533f3197e4b004fd18",
+      "generation": {
+        "status": "PASS",
+        "api_checks": 85,
+        "browser_checks": 8
+      },
+      "release": {
+        "status": "PASS",
+        "archive": "/home/zhang/.local/state/specforge-core/generic-ui-book_fields_v2-20261027/releases/book_fields_v2-20261027T085852-6cd3e2ee45.zip",
+        "sha256": "e8132a87855aeb04da04020b68618510ef968f434f43770f043c4c09e90e1548",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api_checks": 85,
+        "browser_checks": 8,
+        "reports": "/home/zhang/.local/state/specforge-core/generic-ui-book_fields_v2-20261027/independent-release-ui-final",
+        "container_and_volume_cleanup_confirmed": true
+      }
+    },
+    {
+      "spec": "recipe_management",
+      "run_id": "20261027T085633-bd73a3181a",
+      "source": "/home/zhang/.local/state/specforge-core/generic-ui-recipe_management-20261027/runs/20261027T085633-bd73a3181a/source",
+      "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+      "template_git": "28a93f84c939a7848c943e3bb2b40b6278fea6d9",
+      "template_manifest_sha256": "8e12ac524b10d6b33b6fdabba0cdaf52a3edbf5b79efa46386baf47257927b3c",
+      "generated_asset_sha256": "f429126ebe798a8190a2907b15e4b3f8411607c1cf7c71533f3197e4b004fd18",
+      "generation": {
+        "status": "PASS",
+        "api_checks": 145,
+        "browser_checks": 17
+      },
+      "release": {
+        "status": "PASS",
+        "archive": "/home/zhang/.local/state/specforge-core/generic-ui-recipe_management-20261027/releases/recipe_management-20261027T085633-bd73a3181a.zip",
+        "sha256": "3c3a4df46d53e73d3b8d034cc9b9da223765dc91107e13e17b4f1706d730390f",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api_checks": 145,
+        "browser_checks": 17,
+        "reports": "/home/zhang/.local/state/specforge-core/generic-ui-recipe_management-20261027/independent-release-ui-final",
+        "container_and_volume_cleanup_confirmed": true
+      }
+    }
+  ],
+  "visual": {
+    "method": "manual template comparison plus DOM layout checks",
+    "desktop": [
+      1280,
+      800
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "themes": [
+      "light-orange",
+      "dark-orange"
+    ],
+    "metrics": [
+      {
+        "fullscreen": true,
+        "height": 844,
+        "saveBottom": 828,
+        "saveTop": 792,
+        "scrollWidth": 385,
+        "state": "dark-mobile-editor",
+        "width": 390
+      },
+      {
+        "fullscreen": true,
+        "height": 844,
+        "saveBottom": 828,
+        "saveTop": 792,
+        "scrollWidth": 385,
+        "state": "light-mobile-editor",
+        "width": 390
+      }
+    ],
+    "screenshots": "/mnt/e/Project/Zhang/openclaw-codegen/artifacts/admin-platform/generic-ui-20261027",
+    "statistics_four_condition_review": "PASS",
+    "automatic_visual_similarity_gate": false
+  },
+  "demo": {
+    "url": "http://127.0.0.1:13795/business/recipes",
+    "run_id": "20261027T085633-bd73a3181a",
+    "frontend_only": true,
+    "database_recreated": false
+  },
+  "github_pushed": false
+}
