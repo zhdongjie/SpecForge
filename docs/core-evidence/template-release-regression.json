@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-27",
+  "status": "PASS",
+  "template_git": "8a5e9cfcb227a6cc5c823876ba154ce197fdbf0d",
+  "template_path": "/mnt/e/Project/Zhang/openclaw-codegen/exports/github/springboot3-vue3-vuetify-admin-template",
+  "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+  "run_id": "20261027T063659-428b8db646",
+  "generator_code_changed": false,
+  "generation_checks": {
+    "api": "PASS",
+    "backend": "PASS",
+    "browser": "PASS",
+    "compose": "PASS",
+    "frontend": "PASS"
+  },
+  "api_checks": 145,
+  "browser_checks": 13,
+  "requirements": 12,
+  "independent_api_checks": 145,
+  "independent_browser_checks": 13,
+  "independent_deployment": {
+    "api": "PASS",
+    "archive": "PASS",
+    "browser": "PASS",
+    "cleanup": "PASS",
+    "compose": "PASS",
+    "mounts": "PASS"
+  },
+  "archive": "/home/zhang/.local/state/specforge-core/template-release-regression-20261027/releases/recipe_management-20261027T063659-428b8db646.zip",
+  "archive_sha256": "a7e4640b4355afe100de43e372ca6161cfd70c4516eb5ce730873721c9ca3e7e",
+  "temporary_resources_cleaned": true,
+  "github_pushed": false
+}

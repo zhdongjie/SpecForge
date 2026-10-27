@@ -35,6 +35,8 @@ python3 -m specforge run \
 
 ## 文档与验证
 
+- [发布模板端到端回归](docs/TEMPLATE_RELEASE_REGRESSION.md)
+
 - [食谱管理系统：真实项目规格与运行](docs/RECIPE_PROJECT.md)
 
 - [工程知识库：规则、决策与排错](docs/knowledge/README.md)
