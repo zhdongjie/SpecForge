@@ -24,6 +24,8 @@
 - [T-006 混合事务回滚](troubleshooting/mixed-transactions.md)
 - [T-007 上传 MIME 策略适配](troubleshooting/upload-mime.md)
 
+- [C-007 生成页面UI一致性](contracts/ui-consistency.md)
+
 ## 维护方式
 
 先判断知识归属，再更新对应条目。合同是当前规则唯一说明；决策记录问题、方案、代价与重新评估条件；排错记录现象、根因、处理与验证。新条目沿用分类编号，包含状态、适用范围、最近验证日期、代码与证据链接。未经证实的推测标为待验证。
