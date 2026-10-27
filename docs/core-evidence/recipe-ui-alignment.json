@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-27",
+  "status": "RECIPE_MAIN_FLOW_ALIGNED_GENERIC_PENDING",
+  "run_id": "20261027T083101-a1f817dadc",
+  "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+  "template_git": "28a93f84c939a7848c943e3bb2b40b6278fea6d9",
+  "archive": "/home/zhang/.local/state/specforge-core/recipe-ui-alignment-20261027/releases/recipe_management-20261027T083101-a1f817dadc.zip",
+  "archive_sha256": "4992f1366f4c7e65628df1e11f0635d66e90b097b8e72a9427ab47f65ead9af8",
+  "generation": {
+    "status": "PASS",
+    "api_checks": 145,
+    "browser_status": "PASS",
+    "browser_checks": 16
+  },
+  "independent_release": {
+    "status": "PASS",
+    "checks": {
+      "api": "PASS",
+      "archive": "PASS",
+      "browser": "PASS",
+      "cleanup": "PASS",
+      "compose": "PASS",
+      "mounts": "PASS"
+    },
+    "api_checks": 145,
+    "browser_checks": 16
+  },
+  "visual": {
+    "method": "manual same-viewport theme comparison and DOM layout checks",
+    "desktop": [
+      1280,
+      800
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "themes": [
+      "light-orange",
+      "dark-orange"
+    ],
+    "metrics": [
+      {
+        "fullscreen": true,
+        "height": 844,
+        "saveBottom": 828,
+        "saveTop": 792,
+        "scrollWidth": 390,
+        "state": "mobile-dark-form",
+        "width": 390
+      },
+      {
+        "fullscreen": true,
+        "height": 844,
+        "saveBottom": 828,
+        "saveTop": 792,
+        "scrollWidth": 390,
+        "state": "mobile-light-form",
+        "width": 390
+      }
+    ],
+    "screenshot_directory": "E:/Project/Zhang/openclaw-codegen/artifacts/admin-platform/customer-review-20261027",
+    "automatic_similarity_gate": false
+  },
+  "remaining": [
+    "BusinessPanel generic CRUD and category administration style alignment",
+    "Full customer exploratory review outside recipe workflow"
+  ],
+  "demo": {
+    "url": "http://127.0.0.1:13795/business/recipes",
+    "frontend_only_update": true,
+    "database_recreated": false,
+    "github_pushed": false
+  }
+}

@@ -11,6 +11,16 @@ const fs = require("fs"),
     );
     await author.getByRole("button", { name: "发布菜谱", exact: true }).click();
     let dialog = author.getByRole("dialog");
+    await dialog.getByRole("button", { name: "保存草稿", exact: true }).click();
+    await visible(dialog.getByText("请检查标红字段后再保存", { exact: true }));
+    assert.ok(
+      (await dialog.getByText("请填写此项", { exact: true }).count()) >= 4,
+    );
+    mark("empty draft stays open with explicit field validation");
+    await dialog.getByRole("button", { name: "取消", exact: true }).click();
+    await absent(author.getByText("请检查标红字段后再保存", { exact: true }));
+    await author.getByRole("button", { name: "发布菜谱", exact: true }).click();
+    dialog = author.getByRole("dialog");
     await dialog.getByLabel("菜名", { exact: true }).fill(cfg.recipe_title);
     await dialog
       .getByLabel("简介", { exact: true })
@@ -27,12 +37,14 @@ const fs = require("fs"),
     await dialog
       .getByLabel("步骤 2", { exact: true })
       .fill("热锅炒熟鸡蛋，加入番茄翻炒，加盐调味。");
-    await dialog.getByTestId("cover-upload").setInputFiles({
+    await dialog.locator('input[type="file"]').setInputFiles({
       name: "browser-cover.png",
       mimeType: "image/png",
       buffer: Buffer.from(cfg.png_fixture, "base64"),
     });
-    const previewImage = dialog.getByTestId("cover-preview");
+    const previewImage = dialog
+      .getByTestId("cover-preview")
+      .locator("img.v-img__img");
     await previewImage.waitFor({ state: "visible" });
     await previewImage.evaluate((img) => img.decode());
     assert.ok(await previewImage.evaluate((img) => img.naturalWidth > 0));
@@ -85,17 +97,29 @@ const fs = require("fs"),
     mark("reader searches published recipe and favorites it");
     await author.getByRole("button", { name: "我的发布", exact: true }).click();
     card = author.locator("article").filter({ hasText: cfg.recipe_title });
+    await card.getByRole("button", { name: "删除", exact: true }).click();
+    const deletion = author.getByRole("dialog");
+    await visible(
+      deletion.getByRole("button", { name: "确认删除", exact: true }),
+    );
+    await deletion.getByRole("button", { name: "取消", exact: true }).click();
+    await absent(deletion);
+    await visible(card);
+    mark("template delete confirmation can cancel without deleting recipe");
     await card.getByRole("button", { name: "编辑", exact: true }).click();
     dialog = author.getByRole("dialog");
     assert.equal(
       await dialog.getByLabel("食材名称 2", { exact: true }).inputValue(),
       "鸡蛋",
     );
-    await visible(dialog.getByTestId("cover-preview"));
+    await visible(
+      dialog.getByTestId("cover-preview").locator("img.v-img__img"),
+    );
     const previousCover = await dialog
       .getByTestId("cover-preview")
+      .locator("img.v-img__img")
       .getAttribute("src");
-    await dialog.getByTestId("cover-upload").setInputFiles({
+    await dialog.locator('input[type="file"]').setInputFiles({
       name: "replacement.png",
       mimeType: "image/png",
       buffer: Buffer.from(cfg.png_fixture, "base64"),
@@ -103,11 +127,14 @@ const fs = require("fs"),
     await author.waitForFunction(
       (previous) =>
         document
-          .querySelector('[data-testid="cover-preview"]')
+          .querySelector('[data-testid="cover-preview"] img.v-img__img')
           ?.getAttribute("src") !== previous,
       previousCover,
     );
-    await dialog.getByTestId("cover-preview").evaluate((img) => img.decode());
+    await dialog
+      .getByTestId("cover-preview")
+      .locator("img.v-img__img")
+      .evaluate((img) => img.decode());
     mark("author reopens and replaces uploaded cover");
     await dialog
       .getByLabel("简介", { exact: true })
@@ -193,7 +220,9 @@ const fs = require("fs"),
     await reader.setViewportSize({ width: 390, height: 844 });
     await reader.waitForFunction(
       () =>
-        document.querySelector(".recipe-shell").getBoundingClientRect().width >=
+        document
+          .querySelector('[data-testid="recipe-panel"]')
+          .getBoundingClientRect().width >=
         window.innerWidth - 64,
     );
     await reader.screenshot({
@@ -206,6 +235,30 @@ const fs = require("fs"),
       ),
     );
     mark("mobile recipe discovery has no horizontal overflow");
+    await author.setViewportSize({ width: 390, height: 844 });
+    await author.getByRole("button", { name: "发布菜谱", exact: true }).click();
+    const mobileEditor = author.getByRole("dialog");
+    await visible(
+      mobileEditor.getByRole("button", { name: "保存草稿", exact: true }),
+    );
+    assert.ok(
+      await author.evaluate(
+        () => document.querySelector(".v-dialog--fullscreen") !== null,
+      ),
+    );
+    assert.ok(
+      await author.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth + 1,
+      ),
+    );
+    await author.screenshot({
+      path: path.join(cfg.reports, "browser-recipe-editor-mobile.png"),
+      fullPage: true,
+    });
+    await mobileEditor
+      .getByRole("button", { name: "取消", exact: true })
+      .click();
+    mark("mobile editor is fullscreen with reachable cancel and save actions");
   });
 })().catch((error) => {
   console.error(error);
