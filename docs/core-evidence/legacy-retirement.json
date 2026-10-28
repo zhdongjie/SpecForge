@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "status": "PASS",
+  "status": "RETIRED_AND_PUBLISHED",
   "version": "0.2.0",
   "decision": "old scheme removed; standalone core only",
   "retired_tracked_files": 516,
@@ -69,5 +69,12 @@
     "89e3477"
   ],
   "external_source_pushed": false,
-  "legacy_modules_in_wheel": false
+  "legacy_modules_in_wheel": false,
+  "release_url": "https://github.com/zhdongjie/SpecForge/releases/tag/v0.2.0",
+  "release_commit": "efa1e046cb334cbdfc5b4e468abbd86aa0e4b703",
+  "release_receipt": "refs/tags/release-receipt/v0.2.0",
+  "release_download_checksum_verification": "PASS",
+  "source_archive_matches_remote_checksum": true,
+  "source_archive_retired_roots_absent": true,
+  "current_tracked_files": 118
 }
