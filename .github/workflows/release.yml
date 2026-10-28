@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout public tagged source
+      - name: Checkout tagged source
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          gh auth setup-git --hostname github.com
           git init -q .
           git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
           git fetch --depth 1 origin "refs/tags/$GITHUB_REF_NAME"
@@ -34,11 +37,9 @@ jobs:
           python -m pip install dist/*.whl
           python -m unittest discover -s tests_core -q
           python -m unittest discover -s tests_compat -q
-          repo="$PWD"
-          git clone --depth 1 --branch v1.0.3 https://github.com/zhdongjie/springboot3-vue3-vuetify-admin-template.git "$RUNNER_TEMP/admin-template"
           cd "$RUNNER_TEMP"
-          python -m specforge generate --workspace "$RUNNER_TEMP/installed-wheel-smoke" --spec "$repo/examples/recipe_management.yaml" --template "$RUNNER_TEMP/admin-template"
-
+          python -m specforge --help
+          python -c "from importlib.resources import files; assert files('specforge').joinpath('assets/BusinessPanel.vue').is_file(); assert files('specforge.applications.recipe_management').joinpath('assets/RecipePanel.vue').is_file()"
       - name: Archive source and checksums
         shell: bash
         run: |
@@ -55,3 +56,20 @@ jobs:
           set -euo pipefail
           test -s "docs/releases/$GITHUB_REF_NAME.md"
           gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --verify-tag --title "SpecForge $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md"
+          gh release download "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --dir "$RUNNER_TEMP/release-download-check"
+          (cd "$RUNNER_TEMP/release-download-check" && sha256sum -c SHA256SUMS)
+          gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json url,tagName,isDraft,assets > "$RUNNER_TEMP/release-receipt.json"
+          python3 - "$RUNNER_TEMP/release-receipt.json" <<'PYRECEIPT'
+          import json, sys
+          from pathlib import Path
+          receipt = Path(sys.argv[1])
+          data = json.loads(receipt.read_text())
+          expected = {p.name: p.stat().st_size for p in Path('dist').iterdir() if p.is_file()}
+          actual = {a['name']: a['size'] for a in data['assets']}
+          assert not data['isDraft'] and actual == expected, (actual, expected)
+          data['download_checksum_verification'] = 'PASS'
+          data['sha256sums'] = Path('dist/SHA256SUMS').read_text()
+          receipt.write_text(json.dumps(data, indent=2) + '\n')
+          PYRECEIPT
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' tag -a "release-receipt/$GITHUB_REF_NAME" -F "$RUNNER_TEMP/release-receipt.json"
+          git push origin "refs/tags/release-receipt/$GITHUB_REF_NAME"

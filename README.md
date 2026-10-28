@@ -1,6 +1,6 @@
 # SpecForge
 
-当前独立核心版本：[v0.1.0](docs/releases/v0.1.0.md)。使用本版本标签或 `codex/core-v0.1.0` 发布分支；远端 master 保留历史旧运行时。
+当前独立核心版本：[v0.1.1](docs/releases/v0.1.1.md)。使用本版本标签或 `codex/core-v0.1` 发布分支；远端 master 保留历史旧运行时。
 
 基于明确业务规格和后台模板生成可独立部署的前后端项目。新项目统一使用 `python -m specforge`；当前提供设备借用、图书借阅验收样板和食谱管理真实应用扩展。
 
