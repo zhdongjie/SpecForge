@@ -1,5 +1,7 @@
 # 发布状态
 
+> v0.1.x发布历史。当前旧方案已退役，默认分支仅维护新版，见 [退役说明](LEGACY_RETIRED.md)。
+
 2026-10-28。正式发布并核实：
 
 - [SpecForge v0.1.1](https://github.com/zhdongjie/SpecForge/releases/tag/v0.1.1)：核心wheel、源码zip、SHA256SUMS。

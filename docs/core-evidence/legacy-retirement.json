@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-28",
+  "status": "PASS",
+  "version": "0.2.0",
+  "decision": "old scheme removed; standalone core only",
+  "retired_tracked_files": 516,
+  "retired_roots": {
+    "specforge-runtime": 263,
+    "backend": 217,
+    "skills": 34,
+    "tests_compat": 2
+  },
+  "before_commit": "9337dacbbed22a70cf67c166774b9919b4cbfc0c",
+  "private_archive_data_preserved": true,
+  "archive_uploaded": false,
+  "core_tests": 97,
+  "legacy_compatibility_tests": "removed intentionally",
+  "external_retirement_checks": 3,
+  "generation_regressions": [
+    {
+      "spec": "device_borrow",
+      "run_id": "20261028T081823-09bed1d21d",
+      "previous_integrated_run": "20261027T085631-d625aed9a8",
+      "identical_production_files": 436,
+      "status": "PASS"
+    },
+    {
+      "spec": "book_lending",
+      "run_id": "20261028T081829-06b3c7d34b",
+      "previous_integrated_run": "20261027T085852-70e78c9180",
+      "identical_production_files": 436,
+      "status": "PASS"
+    },
+    {
+      "spec": "book_fields_v1",
+      "run_id": "20261028T081846-1dcfa87b8e",
+      "previous_integrated_run": "20261027T085631-cd2f6bf2b7",
+      "identical_production_files": 436,
+      "status": "PASS"
+    },
+    {
+      "spec": "book_fields_v2",
+      "run_id": "20261028T081903-b4ae96f2cf",
+      "previous_integrated_run": "20261027T085852-6cd3e2ee45",
+      "identical_production_files": 436,
+      "status": "PASS"
+    },
+    {
+      "spec": "recipe_management",
+      "run_id": "20261028T081921-ea50a7759e",
+      "previous_integrated_run": "20261027T085633-bd73a3181a",
+      "identical_production_files": 445,
+      "status": "PASS"
+    }
+  ],
+  "comparison_excludes_generated_declarations": [
+    "auto-import.d.ts",
+    "components.d.ts"
+  ],
+  "external_workers_restarted": false,
+  "external_calls_triggered": false
+}

@@ -1,6 +1,0 @@
-scenario_id: artifact-conflict
-scenario_kind: runtime-execution
-graph_file: generation-task-graph.yaml
-expected:
-  runtime_error: true
-  conflict_code: artifact-ownership-conflict

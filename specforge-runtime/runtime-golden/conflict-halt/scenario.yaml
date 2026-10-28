@@ -1,4 +1,0 @@
-scenario_id: conflict-halt
-execution_kind: fresh
-expected_success: false
-max_workers: 2

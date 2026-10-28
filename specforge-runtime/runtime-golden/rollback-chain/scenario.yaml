@@ -1,7 +1,0 @@
-scenario_id: rollback-chain
-execution_kind: fresh
-expected_success: false
-max_workers: 3
-inject_failure:
-  - T8-generate-dictionary-type-resource:validation:1:rollback_chain
-  - T8-generate-dictionary-type-resource:validation:2:rollback_chain

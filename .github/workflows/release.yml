@@ -36,7 +36,6 @@ jobs:
           python -m pip wheel --no-deps --no-build-isolation --wheel-dir dist .
           python -m pip install dist/*.whl
           python -m unittest discover -s tests_core -q
-          python -m unittest discover -s tests_compat -q
           cd "$RUNNER_TEMP"
           python -m specforge --help
           python -c "from importlib.resources import files; assert files('specforge').joinpath('assets/BusinessPanel.vue').is_file(); assert files('specforge.applications.recipe_management').joinpath('assets/RecipePanel.vue').is_file()"

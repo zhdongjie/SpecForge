@@ -1,6 +1,6 @@
 # SpecForge core v1 操作入口
 
-新项目使用独立 `specforge` 包；旧运行时冻结兼容。当前已验证设备借用、图书借阅及显式食谱应用。样板历史见 [第二业务验收](CORE_V1_SECOND_BUSINESS.md)，真实应用见 [食谱项目](RECIPE_PROJECT.md)。当前规则以 [工程知识库](knowledge/README.md) 为准。
+新项目使用独立 `specforge` 包；旧运行时已退役，当前仅保留新核心。当前已验证设备借用、图书借阅及显式食谱应用。样板历史见 [第二业务验收](CORE_V1_SECOND_BUSINESS.md)，真实应用见 [食谱项目](RECIPE_PROJECT.md)。当前规则以 [工程知识库](knowledge/README.md) 为准。
 
 ## 安装与运行
 
@@ -9,7 +9,6 @@
 ```bash
 python3 -m pip install -e .
 python3 -m unittest discover -s tests_core -v
-python3 -m unittest discover -s tests_compat -v
 python3 -m specforge run --workspace /absolute/workspace/device-borrow --spec examples/device_borrow.yaml --template /absolute/path/to/admin-platform --acceptance-pack device-borrow
 ```
 
@@ -62,7 +61,7 @@ Credentials pass via stdin, never command-line arguments. The adapter stages its
 - [模板扩展](knowledge/contracts/template.md)
 - [工作区与交付](knowledge/contracts/workspace-release.md)
 - [验证和修复](knowledge/contracts/verification-repair.md)
-- [旧资产兼容与历史测试](LEGACY_MIGRATION.md)
+- [旧方案已退役](LEGACY_RETIRED.md)
 
 
 ## 固定字段变更验收

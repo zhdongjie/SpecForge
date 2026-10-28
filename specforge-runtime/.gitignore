@@ -1,7 +1,0 @@
-runs/
-outputs/
-__pycache__/
-benchmark-summary.yaml
-regression-summary.yaml
-.mypy_cache/
-.ruff_cache/

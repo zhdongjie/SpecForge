@@ -1,5 +1,7 @@
 > 历史归档：2026-05 旧版操作合同。新版入口见 [当前 README](../../README.md)。旧命令仅用于兼容调用。
 
+> 历史记录：旧方案已于2026-10-28退役。下文中的旧路径、兼容承诺和命令仅反映当时状态，当前不可执行。
+
 # SpecForge Workspace Layout
 
 This file defines the repository-level directory contract.

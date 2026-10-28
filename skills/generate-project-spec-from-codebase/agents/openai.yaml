@@ -1,4 +1,0 @@
-interface:
-  display_name: "Generate Project Spec From Codebase"
-  short_description: "Extract YAML specs from Spring Boot + Vue3 repos"
-  default_prompt: "Analyze this Spring Boot and Vue3 repository and return only the YAML project specification needed to regenerate it from scratch."

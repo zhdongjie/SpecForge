@@ -1,5 +1,0 @@
-scenario_id: replay-divergence
-scenario_kind: replay-regression
-expected:
-  passed: false
-  finding_code: replay-match-failed

@@ -1,4 +1,0 @@
-scenario_id: scheduler-stress
-execution_kind: fresh
-expected_success: true
-max_workers: 4

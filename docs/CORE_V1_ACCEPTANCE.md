@@ -1,5 +1,7 @@
 # SpecForge 精简核心 v1 实施记录
 
+> 历史记录：旧方案已于2026-10-28退役。下文中的旧路径、兼容承诺和命令仅反映当时状态，当前不可执行。
+
 已在 `/home/zhang/projects/ai/SpecForge` 并行实现新版，旧运行时、共享规格和旧技能入口保持原样。模板维护源仍是 `E:/Project/Zhang/openclaw-codegen/templates/admin-platform`。
 
 ## 验收结果

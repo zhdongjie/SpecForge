@@ -1,8 +1,0 @@
-scenario_id: rollback-chain
-scenario_kind: runtime-execution
-expected:
-  runtime_error: true
-  invalidation_reason: downstream-invalidation
-inject_failure:
-  - T8-generate-dictionary-type-resource:validation:1:rollback_chain
-  - T8-generate-dictionary-type-resource:validation:2:rollback_chain
