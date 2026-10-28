@@ -1,0 +1,57 @@
+name: Publish tagged release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.repository == 'zhdongjie/SpecForge'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout public tagged source
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          git init -q .
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          git fetch --depth 1 origin "refs/tags/$GITHUB_REF_NAME"
+          git checkout --detach -q FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Build, install and test core package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/specforge-build"
+          export PATH="$RUNNER_TEMP/specforge-build/bin:$PATH"
+          python -m pip install --upgrade pip 'setuptools>=68' wheel
+          python -m pip wheel --no-deps --no-build-isolation --wheel-dir dist .
+          python -m pip install dist/*.whl
+          python -m unittest discover -s tests_core -q
+          python -m unittest discover -s tests_compat -q
+          repo="$PWD"
+          git clone --depth 1 --branch v1.0.3 https://github.com/zhdongjie/springboot3-vue3-vuetify-admin-template.git "$RUNNER_TEMP/admin-template"
+          cd "$RUNNER_TEMP"
+          python -m specforge generate --workspace "$RUNNER_TEMP/installed-wheel-smoke" --spec "$repo/examples/recipe_management.yaml" --template "$RUNNER_TEMP/admin-template"
+
+      - name: Archive source and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive --format=zip --prefix="SpecForge-$GITHUB_REF_NAME/" HEAD -o "dist/SpecForge-$GITHUB_REF_NAME-source.zip"
+          cd dist
+          sha256sum * > SHA256SUMS
+      - name: Publish immutable version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "docs/releases/$GITHUB_REF_NAME.md"
+          gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --verify-tag --title "SpecForge $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md"

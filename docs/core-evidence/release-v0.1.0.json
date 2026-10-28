@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-28",
+  "version": "0.1.0",
+  "status": "PASS",
+  "core_tests": 97,
+  "compatibility_tests": 9,
+  "wheel_install_and_generate": "PASS",
+  "local_wheel_sha256": "275b54c83b343c4623053c3558e77729922321c5501cc00de665aa0f3dda40e8",
+  "template_candidate": "75209f76909fdd3ac3be13ddb9d3868cacfe0db0",
+  "template_runtime_unchanged_from": "8a5e9cfcb227a6cc5c823876ba154ce197fdbf0d",
+  "smoke_run": "20261028T071055-8f13146186",
+  "compared_integrated_run": "20261027T085633-bd73a3181a",
+  "identical_production_files": 445,
+  "excluded_generated_declarations": [
+    "components.d.ts",
+    "auto-import.d.ts"
+  ],
+  "five_integration_and_release_reports": "generic-ui-alignment.json",
+  "customer_review": "../CUSTOMER_ACCEPTANCE_20261028.md",
+  "release_branch": "codex/core-v0.1.0",
+  "remote_master_preserved": true,
+  "known_ux_followups": [
+    "CX-001",
+    "CX-002",
+    "CX-003"
+  ]
+}
