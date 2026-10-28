@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-28",
+  "status": "PUBLISHED_AND_VERIFIED",
+  "releases": [
+    {
+      "project": "SpecForge",
+      "version": "v0.1.1",
+      "commit": "8127ac0e0da98324902dc8eafb23add60fb2e71f",
+      "url": "https://github.com/zhdongjie/SpecForge/releases/tag/v0.1.1",
+      "assets": [
+        {
+          "name": "SHA256SUMS",
+          "size": 198
+        },
+        {
+          "name": "SpecForge-v0.1.1-source.zip",
+          "size": 1031748
+        },
+        {
+          "name": "specforge_core-0.1.1-py3-none-any.whl",
+          "size": 86018
+        }
+      ],
+      "sha256sums": "0176c0039db0e782a7fd3c89c778d558980e8f931901c9789f231a68e21c22a7  SpecForge-v0.1.1-source.zip\nc2d7e9a38757649775518dbb55f8418ff7b44db82292a99ef6a8628bb0a218d5  specforge_core-0.1.1-py3-none-any.whl\n",
+      "source_archive_matches_local_tag": true,
+      "archive_timezone_normalization": "UTC",
+      "download_checksum_verification": "PASS",
+      "receipt_tag": "refs/tags/release-receipt/v0.1.1"
+    },
+    {
+      "project": "admin-platform",
+      "version": "v1.0.4",
+      "commit": "f2ef51669fd446d2cd65243d453124fdcb0d7d30",
+      "url": "https://github.com/zhdongjie/springboot3-vue3-vuetify-admin-template/releases/tag/v1.0.4",
+      "assets": [
+        {
+          "name": "admin-platform-v1.0.4-source.zip",
+          "size": 1189803
+        },
+        {
+          "name": "SHA256SUMS",
+          "size": 99
+        }
+      ],
+      "sha256sums": "3aa888969862c6279011210544dbc2671a085d17ac10b5af132ae73a8188e081  admin-platform-v1.0.4-source.zip\n",
+      "source_archive_matches_local_tag": true,
+      "archive_timezone_normalization": "UTC",
+      "download_checksum_verification": "PASS",
+      "receipt_tag": "refs/tags/release-receipt/v1.0.4"
+    }
+  ],
+  "core_maintenance_branch": "codex/core-v0.1",
+  "legacy_master_preserved": true,
+  "customer_acceptance": "docs/CUSTOMER_ACCEPTANCE_20261028.md",
+  "demo_sample_retained_as_draft": true,
+  "core_tests": 97,
+  "compatibility_tests": 9,
+  "previous_five_system_integration_evidence": "docs/core-evidence/generic-ui-alignment.json",
+  "private_credentials_uploaded": false,
+  "method": "Git normal credential handling and GitHub native GITHUB_TOKEN; no local token extraction"
+}
