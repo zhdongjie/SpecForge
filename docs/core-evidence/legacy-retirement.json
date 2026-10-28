@@ -58,5 +58,16 @@
     "components.d.ts"
   ],
   "external_workers_restarted": false,
-  "external_calls_triggered": false
+  "external_calls_triggered": false,
+  "wheel_install_and_generation": "PASS",
+  "wheel_sha256": "16d979b212b1edca567c05f9e811902c542a21a286f2d7becf6259e887cb4f83",
+  "default_branch": "master",
+  "history_preserving_integration": "ours merge after verifying remote-only changes belong to retired scheme",
+  "integrated_remote_master": "a610f43fe02500f90aa70d4bf68a6c6c0407e151",
+  "external_source_commits": [
+    "49f8f07",
+    "89e3477"
+  ],
+  "external_source_pushed": false,
+  "legacy_modules_in_wheel": false
 }

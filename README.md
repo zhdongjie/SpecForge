@@ -1,6 +1,6 @@
 # SpecForge
 
-当前仅维护新版 `specforge` 核心。旧方案已退役，默认分支统一使用新版；历史标签仅作历史取证。见 [退役说明](docs/LEGACY_RETIRED.md)。
+当前版本：[v0.2.0](docs/releases/v0.2.0.md)。仅维护新版 `specforge` 核心。旧方案已退役，默认分支统一使用新版；历史标签仅作历史取证。见 [退役说明](docs/LEGACY_RETIRED.md)。
 
 基于明确业务规格和后台模板生成可独立部署的前后端项目。新项目统一使用 `python -m specforge`；当前提供设备借用、图书借阅验收样板和食谱管理真实应用扩展。
 
