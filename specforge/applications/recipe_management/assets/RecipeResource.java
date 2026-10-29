@@ -4,14 +4,13 @@ import com.original.core.config.properties.OriginalProperties;
 import com.original.core.domain.vo.PageVo;
 import com.original.core.domain.vo.ResponseVo;
 import com.original.core.enums.FileBusinessType;
-import com.original.core.utils.FileUtils;
 import com.original.core.utils.SecurityUtils;
 import com.original.system.file.manager.FileManager;
 import com.original.system.file.service.FileReferenceService;
+import com.original.system.file.service.ImageValidationService;
 import java.net.URI;
 import java.sql.Statement;
 import java.util.*;
-import javax.imageio.ImageIO;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +31,7 @@ public class RecipeResource {
   private final JdbcTemplate db;
   private final TransactionTemplate tx;
   private final FileManager files;
+  private final ImageValidationService images;
   private final FileReferenceService references;
   private final OriginalProperties properties;
   private static final String COVER_PREFIX = "/api/files";
@@ -41,7 +41,9 @@ public class RecipeResource {
       TransactionManagementConfigurer management,
       FileManager files,
       FileReferenceService references,
-      OriginalProperties properties) {
+      OriginalProperties properties,
+      ImageValidationService images) {
+    this.images = images;
     this.files = files;
     this.references = references;
     this.properties = properties;
@@ -238,29 +240,7 @@ public class RecipeResource {
   public ResponseVo<Map<String, String>> uploadCover(@RequestParam("file") MultipartFile file)
       throws Exception {
     grant("publish");
-    if (file.isEmpty()
-        || file.getSize() > 5L * 1024 * 1024
-        || file.getOriginalFilename() == null
-        || file.getOriginalFilename().length() > 128)
-      throw new IllegalArgumentException("请选择不超过 5MB 的 PNG/JPEG 图片");
-    String mime = FileUtils.getMimeType(file.getBytes(), file.getOriginalFilename());
-    if (!Set.of("image/png", "image/jpeg").contains(mime))
-      throw new IllegalArgumentException("仅支持真实 PNG/JPEG 图片");
-    try (var input = ImageIO.createImageInputStream(file.getInputStream())) {
-      var readers = ImageIO.getImageReaders(input);
-      if (!readers.hasNext()) throw new IllegalArgumentException("图片内容无效");
-      var reader = readers.next();
-      try {
-        reader.setInput(input);
-        int width = reader.getWidth(0), height = reader.getHeight(0);
-        if (width < 1 || height < 1 || width > 4096 || height > 4096 || reader.read(0) == null)
-          throw new IllegalArgumentException("图片尺寸不得超过 4096×4096");
-      } finally {
-        reader.dispose();
-      }
-    } catch (java.io.IOException ex) {
-      throw new IllegalArgumentException("图片内容无效");
-    }
+    images.validate(file, new ImageValidationService.Policy(5L * 1024 * 1024, 4096, 128));
     String uploaded = files.upload(List.of(file)).getData().get(0);
     String prefix = properties.upload().requestUrl();
     if (!uploaded.startsWith(prefix + "/")) throw new IllegalArgumentException("上传服务返回了无效文件路径");

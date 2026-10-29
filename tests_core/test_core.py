@@ -79,6 +79,7 @@ class CoreTests(unittest.TestCase):
         t = root / "template"
         for n in [
             "backend/pom.xml",
+            "backend/src/main/java/com/original/system/file/service/ImageValidationService.java",
             "frontend/pnpm-lock.yaml",
             "frontend/src/stores/user.ts",
             "deploy/compose.yaml",

@@ -90,6 +90,8 @@ def permissions(spec, standard):
 def emit(source):
     from .adaptations import adapt
 
+    if not (source / "backend/src/main/java/com/original/system/file/service/ImageValidationService.java").is_file():
+        raise ValueError("recipe application requires template ImageValidationService capability")
     adapt(source)
     # appConfig is the template's explicit application branding configuration.
     config = source / "frontend/src/appConfig.ts"
