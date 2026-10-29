@@ -5,6 +5,8 @@ import { IconSearch, IconReload, IconPlus, IconX } from "@tabler/icons-vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import { setBackendErrors } from "@/utils/errorApply";
 import request from "@/plugins/axios";
+import { useFileUpload } from "@/composables/useFileUpload";
+const { uploading, uploadFiles } = useFileUpload();
 import { useAuthorities } from "@/composables/useAuthorities";
 type Ingredient = { name: string; amount: string };
 type Recipe = {
@@ -51,7 +53,6 @@ const view = ref("published"),
 const rows = ref<Recipe[]>([]),
   categories = ref<Category[]>([]),
   busy = ref(false),
-  uploading = ref(false),
   error = ref("");
 const editing = ref(false),
   detail = ref<Recipe | null>(null),
@@ -155,26 +156,23 @@ async function edit(row: Recipe) {
   }
 }
 async function uploadCover(value: File | File[] | null) {
-  const file = Array.isArray(value) ? value[0] : value;
-  if (!file) return;
+  if (busy.value || uploading.value) return;
   error.value = "";
-  if (file.size > 5 * 1024 * 1024) {
-    error.value = "图片不能超过 5MB";
-    return;
-  }
-  uploading.value = true;
   try {
-    const form = new FormData();
-    form.append("file", file);
-    draft.value.cover_url = (
-      await request.post<FormData, { url: string }>("/v1/recipes/cover", form)
-    ).data.url;
+    await uploadFiles(value, {
+      maxFiles: 1, existingCount: 0, maxBytes: 5 * 1024 * 1024,
+      acceptedTypes: ["image/png", "image/jpeg"],
+      upload: async (file) => {
+        const form = new FormData(); form.append("file", file);
+        return (await request.post<FormData, { url: string }>("/v1/recipes/cover", form)).data;
+      },
+      onUploaded: (result) => { draft.value.cover_url = result.url; },
+    });
   } catch (e) {
     error.value = (e as Error).message || "封面上传失败";
-  } finally {
-    uploading.value = false;
   }
 }
+
 async function save() {
   if (uploading.value || busy.value) return;
   fieldErrors.value = {};

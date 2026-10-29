@@ -92,6 +92,8 @@ def emit(source):
 
     if not (source / "backend/src/main/java/com/original/system/file/service/ImageValidationService.java").is_file():
         raise ValueError("recipe application requires template ImageValidationService capability")
+    if not (source / "frontend/src/composables/useFileUpload.ts").is_file():
+        raise ValueError("recipe application requires template useFileUpload capability")
     adapt(source)
     # appConfig is the template's explicit application branding configuration.
     config = source / "frontend/src/appConfig.ts"

@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "date": "2026-10-29",
+  "core_tests": 117,
+  "upload_queue_tests": 4,
+  "template_commit": "f49d8c98082468f4eb12fcea1b9ff87f79647800",
+  "workorder_commit": "a1efb26499fe849cfa9e4cf9846407b16200b651",
+  "shared_upload_sha256": "313c288f7d9f17bc8159d3b06efe6df983183405fba00bf8cbea04fbadf9d318",
+  "projects": {
+    "recipe": {
+      "run": "/home/zhang/.local/state/specforge-core/upload-recipe-20261029/runs/20261029T100356-af3faed5e2",
+      "input_manifest": "/home/zhang/.local/state/specforge-core/upload-recipe-20261029/runs/20261029T100356-af3faed5e2/input/identity.json",
+      "source_checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "api_passed": 145,
+      "browser_passed": 18,
+      "new_browser_check": "invalid cover type and size rejected before network upload; valid retry remains available",
+      "archive": "/home/zhang/.local/state/specforge-core/upload-recipe-20261029/releases/recipe_management-20261029T100356-af3faed5e2.zip",
+      "archive_sha256": "ac771e30aa253592e274a9d4acd18f8fcaf0d039504d77789094ef67f1508e3c",
+      "independent_report": "/home/zhang/.local/state/specforge-core/release-checks/upload-recipe-20261029/release.json",
+      "independent_checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      }
+    },
+    "repair": {
+      "run": "/home/zhang/.local/state/specforge-core/upload-repair-20261029/runs/20261029T100356-f4db5f20d4",
+      "input_manifest": "/home/zhang/.local/state/specforge-core/upload-repair-20261029/runs/20261029T100356-f4db5f20d4/input/identity.json",
+      "source_checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "api_passed": 140,
+      "browser_passed": 15,
+      "new_browser_check": "invalid count type and size reject entire selection without requests and allow retry",
+      "archive": "/home/zhang/.local/state/specforge-core/upload-repair-20261029/releases/repair_workorders-20261029T100356-f4db5f20d4.zip",
+      "archive_sha256": "b7c6b3b064ad7006da92b3744fab65001f0a22b70ef586ba04e8e78a738428fb",
+      "independent_report": "/home/zhang/.local/state/specforge-core/upload-repair-20261029/deployment-checks/20261029T100356-f4db5f20d4/release.json",
+      "independent_checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      }
+    }
+  },
+  "visual_scope": "Existing layout retained; sampled template and repair editor screenshots. No automatic visual gate or full new visual certification."
+}

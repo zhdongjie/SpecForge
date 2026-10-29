@@ -83,6 +83,7 @@ class CoreTests(unittest.TestCase):
             "backend/src/main/java/com/original/system/file/service/ImageValidationService.java",
             "backend/src/main/java/com/original/system/file/service/FileLifecycleGuard.java",
             "frontend/pnpm-lock.yaml",
+            "frontend/src/composables/useFileUpload.ts",
             "frontend/src/stores/user.ts",
             "deploy/compose.yaml",
             "backend/src/main/resources/sql/schema.sql",

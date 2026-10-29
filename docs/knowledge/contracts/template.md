@@ -26,3 +26,5 @@ Windows/WSL 包装入口的本机默认值统一为已验证的独立模板仓�
 
 
 生成业务 JDBC 统一注入模板 `com.original.core.service.BusinessJdbcContext`：`jdbc()` 使用 MyBatis 的实际数据源，`transactions()` 返回绑定平台管理器的独立事务模板。禁止业务重新创建 `DataSourceTransactionManager`。模板缺少此类时生成前报错；调用方不得自行替换数据源或管理器。该接入不改变业务隔离级别，也不代替混合调用的故障注入验收。
+
+食谱前端上传显式要求模板 `frontend/src/composables/useFileUpload.ts`；不满足时应用适配前失败。此能力只统一选图校验、串行和加载状态；端点、鉴权、引用、删除与私有预览留在业务。模板权威说明为 docs/template/files.md。

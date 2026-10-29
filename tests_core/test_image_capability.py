@@ -10,3 +10,12 @@ class ImageCapabilityTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"template ImageValidationService"):
                 get_application("recipe-management").emit(source)
             self.assertEqual(list(source.iterdir()), [])
+
+    def test_missing_frontend_upload_capability_fails_before_adaptation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source=Path(temp)
+            image=source/'backend/src/main/java/com/original/system/file/service/ImageValidationService.java'
+            image.parent.mkdir(parents=True);image.write_text('fixture')
+            with self.assertRaisesRegex(ValueError,"template useFileUpload"):
+                get_application("recipe-management").emit(source)
+            self.assertFalse((source/'specforge/adaptations').exists())

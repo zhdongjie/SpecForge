@@ -37,6 +37,14 @@ const fs = require("fs"),
     await dialog
       .getByLabel("步骤 2", { exact: true })
       .fill("热锅炒熟鸡蛋，加入番茄翻炒，加盐调味。");
+    let uploadRequests = 0;
+    author.on("request", req => { if(req.method()==="POST" && req.url().includes("/v1/recipes/cover")) uploadRequests++; });
+    await dialog.locator('input[type="file"]').setInputFiles({name:"bad.txt",mimeType:"text/plain",buffer:Buffer.from("bad")});
+    await visible(dialog.getByText("请选择 PNG/JPEG 图片", {exact:true}));
+    await dialog.locator('input[type="file"]').setInputFiles({name:"large.png",mimeType:"image/png",buffer:Buffer.alloc(5*1024*1024+1)});
+    await visible(dialog.getByText("图片不能超过 5MB", {exact:true}));
+    assert.equal(uploadRequests,0);
+    mark("invalid cover type and size rejected before network upload; valid retry remains available");
     await dialog.locator('input[type="file"]').setInputFiles({
       name: "browser-cover.png",
       mimeType: "image/png",
