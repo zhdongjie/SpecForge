@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-29",
+  "release": "v0.2.1",
+  "source_commit": "ca535e98f411a0646ab4e4332f41b8baedfc67ac",
+  "published_release": {
+    "url": "https://github.com/zhdongjie/SpecForge/releases/tag/v0.2.1",
+    "download_checksums": "PASS",
+    "installed_github_wheel": "PASS",
+    "version": "0.2.1"
+  },
+  "core_tests": {
+    "passed": 109
+  },
+  "workspace": "/home/zhang/.local/state/specforge-core/v021-recipe-regression-20261029",
+  "run_id": "20261029T035234-5fa3d437db",
+  "inputs": {
+    "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+    "template_path": "/mnt/e/Project/Zhang/openclaw-codegen/exports/github/springboot3-vue3-vuetify-admin-template",
+    "template_git": "f2ef51669fd446d2cd65243d453124fdcb0d7d30",
+    "template_file_count": 464,
+    "template_inventory_sha256": "bf653333bdc9681ef602e5f849d4c89507fc23c59c8685d658d54112ff2efa36",
+    "template_unchanged": true
+  },
+  "generation": {
+    "status": "PASS",
+    "checks": {
+      "api": "PASS",
+      "backend": "PASS",
+      "browser": "PASS",
+      "compose": "PASS",
+      "frontend": "PASS"
+    },
+    "api_checks": 145,
+    "browser_steps": 17,
+    "requirements": 12,
+    "reports": "/home/zhang/.local/state/specforge-core/v021-recipe-regression-20261029/runs/20261029T035234-5fa3d437db/reports"
+  },
+  "delivery": {
+    "archive": "/home/zhang/.local/state/specforge-core/v021-recipe-regression-20261029/releases/recipe_management-20261029T035234-5fa3d437db.zip",
+    "run_id": "20261029T035234-5fa3d437db",
+    "sha256": "82bec17586dee472b8d64acc0594dc5472c21fbb4e25c99c8df5b8204bd4b2b3",
+    "status": "PASS"
+  },
+  "independent_deployment": {
+    "status": "PASS",
+    "checks": {
+      "api": "PASS",
+      "archive": "PASS",
+      "browser": "PASS",
+      "cleanup": "PASS",
+      "compose": "PASS",
+      "mounts": "PASS"
+    },
+    "api_checks": 145,
+    "browser_steps": 17,
+    "requirements": 12,
+    "reports": "/home/zhang/.local/state/specforge-core/release-checks/v021-recipe-20261029",
+    "clean_extraction": true,
+    "application_source_rebuilt": false
+  },
+  "determinism": {
+    "template_unchanged": true,
+    "regeneration_equal": true,
+    "generated_runs": [
+      "/home/zhang/.local/state/specforge-core/v021-recipe-determinism-20261029/runs/20261029T035526-c65988c310",
+      "/home/zhang/.local/state/specforge-core/v021-recipe-determinism-20261029/runs/20261029T035544-0c25531f8f"
+    ],
+    "built_source_differences": [
+      "frontend/src/types/components.d.ts"
+    ]
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "recipe application and category screens compared with actual template user list/editor; not a global visual quality claim",
+    "themes": [
+      "light-orange",
+      "dark-orange"
+    ],
+    "viewports": [
+      {
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "states": [
+      "template-list",
+      "template-editor",
+      "recipe-list",
+      "recipe-detail",
+      "recipe-editor",
+      "recipe-error",
+      "recipe-empty",
+      "recipe-statistics",
+      "category-list"
+    ],
+    "screenshots": 36,
+    "screenshot_hashes": {
+      "dark-orange-desktop-category-list.png": "f84a7465c0d90ac73fdbff4b79b58cbd54ff0b16841c6d6e31f819bfe793d902",
+      "dark-orange-desktop-recipe-detail.png": "1d65663eb0f0d3e3e3e21e6d4583b3232e632a5548011db313c3bed0542971ab",
+      "dark-orange-desktop-recipe-editor.png": "894674b35f25b13093b644cc03870a61a4d44e1ff4be687db7ac3b4be2cc7152",
+      "dark-orange-desktop-recipe-empty.png": "a1ea9f86d48ae1dc2aec830ee8e92faf7e2597cacec816cf62ad938f04c7a1b4",
+      "dark-orange-desktop-recipe-error.png": "00188b34e4bcdfa412f348f1b5daee6260f99c51fdaa583ca8e215068e58e49f",
+      "dark-orange-desktop-recipe-list.png": "afd02e1900c3e8d566d55517daa1ce4bd585412576b4055f567a4036b3b9ee57",
+      "dark-orange-desktop-recipe-statistics.png": "ac58d1df867f8a1feceb56efb1602df11fb69a13f1773935b9f535be7aa5e1ad",
+      "dark-orange-desktop-template-editor.png": "d2c3b69207906d29a11f8aa708210e692bef2b75f139f842d56166f788bf7e05",
+      "dark-orange-desktop-template-list.png": "773140ccfd4a4a9f571dc908b31f7ecf62c53f6d3a9293bdedf7c533e6500697",
+      "dark-orange-mobile-category-list.png": "c8b745796356aea9d757048fa84c7f6a506454f27b037dcc7adc86ecb6f7710f",
+      "dark-orange-mobile-recipe-detail.png": "ed13dddc23ba50cdcaeadadd0c283e86e372b4f223dcc60e30849eb85e43235b",
+      "dark-orange-mobile-recipe-editor.png": "65d437af81eb9380209ea7bb026b7824dc62110ef2366dbc1e67604ee925da83",
+      "dark-orange-mobile-recipe-empty.png": "ff3b68ea7bb99d36660655af5e3d0e41d59ea9f676d93b25c96c23bb2c0e3646",
+      "dark-orange-mobile-recipe-error.png": "2489cff3fa143eadbf9bbf4ca0f218642890f0a07073908880fa491acc439286",
+      "dark-orange-mobile-recipe-list.png": "4f431e05a902190bb0b8b08fc72346d8f10b4370aa948fb9bfbc785b873d589c",
+      "dark-orange-mobile-recipe-statistics.png": "a1a5e2bef3e475b3723d8b42d6bcb36b3fed019f01a5fe064d9158ea4664bd77",
+      "dark-orange-mobile-template-editor.png": "73e3e0151efac7518405f6db37dd3fcf4126de74d9a16c0ddf773bb1bd5af2fe",
+      "dark-orange-mobile-template-list.png": "0a4c2dd1e60724b2b1d6894fae72ba3498f28ef33cb783e4718f74267352a03d",
+      "light-orange-desktop-category-list.png": "e8edf2fd16e710ef87634fbbf726624cd449647d79c6bdcf32e54f608b46a2ae",
+      "light-orange-desktop-recipe-detail.png": "e60961d4d8397bcb4522f4f4e685d61386c688fc7f2c7bd825b44f0f69ec7eb1",
+      "light-orange-desktop-recipe-editor.png": "ec8c67b33bfb613c03afa59bb8ec4759954f29bcdc3de2f2346192bea835794b",
+      "light-orange-desktop-recipe-empty.png": "7d8f29ec8aebfbe9ae01406928a22a3c2d98d0f95875b6365b0764cdcba9e2b5",
+      "light-orange-desktop-recipe-error.png": "5317f45113b01e4df9023a4dc32906de0180449308886969040cf3429ec1a237",
+      "light-orange-desktop-recipe-list.png": "ebc175147963f8f22f51c09ba0f3a980deecebf0a914377dc1b9a58aa52d1f01",
+      "light-orange-desktop-recipe-statistics.png": "9b63c784ca8da31be2be076c7484bbf7deb17b3aaf3b13a465c1d3ddd1b9d26d",
+      "light-orange-desktop-template-editor.png": "33b2d6de39c245675ab6db0f3fccbe98f5b2c4a7a41f2520ab1a5bc6208530cd",
+      "light-orange-desktop-template-list.png": "3cc471b9554615b03cde55f6faa698243dcbdf3fd02910479d827e48a98960e3",
+      "light-orange-mobile-category-list.png": "105648cb872d9bac1e298b5876ebf56b37d4ad46b7279af12e5d996539eda247",
+      "light-orange-mobile-recipe-detail.png": "813ed2ade8194a3c8df44b45db015933fa05aefcd32ada8309a0e9bfbe8d45ff",
+      "light-orange-mobile-recipe-editor.png": "077a3369e87fcc4585bb8a10af31de121d21599e8c1624087d3e2dcdae73fa5b",
+      "light-orange-mobile-recipe-empty.png": "728a3ad86cdd04fdd0dc8f833bc3fc7c0563dd47288e660226fb49744fd7f1f7",
+      "light-orange-mobile-recipe-error.png": "398aad612aaa37bb388b75c70c0224b7c2a028681a2b2137d8f7166e7613eaac",
+      "light-orange-mobile-recipe-list.png": "a24aba1a01298ab825c31807876ad50aec098b4b594f9954d44afc6d63ac3264",
+      "light-orange-mobile-recipe-statistics.png": "756b76dac4960f43e7f268a2b2e417c534d8c0d10c92bb0e8ac621ddbdbd3fb1",
+      "light-orange-mobile-template-editor.png": "702d6947360521253195b77aeff1351689a5fd7d5c76d7fec5e50747a7f1a3f1",
+      "light-orange-mobile-template-list.png": "194f3c03c04a67aa13113e82b8ae1895f6373de8536d99b43f35765ddcc69454"
+    },
+    "reports": "/home/zhang/.local/state/specforge-core/release-checks/v021-recipe-20261029/visual",
+    "manual_contact_sheets": "E:/Project/Zhang/openclaw-codegen/artifacts/specforge-v0.2.1/visual",
+    "pixel_similarity_gate": false,
+    "notes": [
+      "uploaded cover is an acceptance fixture, not a real recipe photo",
+      "full-page screenshots include background below fixed mobile dialogs; viewport crops were inspected for fixed action reachability"
+    ]
+  },
+  "cleanup": {
+    "status": "PASS",
+    "projects": [
+      "sf-accept-20261029t035234-5fa3d437db",
+      "sf-accept-release-366ed09ec0ef49ef"
+    ],
+    "containers_volumes_networks_remaining": false,
+    "temporary_credentials_removed": true,
+    "temporary_extraction_removed": true,
+    "existing_demo_untouched": true
+  },
+  "changes_this_round": [
+    "workspace boundary patch released",
+    "package version metadata corrected",
+    "no recipe business or template changes needed in this regression"
+  ]
+}
