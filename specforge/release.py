@@ -1,6 +1,6 @@
 import difflib, hashlib, os, zipfile
 from pathlib import Path
-from .workspace import read_json, write_json, inventory, digest
+from .workspace import read_json, write_json, inventory, digest, validate_workspace
 from .verification import artifact_hashes, verify
 from .errors import RepairNotApplicable, VerificationError
 from .coverage import require_verified_plan
@@ -90,8 +90,8 @@ def repair(run):
 
 
 def package(run, workspace):
+    workspace = validate_workspace(workspace)
     run = Path(run)
-    workspace = Path(workspace)
     source = run / "source"
     report = read_json(run / "reports/verify.json")
     if report.get("status") != "PASS" or set(report.get("checks", {})) != {

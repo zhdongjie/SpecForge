@@ -38,6 +38,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 - 输入：版本 1 YAML 规格和显式模板路径。
 - 流程：validate → generate → verify → repair（已知规则、最多两轮）→ package。
+- 工作区必须与核心源码/包目录及模板隔离，实际路径重叠会在执行前报错；规则见[工作区合同](docs/knowledge/contracts/workspace-release.md)。
 - 输出：指定工作区中的独立 `runs/<run-id>/` 与通过全部验收的 `releases/`。
 - 新核心代码：`specforge/`；固定样例：`examples/`；回归测试：`tests_core/`。
 

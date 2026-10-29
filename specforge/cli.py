@@ -8,7 +8,7 @@ from .acceptance_packs import get_pack
 from .errors import VerificationError, RepairNotApplicable
 from .spec import load
 from .generate import generate
-from .workspace import resolve_run
+from .workspace import resolve_run, validate_workspace
 from .verification import verify
 from .release import package, repair
 
@@ -50,6 +50,7 @@ def main(argv=None):
             q.add_argument("--reuse-build", action="store_true")
     a = parser.parse_args(argv)
     try:
+        a.workspace = validate_workspace(a.workspace, template=getattr(a, "template", None))
         if a.command == "validate":
             load(a.spec)
             out = {"status": "PASS"}

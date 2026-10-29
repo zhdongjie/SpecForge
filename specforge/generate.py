@@ -1,7 +1,7 @@
 import json, shutil
 from pathlib import Path
 from .spec import load, SQL, JAVA, workflow_reference
-from .workspace import inventory, digest, write_json, read_json, git_revision, new_run
+from .workspace import inventory, digest, write_json, read_json, git_revision, new_run, validate_workspace
 
 ASSETS = Path(__file__).parent / "assets"
 
@@ -213,16 +213,10 @@ def sql(s, perms):
 
 
 def generate(spec_path, template, workspace):
+    template = Path(template).expanduser().resolve()
+    workspace = validate_workspace(workspace, template=template)
     spec_path = Path(spec_path).resolve()
     s = load(spec_path)
-    template = Path(template).resolve()
-    workspace = Path(workspace).resolve()
-    if (
-        workspace == template
-        or template in workspace.parents
-        or workspace in template.parents
-    ):
-        raise ValueError("workspace and template must not contain one another")
     required = [
         "backend/pom.xml",
         "frontend/pnpm-lock.yaml",

@@ -15,6 +15,14 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 function Quote-Bash([string]$Value) { return "'" + $Value.Replace("'", "'\''") + "'" }
+# Validate before creating the temporary browser queue or starting a helper.
+if (-not $ReleaseArchive) {
+    $sfGuardCode = 'import sys; from specforge.workspace import validate_workspace; validate_workspace(sys.argv[1], template=sys.argv[2] if len(sys.argv) > 2 else None)'
+    $sfGuard = 'set -e; cd ' + (Quote-Bash $RepoRoot) + '; python3 -c ' + (Quote-Bash $sfGuardCode) + ' ' + (Quote-Bash $Workspace)
+    if (-not $ReuseBuild) { $sfGuard += ' ' + (Quote-Bash $Template) }
+    & wsl.exe -d $Distribution -- bash -lc $sfGuard
+    if ($LASTEXITCODE -ne 0) { throw 'Invalid SpecForge workspace; see path diagnostic above' }
+}
 $sfBundle = Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/node'
 if (-not $Node) { $Node = Join-Path $sfBundle 'bin/node.exe' }
 if (-not $PlaywrightModule) { $PlaywrightModule = Join-Path $sfBundle 'node_modules/playwright' }

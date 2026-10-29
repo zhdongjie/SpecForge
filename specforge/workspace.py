@@ -1,4 +1,5 @@
 import hashlib, json, os, subprocess, uuid, tempfile
+import re
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -23,6 +24,63 @@ EXCLUDED = {
     "secrets",
     "credentials",
 }
+
+
+def _source_checkout(path):
+    """Identify our source tree, not an arbitrary virtualenv or site-packages parent."""
+    if not (path / "specforge/workspace.py").is_file():
+        return False
+    metadata = path / "pyproject.toml"
+    if not metadata.is_file():
+        return False
+    section = re.search(
+        r"(?ms)^\[project\][ \t]*(?:#[^\n]*)?\n(.*?)(?=^\[|\Z)",
+        metadata.read_text(encoding="utf-8-sig"),
+    )
+    return bool(
+        section and re.search(
+            r"(?m)^[ \t]*name[ \t]*=[ \t]*(['\"])specforge-core\1[ \t]*(?:#[^\n]*)?$",
+            section[1],
+        )
+    )
+
+
+def _checkout_ancestor(path):
+    return next((p for p in (path, *path.parents) if _source_checkout(p)), None)
+
+
+def _overlap(left, right):
+    return left == right or left in right.parents or right in left.parents
+
+
+def validate_workspace(workspace, template=None):
+    """Resolve and reject code/template overlap before any workspace writes."""
+    root = Path(workspace).expanduser().resolve()
+    package = Path(__file__).resolve().parent
+    protected = {_checkout_ancestor(package) or package}
+    # Also recognize a source checkout when invoking an installed wheel from it,
+    # or when the requested workspace points into another checkout.
+    for location in (Path.cwd().resolve(), root):
+        checkout = _checkout_ancestor(location)
+        if checkout is not None:
+            protected.add(checkout)
+    for code in sorted(protected):
+        if _overlap(root, code):
+            raise ValueError(
+                "workspace must be outside SpecForge code and must not contain it: "
+                f"{root} (protected: {code})"
+            )
+    if template is not None and _overlap(root, Path(template).expanduser().resolve()):
+        raise ValueError("workspace and template must not contain one another")
+    if root.exists() and not root.is_dir():
+        raise ValueError("workspace must be a directory: " + str(root))
+    for name in ("runs", "releases"):
+        managed = root / name
+        if managed.resolve() != managed:
+            raise ValueError(
+                "workspace managed directory must not be a symlink or junction: " + str(managed)
+            )
+    return root
 
 
 def allowed(p):
@@ -119,7 +177,7 @@ def git_revision(root):
 
 
 def new_run(workspace):
-    workspace = Path(workspace).resolve()
+    workspace = validate_workspace(workspace)
     workspace.mkdir(parents=True, exist_ok=True)
     run = (
         workspace
@@ -137,7 +195,7 @@ def new_run(workspace):
 
 
 def resolve_run(workspace, run_id=None):
-    root = Path(workspace).resolve()
+    root = validate_workspace(workspace)
     run_id = run_id or read_json(root / "latest.json")["run_id"]
     if (
         not isinstance(run_id, str)
