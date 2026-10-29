@@ -23,3 +23,6 @@ Windows/WSL 包装入口的本机默认值统一为已验证的独立模板仓�
 2026-10-29食谱接入模板共享ImageValidationService；要求显式模板包含该服务，缺失即停止，不复制后备实现。业务仍决定公开/私有存储、访问权限和引用，能力接口权威说明在模板docs/template/files.md。实际职责和两项目回归见[复用审计](../../REUSE_COST_AUDIT.md)。
 
 后续文件生命周期复用要求模板提供FileLifecycleGuard、共享引用写入和独立清理事务；食谱与工单不再改写清理器。模板实现与接口说明仍以其docs/template/files.md为准，验证及减少的改写点见[第二轮复用](../../FILE_LIFECYCLE_REUSE.md)。
+
+
+生成业务 JDBC 统一注入模板 `com.original.core.service.BusinessJdbcContext`：`jdbc()` 使用 MyBatis 的实际数据源，`transactions()` 返回绑定平台管理器的独立事务模板。禁止业务重新创建 `DataSourceTransactionManager`。模板缺少此类时生成前报错；调用方不得自行替换数据源或管理器。该接入不改变业务隔离级别，也不代替混合调用的故障注入验收。

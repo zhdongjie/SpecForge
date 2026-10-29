@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.original.core.domain.vo.PageVo;
 import com.original.core.domain.vo.ResponseVo;
+import com.original.core.service.BusinessJdbcContext;
 import com.original.core.utils.SecurityUtils;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -12,7 +13,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,11 +28,9 @@ public class BusinessResource {
   private final TransactionTemplate transactions;
   private final Map<String, Map<String, Object>> entities = new LinkedHashMap<>();
 
-  public BusinessResource(JdbcTemplate db, ObjectMapper mapper) throws Exception {
-    this.db = db;
-    this.transactions =
-        new TransactionTemplate(
-            new DataSourceTransactionManager(Objects.requireNonNull(db.getDataSource())));
+  public BusinessResource(BusinessJdbcContext context, ObjectMapper mapper) throws Exception {
+    this.db = context.jdbc();
+    this.transactions = context.transactions();
     try (var input = new ClassPathResource("specforge/entities.json").getInputStream()) {
       List<Map<String, Object>> specs = mapper.readValue(input, new TypeReference<>() {});
       for (var e : specs) entities.put((String) e.get("name"), e);

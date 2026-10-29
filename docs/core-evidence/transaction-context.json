@@ -1,0 +1,128 @@
+{
+  "status": "PASS",
+  "date": "2026-10-29",
+  "core_tests": 116,
+  "template_tests": {
+    "tests": 25,
+    "skipped": 0,
+    "failures": 0
+  },
+  "template_commit": "63d9fa033641fb990356fe56cd78688acab607ee",
+  "workorder_commit": "113ff7aea457f7772962032387902ba7f2143766",
+  "projects": {
+    "device": {
+      "run": "/home/zhang/.local/state/specforge-core/tx-device-20261029/runs/20261029T095222-aac807ade7",
+      "spec_sha256": "f57f5476cc26429c1f5526fdcd5ae873f7fad5e788ca5a2410ed45cad2f4b0fa",
+      "template_base_commit_at_generation": "c39cd4372a79a2b66af74236f910caacac320f0e",
+      "template_manifest_report": "/home/zhang/.local/state/specforge-core/tx-device-20261029/runs/20261029T095222-aac807ade7/input/identity.json",
+      "shared_context_sha256": "e50426dba54539bb2f2f98e4b222a20dc19b4c22c1c8758b727c172ee3c5bea8",
+      "source_checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "api_passed": 45,
+      "browser_passed": 8,
+      "archive": "/home/zhang/.local/state/specforge-core/tx-device-20261029/releases/device_borrow-20261029T095222-aac807ade7.zip",
+      "archive_sha256": "a74e62386ff6bd8c2273c0c08cac9de55dd617b4faab3f43e96049e08ac45c27",
+      "independent_report": "/home/zhang/.local/state/specforge-core/release-checks/tx-device-20261029/release.json",
+      "independent_checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      }
+    },
+    "book": {
+      "run": "/home/zhang/.local/state/specforge-core/tx-book-20261029/runs/20261029T095431-a4cd2df49d",
+      "spec_sha256": "53410a5869cb37f2fe37bdced79edc852d34821a5b1b08682f3cc7e6f7c3ee74",
+      "template_base_commit_at_generation": "c39cd4372a79a2b66af74236f910caacac320f0e",
+      "template_manifest_report": "/home/zhang/.local/state/specforge-core/tx-book-20261029/runs/20261029T095431-a4cd2df49d/input/identity.json",
+      "shared_context_sha256": "e50426dba54539bb2f2f98e4b222a20dc19b4c22c1c8758b727c172ee3c5bea8",
+      "source_checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "api_passed": 77,
+      "browser_passed": 7,
+      "archive": "/home/zhang/.local/state/specforge-core/tx-book-20261029/releases/book_lending-20261029T095431-a4cd2df49d.zip",
+      "archive_sha256": "d82e94076df0e8679fbc499019c23fac26a1a2a2f9f6b6d65be982c75bcc7779",
+      "independent_report": "/home/zhang/.local/state/specforge-core/release-checks/tx-book-20261029/release.json",
+      "independent_checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      }
+    },
+    "recipe": {
+      "run": "/home/zhang/.local/state/specforge-core/tx-recipe-20261029/runs/20261029T095136-5e7e2fc4c9",
+      "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+      "template_base_commit_at_generation": "c39cd4372a79a2b66af74236f910caacac320f0e",
+      "template_manifest_report": "/home/zhang/.local/state/specforge-core/tx-recipe-20261029/runs/20261029T095136-5e7e2fc4c9/input/identity.json",
+      "shared_context_sha256": "e50426dba54539bb2f2f98e4b222a20dc19b4c22c1c8758b727c172ee3c5bea8",
+      "source_checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "api_passed": 145,
+      "browser_passed": 17,
+      "archive": "/home/zhang/.local/state/specforge-core/tx-recipe-20261029/releases/recipe_management-20261029T095136-5e7e2fc4c9.zip",
+      "archive_sha256": "8b084c53d81d0ffad34d871e3863543d937bf71045e6a1e2de426c375eba29c9",
+      "independent_report": "/home/zhang/.local/state/specforge-core/release-checks/tx-recipe-20261029/release.json",
+      "independent_checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      }
+    },
+    "repair": {
+      "run": "/home/zhang/.local/state/specforge-core/tx-repair-20261029/runs/20261029T095136-d82d911fe5",
+      "spec_sha256": "1310d1326459d1e246ff47bfbae2d729b2e3c4e89ab30f9e5ba1983ace9036e5",
+      "template_base_commit_at_generation": "c39cd4372a79a2b66af74236f910caacac320f0e",
+      "template_manifest_report": "/home/zhang/.local/state/specforge-core/tx-repair-20261029/runs/20261029T095136-d82d911fe5/input/identity.json",
+      "shared_context_sha256": "e50426dba54539bb2f2f98e4b222a20dc19b4c22c1c8758b727c172ee3c5bea8",
+      "source_checks": {
+        "api": "PASS",
+        "backend": "PASS",
+        "browser": "PASS",
+        "compose": "PASS",
+        "frontend": "PASS"
+      },
+      "api_passed": 140,
+      "browser_passed": 14,
+      "archive": "/home/zhang/.local/state/specforge-core/tx-repair-20261029/releases/repair_workorders-20261029T095136-d82d911fe5.zip",
+      "archive_sha256": "3a28ab42c3b7d463f9018de150d93adcf4b0a5a1d7e8c287df3a3a691d2e68eb",
+      "independent_report": "/home/zhang/.local/state/specforge-core/tx-repair-20261029/deployment-checks/20261029T095136-d82d911fe5/release.json",
+      "independent_checks": {
+        "api": "PASS",
+        "archive": "PASS",
+        "browser": "PASS",
+        "cleanup": "PASS",
+        "compose": "PASS",
+        "mounts": "PASS"
+      }
+    }
+  },
+  "mysql": {
+    "status": "PASS",
+    "project": "sf-accept-file-lock-c68d27e69f",
+    "volume": "sf-accept-file-lock-c68d27e69f-data",
+    "cleanup": "PASS"
+  }
+}

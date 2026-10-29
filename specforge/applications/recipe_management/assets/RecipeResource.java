@@ -4,6 +4,7 @@ import com.original.core.config.properties.OriginalProperties;
 import com.original.core.domain.vo.PageVo;
 import com.original.core.domain.vo.ResponseVo;
 import com.original.core.enums.FileBusinessType;
+import com.original.core.service.BusinessJdbcContext;
 import com.original.core.utils.SecurityUtils;
 import com.original.system.file.manager.FileManager;
 import com.original.system.file.service.FileReferenceService;
@@ -11,14 +12,12 @@ import com.original.system.file.service.ImageValidationService;
 import java.net.URI;
 import java.sql.Statement;
 import java.util.*;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +36,7 @@ public class RecipeResource {
   private static final String COVER_PREFIX = "/api/files";
 
   public RecipeResource(
-      SqlSessionFactory sessions,
-      TransactionManagementConfigurer management,
+      BusinessJdbcContext context,
       FileManager files,
       FileReferenceService references,
       OriginalProperties properties,
@@ -47,13 +45,8 @@ public class RecipeResource {
     this.files = files;
     this.references = references;
     this.properties = properties;
-    this.db = new JdbcTemplate(sessions.getConfiguration().getEnvironment().getDataSource());
-    var manager = management.annotationDrivenTransactionManager();
-    if (!(manager instanceof org.springframework.transaction.PlatformTransactionManager platform)) {
-      throw new IllegalArgumentException(
-          "Template must provide an imperative platform transaction manager");
-    }
-    this.tx = new TransactionTemplate(platform);
+    this.db = context.jdbc();
+    this.tx = context.transactions();
   }
 
   private boolean has(String action) {

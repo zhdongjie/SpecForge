@@ -78,6 +78,7 @@ class CoreTests(unittest.TestCase):
     def fixture(self, root):
         t = root / "template"
         for n in [
+            "backend/src/main/java/com/original/core/service/BusinessJdbcContext.java",
             "backend/pom.xml",
             "backend/src/main/java/com/original/system/file/service/ImageValidationService.java",
             "backend/src/main/java/com/original/system/file/service/FileLifecycleGuard.java",
@@ -103,6 +104,15 @@ class CoreTests(unittest.TestCase):
             p.write_text("DO NOT COPY")
         (t / ".env.example").write_text("EXAMPLE=\n")
         return t
+
+    def test_missing_platform_transaction_context_fails_before_creating_run(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template = self.fixture(root)
+            (template / "backend/src/main/java/com/original/core/service/BusinessJdbcContext.java").unlink()
+            with self.assertRaisesRegex(ValueError, "BusinessJdbcContext"):
+                generate(ROOT / "examples/device_borrow.yaml", template, root / "workspace")
+            self.assertFalse((root / "workspace/runs").exists())
 
     def test_generation_determinism_isolation_exclusions_routes(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -304,7 +314,9 @@ class ReleaseIntegrityTests(unittest.TestCase):
                 run
                 / "source/backend/src/main/java/com/original/business/generated/BusinessResource.java"
             ).read_text()
-            self.assertIn("new DataSourceTransactionManager", java)
+            self.assertIn("BusinessJdbcContext context", java)
+            self.assertIn("context.transactions()", java)
+            self.assertNotIn("new DataSourceTransactionManager", java)
             self.assertIn("FOR UPDATE", java)
 
     def test_cleanup_failure_cannot_leave_pass_report(self):

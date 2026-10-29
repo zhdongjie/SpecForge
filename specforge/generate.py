@@ -218,6 +218,7 @@ def generate(spec_path, template, workspace):
     spec_path = Path(spec_path).resolve()
     s = load(spec_path)
     required = [
+        "backend/src/main/java/com/original/core/service/BusinessJdbcContext.java",
         "backend/pom.xml",
         "frontend/pnpm-lock.yaml",
         "frontend/src/stores/user.ts",

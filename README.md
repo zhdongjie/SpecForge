@@ -46,6 +46,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 文档与验证
 
+- [第三轮：统一 JDBC 事务接入](docs/TRANSACTION_CONTEXT_REUSE.md)
+
 - [第二轮：文件引用与清理协议复用](docs/FILE_LIFECYCLE_REUSE.md)
 
 - [食谱与工单复用成本审计](docs/REUSE_COST_AUDIT.md)
