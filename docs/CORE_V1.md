@@ -98,3 +98,12 @@ Windows / WSL 浏览器工作进程包装：
 ## 新项目需求覆盖门禁
 
 新项目完整验收和发布必须有生成源码中的 `specforge/requirements.yaml`；四个固定历史样板保留兼容例外。`reports/requirements.json` 给出逐项验证，清单随源码和哈希进入交付包，独立部署再检查。完整流程与项目补充实现方式见 [实施流程](GENERATION_WORKFLOW.md)。不能把生成器已支持的功能当成用户需求边界。
+
+
+## 独立项目的外部验收包
+
+该入口属于本轮源码改动；历史v0.2.1发布wheel尚未包含它，需使用包含本轮提交的核心。
+
+使用`--acceptance-pack python:your_project.acceptance`显式加载已安装或位于PYTHONPATH的开发验收模块。模块必须提供`validate_spec(spec)`、`accept(origin,password,compose_project,source,reports)`以及同目录browser.cjs（或显式BROWSER_SCRIPT）。接口与内置验收包相同，沿用隔离部署、浏览器和需求覆盖门禁；独立交付验收工具接受相同参数。
+
+该参数加载受信任的Python代码，必须由操作者显式指定；业务YAML不能选择模块或自动执行代码。不会按字段名猜测业务，不将每个真实项目加入核心PACKS。模块仅属于开发验收环境，应用部署不需要安装它。项目定制仍在generate之后应用到副本，verify和package会验证最终副本，重新生成需显式重放本项目定制。
