@@ -1,5 +1,7 @@
 # 报修工单系统：独立项目泛化验证
 
+本页保留首版交付的实现与证据；后续共享图片校验和清理协议已提炼到模板，当前改造见[复用审计](REUSE_COST_AUDIT.md)及[文件生命周期复用](FILE_LIFECYCLE_REUSE.md)。
+
 本项目按用户确认的报修功能清单实施。项目源码位于本机`/home/zhang/projects/apps/repair-workorders`，使用独立Git仓库；没有新增`specforge.applications.repair_*`或内置业务验收包。最终运行结论及输入身份见[结构化证据](core-evidence/repair-project.json)。
 
 ## 职责与需求

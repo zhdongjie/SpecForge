@@ -46,6 +46,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 文档与验证
 
+- [第二轮：文件引用与清理协议复用](docs/FILE_LIFECYCLE_REUSE.md)
+
 - [食谱与工单复用成本审计](docs/REUSE_COST_AUDIT.md)
 
 - [报修工单独立项目与泛化验证](docs/REPAIR_PROJECT.md)

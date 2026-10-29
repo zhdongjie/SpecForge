@@ -1,0 +1,202 @@
+{
+  "date": "2026-10-29",
+  "status": "PASS",
+  "commits": {
+    "template": "c39cd4372a79a2b66af74236f910caacac320f0e",
+    "core": "9f4a9609139d20dd4c73046a0dc0c35586886ef8",
+    "repair": "200c27638e89dbc5d10bcbafd93e7dd77bc07164"
+  },
+  "core_tests": 115,
+  "template_tests": [
+    {
+      "name": "com.original.core.service.ManagementSecurityServiceTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.original.core.utils.ExcelUtilsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.original.core.utils.UploadErrorContractTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.original.system.file.service.FileLifecycleGuardDbTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.original.system.file.service.FileReferenceMappingTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.original.system.file.service.ImageValidationServiceTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "template_total_tests": 24,
+  "real_mysql_competition_tests": 7,
+  "mapping_tests": 2,
+  "mysql": {
+    "status": "PASS",
+    "project": "sf-accept-file-lock-bca413afc1",
+    "volume": "sf-accept-file-lock-bca413afc1-data",
+    "cleanup": "PASS"
+  },
+  "cost": [
+    {
+      "project": "recipe",
+      "before_adapter_lines": 93,
+      "after_adapter_lines": 73,
+      "net_lines_removed": 20,
+      "before_template_patch_files": 2,
+      "after_template_patch_files": 1,
+      "remaining_cleanup_SQL": false
+    },
+    {
+      "project": "repair",
+      "before_adapter_lines": 65,
+      "after_adapter_lines": 62,
+      "net_lines_removed": 3,
+      "before_template_patch_files": 6,
+      "after_template_patch_files": 5,
+      "remaining_cleanup_SQL": false
+    }
+  ],
+  "net_adapter_lines_removed": 23,
+  "cleanup_patch_implementations_removed": 2,
+  "projects": [
+    {
+      "project": "recipe",
+      "run_id": "20261029T085828-b7fe1c0966",
+      "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+      "template_git": "c39cd4372a79a2b66af74236f910caacac320f0e",
+      "generation": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "backend": "PASS",
+          "browser": "PASS",
+          "compose": "PASS",
+          "frontend": "PASS"
+        },
+        "api": 145,
+        "browser": 17,
+        "requirements": 12,
+        "reports": "/home/zhang/.local/state/specforge-core/lifecycle-recipe-20261029/runs/20261029T085828-b7fe1c0966/reports"
+      },
+      "independent": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api": 145,
+        "browser": 17,
+        "requirements": 12,
+        "reports": "/home/zhang/.local/state/specforge-core/release-checks/lifecycle-recipe-20261029"
+      },
+      "delivery": {
+        "archive": "/home/zhang/.local/state/specforge-core/lifecycle-recipe-20261029/releases/recipe_management-20261029T085828-b7fe1c0966.zip",
+        "run_id": "20261029T085828-b7fe1c0966",
+        "sha256": "b6e6ec78fee1373835d18ce64defb560e77abc3772d69b19744ab7afd50ca322",
+        "status": "PASS"
+      },
+      "template_files_patched": 1,
+      "shared_sources_equal_template": true,
+      "cleanup_patch_absent": true
+    },
+    {
+      "project": "repair",
+      "run_id": "20261029T085828-a3607c5d3b",
+      "spec_sha256": "1310d1326459d1e246ff47bfbae2d729b2e3c4e89ab30f9e5ba1983ace9036e5",
+      "template_git": "c39cd4372a79a2b66af74236f910caacac320f0e",
+      "generation": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "backend": "PASS",
+          "browser": "PASS",
+          "compose": "PASS",
+          "frontend": "PASS"
+        },
+        "api": 140,
+        "browser": 14,
+        "requirements": 11,
+        "reports": "/home/zhang/.local/state/specforge-core/lifecycle-repair-20261029/runs/20261029T085828-a3607c5d3b/reports"
+      },
+      "independent": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api": 140,
+        "browser": 14,
+        "requirements": 11,
+        "reports": "/home/zhang/.local/state/specforge-core/lifecycle-repair-20261029/deployment-checks/20261029T085828-a3607c5d3b"
+      },
+      "delivery": {
+        "archive": "/home/zhang/.local/state/specforge-core/lifecycle-repair-20261029/releases/repair_workorders-20261029T085828-a3607c5d3b.zip",
+        "run_id": "20261029T085828-a3607c5d3b",
+        "sha256": "91ef432a0a1afc79805538ef0a8bbf76eb876a25b4b08820c737dec440f983d5",
+        "status": "PASS"
+      },
+      "template_files_patched": 5,
+      "shared_sources_equal_template": true,
+      "cleanup_patch_absent": true
+    }
+  ],
+  "shared_source_sha256": {
+    "backend/src/main/java/com/original/system/file/service/FileLifecycleGuard.java": "36c8c7ddf8e4b6f0ec42560a2884a7698b92580a39892c193c40713038c2aca7",
+    "backend/src/main/java/com/original/system/task/process/ClearFileProcess.java": "28e6a40a31fd22993897beadffca45f3573f3403004c08241017ef70c31848f8",
+    "backend/src/main/java/com/original/system/file/service/impl/FileReferenceServiceImpl.java": "848450430298fa570821435bc6579de8fbc22b6d4702f8c5c8120996c5e6251b"
+  },
+  "template_frozen_during_generation": true,
+  "frontend_unchanged": true,
+  "cleanup": {
+    "status": "PASS",
+    "projects": [
+      "sf-accept-20261029t085828-b7fe1c0966",
+      "sf-accept-release-89181f5c0dd54f76",
+      "sf-accept-20261029t085828-a3607c5d3b",
+      "sf-accept-release-ef33f6432ca446ca",
+      "sf-accept-file-lock-bca413afc1"
+    ],
+    "remaining_containers_volumes_networks": false,
+    "temporary_credentials_removed": true,
+    "original_demo_untouched": true
+  },
+  "limitations": [
+    "not filesystem/database distributed atomicity",
+    "business ownership, visibility, state rules stay in projects",
+    "only supported reference creation/update APIs participate; low-level writes are not covered",
+    "regular Maven skips optional DB tests; this run enabled all 7 on disposable MySQL",
+    "local commits only; no new release or live upgrade"
+  ]
+}
