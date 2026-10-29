@@ -6,8 +6,8 @@ from specforge.applications.recipe_management.adaptations import (
     ENUM,
     CLEANER,
     ENUM_MARKER,
-    CLEANER_FIELD,
-    CLEANER_LOOP,
+    LIFECYCLE_GUARD,
+    CLEANER_MARKER,
 )
 from specforge.workspace import read_json, digest
 
@@ -16,7 +16,8 @@ class TemplateReuseTests(unittest.TestCase):
     def fixture(self, root):
         for name, text in [
             (ENUM, ENUM_MARKER + "\r\n"),
-            (CLEANER, CLEANER_FIELD + "\n" + CLEANER_LOOP),
+            (CLEANER, CLEANER_MARKER + " READ_COMMITTED"),
+            (LIFECYCLE_GUARD, "template-owned guard"),
         ]:
             path = root / name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -27,13 +28,15 @@ class TemplateReuseTests(unittest.TestCase):
             root = Path(td)
             self.fixture(root)
             original = digest(root / ENUM)
+            cleaner_before = digest(root / CLEANER)
             adapt(root)
             proof = read_json(root / "specforge/adaptations/template-reuse.json")
             self.assertEqual(proof["files"][0]["before_sha256"], original)
             self.assertIn("RECIPE_COVER", (root / ENUM).read_text())
             cleaner = (root / CLEANER).read_text()
-            self.assertIn("FOR UPDATE", cleaner)
-            self.assertIn("fileCleanupSessions", cleaner)
+            self.assertEqual(digest(root / CLEANER), cleaner_before)
+            self.assertEqual([x["path"] for x in proof["files"]], [ENUM])
+            self.assertEqual(proof["template_capabilities"][CLEANER], cleaner_before)
             for item in proof["files"]:
                 self.assertEqual(item["after_sha256"], digest(root / item["path"]))
 
@@ -44,3 +47,19 @@ class TemplateReuseTests(unittest.TestCase):
             (root / ENUM).write_text("unrecognized template")
             with self.assertRaisesRegex(ValueError, "template reuse contract changed"):
                 adapt(root)
+
+    def test_missing_shared_guard_stops_before_any_patch(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td); self.fixture(root); before=digest(root/ENUM)
+            (root/LIFECYCLE_GUARD).unlink()
+            with self.assertRaisesRegex(ValueError,"shared file lifecycle"):
+                adapt(root)
+            self.assertEqual(digest(root/ENUM), before)
+
+    def test_old_cleaner_is_not_silently_patched(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td); self.fixture(root); before=digest(root/ENUM)
+            (root/CLEANER).write_text("old cleanup implementation")
+            with self.assertRaisesRegex(ValueError,"shared file lifecycle"):
+                adapt(root)
+            self.assertEqual(digest(root/ENUM), before)

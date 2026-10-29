@@ -80,6 +80,7 @@ class CoreTests(unittest.TestCase):
         for n in [
             "backend/pom.xml",
             "backend/src/main/java/com/original/system/file/service/ImageValidationService.java",
+            "backend/src/main/java/com/original/system/file/service/FileLifecycleGuard.java",
             "frontend/pnpm-lock.yaml",
             "frontend/src/stores/user.ts",
             "deploy/compose.yaml",

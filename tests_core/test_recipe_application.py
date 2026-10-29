@@ -76,13 +76,12 @@ class RecipeApplicationTests(unittest.TestCase):
                 ENUM,
                 CLEANER,
                 ENUM_MARKER,
-                CLEANER_FIELD,
-                CLEANER_LOOP,
+                CLEANER_MARKER,
             )
 
             for name, content in [
                 (ENUM, ENUM_MARKER),
-                (CLEANER, CLEANER_FIELD + "\n" + CLEANER_LOOP),
+                (CLEANER, CLEANER_MARKER + " READ_COMMITTED"),
             ]:
                 path = template / name
                 path.parent.mkdir(parents=True, exist_ok=True)
