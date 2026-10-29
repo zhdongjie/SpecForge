@@ -1,0 +1,173 @@
+{
+  "date": "2026-10-29",
+  "status": "PASS",
+  "project": "repair_workorders",
+  "core_commit": "bc72e1bdc215afb00781bb703c508417d7251ec7",
+  "project_source": "/home/zhang/projects/apps/repair-workorders",
+  "project_commit": "11cdf3cc7f545e870c8f6037d1b1f7949969299f",
+  "core_changes": "explicit python:module acceptance loading only; no permanent repair application/pack",
+  "core_tests": 112,
+  "installed_wheel_external_and_builtin_packs": "PASS",
+  "workspace": "/home/zhang/.local/state/specforge-core/repair-workorders-v1",
+  "run_id": "20261029T070324-0a4c05ecf6",
+  "inputs": {
+    "spec_sha256": "1310d1326459d1e246ff47bfbae2d729b2e3c4e89ab30f9e5ba1983ace9036e5",
+    "template_git": "f2ef51669fd446d2cd65243d453124fdcb0d7d30",
+    "template_path": "/mnt/e/Project/Zhang/openclaw-codegen/exports/github/springboot3-vue3-vuetify-admin-template",
+    "template_files": 464,
+    "template_inventory_sha256": "bf653333bdc9681ef602e5f849d4c89507fc23c59c8685d658d54112ff2efa36",
+    "template_unchanged": true,
+    "project_source_sha256": {
+      ".gitignore": "fd3f9ad0770c4722bbeaee751fd9ed82bb0d25356a4d0572a062c7d2fbe3f7ae",
+      "README.md": "70df998061dd73533a8430f0c20b3fc067e486e58cac23344098b4d6ffcb2fa3",
+      "REQUIREMENTS.md": "984d7eae5ddb4cd6bbad295fb53ad701a24f403ba6bf67dcc7a92b41732483ce",
+      "assets/RepairResource.java": "047ed659f45e0275d113b842e535a354b4401c9aca319a9d3144d49b39076976",
+      "assets/Repairs.vue": "45f14ca017db3cea1f11158bcad3e5055618413a1409ec99c955b59bee34c5a4",
+      "assets/Statistics.vue": "e27089f997e43f138da92f6e3cf1a7e23b77403c47e0eeb26e5d41c073b9f355",
+      "assets/business.sql": "cd8cfc9af47c1c807a87353deeb14bfbeea92b697d9dea7affc1f7249628bc04",
+      "build.py": "d9336c21fcc9b5589befea40ecd6075f0cb777158683f31ce324d75d0c2db5fd",
+      "deliver.py": "390cae21927b227187481aba1b6e56e15fcafdedbe00135a2241155e50504bb4",
+      "project.yaml": "1310d1326459d1e246ff47bfbae2d729b2e3c4e89ab30f9e5ba1983ace9036e5",
+      "repair_acceptance/__init__.py": "4122ef54492fd9d9b32476b8ea1989ed28a20abee582540ffee4714d5fc1449d",
+      "repair_acceptance/browser.cjs": "577b2cd783a893d211a10705ae061938fc0c9d1cdc33cf0d03f2816b68b39cd2",
+      "repair_acceptance/fixture.jpg": "e102fd22b0bfc563d2173fd50ddf52f6a55b28253fa112bd5dac85b85171e8ba",
+      "requirements.yaml": "a31653115427c2e7a6168d7196cab353b3753ac3c2bef1a090ee52419d4e048d",
+      "run-windows.ps1": "9979aafd240a30652885662510da1fa581ed335630564a9b3727d24e043c2222"
+    }
+  },
+  "generation": {
+    "status": "PASS",
+    "checks": {
+      "api": "PASS",
+      "backend": "PASS",
+      "browser": "PASS",
+      "compose": "PASS",
+      "frontend": "PASS"
+    },
+    "api_checks": 140,
+    "browser_scenarios": 14,
+    "requirements": 11,
+    "reports": "/home/zhang/.local/state/specforge-core/repair-workorders-v1/runs/20261029T070324-0a4c05ecf6/reports"
+  },
+  "delivery": {
+    "archive": "/home/zhang/.local/state/specforge-core/repair-workorders-v1/releases/repair_workorders-20261029T070324-0a4c05ecf6.zip",
+    "run_id": "20261029T070324-0a4c05ecf6",
+    "sha256": "d8765a3f33218554f79079e4053fbd0f7beaaa3c6d254fd0f12d3e39f843ccad",
+    "status": "PASS"
+  },
+  "independent_deployment": {
+    "status": "PASS",
+    "checks": {
+      "api": "PASS",
+      "archive": "PASS",
+      "browser": "PASS",
+      "cleanup": "PASS",
+      "compose": "PASS",
+      "mounts": "PASS"
+    },
+    "api_checks": 140,
+    "browser_scenarios": 14,
+    "requirements": 11,
+    "reports": "/home/zhang/.local/state/specforge-core/repair-workorders-v1/deployment-checks/20261029T070324-0a4c05ecf6",
+    "application_source_rebuilt": false,
+    "extraction_removed": true
+  },
+  "determinism": {
+    "status": "PASS",
+    "replay_run": "/home/zhang/.local/state/specforge-core/repair-workorders-replay/runs/20261029T070337-c2bd9d0322",
+    "prebuild_source_files": 488,
+    "prebuild_inventory_sha256": "ff4035c418f0df94e5c93c7729d0b772dfdcaa6c2f9ffe11f37a53a4b10c41f5"
+  },
+  "visual": {
+    "status": "PASS",
+    "manual_review": "template user list/editor compared with repair list/editor/detail/error/empty/statistics; desk/mobile and light/dark",
+    "viewports": [
+      "1280x800",
+      "390x844"
+    ],
+    "themes": [
+      "light-orange",
+      "dark-orange"
+    ],
+    "source_screenshots": 32,
+    "independent_screenshots": 32,
+    "mobile_complete_business_flow": "PASS",
+    "automatic_pixel_similarity_gate": false,
+    "reports": "/mnt/e/Project/Zhang/openclaw-codegen/artifacts/repair-workorders/visual-delivery",
+    "sha256": {
+      "dark-orange-desktop-repair-detail.png": "9dda3d1b62d498adbd01d4dde967c0f007cc9167d2ea2c95b6b5d3b47585a80a",
+      "dark-orange-desktop-repair-editor.png": "f61d01157423ac26c5ae4ff0e6fc19e3115c734188a37ee8d653cbcb9f6a306b",
+      "dark-orange-desktop-repair-empty.png": "6b88e4b8d2da3759715a8de7790912238f2b6e24b2604ca9db28edb3bcc78bdc",
+      "dark-orange-desktop-repair-error.png": "df7ab8ab131969b622ef858475fa71bee3ebb447885aa57bcbc1c60dddf2076c",
+      "dark-orange-desktop-repair-list.png": "bf58a3855209da15d08b5cd6a3c1dae2e51b527fd11f6eda49ec468914cb669b",
+      "dark-orange-desktop-repair-statistics.png": "0070b20ea70675c548ce93cd7a36998548ddaf166ff1b31d2f86c85ad203b926",
+      "dark-orange-desktop-template-editor.png": "71653d474d5b404d8970ed92f759fbcd92a53f444d7c85c72eec32b5e735ff71",
+      "dark-orange-desktop-template-list.png": "e3b33bfe4aa65eb25f7e61df036adb40cb63e7a4ec904d88b47ed91803906c34",
+      "dark-orange-mobile-repair-detail.png": "a6055e3f196d2c21dea33a432977b57618b408f01211142caf8eb4a3e9623524",
+      "dark-orange-mobile-repair-editor.png": "916e81225b70d189fe9f3c9fb283b2e83ef241ea6066c699fa81a0cea169b609",
+      "dark-orange-mobile-repair-empty.png": "e5208d21fd3198fee5cb25de1afd4ee11d7d1335d6c5da3ae4eb0d67b7019574",
+      "dark-orange-mobile-repair-error.png": "22f2972a8ce263e68a577d721b856f1ec9c87b0a3d33426172f357c534b95b92",
+      "dark-orange-mobile-repair-list.png": "ae65485f136f406df5b746afe45fa8fbf16e152f6f18bfa14e421111dc018d56",
+      "dark-orange-mobile-repair-statistics.png": "07e44374489ddcf71672f88db78993fbb6505f9f37c1e55f4d25fbf32493f3c1",
+      "dark-orange-mobile-template-editor.png": "d180400978cfd4d49806f8d16013d45034f16d1827579e931848dd83d0c00116",
+      "dark-orange-mobile-template-list.png": "2f3111dcf081fa46278c9381716d9783bc426af574d54a8c1307862694771141",
+      "light-orange-desktop-repair-detail.png": "48badc0f7a4234c9cf5e559a4c382b59c0787c74c5451be35cf5116bc40993c9",
+      "light-orange-desktop-repair-editor.png": "a2f944c838e0fd09d3683276589bab93366bb5205d5db9bd405168cb08b662f9",
+      "light-orange-desktop-repair-empty.png": "110462b8290d8f7d492f5e8e8caff22edaf7ae75bc8a1502c54cb99a2992a125",
+      "light-orange-desktop-repair-error.png": "83c816efc4c4e05a6a64362646d770f5103c5d690fa57e6fcd21b1961e3df1b0",
+      "light-orange-desktop-repair-list.png": "ff92dc8cbb521ff9f5bba721b812d3d1827a955120cbae157976b8536bf2212b",
+      "light-orange-desktop-repair-statistics.png": "f43335b10c00b8fb865f8abb560216169fc6d461c16f90e481e8c11ae98c0d80",
+      "light-orange-desktop-template-editor.png": "5368a66a4926ef7ce38d6ef98e1e4b2c9428564992644af2b30615dc4ef8dcdc",
+      "light-orange-desktop-template-list.png": "e312371a5ad9d6dd4575d7800cd4f243dd983e18b7b2e81cd008edbc3228a1f3",
+      "light-orange-mobile-repair-detail.png": "f390ecfa1a3a0cd9a297028eecc67aa3da4a929b0d7189cabd60587bd0fd6183",
+      "light-orange-mobile-repair-editor.png": "82460e51de52acf58f13a3833f39301c6544db05dc72f5480cb64c85368f9dd0",
+      "light-orange-mobile-repair-empty.png": "618be47c555cf7c72b9bc9b2b2411f6b0078b8287973e3b57c8140969a0c331f",
+      "light-orange-mobile-repair-error.png": "a5a1f30edac53fbf35419ee6790f0fa0a9292d081fc4f50f59a6ba1a81bd4d76",
+      "light-orange-mobile-repair-list.png": "03831fda0c1fefaaea3b8e854709966beeb1f505e9f28b0150422d2d717152c5",
+      "light-orange-mobile-repair-statistics.png": "f666421e9dd51bfa3766e99fa1bc8b7b75b28e2da7e8141d5d1e691b3c3aaa75",
+      "light-orange-mobile-template-editor.png": "0653699cb7dddd6e8380e867edbf698bd583bb0478a9c813d21a240d2f967382",
+      "light-orange-mobile-template-list.png": "c5bcd41a3e416c489a258d79f292d8ab808becfee7592c93d5a08f12498bf626"
+    }
+  },
+  "customization_cost": {
+    "generic_entity": "repair_category CRUD",
+    "project_owned_production_files": 4,
+    "project_owned_production_lines": 1647,
+    "project_owned_replay_and_acceptance": "build.py, deliver.py, run-windows.ps1, repair_acceptance",
+    "template_adaptation_files": 6,
+    "note": "Workflow, private media and permissions required explicit project code. This does not prove arbitrary business generation from YAML alone; no fabricated human-hour estimate."
+  },
+  "cleanup": {
+    "status": "PASS",
+    "checked_projects": [
+      "sf-accept-20261029t062655-6dd3a85406",
+      "sf-accept-20261029t063059-1d95959a70",
+      "sf-accept-20261029t064045-bf6a928482",
+      "sf-accept-20261029t064715-860d54f93d",
+      "sf-accept-20261029t065023-e9583dbd41",
+      "sf-accept-20261029t065530-5bfd59ee37",
+      "sf-accept-20261029t065830-bca6185ba1",
+      "sf-accept-20261029t070324-0a4c05ecf6",
+      "sf-accept-release-4f871e77d11e42ef",
+      "sf-accept-release-918aef40ca1d43d6",
+      "sf-accept-release-d2f6c923eff34f53",
+      "sf-accept-release-e03503ddc397458c"
+    ],
+    "containers_volumes_networks_remaining": false,
+    "temporary_credentials_removed": true,
+    "original_recipe_demo_untouched": true
+  },
+  "local_deliverables": {
+    "archive": "/mnt/e/Project/Zhang/openclaw-codegen/artifacts/repair-workorders/release/repair_workorders-20261029T070324-0a4c05ecf6.zip",
+    "archive_sha256": "d8765a3f33218554f79079e4053fbd0f7beaaa3c6d254fd0f12d3e39f843ccad",
+    "project_source_archive": "/mnt/e/Project/Zhang/openclaw-codegen/artifacts/repair-workorders/release/repair-workorders-project-source.zip",
+    "project_source_archive_sha256": "b6503c93c904d989f7f904ed32862932c535894c024beb09f5556a9e3be042b4"
+  },
+  "limitations": [
+    "Fresh deployments only; no delivered DB migration",
+    "No spares, billing, auto assignment, SMS or SLA per approved scope",
+    "Acceptance module is trusted developer code; application runtime does not import it",
+    "Manual visual review covers specified states; no global pixel gate",
+    "Core extension and independent app are local commits; no new GitHub release in this task"
+  ]
+}

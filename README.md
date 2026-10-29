@@ -46,6 +46,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 文档与验证
 
+- [报修工单独立项目与泛化验证](docs/REPAIR_PROJECT.md)
+
 - [v0.2.1发布与食谱完整交付回归](docs/V021_RECIPE_REGRESSION.md)
 
 - [发布模板端到端回归](docs/TEMPLATE_RELEASE_REGRESSION.md)
