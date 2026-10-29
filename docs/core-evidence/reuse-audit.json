@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-29",
+  "status": "PASS",
+  "scope": "reuse audit and shared image content validation only",
+  "baseline": {
+    "core": "2a071dc",
+    "repair": "11cdf3c",
+    "template": "f2ef516"
+  },
+  "commits": {
+    "core": "6af9a71478781dd81712bc7d8d57a1e151835793",
+    "repair": "6e2e2dd95ad19838e726e58c70e94a77ddfc9d07",
+    "template": "b6f84e596d11b58da468d3bb3f82fcc843103f39"
+  },
+  "cost": [
+    {
+      "consumer": "recipe",
+      "before_lines": 555,
+      "after_lines": 535,
+      "removed_lines": 20,
+      "remaining_ImageIO_calls": 0,
+      "shared_validation_calls": 1
+    },
+    {
+      "consumer": "repair",
+      "before_lines": 637,
+      "after_lines": 625,
+      "removed_lines": 12,
+      "remaining_ImageIO_calls": 0,
+      "shared_validation_calls": 1
+    }
+  ],
+  "business_lines_removed": 32,
+  "shared_service_lines": 75,
+  "template_tests": [
+    {
+      "name": "com.original.core.service.ManagementSecurityServiceTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0"
+    },
+    {
+      "name": "com.original.core.utils.ExcelUtilsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0"
+    },
+    {
+      "name": "com.original.core.utils.UploadErrorContractTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0"
+    },
+    {
+      "name": "com.original.system.file.service.ImageValidationServiceTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0"
+    }
+  ],
+  "core_tests": 113,
+  "projects": [
+    {
+      "project": "recipe",
+      "run_id": "20261029T083416-4c6a4396d1",
+      "generation": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "backend": "PASS",
+          "browser": "PASS",
+          "compose": "PASS",
+          "frontend": "PASS"
+        },
+        "api": 145,
+        "browser": 17,
+        "requirements": 12,
+        "reports": "/home/zhang/.local/state/specforge-core/reuse-recipe-20261029/runs/20261029T083416-4c6a4396d1/reports"
+      },
+      "independent": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api": 145,
+        "browser": 17,
+        "requirements": 12,
+        "reports": "/home/zhang/.local/state/specforge-core/release-checks/reuse-recipe-20261029"
+      },
+      "delivery": {
+        "archive": "/home/zhang/.local/state/specforge-core/reuse-recipe-20261029/releases/recipe_management-20261029T083416-4c6a4396d1.zip",
+        "run_id": "20261029T083416-4c6a4396d1",
+        "sha256": "128f98a1cbf979ca7e19333b36e41880b0d3d6d6e599424955eee1bd8859d03e",
+        "status": "PASS"
+      },
+      "spec_sha256": "4804c62be9d7a7458cc3cf1dbe305a547c13db97dda2c33ae0a3e4e5fdb9224a",
+      "template_git": "b6f84e596d11b58da468d3bb3f82fcc843103f39"
+    },
+    {
+      "project": "repair",
+      "run_id": "20261029T083416-a038280909",
+      "generation": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "backend": "PASS",
+          "browser": "PASS",
+          "compose": "PASS",
+          "frontend": "PASS"
+        },
+        "api": 140,
+        "browser": 14,
+        "requirements": 11,
+        "reports": "/home/zhang/.local/state/specforge-core/reuse-repair-20261029/runs/20261029T083416-a038280909/reports"
+      },
+      "independent": {
+        "status": "PASS",
+        "checks": {
+          "api": "PASS",
+          "archive": "PASS",
+          "browser": "PASS",
+          "cleanup": "PASS",
+          "compose": "PASS",
+          "mounts": "PASS"
+        },
+        "api": 140,
+        "browser": 14,
+        "requirements": 11,
+        "reports": "/home/zhang/.local/state/specforge-core/reuse-repair-20261029/deployment-checks/20261029T083416-a038280909"
+      },
+      "delivery": {
+        "archive": "/home/zhang/.local/state/specforge-core/reuse-repair-20261029/releases/repair_workorders-20261029T083416-a038280909.zip",
+        "run_id": "20261029T083416-a038280909",
+        "sha256": "027b74be63d7d395827c3b8657a529dab2effcfb046f4e5aae6d41ee70ec3f7f",
+        "status": "PASS"
+      },
+      "spec_sha256": "1310d1326459d1e246ff47bfbae2d729b2e3c4e89ab30f9e5ba1983ace9036e5",
+      "template_git": "b6f84e596d11b58da468d3bb3f82fcc843103f39"
+    }
+  ],
+  "template_frozen_after_commit": true,
+  "frontend_assets_unchanged": true,
+  "cleanup": {
+    "status": "PASS",
+    "projects": [
+      "sf-accept-20261029t083416-4c6a4396d1",
+      "sf-accept-release-fc3c4ccf04e54f42",
+      "sf-accept-20261029t083416-a038280909",
+      "sf-accept-release-cce04fda6f4746e9"
+    ],
+    "containers_volumes_networks_remaining": false,
+    "temporary_credentials_removed": true
+  },
+  "limitations": [
+    "not a complete attachment service",
+    "public/private access and references remain business-owned",
+    "cleanup locking and transaction helpers remain unextracted candidates",
+    "overall repository LOC may increase due to service and tests; business controllers net -32",
+    "local commits only; historical release tags unchanged"
+  ]
+}
