@@ -14,4 +14,4 @@
 
 旧specforge-runtime/、backend/、skills/、tests_compat/已从当前树移除。不再读写旧共享规格或旧outputs/runs路径。此前本地旧目录及其中运行数据已整体转移到仓库外私有归档；不复制回当前版本、不上传GitHub。退役和数据取回说明见 [退役记录](docs/LEGACY_RETIRED.md)。
 
-本地sandbox、生成项目和外部.local/state工作区不属于旧源码清理范围，保持原样。仓库内sandbox只能作为历史本地数据；硬性路径隔离会拒绝将其作为运行工作区，需要先迁出。实际规则见[工作区与交付合同](docs/knowledge/contracts/workspace-release.md)。Git历史与已发布历史标签保留。
+本机2026-10-29盘点：仓库内没有历史运行工作区；本地sandbox仅保留需求草稿，不是运行工作区。现有运行工作区位于仓库外/home/zhang/.local/state/specforge-core/，无需迁移。硬性路径隔离禁止以后将仓库内目录用作工作区。实际规则见[工作区与交付合同](docs/knowledge/contracts/workspace-release.md)。本地草稿、现有生成项目、Git历史与已发布历史标签保留。
