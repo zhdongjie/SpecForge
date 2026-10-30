@@ -1,0 +1,16 @@
+{
+  "format_version": 1,
+  "core_version": "0.3.0",
+  "template": {
+    "repository": "https://github.com/zhdongjie/springboot3-vue3-vuetify-admin-template",
+    "tag": "v1.1.0",
+    "commit": "c1ab8ed3a244bb4325a1d0f7ebd50877661480d3"
+  },
+  "capabilities": [
+    "backend/src/main/java/com/original/core/service/BusinessJdbcContext.java",
+    "backend/src/main/java/com/original/system/file/service/ImageValidationService.java",
+    "backend/src/main/java/com/original/system/file/service/FileLifecycleGuard.java",
+    "frontend/src/composables/useFileUpload.ts"
+  ],
+  "runtime_reads_this_manifest": false
+}

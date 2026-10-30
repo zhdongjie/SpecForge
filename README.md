@@ -1,10 +1,12 @@
 # SpecForge
 
-当前版本：[v0.2.1](docs/releases/v0.2.1.md)。仅维护新版 `specforge` 核心。旧方案已退役，默认分支统一使用新版；历史标签仅作历史取证。见 [退役说明](docs/LEGACY_RETIRED.md)。
+当前版本：[v0.3.0](docs/releases/v0.3.0.md)。仅维护新版 `specforge` 核心。旧方案已退役，默认分支统一使用新版；历史标签仅作历史取证。见 [退役说明](docs/LEGACY_RETIRED.md)。
 
 基于明确业务规格和后台模板生成可独立部署的前后端项目。新项目统一使用 `python -m specforge`；当前提供设备借用、图书借阅验收样板和食谱管理真实应用扩展。
 
 ## 开始使用
+
+固定发行输入使用 [SpecForge v0.3.0 + 模板 v1.1.0](docs/RELEASE_PAIR.md)，精确模板身份见 [配套清单](template-compatibility.json)。
 
 真实项目先按 [需求到交付流程](docs/GENERATION_WORKFLOW.md) 做需求覆盖与模板复用审查，可复制 [项目审查表](docs/project-starter/REUSE_REVIEW.md) 和 [覆盖清单样例](docs/project-starter/requirements.yaml)。未登记的能力先查模板源码，不能直接删减需求。
 
