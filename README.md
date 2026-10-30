@@ -46,6 +46,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 文档与验证
 
+- [接入流程回溯演练与覆盖声明修正](docs/ONBOARDING_REHEARSAL.md)
+
 - [第四轮：前端上传编排复用](docs/UPLOAD_REUSE.md)
 
 - [第三轮：统一 JDBC 事务接入](docs/TRANSACTION_CONTEXT_REUSE.md)

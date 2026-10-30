@@ -131,18 +131,14 @@ requirements:
   sources:
   - backend/src/main/java/com/original/business/recipes/RecipeResource.java
   - frontend/src/pages/business/recipes/index.vue
-  template_evidence:
-  - backend/src/main/java/com/original/system/file/manager/FileManager.java
-  - backend/src/main/java/com/original/core/utils/FileUtils.java
+  template_evidence: [backend/src/main/java/com/original/system/file/manager/FileManager.java, backend/src/main/java/com/original/core/utils/FileUtils.java, backend/src/main/java/com/original/system/file/service/ImageValidationService.java, frontend/src/composables/useFileUpload.ts]
   api:
   - platform image upload works
   - platform MIME detection and metadata agree
   - spoofed PNG payload rejected
   - oversized upload rejected
   - oversized image dimensions rejected
-  browser:
-  - author uploads and previews real cover image
-  - published recipe renders uploaded cover
+  browser: [author uploads and previews real cover image, published recipe renders uploaded cover, invalid cover type and size rejected before network upload; valid retry remains available]
   stages: []
 - id: REQ-COVER-LIFECYCLE
   need: 封面保存、替换、移除、删除及未引用文件清理
@@ -150,9 +146,7 @@ requirements:
   rationale: 复用 FileReferenceService 与清理任务，适配事务和候选重查
   sources:
   - backend/src/main/java/com/original/business/recipes/RecipeResource.java
-  template_evidence:
-  - backend/src/main/java/com/original/system/file/service/impl/FileReferenceServiceImpl.java
-  - backend/src/main/java/com/original/system/task/process/ClearFileProcess.java
+  template_evidence: [backend/src/main/java/com/original/system/file/service/impl/FileReferenceServiceImpl.java, backend/src/main/java/com/original/system/task/process/ClearFileProcess.java, backend/src/main/java/com/original/core/service/BusinessJdbcContext.java, backend/src/main/java/com/original/system/file/service/FileLifecycleGuard.java]
   api:
   - recipe save creates platform file reference
   - reference failure rolls back recipe write
@@ -160,8 +154,7 @@ requirements:
   - replacement releases old reference and protects new cover
   - referenced cover survives real cleanup
   - unreferenced replaced cover eventually cleaned
-  browser:
-  - author reopens and replaces uploaded cover
+  browser: [author reopens and replaces uploaded cover]
   stages: []
 - id: REQ-PERMISSIONS
   need: 角色、操作、归属及状态的权限组合都生效

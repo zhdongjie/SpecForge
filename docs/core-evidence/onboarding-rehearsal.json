@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-30",
+  "kind": "retrospective onboarding and coverage diagnostics; NOT new deployment acceptance",
+  "projects": {
+    "recipe": {
+      "generated_run": "/home/zhang/.local/state/specforge-core/onboarding-recipe-20261030/runs/20261030T020249-28accfd684",
+      "input_manifest": "/home/zhang/.local/state/specforge-core/onboarding-recipe-20261030/runs/20261030T020249-28accfd684/input/identity.json",
+      "historical_reports": "/home/zhang/.local/state/specforge-core/upload-recipe-20261029/runs/20261029T100356-af3faed5e2/reports",
+      "requirements_matched": 12,
+      "new_plan_sha256": "b1cdbe24e71dfb199df1d365cfa3ff8e7d007de3c64ce2646e13aa1783135454",
+      "missing_upload_check_rejected": "requirement coverage failed: requirement not verified: REQ-COVER-UPLOAD; invalid cover type and size rejected before network upload; valid retry remains available",
+      "old_publication_proof_rejected": "verified requirement coverage required before publication",
+      "build_api_browser_deployment_rerun": false
+    },
+    "repair": {
+      "generated_run": "/home/zhang/.local/state/specforge-core/onboarding-repair-20261030/runs/20261030T020306-0c56b41722",
+      "input_manifest": "/home/zhang/.local/state/specforge-core/onboarding-repair-20261030/runs/20261030T020306-0c56b41722/input/identity.json",
+      "historical_reports": "/home/zhang/.local/state/specforge-core/upload-repair-20261029/runs/20261029T100356-f4db5f20d4/reports",
+      "requirements_matched": 11,
+      "new_plan_sha256": "edb647edb594f77e91019c2e12dc7694465dc2f48b3c03e9e8b193db037a8dfd",
+      "missing_upload_check_rejected": "requirement coverage failed: requirement not verified: REQ-MEDIA; invalid count type and size reject entire selection without requests and allow retry",
+      "old_publication_proof_rejected": "verified requirement coverage required before publication",
+      "build_api_browser_deployment_rerun": false
+    }
+  }
+}
