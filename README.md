@@ -6,7 +6,7 @@
 
 ## 开始使用
 
-真实项目先按 [需求到交付流程](docs/GENERATION_WORKFLOW.md) 做需求覆盖与模板复用审查。未登记的能力先查模板源码，不能直接删减需求。
+真实项目先按 [需求到交付流程](docs/GENERATION_WORKFLOW.md) 做需求覆盖与模板复用审查，可复制 [项目审查表](docs/project-starter/REUSE_REVIEW.md) 和 [覆盖清单样例](docs/project-starter/requirements.yaml)。未登记的能力先查模板源码，不能直接删减需求。
 
 ```bash
 python3 -m venv .venv

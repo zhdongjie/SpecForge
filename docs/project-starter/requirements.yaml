@@ -1,0 +1,18 @@
+# 复制到独立项目，填实后重放到生成副本 specforge/requirements.yaml。
+# 这是待填写样例，不可作为已通过的覆盖证据。占位路径和测试名会导致现有门禁失败。
+version: 1
+origin: REPLACE_WITH_USER_REQUIREMENTS_AND_APPROVED_SCOPE
+requirements:
+- id: REQ-EXAMPLE
+  need: REPLACE_WITH_ONE_ORIGINAL_USER_NEED
+  mode: adapt # reuse / adapt / custom
+  rationale: REPLACE_WITH_SOURCE_BASED_DECISION
+  sources:
+  - backend/src/main/java/com/original/business/REPLACE_WITH_PROJECT_IMPLEMENTATION.java
+  template_evidence:
+  - backend/src/main/java/com/original/core/utils/SecurityUtils.java
+  api:
+  - REPLACE_WITH_EXACT_EXECUTED_API_CHECK_NAME
+  browser:
+  - REPLACE_WITH_EXACT_EXECUTED_BROWSER_CHECK_NAME
+  stages: []
