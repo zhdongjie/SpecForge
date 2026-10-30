@@ -3,7 +3,7 @@
 - 编号：C-006
 - 状态：已验证
 - 适用范围：新增真实项目；历史通用样板保留兼容
-- 最近验证日期：2026-10-24
+- 最近验证日期：2026-10-30
 - 实现：[覆盖门禁](../../../specforge/coverage.py)
 - 证据：[覆盖回归](../../../tests_core/test_requirement_coverage.py)
 
@@ -20,3 +20,5 @@
 
 
 食谱的 12 项真实需求及独立部署结果见 [修复证据](../../core-evidence/recipe-reuse-fix.json)。
+
+2026-10-30补充：覆盖清单同时用于源码和独立包验收。stages 使用两阶段共有的检查（如compose）；独立包不运行Maven/pnpm，不能声明它重新完成backend/frontend构建。源码构建由核心verify/package强制验证，不因清单未声明构建阶段而跳过。会议室接入暴露并修正此阶段声明错误，见[新项目记录](../../MEETING_PROJECT.md)。

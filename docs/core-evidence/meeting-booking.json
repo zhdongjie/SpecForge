@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "date": "2026-10-30",
+  "project_path": "/home/zhang/projects/apps/meeting-room-booking",
+  "project_commit": "9d64fc6a8da88be3b1b1ab8c4281a50bdb1f0146",
+  "core_base_commit": "1632ea5da3f210ddaac6c6e7ae00cecdee8b3c3a",
+  "template_commit": "f49d8c98082468f4eb12fcea1b9ff87f79647800",
+  "run": "/home/zhang/.local/state/specforge-core/meeting-booking-final-20261030/runs/20261030T030541-26d7e3724d",
+  "input_manifest": "/home/zhang/.local/state/specforge-core/meeting-booking-final-20261030/runs/20261030T030541-26d7e3724d/input/identity.json",
+  "spec_sha256": "b99b2c9706bbe252d1957a26310d9916faa77530151a829118f14ab54de9fec1",
+  "core_tests": 117,
+  "project_contract_tests": 5,
+  "source_checks": {
+    "api": "PASS",
+    "backend": "PASS",
+    "browser": "PASS",
+    "compose": "PASS",
+    "frontend": "PASS"
+  },
+  "api_passed": 63,
+  "browser_passed": 10,
+  "requirements_passed": 8,
+  "archive": "/home/zhang/.local/state/specforge-core/meeting-booking-final-20261030/releases/meeting_room_booking-20261030T030541-26d7e3724d.zip",
+  "archive_sha256": "a0055741c53c5e8d26b2c09cc509312ce70b97e94f104cb6f425c227ca11d230",
+  "windows_archive": "E:/Project/Zhang/openclaw-codegen/artifacts/meeting-booking-20261030/meeting-room-booking.zip",
+  "independent_report": "/home/zhang/.local/state/specforge-core/meeting-booking-final-20261030/deployment-checks/20261030T030541-26d7e3724d/release.json",
+  "independent_checks": {
+    "api": "PASS",
+    "archive": "PASS",
+    "browser": "PASS",
+    "cleanup": "PASS",
+    "compose": "PASS",
+    "mounts": "PASS"
+  },
+  "determinism": {
+    "status": "PASS",
+    "source_files": 493,
+    "source_sha256": "f317b6c47e8901c84b1533469b1d5699854b93b5c2e39c8136090ab05b9aea06",
+    "runs": [
+      "/home/zhang/.local/state/specforge-core/meeting-determinism-20261030/runs/20261030T030655-7694703135",
+      "/home/zhang/.local/state/specforge-core/meeting-determinism-20261030/runs/20261030T030716-79c5232941"
+    ]
+  },
+  "cleanup_all_task_stacks": "PASS",
+  "visual": {
+    "captures_per_phase": 28,
+    "conditions": [
+      "light-orange desktop1280x800",
+      "dark-orange desktop1280x800",
+      "light-orange mobile390x844",
+      "dark-orange mobile390x844"
+    ],
+    "review": "human contact sheet and full-size samples; no automatic visual similarity gate"
+  },
+  "remote": null
+}

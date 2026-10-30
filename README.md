@@ -46,6 +46,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 文档与验证
 
+- [会议室预约：新业务切片完整交付](docs/MEETING_PROJECT.md)
+
 - [接入流程回溯演练与覆盖声明修正](docs/ONBOARDING_REHEARSAL.md)
 
 - [第四轮：前端上传编排复用](docs/UPLOAD_REUSE.md)

@@ -23,6 +23,7 @@
 - [C-006 需求覆盖与模板复用合同](contracts/delivery-coverage.md)
 - [T-006 混合事务回滚](troubleshooting/mixed-transactions.md)
 - [T-007 上传 MIME 策略适配](troubleshooting/upload-mime.md)
+- [T-008 DATETIME与JDBC时区](troubleshooting/datetime.md)
 
 - [C-007 生成页面UI一致性](contracts/ui-consistency.md)
 

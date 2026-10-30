@@ -86,7 +86,7 @@ python3 /absolute/SpecForge/tools/verify-release.py \
   --acceptance-pack python:your_acceptance
 ```
 
-仅在前一步通过后执行后一步。requirements.yaml 的 sources/template_evidence 是生成副本相对路径，不能写开发仓库绝对路径；api/browser 必须与实际执行的名称完全一致，stages 使用真实检查键（backend/frontend/compose 等）。不能用只通过 compose 代替业务需求验证。新项目不要复用四个历史样板标识来绕过覆盖清单。
+仅在前一步通过后执行后一步。requirements.yaml 的 sources/template_evidence 是生成副本相对路径，不能写开发仓库绝对路径；api/browser 必须与实际执行的名称完全一致，同份清单还会用于独立包验收，stages 应使用两阶段实际共有的检查键（如 compose）；不要要求只部署生产产物的环境执行 backend/frontend 构建。源码构建仍由核心 verify/package 门禁强制检查。不能用只通过 compose 代替业务需求验证。新项目不要复用四个历史样板标识来绕过覆盖清单。
 
 ### 停止与修复
 
