@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "core_version": "0.3.0",
+  "template_version": "1.1.0",
+  "core_commit": "86e99b666b85c331ddb54fd6301925c6a9387360",
+  "template_commit": "c1ab8ed3a244bb4325a1d0f7ebd50877661480d3",
+  "core_tests": 117,
+  "template_tests": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "upload_tests": 4,
+  "template_frontend_build": "PASS",
+  "installed_wheel_smoke": {
+    "status": "PASS",
+    "version": "0.3.0",
+    "installed_module": "/tmp/specforge-pair-20261030/installed/lib/python3.10/site-packages/specforge/__init__.py",
+    "run": "/tmp/specforge-pair-20261030/smoke-workspace/runs/20261030T032003-5d5cc32376"
+  },
+  "recipe_run": "/home/zhang/.local/state/specforge-core/release-pair-recipe-20261030/runs/20261030T032100-c85d447a97",
+  "recipe_api": 145,
+  "recipe_browser": 18,
+  "recipe_requirements": 12,
+  "independent_report": "/home/zhang/.local/state/specforge-core/release-checks/release-pair-recipe-20261030/release.json",
+  "independent_checks": {
+    "api": "PASS",
+    "archive": "PASS",
+    "browser": "PASS",
+    "cleanup": "PASS",
+    "compose": "PASS",
+    "mounts": "PASS"
+  },
+  "local_artifacts": {
+    "admin-platform-v1.1.0-source.zip": "3aff78925ffea33b30eded6a836b96cf24bd8dd4677a2908d49cd7b597e594ba",
+    "SpecForge-v0.3.0-source.zip": "607bd4bf03fea74c3f8745d14b71e8f2f176aeee469ffc0ff98a2ff4002bebd1",
+    "specforge_core-0.3.0-py3-none-any.whl": "7b2e8e0f12d425042084e0fbe0d4c322dc72467d0bf60dfc41c9c8fe2d696992"
+  },
+  "date": "2026-10-30",
+  "publication": {
+    "core": {
+      "url": "https://github.com/zhdongjie/SpecForge/releases/tag/v0.3.0",
+      "tag": "v0.3.0",
+      "draft": false,
+      "ci_download_checksum_verification": "PASS",
+      "sha256sums": "0aacf924973622316e421bb26a76d5ffccd9b1815e51b7a9c5582d6124145da5  SpecForge-v0.3.0-source.zip\n4005a9a75b718ad7c398d6e44cad14b1b8fb631ac6a9535eaf6bd224f752b06d  specforge_core-0.3.0-py3-none-any.whl\n"
+    },
+    "template": {
+      "url": "https://github.com/zhdongjie/springboot3-vue3-vuetify-admin-template/releases/tag/v1.1.0",
+      "tag": "v1.1.0",
+      "draft": false,
+      "ci_download_checksum_verification": "PASS",
+      "sha256sums": "6bfe9b27865af1798c21df42ff07ffa0d6fad31ff04b84857fdf86b898df02f6  admin-platform-v1.1.0-source.zip\n"
+    }
+  },
+  "artifact_verification": {
+    "core_download_checksum": "PASS",
+    "core_wheel_payload_matches_validated_candidate": "PASS",
+    "published_wheel_install_and_generate": "PASS",
+    "template_ci_authorized_download_checksum": "PASS",
+    "template_utc_reconstruction_matches_ci_asset": "PASS",
+    "template_payload_matches_validated_candidate": "PASS",
+    "template_local_unauthenticated_download": "404; verification uses authorized CI receipt plus byte-identical reconstruction"
+  },
+  "published_installed_smoke": {
+    "status": "PASS",
+    "version": "0.3.0",
+    "installed_module": "/tmp/specforge-pair-20261030/published-installed/lib/python3.10/site-packages/specforge/__init__.py",
+    "run": "/tmp/specforge-pair-20261030/published-smoke-workspace/runs/20261030T033336-e5a9384425"
+  },
+  "private_projects": {
+    "repair_workorders": "private existing repository; not in public release assets",
+    "meeting_room_booking": "local commit 9d64fc6; no remote; not in public release assets"
+  },
+  "cleanup_audit": "PASS"
+}

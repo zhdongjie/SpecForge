@@ -48,6 +48,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 文档与验证
 
+- [v0.3.0与模板v1.1.0配套发布核验](docs/RELEASE_V030_PAIR.md)
+
 - [会议室预约：新业务切片完整交付](docs/MEETING_PROJECT.md)
 
 - [接入流程回溯演练与覆盖声明修正](docs/ONBOARDING_REHEARSAL.md)
